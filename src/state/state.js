@@ -1,3 +1,6 @@
 export const state = {
-    cards: 0
+    badcards: 0,
+    goodcards: 0,
+    cards: 0,
+    money: 0
 }

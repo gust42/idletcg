@@ -24,8 +24,14 @@ export default class GameLoop {
             const message = messages.shift();
             if (message === 'openpack') {
                 const state = this.stateHandler.getState();
+                if (state.money > 10) {
+                
                 state.cards++;
                 this.stateHandler.updateState(state);
+                } else {
+                    MessageHandler.sendClientMessage('Not enouch money');
+                }
+                
             }
         }
 

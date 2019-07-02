@@ -1,6 +1,7 @@
 export default class MessageHandler {
     static init() {
         this.messageQue = [];
+        this.clientSubscriptions = [];
     }
     static recieveMessage(message) {
         if (!this.messageQue)
@@ -13,5 +14,15 @@ export default class MessageHandler {
         const tmp = [...this.messageQue];
         this.messageQue = [];
         return tmp;
+    }
+
+    static sendClientMessage(message) {
+        this.clientSubscriptions.forEach((callback) => {
+            callback(message);
+        });
+    }
+
+    static addClientSubscription(callback) {
+        this.clientSubscriptions.push(callback);
     }
 }

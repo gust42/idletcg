@@ -5,6 +5,7 @@ import useGameState from './hooks/usegamestate';
 import Button from './components/button';
 import GameLoop from './logic/gameloop';
 import './App.css';
+import MessageBox from './components/messagebox';
 
 const gameLoop = GameLoop.getInstance();
 gameLoop.start();
@@ -26,6 +27,9 @@ function App() {
       <section>
         <Button text="Open pack" click={openPack}></Button>
       </section>
+      <footer>
+        <MessageBox></MessageBox>
+      </footer>
     </div>
   );
 }
