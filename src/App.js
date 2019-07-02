@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
+import MessageHandler from './logic/messagehandler';
+import Button from './components/button';
 import './App.css';
 
 function App() {
-  const [cards, setCards] = useState(0);
+
+  function openPack() {
+    console.log('open pack clicked');
+    MessageHandler.recieveMessage('openpack');
+  }
 
   return (
     <div className="App">
@@ -11,10 +16,10 @@ function App() {
        IDLE TCG
       </header>
       <aside>
-        Cards: { cards }
+        {/* Cards: { cards } */}
       </aside>
       <section>
-        <div className="button" onClick={() => setCards(cards + 1)}>Buy pack</div>
+        <Button text="Open pack" click={openPack}></Button>
       </section>
     </div>
   );
