@@ -1,9 +1,9 @@
 import MessageHandler from './messagehandler';
 import StateHandler from '../state/statehandler';
+import Pack from './pack';
 
 export default class GameLoop {
     constructor() {
-        this.cards = 0;
         MessageHandler.init();
         this.stateHandler = new StateHandler();
     }
@@ -26,17 +26,24 @@ export default class GameLoop {
                 const state = this.stateHandler.getState();
                 if (state.money > 10) {
                 
-                state.cards++;
+                const pack = new Pack();
+
+                state.metacards += pack.metacards;
+                state.goodcards += pack.goodcards;
+                state.badcards += pack.badcards;
+                state.money -= 10;
+
                 this.stateHandler.updateState(state);
+                
+                MessageHandler.sendClientMessage(`Pack contains ${pack.badcards} bad cards, ${pack.goodcards} good cards and ${pack.metacards} meta cards `);
                 } else {
-                    MessageHandler.sendClientMessage('Not enouch money');
+                    MessageHandler.sendClientMessage('Not enough money');
                 }
                 
             }
         }
 
         const state = this.stateHandler.getState();
-        console.log(state.cards);
 
         window.requestAnimationFrame(this.loop.bind(this));
 

@@ -7,11 +7,14 @@ export default function useClientMessage() {
     useEffect(() => {
 
         function update(message) {
-            
             setMessages([...messages, message]);
         }
 
         MessageHandler.addClientSubscription(update);
+
+        return () => {
+            MessageHandler.removeClientSubscription(update);
+        }
     });
 
     return messages;

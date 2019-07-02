@@ -18,6 +18,18 @@
   color: white;
 }
 
+.content {
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+}
+
+aside {
+  min-width: 200px;
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -29,6 +41,23 @@
   width: 100px;
   color: #fff;
   cursor: pointer;
+  text-align: center;
+  user-select: none;
+}
+
+.button:active {
+  
+  background-color: #99dafb;
+}
+
+.message-box {
+  background-color: #282c34;
+  color: #fff;
+  padding:10px;
+}
+
+.message {
+  padding:5px;
 }
 
 @keyframes App-logo-spin {

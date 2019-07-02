@@ -22,4 +22,9 @@ export default class StateHandler {
     subscribe(callback) {
         this.subscribers.push(callback);
     } 
+
+    unsubscribe(callback) {
+        const index = this.subscribers.findIndex(c => c === callback);
+        this.subscribers.splice(index, 1);
+    }
 }

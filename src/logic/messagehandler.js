@@ -25,4 +25,9 @@ export default class MessageHandler {
     static addClientSubscription(callback) {
         this.clientSubscriptions.push(callback);
     }
+
+    static removeClientSubscription(callback) {
+        const index = this.clientSubscriptions.findIndex(c => c === callback);
+        this.clientSubscriptions.splice(index, 1);
+    }
 }

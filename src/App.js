@@ -1,17 +1,15 @@
 import React from 'react';
 import MessageHandler from './logic/messagehandler';
 
-import useGameState from './hooks/usegamestate';
 import Button from './components/button';
 import GameLoop from './logic/gameloop';
 import './App.css';
 import MessageBox from './components/messagebox';
+import ResourceView from './components/resourceview';
 
 const gameLoop = GameLoop.getInstance();
 gameLoop.start();
 function App() {
-  const gameState = useGameState();
-  console.log(gameState);
   function openPack() {
     MessageHandler.recieveMessage('openpack');
   }
@@ -21,12 +19,14 @@ function App() {
       <header className="App-header">
        IDLE TCG
       </header>
-      <aside>
-        Cards: { gameState.cards }
-      </aside>
-      <section>
-        <Button text="Open pack" click={openPack}></Button>
-      </section>
+      <div className="content">
+        <aside>
+          <ResourceView></ResourceView>
+        </aside>
+        <section>
+          <Button text="Open pack" click={openPack}></Button>
+        </section>
+      </div>
       <footer>
         <MessageBox></MessageBox>
       </footer>

@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useClientMessage from '../hooks/useclientmessage';
 
 export default function MessageBox() {
-    const messages = useClientMessage()
+    let messages = useClientMessage();
+    const [messageList, setMessageList] = useState([]);
 
-    const messageList = messages.map((m, i) => {
-        return <div key={i} className="message">{m}</div>;
+    messages = messages.slice(-5);
+    useEffect(() => {
+        const tmp = messages.map((m, i) => {
+            return <div key={i} className="message">{m}</div>;
+        });
+        tmp.reverse();
+        setMessageList(tmp);
     })
+    
+
 
     return (
         <div className="message-box">{ messageList }</div>

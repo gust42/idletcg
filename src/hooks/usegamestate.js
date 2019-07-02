@@ -6,9 +6,14 @@ export default function useGameState() {
     useEffect(() => {
 
         function update(state) {
-            setGameState(state);        }
+            setGameState(state);        
+        }
 
         GameLoop.getInstance().stateHandler.subscribe(update);
+        
+        return () => {
+            GameLoop.getInstance().stateHandler.unsubscribe(update);
+        }
     });
 
     console.log('gamestate');
