@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MessageHandler from './logic/messagehandler';
+
+import useGameState from './hooks/usegamestate';
 import Button from './components/button';
+import GameLoop from './logic/gameloop';
 import './App.css';
 
+const gameLoop = GameLoop.getInstance();
+gameLoop.start();
 function App() {
-
+  const gameState = useGameState();
+  console.log(gameState);
   function openPack() {
-    console.log('open pack clicked');
     MessageHandler.recieveMessage('openpack');
   }
 
@@ -16,7 +21,7 @@ function App() {
        IDLE TCG
       </header>
       <aside>
-        {/* Cards: { cards } */}
+        Cards: { gameState.cards }
       </aside>
       <section>
         <Button text="Open pack" click={openPack}></Button>

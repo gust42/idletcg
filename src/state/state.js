@@ -1,3 +1,3 @@
-export default state = {
+export const state = {
     cards: 0
 }

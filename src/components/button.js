@@ -2,8 +2,7 @@ import React from 'react';
 
 export default function Button(props) {
     function clickEvent(e) {
-        e.preventDefault()
-        console.log('click');
+        e.preventDefault();
         if (props.click)
             props.click();
     }
