@@ -14,7 +14,15 @@ function App() {
   const packCostRule = useGameRule('PackCost');
 
   function openPack() {
-    MessageHandler.recieveMessage('openpack');
+    MessageHandler.recieveMessage('openpack', 1);
+  }
+
+  function sellBadCards() {
+    MessageHandler.recieveMessage('sellbadcards', 1);
+  }
+
+  function sellGoodCards() {
+    MessageHandler.recieveMessage('sellgoodcards', 1);
   }
 
   return (
@@ -35,6 +43,8 @@ function App() {
           </nav>
           <article>
           <Button text="Open pack" click={openPack} cost={packCostRule.value}></Button>
+          <Button text="Sell bad card" click={sellBadCards} cost={1}></Button>
+          <Button text="Sell good card" click={sellGoodCards} cost={1}></Button>
           </article>
         </section>
       </div>

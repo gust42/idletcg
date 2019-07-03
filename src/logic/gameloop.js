@@ -43,6 +43,27 @@ export default class GameLoop {
                 }
                 
             }
+
+            
+            if (message === 'sellbadcards') {
+                
+                const state = this.stateHandler.getState();
+                if (state.badcards >= 1) {
+                    state.money += 0.5;
+                    state.badcards--;
+                    this.stateHandler.updateState(state);
+                }
+            }
+
+            if (message === 'sellgoodcards') {
+                
+                const state = this.stateHandler.getState();
+                if (state.goodcards >= 1) {
+                    state.money += 5;
+                    state.goodcards--;
+                    this.stateHandler.updateState(state);
+                }
+            }
         }
 
         const state = this.stateHandler.getState();
