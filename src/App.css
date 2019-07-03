@@ -40,7 +40,7 @@ aside {
   background-color: #61dafb;
   padding:5px;
   border-radius: 2px;
-  width: 100px;
+  width: 150px;
   color: #fff;
   cursor: pointer;
   text-align: center;
@@ -50,6 +50,11 @@ aside {
 .button:active {
   
   background-color: #99dafb;
+}
+
+.button-cost {
+  font-size: 0.9em;
+  font-style: italic;
 }
 
 .message-box {

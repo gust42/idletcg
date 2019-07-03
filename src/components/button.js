@@ -8,6 +8,9 @@ export default function Button(props) {
     }
 
     return (
-        <div className="button" onClick={clickEvent}>{ props.text }</div>
+        <div className="button" onClick={clickEvent}>
+            { props.text }
+            <div className="button-cost"> { props.cost } money</div>
+        </div>
     )
 }

@@ -6,10 +6,13 @@ import GameLoop from './logic/gameloop';
 import './App.css';
 import MessageBox from './components/messagebox';
 import ResourceView from './components/resourceview';
+import useGameRule from './hooks/usegamerule';
 
 const gameLoop = GameLoop.getInstance();
 gameLoop.start();
 function App() {
+  const packCostRule = useGameRule('PackCost');
+
   function openPack() {
     MessageHandler.recieveMessage('openpack');
   }
@@ -26,7 +29,7 @@ function App() {
         <section>
           <nav><div className="tab">Packs</div></nav>
           <article>
-          <Button text="Open pack" click={openPack}></Button>
+          <Button text="Open pack" click={openPack} cost={packCostRule.value}></Button>
           </article>
         </section>
       </div>
