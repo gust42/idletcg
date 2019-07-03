@@ -27,7 +27,12 @@ function App() {
           <ResourceView></ResourceView>
         </aside>
         <section>
-          <nav><div className="tab">Packs</div></nav>
+          <nav>
+            <div className="tab active">Packs</div>
+            <div className="tab">Trade binder</div>
+            <div className="tab">Tournaments</div>
+            <div className="tab">Skills</div>
+          </nav>
           <article>
           <Button text="Open pack" click={openPack} cost={packCostRule.value}></Button>
           </article>
