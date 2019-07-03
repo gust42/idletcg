@@ -1,11 +1,13 @@
 import MessageHandler from './messagehandler';
 import StateHandler from '../state/statehandler';
 import Pack from './pack';
+import RulesHandler from '../rules/ruleshandler';
 
 export default class GameLoop {
     constructor() {
         MessageHandler.init();
         this.stateHandler = new StateHandler();
+        this.rulesHandler = new RulesHandler();
     }
 
     static getInstance() {
@@ -24,7 +26,7 @@ export default class GameLoop {
             const message = messages.shift();
             if (message === 'openpack') {
                 const state = this.stateHandler.getState();
-                if (state.money > 10) {
+                if (state.money >= this.rulesHandler.getRuleValue('PackCost')) {
                 
                 const pack = new Pack();
 

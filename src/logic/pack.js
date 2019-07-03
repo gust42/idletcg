@@ -1,9 +1,12 @@
+import GameLoop from "./gameloop";
+
 export default class Pack {
     constructor() {
+        const rules = GameLoop.getInstance().rulesHandler;
         this.goodcards = 0;
-        this.metacards = Math.random() < 0.1 ? 1 : 0;
-        for (let i = 0; i < 3; i++) {
-        this.goodcards += Math.random() < 0.2 ? 1 : 0;
+        this.metacards = Math.random() < rules.getRuleValue('MetaCardDroprate') ? 1 : 0;
+        for (let i = 0; i < rules.getRuleValue('GoodCardPackMax'); i++) {
+        this.goodcards += Math.random() < rules.getRuleValue('GoodCardDroprate') ? 1 : 0;
         }
         this.badcards = 10 - this.metacards - this.goodcards;
     }
