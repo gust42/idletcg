@@ -2,6 +2,7 @@
   "name": "idletcg",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://www.u6400933.fsdata.se/idletcg",
   "dependencies": {
     "@babel/core": "7.4.3",
     "@svgr/webpack": "4.1.0",
