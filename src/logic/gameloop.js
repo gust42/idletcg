@@ -49,7 +49,7 @@ export default class GameLoop {
                 
                 const state = this.stateHandler.getState();
                 if (state.badcards >= 1) {
-                    state.money += 0.5;
+                    state.money += this.rulesHandler.getRuleValue('BadCardSellValue');
                     state.badcards--;
                     this.stateHandler.updateState(state);
                 }
@@ -59,8 +59,18 @@ export default class GameLoop {
                 
                 const state = this.stateHandler.getState();
                 if (state.goodcards >= 1) {
-                    state.money += 5;
+                    state.money += this.rulesHandler.getRuleValue('GoodCardSellValue');
                     state.goodcards--;
+                    this.stateHandler.updateState(state);
+                }
+            }
+
+            if (message === 'sellmetacards') {
+                
+                const state = this.stateHandler.getState();
+                if (state.metacards >= 1) {
+                    state.money += this.rulesHandler.getRuleValue('MetaCardSellValue');
+                    state.metacards--;
                     this.stateHandler.updateState(state);
                 }
             }
