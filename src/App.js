@@ -24,7 +24,10 @@ function App() {
           <ResourceView></ResourceView>
         </aside>
         <section>
+          <nav><div className="tab">Packs</div></nav>
+          <article>
           <Button text="Open pack" click={openPack}></Button>
+          </article>
         </section>
       </div>
       <footer>

@@ -5,6 +5,7 @@ export default function ResourceView() {
     const gameState = useGameState();
     return (
         <div className="resource-view">
+            <h4>Resources</h4>
             <div className="resource">Money: { gameState.money }</div>
             <div className="resource">Bad Cards: { gameState.badcards }</div>
             <div className="resource">Good Cards: { gameState.goodcards }</div>
