@@ -1,0 +1,23 @@
+{
+    "PackCost": {
+        "value": 10
+    },
+    "MetaCardDroprate": {
+        "value": 0.03
+    },
+    "GoodCardDroprate": {
+        "value": 0.2
+    },
+    "GoodCardPackMax": {
+        "value": 3
+    },
+    "GoodCardSellValue": {
+        "value": 10
+    },
+    "BadCardSellValue": {
+        "value": 0.5
+    },
+    "MetaCardSellValue": {
+        "value": 100
+    }
+}

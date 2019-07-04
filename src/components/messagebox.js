@@ -12,7 +12,7 @@ export default function MessageBox() {
         });
         tmp.reverse();
         setMessageList(tmp);
-    })
+    }, [messages]);
     
 
 

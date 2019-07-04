@@ -3,11 +3,11 @@ export default class MessageHandler {
         this.messageQue = [];
         this.clientSubscriptions = [];
     }
-    static recieveMessage(message) {
+    static recieveMessage(message, data) {
         if (!this.messageQue)
             this.init();
-        console.log(message);
-        this.messageQue.push(message);
+        console.log(message, data);
+        this.messageQue.push({message, data});
     }
 
     static getandClearMessages() {

@@ -15,7 +15,6 @@ export default function useGameState() {
             GameLoop.getInstance().stateHandler.unsubscribe(update);
         }
     });
-
-    console.log('gamestate');
+    
     return gameState;
 }
