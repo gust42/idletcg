@@ -14,5 +14,17 @@ export const state = {
     money: {
         amount: 50,
         acquired: true
+    },
+    packstab: {
+        acquired: true
+    },
+    skillstab: {
+        acquired: false
+    },
+    tradebindertab: {
+        acquired: false
+    },
+    tournamentstab: {
+        acquired: false
     }
 }

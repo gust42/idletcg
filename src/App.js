@@ -8,6 +8,7 @@ import MessageBox from './components/messagebox';
 import ResourceView from './components/resourceview';
 import useGameRule from './hooks/usegamerule';
 import useGameState from './hooks/usegamestate';
+import Tab from './components/tab';
 
 const gameLoop = GameLoop.getInstance();
 gameLoop.start();
@@ -45,10 +46,10 @@ function App() {
         </aside>
         <section>
           <nav>
-            <div className="tab active">Packs</div>
-            <div className="tab">Trade binder</div>
-            <div className="tab">Tournaments</div>
-            <div className="tab">Skills</div>
+            <Tab name="Packs" item={gameState.packstab}></Tab>
+            <Tab name="Trade binder" item={gameState.tradebindertab}></Tab>
+            <Tab name="Tournaments" item={gameState.tournamentstab}></Tab>
+            <Tab name="Skills" item={gameState.skillstab}></Tab>
           </nav>
           <article>
           <Button text="Open pack" click={openPack} resource={gameState.money} cost={packCostRule.value}></Button>
