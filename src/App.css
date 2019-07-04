@@ -49,6 +49,12 @@ aside {
   background-color: #ccc;
 }
 
+.button-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+}
+
 .button {
   background-color: #61dafb;
   padding:5px;
@@ -59,6 +65,7 @@ aside {
   text-align: center;
   user-select: none;
   margin-bottom: 10px;
+  margin-right: 10px;
 }
 
 .button:active {
