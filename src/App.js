@@ -19,20 +19,20 @@ function App() {
   const badSellValueRule = useGameRule('BadCardSellValue');
   const metaSellValueRule = useGameRule('MetaCardSellValue');
 
-  function openPack() {
-    MessageHandler.recieveMessage('openpack', 1);
+  function openPack(amount) {
+    MessageHandler.recieveMessage('openpack', amount ? amount : 1);
   }
 
-  function sellBadCards() {
-    MessageHandler.recieveMessage('sellbadcards', 1);
+  function sellBadCards(amount) {
+    MessageHandler.recieveMessage('sellbadcards', amount ? amount : 1);
   }
 
-  function sellGoodCards() {
-    MessageHandler.recieveMessage('sellgoodcards', 1);
+  function sellGoodCards(amount) {
+    MessageHandler.recieveMessage('sellgoodcards', amount ? amount : 1);
   }
 
-  function sellMetaCards() {
-    MessageHandler.recieveMessage('sellmetacards', 1);
+  function sellMetaCards(amount) {
+    MessageHandler.recieveMessage('sellmetacards', amount ? amount : 1);
   }
 
   return (

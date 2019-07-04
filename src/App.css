@@ -78,6 +78,10 @@ aside {
   font-style: italic;
 }
 
+.bulk-button {
+  width: auto;
+}
+
 .message-box {
   background-color: #282c34;
   color: #fff;
