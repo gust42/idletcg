@@ -52,10 +52,10 @@ function App() {
             <Tab name="Skills" item={gameState.skillstab}></Tab>
           </nav>
           <article>
-          <Button text="Open pack" click={openPack} resource={gameState.money} cost={packCostRule.value}></Button>
-          <Button text="Sell bad card" click={sellBadCards} resource={gameState.badcards} cost={badSellValueRule.value}></Button>
-          <Button text="Sell good card" click={sellGoodCards} resource={gameState.goodcards} cost={goodSellValueRule.value}></Button>
-          <Button text="Sell meta card" click={sellMetaCards} resource={gameState.metacards} cost={metaSellValueRule.value}></Button>
+          <Button text="Open pack" type="buy" click={openPack} resource={gameState.money} cost={packCostRule.value}></Button>
+          <Button text="Sell bad card" type="sell" click={sellBadCards} resource={gameState.badcards} cost={badSellValueRule.value}></Button>
+          <Button text="Sell good card" type="sell" click={sellGoodCards} resource={gameState.goodcards} cost={goodSellValueRule.value}></Button>
+          <Button text="Sell meta card" type="sell" click={sellMetaCards} resource={gameState.metacards} cost={metaSellValueRule.value}></Button>
           </article>
         </section>
       </div>
