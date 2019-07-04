@@ -6,10 +6,10 @@
         "value": 0.03
     },
     "GoodCardDroprate": {
-        "value": 0.2
+        "value": 0.25
     },
     "GoodCardPackMax": {
-        "value": 3
+        "value": 2
     },
     "GoodCardSellValue": {
         "value": 10

@@ -28,27 +28,31 @@ export default class GameLoop {
                 const state = this.stateHandler.getState();
                 if (state.money.amount >= this.rulesHandler.getRuleValue('PackCost') * m.data) {
 
+                    let badcards = 0, goodcards = 0, metacards = 0;
                     for (let i = 0; i < m.data; i++) {
                         const pack = new Pack();
 
-                        state.metacards.amount += pack.metacards;
-                        state.goodcards.amount += pack.goodcards;
-                        state.badcards.amount += pack.badcards;
-                        state.money.amount -= 10;
-
-                        if (pack.metacards > 0)
-                            state.metacards.acquired = true;
-
-                        if (pack.goodcards > 0)
-                            state.goodcards.acquired = true;
-
-                        if (pack.badcards > 0)
-                            state.badcards.acquired = true;
-                        
-                        MessageHandler.sendClientMessage(`Pack contains ${pack.badcards} bad cards, ${pack.goodcards} good cards and ${pack.metacards} meta cards `);
+                        badcards += pack.badcards;
+                        goodcards += pack.goodcards;
+                        metacards += pack.metacards;
                     }
+                    
+                    state.metacards.amount += metacards;
+                    state.goodcards.amount += goodcards;
+                    state.badcards.amount += badcards;
+                    state.money.amount -= 10 * m.data;
 
+                    if (metacards > 0)
+                        state.metacards.acquired = true;
 
+                    if (goodcards > 0)
+                        state.goodcards.acquired = true;
+
+                    if (badcards > 0)
+                        state.badcards.acquired = true;
+
+                    MessageHandler.sendClientMessage(`${(m.data > 1 ? 'Packs' : 'Pack')} contains ${badcards} bad cards, ${goodcards} good cards and ${metacards} meta cards `);
+                   
 
 
                     this.stateHandler.updateState(state);
