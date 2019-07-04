@@ -22,61 +22,70 @@ export default class GameLoop {
 
     loop() {
         const messages = MessageHandler.getandClearMessages();
-        while(messages && messages.length > 0) {
+        while (messages && messages.length > 0) {
             const message = messages.shift();
             if (message === 'openpack') {
                 const state = this.stateHandler.getState();
-                if (state.money >= this.rulesHandler.getRuleValue('PackCost')) {
-                
-                const pack = new Pack();
+                if (state.money.amount >= this.rulesHandler.getRuleValue('PackCost')) {
 
-                state.metacards += pack.metacards;
-                state.goodcards += pack.goodcards;
-                state.badcards += pack.badcards;
-                state.money -= 10;
+                    const pack = new Pack();
 
-                this.stateHandler.updateState(state);
-                
-                MessageHandler.sendClientMessage(`Pack contains ${pack.badcards} bad cards, ${pack.goodcards} good cards and ${pack.metacards} meta cards `);
+                    state.metacards.amount += pack.metacards;
+                    state.goodcards.amount += pack.goodcards;
+                    state.badcards.amount += pack.badcards;
+                    state.money.amount -= 10;
+
+                    if (pack.metacards > 0)
+                        state.metacards.acquired = true;
+
+                    if (pack.goodcards > 0)
+                        state.goodcards.acquired = true;
+
+                    if (pack.badcards > 0)
+                        state.badcards.acquired = true;
+
+
+
+                    this.stateHandler.updateState(state);
+
+                    MessageHandler.sendClientMessage(`Pack contains ${pack.badcards} bad cards, ${pack.goodcards} good cards and ${pack.metacards} meta cards `);
                 } else {
                     MessageHandler.sendClientMessage('Not enough money');
                 }
-                
+
             }
 
-            
+
             if (message === 'sellbadcards') {
-                
+
                 const state = this.stateHandler.getState();
-                if (state.badcards >= 1) {
-                    state.money += this.rulesHandler.getRuleValue('BadCardSellValue');
-                    state.badcards--;
+                if (state.badcards.amount >= 1) {
+                    state.money.amount += this.rulesHandler.getRuleValue('BadCardSellValue');
+                    state.badcards.amount--;
                     this.stateHandler.updateState(state);
                 }
             }
 
             if (message === 'sellgoodcards') {
-                
+
                 const state = this.stateHandler.getState();
-                if (state.goodcards >= 1) {
-                    state.money += this.rulesHandler.getRuleValue('GoodCardSellValue');
-                    state.goodcards--;
+                if (state.goodcards.amount >= 1) {
+                    state.money.amount += this.rulesHandler.getRuleValue('GoodCardSellValue');
+                    state.goodcards.amount--;
                     this.stateHandler.updateState(state);
                 }
             }
 
             if (message === 'sellmetacards') {
-                
+
                 const state = this.stateHandler.getState();
-                if (state.metacards >= 1) {
-                    state.money += this.rulesHandler.getRuleValue('MetaCardSellValue');
-                    state.metacards--;
+                if (state.metacards.amount >= 1) {
+                    state.money.amount += this.rulesHandler.getRuleValue('MetaCardSellValue');
+                    state.metacards.amount--;
                     this.stateHandler.updateState(state);
                 }
             }
         }
-
-        const state = this.stateHandler.getState();
 
         window.requestAnimationFrame(this.loop.bind(this));
 

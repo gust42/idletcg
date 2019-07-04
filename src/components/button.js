@@ -7,6 +7,9 @@ export default function Button(props) {
             props.click();
     }
 
+    if(!props.resource.acquired)
+        return null;
+
     return (
         <div className="button" onClick={clickEvent}>
             { props.text }

@@ -7,10 +7,10 @@ export default function ResourceView() {
     return (
         <div className="resource-view">
             <h4>Resources</h4>
-            <ResourceItem name="Money" value={gameState.money} fixDecimal={true} ></ResourceItem>
-            <ResourceItem name="Bad cards" value={gameState.badcards}></ResourceItem>
-            <ResourceItem name="Good cards" value={gameState.goodcards}></ResourceItem>
-            <ResourceItem name="Meta cards" value={gameState.metacards}></ResourceItem>
+            <ResourceItem name="Money" resource={gameState.money} fixDecimal={true} ></ResourceItem>
+            <ResourceItem name="Bad cards" resource={gameState.badcards}></ResourceItem>
+            <ResourceItem name="Good cards" resource={gameState.goodcards}></ResourceItem>
+            <ResourceItem name="Meta cards" resource={gameState.metacards}></ResourceItem>
         </div>
     )
 }

@@ -7,10 +7,12 @@ import './App.css';
 import MessageBox from './components/messagebox';
 import ResourceView from './components/resourceview';
 import useGameRule from './hooks/usegamerule';
+import useGameState from './hooks/usegamestate';
 
 const gameLoop = GameLoop.getInstance();
 gameLoop.start();
 function App() {
+  const gameState = useGameState();
   const packCostRule = useGameRule('PackCost');
   const goodSellValueRule = useGameRule('GoodCardSellValue');
   const badSellValueRule = useGameRule('BadCardSellValue');
@@ -49,10 +51,10 @@ function App() {
             <div className="tab">Skills</div>
           </nav>
           <article>
-          <Button text="Open pack" click={openPack} cost={packCostRule.value}></Button>
-          <Button text="Sell bad card" click={sellBadCards} cost={badSellValueRule.value}></Button>
-          <Button text="Sell good card" click={sellGoodCards} cost={goodSellValueRule.value}></Button>
-          <Button text="Sell meta card" click={sellMetaCards} cost={metaSellValueRule.value}></Button>
+          <Button text="Open pack" click={openPack} resource={gameState.money} cost={packCostRule.value}></Button>
+          <Button text="Sell bad card" click={sellBadCards} resource={gameState.badcards} cost={badSellValueRule.value}></Button>
+          <Button text="Sell good card" click={sellGoodCards} resource={gameState.goodcards} cost={goodSellValueRule.value}></Button>
+          <Button text="Sell meta card" click={sellMetaCards} resource={gameState.metacards} cost={metaSellValueRule.value}></Button>
           </article>
         </section>
       </div>
