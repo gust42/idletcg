@@ -19,5 +19,8 @@
     },
     "MetaCardSellValue": {
         "value": 100
+    },
+    "CardsForTradebinder": {
+        "value": 1000
     }
 }

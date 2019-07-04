@@ -36,7 +36,7 @@ export default class GameLoop {
                         goodcards += pack.goodcards;
                         metacards += pack.metacards;
                     }
-                    
+
                     state.metacards.amount += metacards;
                     state.goodcards.amount += goodcards;
                     state.badcards.amount += badcards;
@@ -52,7 +52,7 @@ export default class GameLoop {
                         state.badcards.acquired = true;
 
                     MessageHandler.sendClientMessage(`${(m.data > 1 ? 'Packs' : 'Pack')} contains ${badcards} bad cards, ${goodcards} good cards and ${metacards} meta cards `);
-                   
+
 
 
                     this.stateHandler.updateState(state);
@@ -92,6 +92,20 @@ export default class GameLoop {
                     this.stateHandler.updateState(state);
                 }
             }
+
+        }
+
+        let state = this.stateHandler.getState();
+        state = this.rulesHandler.checkActiveRules(state);
+        if (state) {
+            this.stateHandler.updateState(state);
+        }
+
+        state = this.stateHandler.getState();
+        if (state.badcards.amount === 0 && state.goodcards.amount === 0 && state.metacards.amount === 0 && state.money.amount < this.rulesHandler.getRuleValue('PackCost')) {
+            MessageHandler.sendClientMessage('Your aunt visits and gives you 50 money');
+            state.money.amount += 50;
+            this.stateHandler.updateState(state);
         }
 
         window.requestAnimationFrame(this.loop.bind(this));
