@@ -93,6 +93,13 @@ export default class GameLoop {
                 }
             }
 
+            if (m.message === 'unlockskill') {
+                const state = this.stateHandler.getState();
+                state[m.data].acquired = true;
+                console.log(m.data + ': ' +state[m.data].acquired)
+                this.stateHandler.updateState(state);
+            }
+
         }
 
         let state = this.stateHandler.getState();

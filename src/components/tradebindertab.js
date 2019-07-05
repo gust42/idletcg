@@ -4,7 +4,7 @@ import Button from './button';
 import useGameRule from '../hooks/usegamerule';
 import useGameState from '../hooks/usegamestate';
 
-export default function PacksTab(props) {
+export default function SkillsTab(props) {
     const gameState = useGameState();
 
     const packCostRule = useGameRule('PackCost');

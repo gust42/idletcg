@@ -7,8 +7,14 @@ export default class RulesHandler {
 
     checkActiveRules(state) {
         let changed = false;
-        if (!state.tradebindertab.acquired && state.badcards.amount + state.goodcards.amount + state.metacards.amount >= this.rules['CardsForTradebinder'].value) {
+        const totalcards = state.badcards.amount + state.goodcards.amount + state.metacards.amount;
+        if (!state.tradebindertab.acquired && totalcards >= this.rules['CardsForTradebinder'].value) {
             state.tradebindertab.acquired = true;
+            changed = true;
+        }
+
+        if (!state.skillstab.acquired && totalcards >= this.rules['CardsforSkills'].value) {
+            state.skillstab.acquired = true;
             changed = true;
         }
         return changed ? state : false;

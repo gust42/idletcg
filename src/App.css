@@ -97,6 +97,22 @@ aside {
   padding:5px;
 }
 
+.button.skill {
+  width: 250px;
+}
+
+.description {
+  font-size:0.8em;
+  font-style: italic;
+  padding: 5px;
+}
+
+.requirement {
+  border-top: 2px solid #2accf8;
+  border-bottom: 2px solid #2accf8;
+  padding: 5px;
+}
+
 nav {
   background-color: #282c34;
   width: 100%;

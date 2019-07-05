@@ -1,7 +1,7 @@
 export const state = {
     badcards: {
-        amount: 0,
-        acquired: false
+        amount: 1500,
+        acquired: true
     },
     goodcards: {
         amount: 0,
@@ -26,5 +26,8 @@ export const state = {
     },
     tournamentstab: {
         acquired: false
+    },
+    autopackskill: {
+        acquired: true
     }
 }

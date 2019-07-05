@@ -22,5 +22,11 @@
     },
     "CardsForTradebinder": {
         "value": 1000
+    },
+    "CardsforSkills": {
+        "value" : 1500
+    },
+    "AutoPackSkill": {
+        "requirement": 1500
     }
 }
