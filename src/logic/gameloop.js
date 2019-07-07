@@ -8,6 +8,8 @@ export default class GameLoop {
         MessageHandler.init();
         this.stateHandler = new StateHandler();
         this.rulesHandler = new RulesHandler();
+        this.lastTime = 0;
+        this.tick = 1000
     }
 
     static getInstance() {
@@ -20,16 +22,29 @@ export default class GameLoop {
         this.loop();
     }
 
-    loop() {
+    loop(now) {
+
+        let state = this.stateHandler.getState();
+        if (now-this.lastTime > this.tick) {
+            if (state.autopackskill.acquired)
+                MessageHandler.recieveMessage('openpack', { amount: 1, cost: 0, log: false});
+            this.lastTime = now;
+        }
+
         const messages = MessageHandler.getandClearMessages();
         while (messages && messages.length > 0) {
             const m = messages.shift();
             if (m.message === 'openpack') {
                 const state = this.stateHandler.getState();
-                if (state.money.amount >= this.rulesHandler.getRuleValue('PackCost') * m.data) {
+                let amount = m.data;
+                let cost = this.rulesHandler.getRuleValue('PackCost');
+                let log = true;
+                if (typeof m.data == 'object')
+                    ({amount, cost, log} = m.data);
+                if (state.money.amount >= cost * amount) {
 
                     let badcards = 0, goodcards = 0, metacards = 0;
-                    for (let i = 0; i < m.data; i++) {
+                    for (let i = 0; i < amount; i++) {
                         const pack = new Pack();
 
                         badcards += pack.badcards;
@@ -40,7 +55,7 @@ export default class GameLoop {
                     state.metacards.amount += metacards;
                     state.goodcards.amount += goodcards;
                     state.badcards.amount += badcards;
-                    state.money.amount -= 10 * m.data;
+                    state.money.amount -= cost * amount;
 
                     if (metacards > 0)
                         state.metacards.acquired = true;
@@ -51,7 +66,8 @@ export default class GameLoop {
                     if (badcards > 0)
                         state.badcards.acquired = true;
 
-                    MessageHandler.sendClientMessage(`${(m.data > 1 ? 'Packs' : 'Pack')} contains ${badcards} bad cards, ${goodcards} good cards and ${metacards} meta cards `);
+                    if (log)
+                        MessageHandler.sendClientMessage(`${(amount > 1 ? 'Packs' : 'Pack')} contains ${badcards} bad cards, ${goodcards} good cards and ${metacards} meta cards `);
 
 
 
@@ -102,7 +118,7 @@ export default class GameLoop {
 
         }
 
-        let state = this.stateHandler.getState();
+        state = this.stateHandler.getState();
         state = this.rulesHandler.checkActiveRules(state);
         if (state) {
             this.stateHandler.updateState(state);
@@ -112,8 +128,9 @@ export default class GameLoop {
         if (state.badcards.amount === 0 && state.goodcards.amount === 0 && state.metacards.amount === 0 && state.money.amount < this.rulesHandler.getRuleValue('PackCost')) {
             MessageHandler.sendClientMessage('Your aunt visits and gives you 50 money');
             state.money.amount += 50;
-            this.stateHandler.updateState(state);
+            state = this.stateHandler.updateState(state);
         }
+
 
         window.requestAnimationFrame(this.loop.bind(this));
 

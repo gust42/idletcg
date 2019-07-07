@@ -28,6 +28,6 @@ export const state = {
         acquired: false
     },
     autopackskill: {
-        acquired: true
+        acquired: false
     }
 }
