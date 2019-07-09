@@ -25,9 +25,9 @@ export default class GameLoop {
     loop(now) {
 
         let state = this.stateHandler.getState();
-        if (now-this.lastTime > this.tick) {
+        if (now - this.lastTime > this.tick) {
             if (state.autopackskill.acquired)
-                MessageHandler.recieveMessage('openpack', { amount: 1, cost: 0, log: false});
+                MessageHandler.recieveMessage('openpack', { amount: 1, cost: 0, log: false });
             this.lastTime = now;
         }
 
@@ -40,7 +40,7 @@ export default class GameLoop {
                 let cost = this.rulesHandler.getRuleValue('PackCost');
                 let log = true;
                 if (typeof m.data == 'object')
-                    ({amount, cost, log} = m.data);
+                    ({ amount, cost, log } = m.data);
                 if (state.money.amount >= cost * amount) {
 
                     let badcards = 0, goodcards = 0, metacards = 0;
@@ -112,8 +112,34 @@ export default class GameLoop {
             if (m.message === 'unlockskill') {
                 const state = this.stateHandler.getState();
                 state[m.data].acquired = true;
-                console.log(m.data + ': ' +state[m.data].acquired)
+                console.log(m.data + ': ' + state[m.data].acquired)
                 this.stateHandler.updateState(state);
+            }
+
+            if (m.message === 'tradecard') {
+                const state = this.stateHandler.getState();
+                const rule = this.rulesHandler.getRule('CostForUniqueCards');
+                let fail = '';
+                const badcardCost = (rule.first.badcards * m.data) ** rule.increase;
+                const goodcardCost = (rule.first.goodcards * m.data) ** rule.increase;
+                const metacardCost = (rule.first.metacards * m.data) ** rule.increase;
+
+                if (state.badcards.amount <= badcardCost)
+                    fail += 'Not enough bad cards \n';
+                if (state.goodcards.amount <= goodcardCost)
+                    fail += 'Not enough good cards';
+                if (state.metacards.amount <= metacardCost)
+                    fail += 'Not enough meta cards';
+                
+                if (!fail) {
+                    state.uniquecards.amount++;
+                    state.badcards.amount = Math.floor(state.badcards.amount - badcardCost);
+                    state.goodcards.amount = Math.floor(state.goodcards.amount - goodcardCost);
+                    state.metacards.amount = Math.floor(state.metacards.amount - metacardCost);
+                    this.stateHandler.updateState();
+                } else {
+                    MessageHandler.sendClientMessage(fail);
+                }
             }
 
         }
