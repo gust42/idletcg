@@ -29,5 +29,8 @@ export const state = {
     },
     autopackskill: {
         acquired: false
+    },
+    uniquecards: {
+        amount: 0
     }
 }

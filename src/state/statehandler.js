@@ -6,7 +6,7 @@ export default class StateHandler {
 
         const savedState = localStorage.getItem('idletcg.state'); 
         if (savedState)
-            this.state = JSON.parse(savedState);
+            this.state = {...this.state , ...JSON.parse(savedState)};
         this.subscribers = [];
     }
 

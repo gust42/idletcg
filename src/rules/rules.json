@@ -28,5 +28,13 @@
     },
     "AutoPackSkill": {
         "requirement": 1500
+    },
+    "CostForUniqueCards" : {
+        "first": {
+            "badcards": 1000,
+            "goodcards": 50,
+            "metacards": 10
+        },
+        "increase": 1.15
     }
 }

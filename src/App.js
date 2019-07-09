@@ -6,7 +6,7 @@ import ResourceView from './components/resourceview';
 import useGameState from './hooks/usegamestate';
 import Tab from './components/tab';
 import PacksTab from './components/packstab';
-import TradebinderTab from './components/tradebindertab';
+import TradebinderTab from './pages/tradebinder/tradebindertab';
 import SkillsTab from './components/skillstab';
 
 const gameLoop = GameLoop.getInstance();
