@@ -6,10 +6,10 @@
         "value": 0.03
     },
     "GoodCardDroprate": {
-        "value": 0.2
+        "value": 0.25
     },
     "GoodCardPackMax": {
-        "value": 3
+        "value": 2
     },
     "GoodCardSellValue": {
         "value": 10
@@ -19,5 +19,22 @@
     },
     "MetaCardSellValue": {
         "value": 100
+    },
+    "CardsForTradebinder": {
+        "value": 1000
+    },
+    "CardsforSkills": {
+        "value" : 1500
+    },
+    "AutoPackSkill": {
+        "requirement": 1500
+    },
+    "CostForUniqueCards" : {
+        "first": {
+            "badcards": 500,
+            "goodcards": 25,
+            "metacards": 5
+        },
+        "increase": 1.15
     }
 }

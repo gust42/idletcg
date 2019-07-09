@@ -26,5 +26,11 @@ export const state = {
     },
     tournamentstab: {
         acquired: false
+    },
+    autopackskill: {
+        acquired: false
+    },
+    uniquecards: {
+        amount: 0
     }
 }

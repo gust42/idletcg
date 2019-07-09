@@ -3,6 +3,10 @@ import { state } from './state';
 export default class StateHandler {
     constructor() {
         this.state = state;
+
+        const savedState = localStorage.getItem('idletcg.state'); 
+        if (savedState)
+            this.state = {...this.state , ...JSON.parse(savedState)};
         this.subscribers = [];
     }
 
@@ -16,7 +20,12 @@ export default class StateHandler {
         for (const sub of this.subscribers) {
             sub(result);
         }
+        this.savePersistant();
         return result;
+    }
+
+    savePersistant() {
+        localStorage.setItem('idletcg.state', JSON.stringify(this.state));
     }
 
     subscribe(callback) {

@@ -68,6 +68,11 @@ aside {
   margin-right: 10px;
 }
 
+.disabled .button {
+  background-color: #ccc;
+  color:#000;
+}
+
 .button:active {
   
   background-color: #99dafb;
@@ -92,14 +97,31 @@ aside {
   padding:5px;
 }
 
+.button.skill {
+  width: 250px;
+}
+
+.unlocked {
+  background-color: #00ff00;
+}
+.description {
+  font-size:0.8em;
+  font-style: italic;
+  padding: 5px;
+}
+
+.requirement {
+  border-top: 2px solid #2accf8;
+  border-bottom: 2px solid #2accf8;
+  padding: 5px;
+}
+
 nav {
   background-color: #282c34;
   width: 100%;
   display: flex;
   flex-flow: row;
-  align-items: space-between;
   justify-content: flex-start;
-  padding: 0 10px;
 }
 
 .tab {
@@ -108,6 +130,7 @@ nav {
   border-radius: 2px 2px 0 0;
   cursor: pointer;
   color:#fff;
+  margin-left: 10px;
 
 }
 

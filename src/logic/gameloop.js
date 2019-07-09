@@ -8,6 +8,8 @@ export default class GameLoop {
         MessageHandler.init();
         this.stateHandler = new StateHandler();
         this.rulesHandler = new RulesHandler();
+        this.lastTime = 0;
+        this.tick = 1000
     }
 
     static getInstance() {
@@ -20,34 +22,52 @@ export default class GameLoop {
         this.loop();
     }
 
-    loop() {
+    loop(now) {
+
+        let state = this.stateHandler.getState();
+        if (now - this.lastTime > this.tick) {
+            if (state.autopackskill.acquired)
+                MessageHandler.recieveMessage('openpack', { amount: 1, cost: 0, log: false });
+            this.lastTime = now;
+        }
+
         const messages = MessageHandler.getandClearMessages();
         while (messages && messages.length > 0) {
             const m = messages.shift();
             if (m.message === 'openpack') {
                 const state = this.stateHandler.getState();
-                if (state.money.amount >= this.rulesHandler.getRuleValue('PackCost') * m.data) {
+                let amount = m.data;
+                let cost = this.rulesHandler.getRuleValue('PackCost');
+                let log = true;
+                if (typeof m.data == 'object')
+                    ({ amount, cost, log } = m.data);
+                if (state.money.amount >= cost * amount) {
 
-                    for (let i = 0; i < m.data; i++) {
+                    let badcards = 0, goodcards = 0, metacards = 0;
+                    for (let i = 0; i < amount; i++) {
                         const pack = new Pack();
 
-                        state.metacards.amount += pack.metacards;
-                        state.goodcards.amount += pack.goodcards;
-                        state.badcards.amount += pack.badcards;
-                        state.money.amount -= 10;
-
-                        if (pack.metacards > 0)
-                            state.metacards.acquired = true;
-
-                        if (pack.goodcards > 0)
-                            state.goodcards.acquired = true;
-
-                        if (pack.badcards > 0)
-                            state.badcards.acquired = true;
-                        
-                        MessageHandler.sendClientMessage(`Pack contains ${pack.badcards} bad cards, ${pack.goodcards} good cards and ${pack.metacards} meta cards `);
+                        badcards += pack.badcards;
+                        goodcards += pack.goodcards;
+                        metacards += pack.metacards;
                     }
 
+                    state.metacards.amount += metacards;
+                    state.goodcards.amount += goodcards;
+                    state.badcards.amount += badcards;
+                    state.money.amount -= cost * amount;
+
+                    if (metacards > 0)
+                        state.metacards.acquired = true;
+
+                    if (goodcards > 0)
+                        state.goodcards.acquired = true;
+
+                    if (badcards > 0)
+                        state.badcards.acquired = true;
+
+                    if (log)
+                        MessageHandler.sendClientMessage(`${(amount > 1 ? 'Packs' : 'Pack')} contains ${badcards} bad cards, ${goodcards} good cards and ${metacards} meta cards `);
 
 
 
@@ -88,7 +108,55 @@ export default class GameLoop {
                     this.stateHandler.updateState(state);
                 }
             }
+
+            if (m.message === 'unlockskill') {
+                const state = this.stateHandler.getState();
+                state[m.data].acquired = true;
+                console.log(m.data + ': ' + state[m.data].acquired)
+                this.stateHandler.updateState(state);
+            }
+
+            if (m.message === 'tradecard') {
+                const state = this.stateHandler.getState();
+                const rule = this.rulesHandler.getRule('CostForUniqueCards');
+                let fail = '';
+                const badcardCost = (rule.first.badcards * m.data) ** rule.increase;
+                const goodcardCost = (rule.first.goodcards * m.data) ** rule.increase;
+                const metacardCost = (rule.first.metacards * m.data) ** rule.increase;
+
+                if (state.badcards.amount <= badcardCost)
+                    fail += 'Not enough bad cards \n';
+                if (state.goodcards.amount <= goodcardCost)
+                    fail += 'Not enough good cards';
+                if (state.metacards.amount <= metacardCost)
+                    fail += 'Not enough meta cards';
+                
+                if (!fail) {
+                    state.uniquecards.amount++;
+                    state.badcards.amount = Math.floor(state.badcards.amount - badcardCost);
+                    state.goodcards.amount = Math.floor(state.goodcards.amount - goodcardCost);
+                    state.metacards.amount = Math.floor(state.metacards.amount - metacardCost);
+                    this.stateHandler.updateState();
+                } else {
+                    MessageHandler.sendClientMessage(fail);
+                }
+            }
+
         }
+
+        state = this.stateHandler.getState();
+        state = this.rulesHandler.checkActiveRules(state);
+        if (state) {
+            this.stateHandler.updateState(state);
+        }
+
+        state = this.stateHandler.getState();
+        if (state.badcards.amount === 0 && state.goodcards.amount === 0 && state.metacards.amount === 0 && state.money.amount < this.rulesHandler.getRuleValue('PackCost')) {
+            MessageHandler.sendClientMessage('Your aunt visits and gives you 50 money');
+            state.money.amount += 50;
+            state = this.stateHandler.updateState(state);
+        }
+
 
         window.requestAnimationFrame(this.loop.bind(this));
 
