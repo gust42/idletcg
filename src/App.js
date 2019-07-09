@@ -13,9 +13,11 @@ const gameLoop = GameLoop.getInstance();
 gameLoop.start();
 function App() {
   const [currentTab, setCurrentTab] = useState(<PacksTab />);
+  const [activeTab, setActiveTab] = useState('packs');
   const gameState = useGameState();
 
-  function clickTab(type) {
+  function clickTab(id, type) {
+    setActiveTab(id);
     setCurrentTab(type);
   }
 
@@ -30,10 +32,10 @@ function App() {
         </aside>
         <section>
           <nav>
-            <Tab name="Packs" onClick={() => clickTab(<PacksTab />)} item={gameState.packstab}></Tab>
-            <Tab name="Trade binder" onClick={() => clickTab(<TradebinderTab />)} item={gameState.tradebindertab}></Tab>
+            <Tab name="Packs" active={activeTab === 'packs'} onClick={() => clickTab('packs', <PacksTab />)} item={gameState.packstab}></Tab>
+            <Tab name="Trade binder"  active={activeTab === 'trade'} onClick={() => clickTab('trade', <TradebinderTab />)} item={gameState.tradebindertab}></Tab>
             <Tab name="Tournaments" item={gameState.tournamentstab}></Tab>
-            <Tab name="Skills" onClick={() => clickTab(<SkillsTab />)} item={gameState.skillstab}></Tab>
+            <Tab name="Skills"  active={activeTab === 'skills'} onClick={() => clickTab('skills', <SkillsTab />)} item={gameState.skillstab}></Tab>
           </nav>
           {currentTab}
         </section>
