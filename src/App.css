@@ -101,6 +101,9 @@ aside {
   width: 250px;
 }
 
+.unlocked {
+  background-color: #00ff00;
+}
 .description {
   font-size:0.8em;
   font-style: italic;
