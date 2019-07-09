@@ -1,7 +1,7 @@
 export const state = {
     badcards: {
-        amount: 1500,
-        acquired: true
+        amount: 0,
+        acquired: false
     },
     goodcards: {
         amount: 0,
