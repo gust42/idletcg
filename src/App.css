@@ -3,6 +3,10 @@ html, body, #root
   height: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .App {
   display: flex;
   flex-flow: column;
@@ -43,7 +47,7 @@ footer {
 }
 
 section {
-  width: 100%;
+  width: calc(100% - 200px);
 }
 
 article {
@@ -133,7 +137,7 @@ nav {
 }
 
 .tab {
-  width: 100px; 
+  width: 120px; 
   padding: 10px;
   border-radius: 2px 2px 0 0;
   cursor: pointer;

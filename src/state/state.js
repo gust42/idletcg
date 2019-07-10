@@ -32,5 +32,16 @@ export const state = {
     },
     uniquecards: {
         amount: 0
+    },
+    binder: {
+        count: 1,
+        cards: {
+            0: null,
+            1: null,
+            2: null,
+            3: null,
+            4: null,
+            5: null
+        }
     }
 }

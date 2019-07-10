@@ -5,6 +5,7 @@ import Button from '../../components/button';
 import useGameRule from '../../hooks/usegamerule';
 import useGameState from '../../hooks/usegamestate';
 import UniqueCard from './uniquecard';
+import Binder from './binder';
 
 export default function SkillsTab(props) {
     const gameState = useGameState();
@@ -21,7 +22,8 @@ export default function SkillsTab(props) {
 
     return (
         <article className="tradebinder-content">
-            {rangeEmojis.map((code, index) => <UniqueCard trade={gameState.uniquecards.amount <= index} key={'emj' + index} click={tradeCard} cost={gameRule.first} increase={gameRule.increase} count={index + 1} emoji={unescape('%u' + code)} />)}
+            <Binder></Binder>
+            {/* {rangeEmojis.map((code, index) => <UniqueCard trade={gameState.uniquecards.amount <= index} key={'emj' + index} click={tradeCard} cost={gameRule.first} increase={gameRule.increase} count={index + 1} emoji={unescape('%u' + code)} />)} */}
         </article>
     )
 }
