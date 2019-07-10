@@ -73,6 +73,7 @@ aside {
   user-select: none;
   margin-bottom: 10px;
   margin-right: 10px;
+  touch-action: manipulation;
 }
 
 .disabled .button {
