@@ -15,6 +15,7 @@ export default function Button(props) {
     let x10 = null;
     let x100 = null;
     let x1000 = null;
+    let x10000 = null;
     let disabled = '';
 
     if (props.type === 'sell') {
@@ -26,6 +27,8 @@ export default function Button(props) {
 
         if (props.resource.amount >= 1000)
             x1000 = <BulkButton amount={1000} click={(e) => clickEvent(e, 1000)}></BulkButton>
+        if (props.resource.amount >= 1000)
+            x10000 = <BulkButton amount={10000} click={(e) => clickEvent(e, 10000)}></BulkButton>
     } else if (props.type === 'buy') {
         if (props.resource.amount / props.cost >= 10)
             x10 = <BulkButton amount={10} click={(e) => clickEvent(e, 10)}></BulkButton>
@@ -35,6 +38,9 @@ export default function Button(props) {
 
         if (props.resource.amount / props.cost >= 1000)
             x1000 = <BulkButton amount={1000} click={(e) => clickEvent(e, 1000)}></BulkButton>
+
+        if (props.resource.amount / props.cost >= 10000)
+            x10000 = <BulkButton amount={10000} click={(e) => clickEvent(e, 10000)}></BulkButton>
     }
 
 
@@ -47,6 +53,7 @@ export default function Button(props) {
             {x10}
             {x100}
             {x1000}
+            {x10000}
         </div>
     )
 }
