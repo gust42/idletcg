@@ -33,6 +33,13 @@ html, body, #root
   flex-direction: row;
   align-items: flex-start;
   text-align: left;
+  padding-bottom:180px;
+}
+
+footer {
+  position: fixed;
+  bottom:0px;
+  width:100%;
 }
 
 section {
