@@ -1,4 +1,3 @@
-import React from "react";
 import MessageHandler from "../../logic/messagehandler";
 import Button from "./button";
 import useGameRule from "../../hooks/usegamerule";
@@ -12,20 +11,26 @@ export default function PacksTab() {
   const badSellValueRule = useGameRule("BadCardSellValue");
   const metaSellValueRule = useGameRule("MetaCardSellValue");
 
-  function openPack(amount) {
-    MessageHandler.recieveMessage("openpack", amount ? amount : 1);
+  function openPack(amount: number) {
+    MessageHandler.recieveMessage("openpack", { amount: amount ? amount : 1 });
   }
 
-  function sellBadCards(amount) {
-    MessageHandler.recieveMessage("sellbadcards", amount ? amount : 1);
+  function sellBadCards(amount: number) {
+    MessageHandler.recieveMessage("sellbadcards", {
+      amount: amount ? amount : 1,
+    });
   }
 
-  function sellGoodCards(amount) {
-    MessageHandler.recieveMessage("sellgoodcards", amount ? amount : 1);
+  function sellGoodCards(amount: number) {
+    MessageHandler.recieveMessage("sellgoodcards", {
+      amount: amount ? amount : 1,
+    });
   }
 
-  function sellMetaCards(amount) {
-    MessageHandler.recieveMessage("sellmetacards", amount ? amount : 1);
+  function sellMetaCards(amount: number) {
+    MessageHandler.recieveMessage("sellmetacards", {
+      amount: amount ? amount : 1,
+    });
   }
 
   return (

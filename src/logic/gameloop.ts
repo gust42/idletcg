@@ -1,7 +1,7 @@
-import MessageHandler from "./messagehandler";
+import MessageHandler, { MessageData } from "./messagehandler";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "../rules/ruleshandler";
-import { GameState, Skill } from "../interfaces/logic";
+import { GameState } from "../interfaces/logic";
 import { PackData, PackManager, PackMessages } from "./packmanager";
 import { CostForUniqueCards } from "../interfaces/rules";
 
@@ -58,7 +58,9 @@ export default class GameLoop {
 
       if (m.message === "unlockskill") {
         const state = this.stateHandler.getState();
-        (state[m.data as unknown as keyof GameState] as Skill).acquired = true;
+        state[
+          (m.data as MessageData).skill as "autopackskill" | "workskill"
+        ].acquired = true;
         this.stateHandler.updateState(state);
       }
 
@@ -68,11 +70,11 @@ export default class GameLoop {
           this.rulesHandler.getRule<CostForUniqueCards>("CostForUniqueCards");
         let fail = "";
         const badcardCost =
-          (rule.badcards * (m.data as number)) ** rule.increase;
+          (rule.badcards * (m.data.id as number)) ** rule.increase;
         const goodcardCost =
-          (rule.goodcards * (m.data as number)) ** rule.increase;
+          (rule.goodcards * (m.data.id as number)) ** rule.increase;
         const metacardCost =
-          (rule.metacards * (m.data as number)) ** rule.increase;
+          (rule.metacards * (m.data.id as number)) ** rule.increase;
 
         if (state.badcards.amount <= badcardCost)
           fail += "Not enough bad cards \n";

@@ -17,7 +17,7 @@ function App() {
   const [activeTab, setActiveTab] = useState("packs");
   const gameState = useGameState();
 
-  function clickTab(id, type) {
+  function clickTab(id: string, type: JSX.Element) {
     setActiveTab(id);
     setCurrentTab(type);
   }
@@ -43,7 +43,12 @@ function App() {
               onClick={() => clickTab("trade", <TradebinderTab />)}
               item={gameState.tradebindertab}
             ></Tab>
-            <Tab name="Tournaments" item={gameState.tournamentstab}></Tab>
+            <Tab
+              name="Tournaments"
+              onClick={() => {}}
+              active={false}
+              item={gameState.tournamentstab}
+            ></Tab>
             <Tab
               name="Skills"
               active={activeTab === "skills"}

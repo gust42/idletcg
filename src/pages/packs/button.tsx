@@ -10,7 +10,7 @@ interface IButtonProps {
   click: (amount: number) => void;
   cost: number;
   text: string;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 export default function Button({ disabled, ...props }: IButtonProps) {

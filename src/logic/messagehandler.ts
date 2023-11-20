@@ -1,6 +1,6 @@
 type Message = {
   message: string;
-  data: MessageData | number;
+  data: MessageData;
 };
 
 export type MessageData = {

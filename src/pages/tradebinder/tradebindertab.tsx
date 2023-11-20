@@ -1,15 +1,16 @@
 import "./tradebinder.css";
-import MessageHandler, { MessageData } from "../../logic/messagehandler";
+import MessageHandler from "../../logic/messagehandler";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 import UniqueCard from "./uniquecard";
+import { CostForUniqueCards } from "../../interfaces/rules";
 
 export default function TradebinderTab() {
   const gameState = useGameState();
-  const gameRule = useGameRule("CostForUniqueCards");
+  const gameRule = useGameRule<CostForUniqueCards>("CostForUniqueCards");
 
-  function tradeCard(card: MessageData) {
-    MessageHandler.recieveMessage("tradecard", card);
+  function tradeCard(id: number) {
+    MessageHandler.recieveMessage("tradecard", { id });
   }
 
   let rangeEmojis = Array.from({ length: 256 }, (_v, k) =>
@@ -25,7 +26,7 @@ export default function TradebinderTab() {
           trade={gameState.uniquecards.amount <= index}
           key={"emj" + index}
           click={tradeCard}
-          cost={gameRule.first}
+          cost={gameRule}
           increase={gameRule.increase}
           count={index + 1}
           emoji={unescape("%u" + code)}

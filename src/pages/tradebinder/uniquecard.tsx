@@ -1,6 +1,19 @@
-import React from "react";
+type Cost = {
+  badcards: number;
+  goodcards: number;
+  metacards: number;
+};
 
-export default function UniqueCard(props) {
+interface IUniqueCardProps {
+  trade: boolean;
+  click: (count: number) => void;
+  count: number;
+  cost: Cost;
+  increase: number;
+  emoji: string;
+}
+
+export default function UniqueCard(props: IUniqueCardProps) {
   let tradeDiv = null;
 
   if (props.trade) {

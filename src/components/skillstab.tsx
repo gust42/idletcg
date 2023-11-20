@@ -1,15 +1,14 @@
-import React from "react";
 import MessageHandler from "../logic/messagehandler";
 import useGameRule from "../hooks/usegamerule";
 import useGameState from "../hooks/usegamestate";
 
-export default function SkillsTab(props) {
+export default function SkillsTab() {
   const gameState = useGameState();
   const autoPackSkill = useGameRule("AutoPackSkill");
   const workSkill = useGameRule("WorkSkill");
 
-  function unlockSkill(skill) {
-    MessageHandler.recieveMessage("unlockskill", skill);
+  function unlockSkill(skill: string) {
+    MessageHandler.recieveMessage("unlockskill", { skill });
   }
 
   const unlockDiv = (

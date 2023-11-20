@@ -1,4 +1,3 @@
-import React from "react";
 import useClientMessage from "../hooks/useclientmessage";
 
 export default function MessageBox() {

@@ -3,7 +3,7 @@ import RulesHandler from "./../rules/ruleshandler";
 import Pack from "./pack";
 import MessageHandler from "./messagehandler";
 
-export type PackData = number;
+export type PackData = { amount: number };
 export type PackMessages =
   | "openpack"
   | "sellbadcards"
@@ -37,12 +37,12 @@ export class PackManager {
   public handleMessages(message: PackMessages, data: PackData) {
     switch (message) {
       case "openpack":
-        this.openPack(data);
+        this.openPack(data.amount);
         break;
       case "sellmetacards":
       case "sellgoodcards":
       case "sellbadcards":
-        this.sellCards(message, data);
+        this.sellCards(message, data.amount);
         break;
     }
   }
@@ -91,7 +91,7 @@ export class PackManager {
     }
   }
 
-  private sellCards(message: string, data: PackData) {
+  private sellCards(message: string, data: number) {
     if (message === "sellbadcards") {
       const state = this.stateHandler.getState();
       if (state.badcards.amount >= data) {
