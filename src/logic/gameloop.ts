@@ -49,7 +49,7 @@ export default class GameLoop {
 
       if (!m) break;
 
-      if (PackManager.messageList.includes(m.message)) {
+      if (PackManager.messageList.includes(m.message as PackMessages)) {
         this.packManager.handleMessages(
           m.message as PackMessages,
           m.data as PackData

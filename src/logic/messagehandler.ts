@@ -1,5 +1,9 @@
+import { PackMessages } from "./packmanager";
+
+type MessageList = PackMessages | "unlockskill" | "tradecard";
+
 type Message = {
-  message: string;
+  message: MessageList;
   data: MessageData;
 };
 
@@ -18,7 +22,7 @@ export default class MessageHandler {
     this.clientSubscriptions = [];
   }
 
-  static recieveMessage(message: string, data: MessageData) {
+  static recieveMessage(message: MessageList, data: MessageData) {
     if (!this.messageQue) this.init();
     console.log(message, data);
     this.messageQue.push({ message, data });
