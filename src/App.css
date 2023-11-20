@@ -1,5 +1,6 @@
-html, body, #root
-{ 
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -24,7 +25,7 @@ html, body, #root
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  padding:10px;
+  padding: 10px;
 }
 
 .content {
@@ -33,6 +34,12 @@ html, body, #root
   flex-direction: row;
   align-items: flex-start;
   text-align: left;
+  height: 100%;
+}
+
+footer {
+  width: 100%;
+  height: 300px;
 }
 
 section {
@@ -47,18 +54,22 @@ aside {
   min-width: 200px;
   padding: 10px;
   background-color: #ccc;
+  height: 100%;
 }
 
 .button-container {
   display: flex;
   flex-flow: row;
   justify-content: flex-start;
+  :hover {
+    background-color: #2accf8;
+  }
 }
 
 .button {
   background-color: #61dafb;
-  padding:5px;
-  border-radius: 2px;
+  padding: 5px;
+  border-radius: 4px;
   width: 150px;
   color: #fff;
   cursor: pointer;
@@ -70,11 +81,15 @@ aside {
 
 .disabled .button {
   background-color: #ccc;
-  color:#000;
+  color: #000;
+  cursor: not-allowed;
+
+  :hover {
+    background-color: #ccc;
+  }
 }
 
 .button:active {
-  
   background-color: #99dafb;
 }
 
@@ -90,11 +105,12 @@ aside {
 .message-box {
   background-color: #282c34;
   color: #fff;
-  padding:10px;
+  padding: 10px;
+  height: 100%;
 }
 
 .message {
-  padding:5px;
+  padding: 5px;
 }
 
 .button.skill {
@@ -102,10 +118,10 @@ aside {
 }
 
 .unlocked {
-  background-color: #00ff00;
+  background-color: #00bb00;
 }
 .description {
-  font-size:0.8em;
+  font-size: 0.8em;
   font-style: italic;
   padding: 5px;
 }
@@ -125,18 +141,17 @@ nav {
 }
 
 .tab {
-  width: 100px; 
+  width: 100px;
   padding: 10px;
   border-radius: 2px 2px 0 0;
   cursor: pointer;
-  color:#fff;
+  color: #fff;
   margin-left: 10px;
-
 }
 
 .tab.active {
   background-color: #fff;
-  color:#000;
+  color: #000;
 }
 
 @keyframes App-logo-spin {
