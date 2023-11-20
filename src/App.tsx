@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import GameLoop from "./logic/gameloop";
+import { useState } from "react";
 import "./App.css";
+
+import GameLoop from "./logic/gameloop";
 import MessageBox from "./components/messagebox";
 import ResourceView from "./components/resourceview";
 import useGameState from "./hooks/usegamestate";
