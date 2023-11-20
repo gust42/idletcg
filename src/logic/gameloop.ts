@@ -1,13 +1,15 @@
 import MessageHandler from "./messagehandler";
 import StateHandler from "../state/statehandler";
-import Pack from "./pack";
 import RulesHandler from "../rules/ruleshandler";
 import { GameState, Skill } from "../interfaces/logic";
+import { PackData, PackManager, PackMessages } from "./packmanager";
 
 export default class GameLoop {
   private static instance: GameLoop;
   public stateHandler: StateHandler;
   public rulesHandler: RulesHandler;
+
+  private packManager: PackManager;
   private lastTime: number;
   private tick: number;
 
@@ -15,6 +17,7 @@ export default class GameLoop {
     MessageHandler.init();
     this.stateHandler = new StateHandler();
     this.rulesHandler = new RulesHandler();
+    this.packManager = new PackManager(this.stateHandler, this.rulesHandler);
     this.lastTime = 0;
     this.tick = 1000;
   }
@@ -31,12 +34,7 @@ export default class GameLoop {
   loop(now: number) {
     let state = this.stateHandler.getState();
     if (now - this.lastTime > this.tick) {
-      if (state.autopackskill.acquired)
-        MessageHandler.recieveMessage("openpack", {
-          amount: 1,
-          cost: 0,
-          log: false,
-        });
+      this.packManager.handleTick();
       if (state.workskill.acquired) {
         const amount = this.rulesHandler.getRuleValue("WorkSkill");
         state.money.amount += amount;
@@ -49,84 +47,12 @@ export default class GameLoop {
       const m = messages.shift();
 
       if (!m) break;
-      if (m.message === "openpack") {
-        const state = this.stateHandler.getState();
-        let amount = m.data;
-        let cost = this.rulesHandler.getRuleValue("PackCost");
-        let log = true;
-        if (typeof m.data === "object")
-          ({ amount, cost, log } = m.data as {
-            amount: number;
-            cost: number;
-            log: boolean;
-          });
-        if (state.money.amount >= cost * (amount as number)) {
-          let badcards = 0,
-            goodcards = 0,
-            metacards = 0;
-          for (let i = 0; i < (amount as number); i++) {
-            const pack = new Pack();
 
-            badcards += pack.badcards;
-            goodcards += pack.goodcards;
-            metacards += pack.metacards;
-          }
-
-          state.metacards.amount += metacards;
-          state.goodcards.amount += goodcards;
-          state.badcards.amount += badcards;
-          state.money.amount -= cost * (amount as number);
-
-          if (metacards > 0) state.metacards.acquired = true;
-
-          if (goodcards > 0) state.goodcards.acquired = true;
-
-          if (badcards > 0) state.badcards.acquired = true;
-
-          if (log)
-            MessageHandler.sendClientMessage(
-              `${
-                (amount as number) > 1 ? "Packs" : "Pack"
-              } contains ${badcards} bad cards, ${goodcards} good cards and ${metacards} meta cards `
-            );
-
-          this.stateHandler.updateState(state);
-        } else {
-          MessageHandler.sendClientMessage("Not enough money");
-        }
-      }
-
-      if (m.message === "sellbadcards") {
-        const state = this.stateHandler.getState();
-        if (state.badcards.amount >= (m.data as number)) {
-          state.money.amount +=
-            this.rulesHandler.getRuleValue("BadCardSellValue") *
-            (m.data as number);
-          state.badcards.amount -= m.data as number;
-          this.stateHandler.updateState(state);
-        }
-      }
-
-      if (m.message === "sellgoodcards") {
-        const state = this.stateHandler.getState();
-        if (state.goodcards.amount >= (m.data as number)) {
-          state.money.amount +=
-            this.rulesHandler.getRuleValue("GoodCardSellValue") *
-            (m.data as number);
-          state.goodcards.amount -= m.data as number;
-          this.stateHandler.updateState(state);
-        }
-      }
-
-      if (m.message === "sellmetacards") {
-        const state = this.stateHandler.getState();
-        if (state.metacards.amount >= (m.data as number)) {
-          state.money.amount +=
-            this.rulesHandler.getRuleValue("MetaCardSellValue") *
-            (m.data as number);
-          state.metacards.amount -= m.data as number;
-          this.stateHandler.updateState(state);
-        }
+      if (PackManager.messageList.includes(m.message)) {
+        this.packManager.handleMessages(
+          m.message as PackMessages,
+          m.data as PackData
+        );
       }
 
       if (m.message === "unlockskill") {
