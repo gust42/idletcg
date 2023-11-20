@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react';
-import GameLoop from '../logic/gameloop';
+import { useState, useEffect } from "react";
+import GameLoop from "../logic/gameloop";
 export default function useGameState() {
-    const [gameState, setGameState] = useState(GameLoop.getInstance().stateHandler.getState());
+  const [gameState, setGameState] = useState(
+    GameLoop.getInstance().stateHandler.getState()
+  );
 
-    useEffect(() => {
+  useEffect(() => {
+    function update(state) {
+      setGameState(state);
+    }
 
-        function update(state) {
-            setGameState(state);        
-        }
+    GameLoop.getInstance().stateHandler.subscribe(update);
 
-        GameLoop.getInstance().stateHandler.subscribe(update);
-        
-        return () => {
-            GameLoop.getInstance().stateHandler.unsubscribe(update);
-        }
-    });
-    
-    return gameState;
+    return () => {
+      GameLoop.getInstance().stateHandler.unsubscribe(update);
+    };
+  }, []);
+
+  return gameState;
 }
