@@ -1,21 +1,20 @@
-import { useState, useEffect } from 'react';
-import MessageHandler from '../logic/messagehandler';
+import { useState, useEffect } from "react";
+import MessageHandler from "../logic/messagehandler";
 
 export default function useClientMessage() {
-    const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState([]);
 
-    useEffect(() => {
+  useEffect(() => {
+    function update(message) {
+      setMessages([...messages, message]);
+    }
 
-        function update(message) {
-            setMessages([...messages, message]);
-        }
+    MessageHandler.addClientSubscription(update);
 
-        MessageHandler.addClientSubscription(update);
+    return () => {
+      MessageHandler.removeClientSubscription(update);
+    };
+  });
 
-        return () => {
-            MessageHandler.removeClientSubscription(update);
-        }
-    });
-
-    return messages;
+  return messages;
 }

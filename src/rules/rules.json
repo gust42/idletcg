@@ -1,40 +1,44 @@
 {
-    "PackCost": {
-        "value": 10
+  "PackCost": {
+    "value": 10
+  },
+  "MetaCardDroprate": {
+    "value": 0.03
+  },
+  "GoodCardDroprate": {
+    "value": 0.25
+  },
+  "GoodCardPackMax": {
+    "value": 2
+  },
+  "GoodCardSellValue": {
+    "value": 10
+  },
+  "BadCardSellValue": {
+    "value": 0.5
+  },
+  "MetaCardSellValue": {
+    "value": 100
+  },
+  "CardsForTradebinder": {
+    "value": 1000
+  },
+  "CardsforSkills": {
+    "value": 1500
+  },
+  "AutoPackSkill": {
+    "requirement": 1500
+  },
+  "WorkSkill": {
+    "requirement": 2000,
+    "value": 10
+  },
+  "CostForUniqueCards": {
+    "first": {
+      "badcards": 500,
+      "goodcards": 25,
+      "metacards": 5
     },
-    "MetaCardDroprate": {
-        "value": 0.03
-    },
-    "GoodCardDroprate": {
-        "value": 0.25
-    },
-    "GoodCardPackMax": {
-        "value": 2
-    },
-    "GoodCardSellValue": {
-        "value": 10
-    },
-    "BadCardSellValue": {
-        "value": 0.5
-    },
-    "MetaCardSellValue": {
-        "value": 100
-    },
-    "CardsForTradebinder": {
-        "value": 1000
-    },
-    "CardsforSkills": {
-        "value" : 1500
-    },
-    "AutoPackSkill": {
-        "requirement": 1500
-    },
-    "CostForUniqueCards" : {
-        "first": {
-            "badcards": 500,
-            "goodcards": 25,
-            "metacards": 5
-        },
-        "increase": 1.15
-    }
+    "increase": 1.15
+  }
 }
