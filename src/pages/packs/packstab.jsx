@@ -4,7 +4,7 @@ import Button from "./button";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 
-export default function PacksTab(props) {
+export default function PacksTab() {
   const gameState = useGameState();
 
   const packCostRule = useGameRule("PackCost");
@@ -28,8 +28,6 @@ export default function PacksTab(props) {
     MessageHandler.recieveMessage("sellmetacards", amount ? amount : 1);
   }
 
-  console.log("updated gamestate", gameState);
-
   return (
     <article>
       <Button
@@ -38,6 +36,7 @@ export default function PacksTab(props) {
         click={openPack}
         resource={gameState.money}
         cost={packCostRule.value}
+        disabled={gameState.money.amount < packCostRule.value}
       ></Button>
       <Button
         text={`Sell bad card (${gameState.badcards.amount})`}

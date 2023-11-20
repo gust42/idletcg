@@ -64,6 +64,10 @@ aside {
   :hover {
     background-color: #2accf8;
   }
+
+  :active {
+    background-color: #99dafb;
+  }
 }
 
 .button {
@@ -87,10 +91,6 @@ aside {
   :hover {
     background-color: #ccc;
   }
-}
-
-.button:active {
-  background-color: #99dafb;
 }
 
 .button-cost {
