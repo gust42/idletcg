@@ -12,7 +12,7 @@ export type PackMessages =
   | "autobuy";
 
 export class PackManager {
-  static messageList = [
+  static messageList: PackMessages[] = [
     "openpack",
     "sellbadcards",
     "sellgoodcards",
