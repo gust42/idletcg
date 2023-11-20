@@ -4,6 +4,10 @@ body,
   height: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .App {
   display: flex;
   flex-flow: column;
@@ -43,7 +47,7 @@ footer {
 }
 
 section {
-  width: 100%;
+  width: calc(100% - 200px);
 }
 
 article {
@@ -64,6 +68,10 @@ aside {
   :hover {
     background-color: #2accf8;
   }
+
+  :active {
+    background-color: #99dafb;
+  }
 }
 
 .button {
@@ -77,6 +85,7 @@ aside {
   user-select: none;
   margin-bottom: 10px;
   margin-right: 10px;
+  touch-action: manipulation;
 }
 
 .disabled .button {
@@ -87,10 +96,6 @@ aside {
   :hover {
     background-color: #ccc;
   }
-}
-
-.button:active {
-  background-color: #99dafb;
 }
 
 .button-cost {
@@ -141,7 +146,7 @@ nav {
 }
 
 .tab {
-  width: 100px;
+  width: 120px;
   padding: 10px;
   border-radius: 2px 2px 0 0;
   cursor: pointer;
