@@ -16,7 +16,7 @@ export class PackManager {
     "openpack",
     "sellbadcards",
     "sellgoodcards",
-    "sellgoodcards",
+    "sellmetacards",
     "autobuy",
   ];
 
