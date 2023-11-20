@@ -1,15 +1,6 @@
 import { GameState } from "../interfaces/logic";
+import { Rule, Rules } from "../interfaces/rules";
 import rules from "./rules.json";
-
-type Rule = {
-  value: number;
-  increase: number;
-  first: Record<string, number>;
-};
-
-type Rules = {
-  [key: string]: Rule;
-};
 
 export default class RulesHandler {
   private rules: Rules;
@@ -40,13 +31,13 @@ export default class RulesHandler {
     return changed ? state : null;
   }
 
-  getRule(name: string): Rule {
-    if (this.rules[name]) return this.rules[name];
+  getRule<T = Rule>(name: keyof Rules) {
+    if (this.rules[name]) return this.rules[name] as T;
     else throw new Error("No rule with name" + name);
   }
 
-  getRuleValue(name: string) {
-    if (this.rules[name]) return this.rules[name].value;
+  getRuleValue(name: keyof Rules) {
+    if (this.rules[name]) return (this.rules[name] as Rule).value;
     else throw new Error("No rule with name" + name);
   }
 }

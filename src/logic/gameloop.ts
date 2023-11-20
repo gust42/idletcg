@@ -3,6 +3,7 @@ import StateHandler from "../state/statehandler";
 import RulesHandler from "../rules/ruleshandler";
 import { GameState, Skill } from "../interfaces/logic";
 import { PackData, PackManager, PackMessages } from "./packmanager";
+import { CostForUniqueCards } from "../interfaces/rules";
 
 export default class GameLoop {
   private static instance: GameLoop;
@@ -63,14 +64,15 @@ export default class GameLoop {
 
       if (m.message === "tradecard") {
         const state = this.stateHandler.getState();
-        const rule = this.rulesHandler.getRule("CostForUniqueCards");
+        const rule =
+          this.rulesHandler.getRule<CostForUniqueCards>("CostForUniqueCards");
         let fail = "";
         const badcardCost =
-          (rule.first.badcards * (m.data as number)) ** rule.increase;
+          (rule.badcards * (m.data as number)) ** rule.increase;
         const goodcardCost =
-          (rule.first.goodcards * (m.data as number)) ** rule.increase;
+          (rule.goodcards * (m.data as number)) ** rule.increase;
         const metacardCost =
-          (rule.first.metacards * (m.data as number)) ** rule.increase;
+          (rule.metacards * (m.data as number)) ** rule.increase;
 
         if (state.badcards.amount <= badcardCost)
           fail += "Not enough bad cards \n";
