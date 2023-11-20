@@ -39,29 +39,29 @@ export default function PacksTab() {
         text="Open pack"
         type="buy"
         click={openPack}
-        resource={gameState.money}
+        resource={gameState.entities.money}
         cost={packCostRule.value}
-        disabled={gameState.money.amount < packCostRule.value}
+        disabled={gameState.entities.money.amount < packCostRule.value}
       ></Button>
       <Button
-        text={`Sell bad card (${gameState.badcards.amount})`}
+        text={`Sell bad card (${gameState.entities.badcards.amount})`}
         type="sell"
         click={sellBadCards}
-        resource={gameState.badcards}
+        resource={gameState.entities.badcards}
         cost={badSellValueRule.value}
       ></Button>
       <Button
-        text={`Sell good card (${gameState.goodcards.amount})`}
+        text={`Sell good card (${gameState.entities.goodcards.amount})`}
         type="sell"
         click={sellGoodCards}
-        resource={gameState.goodcards}
+        resource={gameState.entities.goodcards}
         cost={goodSellValueRule.value}
       ></Button>
       <Button
-        text={`Sell meta card (${gameState.metacards.amount})`}
+        text={`Sell meta card (${gameState.entities.metacards.amount})`}
         type="sell"
         click={sellMetaCards}
-        resource={gameState.metacards}
+        resource={gameState.entities.metacards}
         cost={metaSellValueRule.value}
       ></Button>
     </article>

@@ -35,25 +35,25 @@ function App() {
               name="Packs"
               active={activeTab === "packs"}
               onClick={() => clickTab("packs", <PacksTab />)}
-              item={gameState.packstab}
+              item={gameState.tabs.packstab}
             ></Tab>
             <Tab
               name="Trade binder"
               active={activeTab === "trade"}
               onClick={() => clickTab("trade", <TradebinderTab />)}
-              item={gameState.tradebindertab}
+              item={gameState.tabs.tradebindertab}
             ></Tab>
             <Tab
               name="Tournaments"
               onClick={() => {}}
               active={false}
-              item={gameState.tournamentstab}
+              item={gameState.tabs.tournamentstab}
             ></Tab>
             <Tab
               name="Skills"
               active={activeTab === "skills"}
               onClick={() => clickTab("skills", <SkillsTab />)}
-              item={gameState.skillstab}
+              item={gameState.tabs.skillstab}
             ></Tab>
           </nav>
           {currentTab}

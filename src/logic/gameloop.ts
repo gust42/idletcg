@@ -36,9 +36,9 @@ export default class GameLoop {
     let state = this.stateHandler.getState();
     if (now - this.lastTime > this.tick) {
       this.packManager.handleTick();
-      if (state.workskill.acquired) {
+      if (state.skills.workskill.acquired) {
         const amount = this.rulesHandler.getRuleValue("WorkSkill");
-        state.money.amount += amount;
+        state.entities.money.amount += amount;
       }
       this.lastTime = now;
     }
@@ -58,7 +58,7 @@ export default class GameLoop {
 
       if (m.message === "unlockskill") {
         const state = this.stateHandler.getState();
-        state[
+        state.skills[
           (m.data as MessageData).skill as "autopackskill" | "workskill"
         ].acquired = true;
         this.stateHandler.updateState(state);
@@ -76,23 +76,23 @@ export default class GameLoop {
         const metacardCost =
           (rule.metacards * (m.data.id as number)) ** rule.increase;
 
-        if (state.badcards.amount <= badcardCost)
+        if (state.entities.badcards.amount <= badcardCost)
           fail += "Not enough bad cards \n";
-        if (state.goodcards.amount <= goodcardCost)
+        if (state.entities.goodcards.amount <= goodcardCost)
           fail += "Not enough good cards";
-        if (state.metacards.amount <= metacardCost)
+        if (state.entities.metacards.amount <= metacardCost)
           fail += "Not enough meta cards";
 
         if (!fail) {
-          state.uniquecards.amount++;
-          state.badcards.amount = Math.floor(
-            state.badcards.amount - badcardCost
+          state.counters.uniquecards.amount++;
+          state.entities.badcards.amount = Math.floor(
+            state.entities.badcards.amount - badcardCost
           );
-          state.goodcards.amount = Math.floor(
-            state.goodcards.amount - goodcardCost
+          state.entities.goodcards.amount = Math.floor(
+            state.entities.goodcards.amount - goodcardCost
           );
-          state.metacards.amount = Math.floor(
-            state.metacards.amount - metacardCost
+          state.entities.metacards.amount = Math.floor(
+            state.entities.metacards.amount - metacardCost
           );
           this.stateHandler.updateState({});
         } else {
@@ -109,15 +109,15 @@ export default class GameLoop {
 
     state = this.stateHandler.getState();
     if (
-      state.badcards.amount === 0 &&
-      state.goodcards.amount === 0 &&
-      state.metacards.amount === 0 &&
-      state.money.amount < this.rulesHandler.getRuleValue("PackCost")
+      state.entities.badcards.amount === 0 &&
+      state.entities.goodcards.amount === 0 &&
+      state.entities.metacards.amount === 0 &&
+      state.entities.money.amount < this.rulesHandler.getRuleValue("PackCost")
     ) {
       MessageHandler.sendClientMessage(
         "Your aunt visits and gives you 50 money"
       );
-      state.money.amount += 50;
+      state.entities.money.amount += 50;
       state = this.stateHandler.updateState(state);
     }
 

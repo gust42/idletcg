@@ -35,7 +35,8 @@ export default function SkillsTab() {
         style={{ width: 300 }}
         onClick={() => unlockSkill("autopackskill")}
         className={
-          "skill button " + (gameState.autopackskill.acquired && "unlocked")
+          "skill button " +
+          (gameState.skills.autopackskill.acquired && "unlocked")
         }
       >
         <div className="title">Wealthy boyfriend / girlfriend</div>
@@ -43,20 +44,20 @@ export default function SkillsTab() {
           Doesnt like to play but loves to gift and open packs for you
         </div>
 
-        {!gameState.autopackskill.acquired && unlockDiv}
+        {!gameState.skills.autopackskill.acquired && unlockDiv}
       </div>
 
       <div
         style={{ width: 300 }}
         onClick={() => unlockSkill("workskill")}
         className={
-          "skill button " + (gameState.workskill.acquired && "unlocked")
+          "skill button " + (gameState.skills.workskill.acquired && "unlocked")
         }
       >
         <div className="title">Get a job</div>
         <div className="description">Get an office job to earn money</div>
 
-        {!gameState.workskill.acquired && unlockDiv2}
+        {!gameState.skills.workskill.acquired && unlockDiv2}
       </div>
     </article>
   );

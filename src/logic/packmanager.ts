@@ -31,7 +31,7 @@ export class PackManager {
 
   public handleTick() {
     const state = this.stateHandler.getState();
-    if (state.autopackskill.acquired) this.autoOpenPack();
+    if (state.skills.autopackskill.acquired) this.autoOpenPack();
   }
 
   public handleMessages(message: PackMessages, data: PackData) {
@@ -55,7 +55,7 @@ export class PackManager {
     const state = this.stateHandler.getState();
     const cost = costParam ?? this.rulesHandler.getRuleValue("PackCost");
     const log = logParam ?? true;
-    if (cost === 0 || state.money.amount >= cost * amount) {
+    if (cost === 0 || state.entities.money.amount >= cost * amount) {
       let badcards = 0,
         goodcards = 0,
         metacards = 0;
@@ -67,16 +67,16 @@ export class PackManager {
         metacards += pack.metacards;
       }
 
-      state.metacards.amount += metacards;
-      state.goodcards.amount += goodcards;
-      state.badcards.amount += badcards;
-      state.money.amount -= cost * amount;
+      state.entities.metacards.amount += metacards;
+      state.entities.goodcards.amount += goodcards;
+      state.entities.badcards.amount += badcards;
+      state.entities.money.amount -= cost * amount;
 
-      if (metacards > 0) state.metacards.acquired = true;
+      if (metacards > 0) state.entities.metacards.acquired = true;
 
-      if (goodcards > 0) state.goodcards.acquired = true;
+      if (goodcards > 0) state.entities.goodcards.acquired = true;
 
-      if (badcards > 0) state.badcards.acquired = true;
+      if (badcards > 0) state.entities.badcards.acquired = true;
 
       if (log)
         MessageHandler.sendClientMessage(
@@ -94,30 +94,30 @@ export class PackManager {
   private sellCards(message: string, data: number) {
     if (message === "sellbadcards") {
       const state = this.stateHandler.getState();
-      if (state.badcards.amount >= data) {
-        state.money.amount +=
+      if (state.entities.badcards.amount >= data) {
+        state.entities.money.amount +=
           this.rulesHandler.getRuleValue("BadCardSellValue") * data;
-        state.badcards.amount -= data;
+        state.entities.badcards.amount -= data;
         this.stateHandler.updateState(state);
       }
     }
 
     if (message === "sellgoodcards") {
       const state = this.stateHandler.getState();
-      if (state.goodcards.amount >= data) {
-        state.money.amount +=
+      if (state.entities.goodcards.amount >= data) {
+        state.entities.money.amount +=
           this.rulesHandler.getRuleValue("GoodCardSellValue") * data;
-        state.goodcards.amount -= data;
+        state.entities.goodcards.amount -= data;
         this.stateHandler.updateState(state);
       }
     }
 
     if (message === "sellmetacards") {
       const state = this.stateHandler.getState();
-      if (state.metacards.amount >= data) {
-        state.money.amount +=
+      if (state.entities.metacards.amount >= data) {
+        state.entities.money.amount +=
           this.rulesHandler.getRuleValue("MetaCardSellValue") * data;
-        state.metacards.amount -= data as number;
+        state.entities.metacards.amount -= data as number;
         this.stateHandler.updateState(state);
       }
     }

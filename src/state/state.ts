@@ -1,6 +1,6 @@
-import { GameState } from "../interfaces/logic";
+import { GameStateV1 } from "../interfaces/logic";
 
-export const state: GameState = {
+export const state: GameStateV1 = {
   badcards: {
     amount: 0,
     acquired: false,

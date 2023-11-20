@@ -8,20 +8,20 @@ export default function ResourceView() {
       <h4>Resources</h4>
       <ResourceItem
         name="Money"
-        resource={gameState.money}
+        resource={gameState.entities.money}
         fixDecimal={true}
       ></ResourceItem>
       <ResourceItem
         name="Bad cards"
-        resource={gameState.badcards}
+        resource={gameState.entities.badcards}
       ></ResourceItem>
       <ResourceItem
         name="Good cards"
-        resource={gameState.goodcards}
+        resource={gameState.entities.goodcards}
       ></ResourceItem>
       <ResourceItem
         name="Meta cards"
-        resource={gameState.metacards}
+        resource={gameState.entities.metacards}
       ></ResourceItem>
     </div>
   );

@@ -17,13 +17,13 @@ export default function TradebinderTab() {
     (k + 9728).toString(16)
   );
 
-  rangeEmojis = rangeEmojis.slice(0, gameState.uniquecards.amount + 1);
+  rangeEmojis = rangeEmojis.slice(0, gameState.counters.uniquecards.amount + 1);
 
   return (
     <article className="tradebinder-content">
       {rangeEmojis.map((code, index) => (
         <UniqueCard
-          trade={gameState.uniquecards.amount <= index}
+          trade={gameState.counters.uniquecards.amount <= index}
           key={"emj" + index}
           click={tradeCard}
           cost={gameRule}
