@@ -2,8 +2,15 @@ import MessageHandler from "./messagehandler";
 import StateHandler from "../state/statehandler";
 import Pack from "./pack";
 import RulesHandler from "../rules/ruleshandler";
+import { GameState, Skill } from "../interfaces/logic";
 
 export default class GameLoop {
+  private static instance: GameLoop;
+  public stateHandler: StateHandler;
+  public rulesHandler: RulesHandler;
+  private lastTime: number;
+  private tick: number;
+
   constructor() {
     MessageHandler.init();
     this.stateHandler = new StateHandler();
@@ -18,10 +25,10 @@ export default class GameLoop {
   }
 
   start() {
-    this.loop();
+    this.loop(0);
   }
 
-  loop(now) {
+  loop(now: number) {
     let state = this.stateHandler.getState();
     if (now - this.lastTime > this.tick) {
       if (state.autopackskill.acquired)
@@ -40,17 +47,24 @@ export default class GameLoop {
     const messages = MessageHandler.getandClearMessages();
     while (messages && messages.length > 0) {
       const m = messages.shift();
+
+      if (!m) break;
       if (m.message === "openpack") {
         const state = this.stateHandler.getState();
         let amount = m.data;
         let cost = this.rulesHandler.getRuleValue("PackCost");
         let log = true;
-        if (typeof m.data == "object") ({ amount, cost, log } = m.data);
-        if (state.money.amount >= cost * amount) {
+        if (typeof m.data === "object")
+          ({ amount, cost, log } = m.data as {
+            amount: number;
+            cost: number;
+            log: boolean;
+          });
+        if (state.money.amount >= cost * (amount as number)) {
           let badcards = 0,
             goodcards = 0,
             metacards = 0;
-          for (let i = 0; i < amount; i++) {
+          for (let i = 0; i < (amount as number); i++) {
             const pack = new Pack();
 
             badcards += pack.badcards;
@@ -61,7 +75,7 @@ export default class GameLoop {
           state.metacards.amount += metacards;
           state.goodcards.amount += goodcards;
           state.badcards.amount += badcards;
-          state.money.amount -= cost * amount;
+          state.money.amount -= cost * (amount as number);
 
           if (metacards > 0) state.metacards.acquired = true;
 
@@ -72,7 +86,7 @@ export default class GameLoop {
           if (log)
             MessageHandler.sendClientMessage(
               `${
-                amount > 1 ? "Packs" : "Pack"
+                (amount as number) > 1 ? "Packs" : "Pack"
               } contains ${badcards} bad cards, ${goodcards} good cards and ${metacards} meta cards `
             );
 
@@ -84,38 +98,40 @@ export default class GameLoop {
 
       if (m.message === "sellbadcards") {
         const state = this.stateHandler.getState();
-        if (state.badcards.amount >= m.data) {
+        if (state.badcards.amount >= (m.data as number)) {
           state.money.amount +=
-            this.rulesHandler.getRuleValue("BadCardSellValue") * m.data;
-          state.badcards.amount -= m.data;
+            this.rulesHandler.getRuleValue("BadCardSellValue") *
+            (m.data as number);
+          state.badcards.amount -= m.data as number;
           this.stateHandler.updateState(state);
         }
       }
 
       if (m.message === "sellgoodcards") {
         const state = this.stateHandler.getState();
-        if (state.goodcards.amount >= m.data) {
+        if (state.goodcards.amount >= (m.data as number)) {
           state.money.amount +=
-            this.rulesHandler.getRuleValue("GoodCardSellValue") * m.data;
-          state.goodcards.amount -= m.data;
+            this.rulesHandler.getRuleValue("GoodCardSellValue") *
+            (m.data as number);
+          state.goodcards.amount -= m.data as number;
           this.stateHandler.updateState(state);
         }
       }
 
       if (m.message === "sellmetacards") {
         const state = this.stateHandler.getState();
-        if (state.metacards.amount >= m.data) {
+        if (state.metacards.amount >= (m.data as number)) {
           state.money.amount +=
-            this.rulesHandler.getRuleValue("MetaCardSellValue") * m.data;
-          state.metacards.amount -= m.data;
+            this.rulesHandler.getRuleValue("MetaCardSellValue") *
+            (m.data as number);
+          state.metacards.amount -= m.data as number;
           this.stateHandler.updateState(state);
         }
       }
 
       if (m.message === "unlockskill") {
         const state = this.stateHandler.getState();
-        state[m.data].acquired = true;
-        console.log(m.data + ": " + state[m.data].acquired);
+        (state[m.data as unknown as keyof GameState] as Skill).acquired = true;
         this.stateHandler.updateState(state);
       }
 
@@ -123,9 +139,12 @@ export default class GameLoop {
         const state = this.stateHandler.getState();
         const rule = this.rulesHandler.getRule("CostForUniqueCards");
         let fail = "";
-        const badcardCost = (rule.first.badcards * m.data) ** rule.increase;
-        const goodcardCost = (rule.first.goodcards * m.data) ** rule.increase;
-        const metacardCost = (rule.first.metacards * m.data) ** rule.increase;
+        const badcardCost =
+          (rule.first.badcards * (m.data as number)) ** rule.increase;
+        const goodcardCost =
+          (rule.first.goodcards * (m.data as number)) ** rule.increase;
+        const metacardCost =
+          (rule.first.metacards * (m.data as number)) ** rule.increase;
 
         if (state.badcards.amount <= badcardCost)
           fail += "Not enough bad cards \n";
@@ -145,7 +164,7 @@ export default class GameLoop {
           state.metacards.amount = Math.floor(
             state.metacards.amount - metacardCost
           );
-          this.stateHandler.updateState();
+          this.stateHandler.updateState({});
         } else {
           MessageHandler.sendClientMessage(fail);
         }
@@ -153,7 +172,7 @@ export default class GameLoop {
     }
 
     state = this.stateHandler.getState();
-    state = this.rulesHandler.checkActiveRules(state);
+    state = this.rulesHandler.checkActiveRules(state) as GameState;
     if (state) {
       this.stateHandler.updateState(state);
     }

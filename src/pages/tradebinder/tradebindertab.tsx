@@ -1,19 +1,18 @@
-import React from "react";
 import "./tradebinder.css";
-import MessageHandler from "../../logic/messagehandler";
+import MessageHandler, { MessageData } from "../../logic/messagehandler";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 import UniqueCard from "./uniquecard";
 
-export default function TradebinderTab(props) {
+export default function TradebinderTab() {
   const gameState = useGameState();
   const gameRule = useGameRule("CostForUniqueCards");
 
-  function tradeCard(card) {
+  function tradeCard(card: MessageData) {
     MessageHandler.recieveMessage("tradecard", card);
   }
 
-  let rangeEmojis = Array.from({ length: 256 }, (v, k) =>
+  let rangeEmojis = Array.from({ length: 256 }, (_v, k) =>
     (k + 9728).toString(16)
   );
 

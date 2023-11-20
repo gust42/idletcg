@@ -1,4 +1,6 @@
-export const state = {
+import { GameState } from "../interfaces/logic";
+
+export const state: GameState = {
   badcards: {
     amount: 0,
     acquired: false,
