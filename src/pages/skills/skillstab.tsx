@@ -7,18 +7,17 @@ export default function SkillsTab() {
   return (
     <article style={{ display: "flex", gap: 16, flexDirection: "row" }}>
       <SkillInfo
-        name="autoPackSkill"
-        skill={gameState.skills.autoPackSkill}
-        title="Boyfriend / Girlfriend"
-        description="Doesnt like to play but loves to open packs for you"
-      />
-      <SkillInfo
         name="workSkill"
         skill={gameState.skills.workSkill}
         title="Start content creation on social media"
         description="Earns money over time"
       />
-
+      <SkillInfo
+        name="autoPackSkill"
+        skill={gameState.skills.autoPackSkill}
+        title="Boyfriend / Girlfriend"
+        description="Doesnt like to play but loves to open packs for you"
+      />
       <SkillInfo
         name="shopkeeperFriendSkill"
         skill={gameState.skills.shopkeeperFriendSkill}
