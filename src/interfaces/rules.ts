@@ -22,5 +22,6 @@ export type Rules = {
   CardsforSkills: Rule;
   AutoPackSkill: Rule;
   WorkSkill: Rule;
+  ShopkeeperFriendSkill: Rule;
   CostForUniqueCards: CostForUniqueCards;
 };

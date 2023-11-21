@@ -3,7 +3,7 @@ import StateHandler from "../state/statehandler";
 import RulesHandler from "../rules/ruleshandler";
 import { GameState } from "../interfaces/logic";
 import { PackData, PackManager, PackMessages } from "./packmanager";
-import { CostForUniqueCards } from "../interfaces/rules";
+import { CostForUniqueCards, Rules } from "../interfaces/rules";
 
 export default class GameLoop {
   private static instance: GameLoop;
@@ -58,10 +58,19 @@ export default class GameLoop {
 
       if (m.message === "unlockskill") {
         const state = this.stateHandler.getState();
-        state.skills[
-          (m.data as MessageData).skill as "autopackskill" | "workskill"
-        ].acquired = true;
-        this.stateHandler.updateState(state);
+        const rule = this.rulesHandler.getRule(
+          (m.data as MessageData).name as keyof Rules
+        );
+
+        if (state.entities.money.amount >= (rule.requirement as number)) {
+          state.skills[
+            (m.data as MessageData).name as "autopackskill" | "workskill"
+          ].acquired = true;
+          state.entities.money.amount -= rule.requirement as number;
+          this.stateHandler.updateState(state);
+        } else {
+          MessageHandler.sendClientMessage("Not enough money");
+        }
       }
 
       if (m.message === "tradecard") {

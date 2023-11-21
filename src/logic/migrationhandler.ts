@@ -5,9 +5,15 @@ const migrateV2 = (currentState: GameStateV1) => {
     skills: {
       autopackskill: {
         acquired: currentState.autopackskill.acquired,
+        level: 1,
       },
       workskill: {
         acquired: currentState.workskill.acquired,
+        level: 1,
+      },
+      shopkeeperfriendskill: {
+        acquired: false,
+        level: 1,
       },
     },
     tabs: {

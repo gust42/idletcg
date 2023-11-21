@@ -30,7 +30,11 @@
     "requirement": 1500
   },
   "WorkSkill": {
-    "requirement": 2000,
+    "requirement": 3000,
+    "value": 10
+  },
+  "ShopkeeperFriendSkill": {
+    "requirement": 6000,
     "value": 10
   },
   "CostForUniqueCards": {

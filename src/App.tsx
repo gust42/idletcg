@@ -8,7 +8,7 @@ import useGameState from "./hooks/usegamestate";
 import Tab from "./components/tab";
 import PacksTab from "./pages/packs/packstab";
 import TradebinderTab from "./pages/tradebinder/tradebindertab";
-import SkillsTab from "./components/skillstab";
+import SkillsTab from "./pages/skills/skillstab";
 
 const gameLoop = GameLoop.getInstance();
 gameLoop.start();

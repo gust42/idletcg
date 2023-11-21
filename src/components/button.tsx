@@ -10,7 +10,7 @@ export const Button = ({
 }: PropsWithChildren<IButtonProps>) => {
   return (
     <div
-      className="p-2 mr-3 text-white bg-button  hover:bg-button-hover w-[100%] rounded text-center cursor-pointer"
+      className="p-2 mr-3 text-white bg-button select-none  hover:bg-button-hover w-[100%] rounded text-center cursor-pointer"
       onClick={onClick}
     >
       {children}
