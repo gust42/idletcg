@@ -23,6 +23,12 @@ export const SkillInfo = ({ name, skill, title, description }: ISkillProps) => {
     MessageHandler.recieveMessage("levelupskill", { name });
   }
 
+  function toggleSkill() {
+    MessageHandler.recieveMessage("toggleskill", { name });
+  }
+
+  const skillIsToggleable = skill.on !== undefined;
+
   return (
     <div
       className={
@@ -44,10 +50,23 @@ export const SkillInfo = ({ name, skill, title, description }: ISkillProps) => {
             )}{" "}
             money
           </div>
-          <Button onClick={levelUp}>Level Up</Button>
-          {skill.on !== undefined && (
-            <Button onClick={() => {}}>{skill.on ? "On" : "Off"}</Button>
-          )}
+          <div className="flex ">
+            <Button
+              width={skillIsToggleable ? "70%" : undefined}
+              onClick={levelUp}
+            >
+              Level Up
+            </Button>
+            {skillIsToggleable && (
+              <Button
+                color={skill.on ? "#8BC34A" : "#FF6347"}
+                width="30%"
+                onClick={toggleSkill}
+              >
+                {skill.on ? "On" : "Off"}
+              </Button>
+            )}
+          </div>
         </>
       ) : (
         <>

@@ -50,15 +50,35 @@ export class PackManager {
   }
 
   private autoOpenPack(level: number) {
+    const state = this.stateHandler.getState();
     const rule = this.rulesHandler.getRule<SkillRule>("autoPackSkill");
-    this.openPack(rule.value + rule.increaseEffect * (level - 1), false);
+    if (state.skills.autoPackSkill.on)
+      this.openPack(rule.value + rule.increaseEffect * (level - 1), false);
+  }
+
+  private calculatePackCost() {
+    const state = this.stateHandler.getState();
+
+    const cost = this.rulesHandler.getRuleValue("PackCost");
+    if (!state.skills.shopkeeperFriendSkill.acquired) return cost;
+
+    const costSkill = this.rulesHandler.getRule<SkillRule>(
+      "shopkeeperFriendSkill"
+    );
+
+    return (
+      (cost * costSkill.value) /
+      costSkill.increaseEffect ** (state.skills.shopkeeperFriendSkill.level - 1)
+    );
   }
 
   private openPack(amount: number, logParam?: boolean) {
     const state = this.stateHandler.getState();
-    const cost = this.rulesHandler.getRuleValue("PackCost");
     const log = logParam ?? true;
-    if (cost === 0 || state.entities.money.amount >= cost * amount) {
+
+    const cost = this.calculatePackCost();
+
+    if (state.entities.money.amount >= cost * amount) {
       let badcards = 0,
         goodcards = 0,
         metacards = 0;

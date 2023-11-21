@@ -15,7 +15,7 @@ interface IUniqueCardProps {
   emoji: string;
 }
 
-const metaTypes = ["Control", "Combo", "Aggro"];
+const metaTypes = ["Aggro", "Control", "Combo"];
 
 export default function UniqueCard({
   click,
@@ -28,7 +28,7 @@ export default function UniqueCard({
     tradeDiv = (
       <div>
         <Button onClick={() => click(count)}>Trade</Button>
-        <div className="border rounded bg-red-100 border-gray-500 p-1">
+        <div className="border rounded bg-gray-100 border-gray-500 p-1">
           <p className="italic">Cost</p>
           <div>
             -{Math.floor((props.cost.badcards * count) ** props.increase)} bad

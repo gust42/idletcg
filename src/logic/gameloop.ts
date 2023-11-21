@@ -4,6 +4,7 @@ import RulesHandler from "../rules/ruleshandler";
 import { GameState } from "../interfaces/logic";
 import { PackData, PackManager, PackMessages } from "./packmanager";
 import { CostForUniqueCards, SkillRule } from "../interfaces/rules";
+import { roundToNearestThousand } from "./helpers";
 
 export default class GameLoop {
   private static instance: GameLoop;
@@ -13,6 +14,8 @@ export default class GameLoop {
   private packManager: PackManager;
   private lastTime: number;
   private tick: number;
+
+  private running: boolean = false;
 
   constructor() {
     MessageHandler.init();
@@ -29,16 +32,25 @@ export default class GameLoop {
   }
 
   start() {
-    this.loop(0);
+    if (!this.running) {
+      this.running = true;
+      this.loop(0);
+    }
+  }
+
+  stop() {
+    this.running = false;
   }
 
   loop(now: number) {
-    let state = this.stateHandler.getState();
     if (now - this.lastTime > this.tick) {
+      const state = this.stateHandler.getState();
       this.packManager.handleTick();
       if (state.skills.workSkill.acquired) {
-        const amount = this.rulesHandler.getRuleValue("workSkill");
-        state.entities.money.amount += amount;
+        const rule = this.rulesHandler.getRule<SkillRule>("workSkill");
+        state.entities.money.amount +=
+          rule.value + (state.skills.workSkill.level - 1) * rule.increaseEffect;
+        this.stateHandler.updateState(state);
       }
       this.lastTime = now;
     }
@@ -76,17 +88,25 @@ export default class GameLoop {
         const rule = this.rulesHandler.getRule<SkillRule>(data.name);
 
         console.log(state.skills[data.name].level);
-        if (
-          state.entities.money.amount >=
+
+        const cost = roundToNearestThousand(
           rule.requirement ** rule.increase * state.skills[data.name].level
-        ) {
+        );
+
+        if (state.entities.money.amount >= cost) {
           state.skills[data.name].level += 1;
-          state.entities.money.amount -=
-            rule.requirement ** rule.increase * state.skills[data.name].level;
+          state.entities.money.amount -= cost;
           this.stateHandler.updateState(state);
         } else {
           MessageHandler.sendClientMessage("Not enough money");
         }
+      }
+
+      if (m.message === "toggleskill") {
+        const data = m.data as SkillMessage;
+        const state = this.stateHandler.getState();
+        state.skills[data.name].on = !state.skills[data.name].on;
+        this.stateHandler.updateState(state);
       }
 
       if (m.message === "tradecard") {
@@ -127,7 +147,7 @@ export default class GameLoop {
       }
     }
 
-    state = this.stateHandler.getState();
+    let state = this.stateHandler.getState();
     state = this.rulesHandler.checkActiveRules(state) as GameState;
     if (state) {
       this.stateHandler.updateState(state);
@@ -147,6 +167,6 @@ export default class GameLoop {
       state = this.stateHandler.updateState(state);
     }
 
-    window.requestAnimationFrame(this.loop.bind(this));
+    if (this.running) window.requestAnimationFrame(this.loop.bind(this));
   }
 }

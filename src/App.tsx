@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 import GameLoop from "./logic/gameloop";
@@ -16,6 +16,15 @@ function App() {
   const [currentTab, setCurrentTab] = useState(<PacksTab />);
   const [activeTab, setActiveTab] = useState("packs");
   const gameState = useGameState();
+
+  useEffect(() => {
+    const gameLoop = GameLoop.getInstance();
+    gameLoop.start();
+
+    return () => {
+      gameLoop.stop();
+    };
+  }, []);
 
   function clickTab(id: string, type: JSX.Element) {
     setActiveTab(id);

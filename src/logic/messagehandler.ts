@@ -1,7 +1,12 @@
 import { Skills } from "../interfaces/rules";
 import { PackMessages } from "./packmanager";
 
-type MessageList = PackMessages | "unlockskill" | "levelupskill" | "tradecard";
+type MessageList =
+  | PackMessages
+  | "unlockskill"
+  | "levelupskill"
+  | "toggleskill"
+  | "tradecard";
 
 type Message = {
   message: MessageList;
