@@ -25,7 +25,7 @@ export default class RulesHandler {
 
     if (
       !state.tabs.skillstab.acquired &&
-      totalcards >= this.rules["CardsforSkills"].value
+      state.entities.money.amount >= this.rules["CardsforSkills"].value
     ) {
       state.tabs.skillstab.acquired = true;
       changed = true;
@@ -35,11 +35,11 @@ export default class RulesHandler {
 
   getRule<T = Rule>(name: keyof Rules) {
     if (this.rules[name]) return this.rules[name] as T;
-    else throw new Error("No rule with name" + name);
+    else throw new Error("No rule with name " + name);
   }
 
   getRuleValue(name: keyof Rules) {
     if (this.rules[name]) return (this.rules[name] as Rule).value;
-    else throw new Error("No rule with name" + name);
+    else throw new Error("No rule with name " + name);
   }
 }

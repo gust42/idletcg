@@ -2,6 +2,7 @@ import StateHandler from "./../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
 import Pack from "./pack";
 import MessageHandler from "./messagehandler";
+import { SkillRule } from "../interfaces/rules";
 
 export type PackData = { amount: number };
 export type PackMessages =
@@ -31,7 +32,8 @@ export class PackManager {
 
   public handleTick() {
     const state = this.stateHandler.getState();
-    if (state.skills.autopackskill.acquired) this.autoOpenPack();
+    if (state.skills.autoPackSkill.acquired && state.skills.autoPackSkill.on)
+      this.autoOpenPack(state.skills.autoPackSkill.level);
   }
 
   public handleMessages(message: PackMessages, data: PackData) {
@@ -47,13 +49,14 @@ export class PackManager {
     }
   }
 
-  private autoOpenPack() {
-    this.openPack(1, 0, false);
+  private autoOpenPack(level: number) {
+    const rule = this.rulesHandler.getRule<SkillRule>("autoPackSkill");
+    this.openPack(rule.value + rule.increaseEffect * (level - 1), false);
   }
 
-  private openPack(amount: number, costParam?: number, logParam?: boolean) {
+  private openPack(amount: number, logParam?: boolean) {
     const state = this.stateHandler.getState();
-    const cost = costParam ?? this.rulesHandler.getRuleValue("PackCost");
+    const cost = this.rulesHandler.getRuleValue("PackCost");
     const log = logParam ?? true;
     if (cost === 0 || state.entities.money.amount >= cost * amount) {
       let badcards = 0,
@@ -86,7 +89,7 @@ export class PackManager {
         );
 
       this.stateHandler.updateState(state);
-    } else {
+    } else if (log) {
       MessageHandler.sendClientMessage("Not enough money");
     }
   }

@@ -26,16 +26,23 @@
   "CardsforSkills": {
     "value": 1500
   },
-  "AutoPackSkill": {
-    "requirement": 1500
+  "autoPackSkill": {
+    "requirement": 1500,
+    "value": 1,
+    "increase": 1.5,
+    "increaseEffect": 1
   },
-  "WorkSkill": {
+  "workSkill": {
     "requirement": 3000,
-    "value": 10
+    "increase": 1.5,
+    "value": 10,
+    "increaseEffect": 2
   },
-  "ShopkeeperFriendSkill": {
+  "shopkeeperFriendSkill": {
     "requirement": 6000,
-    "value": 10
+    "increase": 1.5,
+    "value": 10,
+    "increaseEffect": 1.5
   },
   "CostForUniqueCards": {
     "badcards": 500,

@@ -1,14 +1,21 @@
+import { Skills } from "../interfaces/rules";
 import { PackMessages } from "./packmanager";
 
-type MessageList = PackMessages | "unlockskill" | "tradecard";
+type MessageList = PackMessages | "unlockskill" | "levelupskill" | "tradecard";
 
 type Message = {
   message: MessageList;
   data: MessageData;
 };
 
-export type MessageData = {
+export type MessageData = GenericMessage | SkillMessage;
+
+export type GenericMessage = {
   [key: string]: unknown;
+};
+
+export type SkillMessage = {
+  name: keyof Skills;
 };
 
 type Callback = (message: string) => void;

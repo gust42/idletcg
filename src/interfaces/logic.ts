@@ -10,6 +10,7 @@ export interface Tab {
 export interface Skill {
   acquired: boolean;
   level: number;
+  on?: boolean;
 }
 
 interface Counter {
@@ -32,9 +33,9 @@ export interface GameStateV1 {
 
 export interface GameState {
   skills: {
-    autopackskill: Skill;
-    workskill: Skill;
-    shopkeeperfriendskill: Skill;
+    autoPackSkill: Skill;
+    workSkill: Skill;
+    shopkeeperFriendSkill: Skill;
   };
   entities: {
     badcards: Entity;

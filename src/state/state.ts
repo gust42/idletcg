@@ -31,9 +31,11 @@ export const state: GameStateV1 = {
   },
   autopackskill: {
     acquired: false,
+    level: 1,
   },
   workskill: {
     acquired: false,
+    level: 1,
   },
   uniquecards: {
     amount: 0,

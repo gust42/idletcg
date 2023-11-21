@@ -1,9 +1,9 @@
-import MessageHandler, { MessageData } from "./messagehandler";
+import MessageHandler, { GenericMessage, SkillMessage } from "./messagehandler";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "../rules/ruleshandler";
 import { GameState } from "../interfaces/logic";
 import { PackData, PackManager, PackMessages } from "./packmanager";
-import { CostForUniqueCards, Rules } from "../interfaces/rules";
+import { CostForUniqueCards, SkillRule } from "../interfaces/rules";
 
 export default class GameLoop {
   private static instance: GameLoop;
@@ -36,8 +36,8 @@ export default class GameLoop {
     let state = this.stateHandler.getState();
     if (now - this.lastTime > this.tick) {
       this.packManager.handleTick();
-      if (state.skills.workskill.acquired) {
-        const amount = this.rulesHandler.getRuleValue("WorkSkill");
+      if (state.skills.workSkill.acquired) {
+        const amount = this.rulesHandler.getRuleValue("workSkill");
         state.entities.money.amount += amount;
       }
       this.lastTime = now;
@@ -57,16 +57,32 @@ export default class GameLoop {
       }
 
       if (m.message === "unlockskill") {
+        const data = m.data as SkillMessage;
         const state = this.stateHandler.getState();
-        const rule = this.rulesHandler.getRule(
-          (m.data as MessageData).name as keyof Rules
-        );
+        const rule = this.rulesHandler.getRule<SkillRule>(data.name);
 
-        if (state.entities.money.amount >= (rule.requirement as number)) {
-          state.skills[
-            (m.data as MessageData).name as "autopackskill" | "workskill"
-          ].acquired = true;
-          state.entities.money.amount -= rule.requirement as number;
+        if (state.entities.money.amount >= rule.requirement) {
+          state.skills[data.name].acquired = true;
+          state.entities.money.amount -= rule.requirement;
+          this.stateHandler.updateState(state);
+        } else {
+          MessageHandler.sendClientMessage("Not enough money");
+        }
+      }
+
+      if (m.message === "levelupskill") {
+        const data = m.data as SkillMessage;
+        const state = this.stateHandler.getState();
+        const rule = this.rulesHandler.getRule<SkillRule>(data.name);
+
+        console.log(state.skills[data.name].level);
+        if (
+          state.entities.money.amount >=
+          rule.requirement ** rule.increase * state.skills[data.name].level
+        ) {
+          state.skills[data.name].level += 1;
+          state.entities.money.amount -=
+            rule.requirement ** rule.increase * state.skills[data.name].level;
           this.stateHandler.updateState(state);
         } else {
           MessageHandler.sendClientMessage("Not enough money");
@@ -74,16 +90,17 @@ export default class GameLoop {
       }
 
       if (m.message === "tradecard") {
+        const data = m.data as GenericMessage;
         const state = this.stateHandler.getState();
         const rule =
           this.rulesHandler.getRule<CostForUniqueCards>("CostForUniqueCards");
         let fail = "";
         const badcardCost =
-          (rule.badcards * (m.data.id as number)) ** rule.increase;
+          (rule.badcards * (data.id as number)) ** rule.increase;
         const goodcardCost =
-          (rule.goodcards * (m.data.id as number)) ** rule.increase;
+          (rule.goodcards * (data.id as number)) ** rule.increase;
         const metacardCost =
-          (rule.metacards * (m.data.id as number)) ** rule.increase;
+          (rule.metacards * (data.id as number)) ** rule.increase;
 
         if (state.entities.badcards.amount <= badcardCost)
           fail += "Not enough bad cards \n";

@@ -3,15 +3,16 @@ import { GameState, GameStateV1 } from "../interfaces/logic";
 const migrateV2 = (currentState: GameStateV1) => {
   const newState: GameState = {
     skills: {
-      autopackskill: {
+      autoPackSkill: {
         acquired: currentState.autopackskill.acquired,
         level: 1,
+        on: true,
       },
-      workskill: {
+      workSkill: {
         acquired: currentState.workskill.acquired,
         level: 1,
       },
-      shopkeeperfriendskill: {
+      shopkeeperFriendSkill: {
         acquired: false,
         level: 1,
       },
@@ -44,7 +45,8 @@ const migrateV2 = (currentState: GameStateV1) => {
         acquired: currentState.metacards.acquired,
       },
       money: {
-        amount: currentState.money.amount,
+        // amount: currentState.money.amount,
+        amount: 500000,
         acquired: currentState.money.acquired,
       },
     },

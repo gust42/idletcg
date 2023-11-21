@@ -6,5 +6,9 @@ interface BulkButtonProps {
 }
 
 export default function BulkButton({ click, amount }: BulkButtonProps) {
-  return <Button onClick={click}>x{amount}</Button>;
+  return (
+    <Button width="auto" onClick={click}>
+      x{amount}
+    </Button>
+  );
 }
