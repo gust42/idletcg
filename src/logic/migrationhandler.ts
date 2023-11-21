@@ -45,8 +45,8 @@ const migrateV2 = (currentState: GameStateV1) => {
         acquired: currentState.metacards.acquired,
       },
       money: {
-        // amount: currentState.money.amount,
-        amount: 500000,
+        amount: currentState.money.amount,
+        // amount: 500000,
         acquired: currentState.money.acquired,
       },
     },
