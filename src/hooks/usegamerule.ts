@@ -1,7 +1,5 @@
-import { useState } from 'react';
-import GameLoop from '../logic/gameloop';
-export default function useGameRule(ruleName: string) {
-    const [rule] = useState(GameLoop.getInstance().rulesHandler.getRule(ruleName));
-
-    return rule;
+import GameLoop from "../logic/gameloop";
+import { Rule, Rules } from "../interfaces/rules";
+export default function useGameRule<T = Rule>(ruleName: keyof Rules) {
+  return GameLoop.getInstance().rulesHandler.getRule<T>(ruleName);
 }

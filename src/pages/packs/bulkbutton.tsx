@@ -1,3 +1,5 @@
+import { Button } from "../../components/button";
+
 interface BulkButtonProps {
   click: (e: React.MouseEvent<HTMLDivElement>) => void;
   amount: number;
@@ -5,8 +7,8 @@ interface BulkButtonProps {
 
 export default function BulkButton({ click, amount }: BulkButtonProps) {
   return (
-    <div className="button bulk-button" onClick={click}>
+    <Button width="auto" onClick={click}>
       x{amount}
-    </div>
+    </Button>
   );
 }

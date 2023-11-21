@@ -1,6 +1,6 @@
-import { GameState } from "../interfaces/logic";
+import { GameStateV1 } from "../interfaces/logic";
 
-export const state: GameState = {
+export const state: GameStateV1 = {
   badcards: {
     amount: 0,
     acquired: false,
@@ -31,9 +31,11 @@ export const state: GameState = {
   },
   autopackskill: {
     acquired: false,
+    level: 1,
   },
   workskill: {
     acquired: false,
+    level: 1,
   },
   uniquecards: {
     amount: 0,

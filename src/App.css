@@ -74,20 +74,6 @@ aside {
   }
 }
 
-.button {
-  background-color: #61dafb;
-  padding: 5px;
-  border-radius: 4px;
-  width: 150px;
-  color: #fff;
-  cursor: pointer;
-  text-align: center;
-  user-select: none;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  touch-action: manipulation;
-}
-
 .disabled .button {
   background-color: #ccc;
   color: #000;
@@ -101,10 +87,6 @@ aside {
 .button-cost {
   font-size: 0.9em;
   font-style: italic;
-}
-
-.bulk-button {
-  width: auto;
 }
 
 .message-box {

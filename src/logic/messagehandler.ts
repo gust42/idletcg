@@ -1,10 +1,26 @@
+import { Skills } from "../interfaces/rules";
+import { PackMessages } from "./packmanager";
+
+type MessageList =
+  | PackMessages
+  | "unlockskill"
+  | "levelupskill"
+  | "toggleskill"
+  | "tradecard";
+
 type Message = {
-  message: string;
-  data: MessageData | number;
+  message: MessageList;
+  data: MessageData;
 };
 
-export type MessageData = {
+export type MessageData = GenericMessage | SkillMessage;
+
+export type GenericMessage = {
   [key: string]: unknown;
+};
+
+export type SkillMessage = {
+  name: keyof Skills;
 };
 
 type Callback = (message: string) => void;
@@ -18,7 +34,7 @@ export default class MessageHandler {
     this.clientSubscriptions = [];
   }
 
-  static recieveMessage(message: string, data: MessageData) {
+  static recieveMessage(message: MessageList, data: MessageData) {
     if (!this.messageQue) this.init();
     console.log(message, data);
     this.messageQue.push({ message, data });

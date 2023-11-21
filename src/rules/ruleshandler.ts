@@ -12,20 +12,22 @@ export default class RulesHandler {
   checkActiveRules(state: GameState) {
     let changed = false;
     const totalcards =
-      state.badcards.amount + state.goodcards.amount + state.metacards.amount;
+      state.entities.badcards.amount +
+      state.entities.goodcards.amount +
+      state.entities.metacards.amount;
     if (
-      !state.tradebindertab.acquired &&
+      !state.tabs.tradebindertab.acquired &&
       totalcards >= this.rules["CardsForTradebinder"].value
     ) {
-      state.tradebindertab.acquired = true;
+      state.tabs.tradebindertab.acquired = true;
       changed = true;
     }
 
     if (
-      !state.skillstab.acquired &&
-      totalcards >= this.rules["CardsforSkills"].value
+      !state.tabs.skillstab.acquired &&
+      state.entities.money.amount >= this.rules["CardsforSkills"].value
     ) {
-      state.skillstab.acquired = true;
+      state.tabs.skillstab.acquired = true;
       changed = true;
     }
     return changed ? state : null;
@@ -33,11 +35,11 @@ export default class RulesHandler {
 
   getRule<T = Rule>(name: keyof Rules) {
     if (this.rules[name]) return this.rules[name] as T;
-    else throw new Error("No rule with name" + name);
+    else throw new Error("No rule with name " + name);
   }
 
   getRuleValue(name: keyof Rules) {
     if (this.rules[name]) return (this.rules[name] as Rule).value;
-    else throw new Error("No rule with name" + name);
+    else throw new Error("No rule with name " + name);
   }
 }

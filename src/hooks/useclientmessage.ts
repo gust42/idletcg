@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import MessageHandler from "../logic/messagehandler";
 
+type ClientMessage = string;
+
 export default function useClientMessage() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<ClientMessage[]>([]);
 
   useEffect(() => {
-    function update(message) {
+    function update(message: ClientMessage) {
       setMessages([...messages, message]);
     }
 
