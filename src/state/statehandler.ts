@@ -10,10 +10,13 @@ export default class StateHandler {
 
   constructor() {
     const handler = new MigrationHandler();
-    this.state = handler.migrate(state as never);
+
+    let loadedState = state;
 
     const savedState = localStorage.getItem("idletcg.state");
-    if (savedState) this.state = { ...this.state, ...JSON.parse(savedState) };
+    if (savedState) loadedState = { ...state, ...JSON.parse(savedState) };
+    this.state = handler.migrate(loadedState as never);
+    this.savePersistant();
     this.subscribers = [];
   }
 
