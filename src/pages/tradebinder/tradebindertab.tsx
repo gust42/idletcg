@@ -20,7 +20,7 @@ export default function TradebinderTab() {
   rangeEmojis = rangeEmojis.slice(0, gameState.counters.uniquecards.amount + 1);
 
   return (
-    <article className="tradebinder-content">
+    <article className="flex flex-row flex-wrap">
       {rangeEmojis.map((code, index) => (
         <UniqueCard
           trade={gameState.counters.uniquecards.amount <= index}

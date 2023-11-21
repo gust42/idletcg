@@ -1,5 +1,5 @@
 import MessageHandler from "../../logic/messagehandler";
-import Button from "./button";
+import BuyButton from "./button";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 
@@ -35,35 +35,35 @@ export default function PacksTab() {
 
   return (
     <article>
-      <Button
+      <BuyButton
         text="Open pack"
         type="buy"
         click={openPack}
         resource={gameState.entities.money}
         cost={packCostRule.value}
         disabled={gameState.entities.money.amount < packCostRule.value}
-      ></Button>
-      <Button
+      ></BuyButton>
+      <BuyButton
         text={`Sell bad card (${gameState.entities.badcards.amount})`}
         type="sell"
         click={sellBadCards}
         resource={gameState.entities.badcards}
         cost={badSellValueRule.value}
-      ></Button>
-      <Button
+      ></BuyButton>
+      <BuyButton
         text={`Sell good card (${gameState.entities.goodcards.amount})`}
         type="sell"
         click={sellGoodCards}
         resource={gameState.entities.goodcards}
         cost={goodSellValueRule.value}
-      ></Button>
-      <Button
+      ></BuyButton>
+      <BuyButton
         text={`Sell meta card (${gameState.entities.metacards.amount})`}
         type="sell"
         click={sellMetaCards}
         resource={gameState.entities.metacards}
         cost={metaSellValueRule.value}
-      ></Button>
+      ></BuyButton>
     </article>
   );
 }

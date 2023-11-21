@@ -1,3 +1,5 @@
+import { Button } from "../../components/button";
+
 type Cost = {
   badcards: number;
   goodcards: number;
@@ -13,37 +15,52 @@ interface IUniqueCardProps {
   emoji: string;
 }
 
-export default function UniqueCard(props: IUniqueCardProps) {
+const metaTypes = ["Control", "Combo", "Aggro"];
+
+export default function UniqueCard({
+  click,
+  count,
+  ...props
+}: IUniqueCardProps) {
   let tradeDiv = null;
 
   if (props.trade) {
     tradeDiv = (
-      <div className="button" onClick={() => props.click(props.count)}>
-        <div>Trades for</div>
-        <div className="requirement">
+      <div>
+        <Button onClick={() => click(count)}>Trade</Button>
+        <div className="border rounded bg-red-100 border-gray-500 p-1">
+          <p className="italic">Cost</p>
           <div>
-            {Math.floor((props.cost.badcards * props.count) ** props.increase)}{" "}
-            bad cards
+            -{Math.floor((props.cost.badcards * count) ** props.increase)} bad
+            cards
           </div>
           <div>
-            {Math.floor((props.cost.goodcards * props.count) ** props.increase)}{" "}
-            good cards
+            -{Math.floor((props.cost.goodcards * count) ** props.increase)} good
+            cards
           </div>
           <div>
-            {Math.floor((props.cost.metacards * props.count) ** props.increase)}{" "}
-            meta cards
+            -{Math.floor((props.cost.metacards * count) ** props.increase)} meta
+            cards
           </div>
         </div>
-        Trade
       </div>
     );
   }
 
   return (
-    <div className="unique-card-container">
-      <div className="unique-card">
-        <div className="number">{props.count}</div>
-        <div className="emoji">{props.trade ? "?" : props.emoji}</div>
+    <div className="m-3 w-[150px] bg-white h-[150px] relative">
+      <div className="border-4 rounded text-center border-black pt-2">
+        <div className="absolute left-1 top-1 border-r-4 border-b-4 border-black p-1">
+          {count}
+        </div>
+        <div className="absolute right-1 top-1 border-l-4 border-b-4 border-black p-1">
+          {metaTypes[count % 3]}
+        </div>
+        <div className="text-[6em]">{props.trade ? "?" : props.emoji}</div>
+
+        <div className=" border-t-4 border-black p-1">
+          {count + 20 + count * 2}% winrate
+        </div>
       </div>
       {tradeDiv}
     </div>

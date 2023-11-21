@@ -1,5 +1,6 @@
 import React from "react";
 import BulkButton from "./bulkbutton";
+import { Button } from "../../components/button";
 
 interface IButtonProps {
   resource: {
@@ -13,7 +14,7 @@ interface IButtonProps {
   disabled?: boolean;
 }
 
-export default function Button({ disabled, ...props }: IButtonProps) {
+export default function BuyButton({ disabled, ...props }: IButtonProps) {
   const isDisabled = props.resource.amount === 0 || disabled ? "disabled" : "";
   function clickEvent(e: React.MouseEvent<HTMLDivElement>, amount: number) {
     e.preventDefault();
@@ -60,13 +61,10 @@ export default function Button({ disabled, ...props }: IButtonProps) {
 
   return (
     <div className={isDisabled + " p-2 flex flex-row"}>
-      <div
-        className="p-2 mr-3 text-white bg-button  hover:bg-button-hover w-[200px] rounded text-center cursor-pointer"
-        onClick={(e) => clickEvent(e, 1)}
-      >
+      <Button onClick={(e) => clickEvent(e, 1)}>
         {props.text}
         <div className="button-cost"> {props.cost} money</div>
-      </div>
+      </Button>
       {x10}
       {x100}
       {x1000}
