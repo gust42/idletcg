@@ -50,6 +50,7 @@ export interface GameState {
     packstab: Tab;
     skillstab: Tab;
     tradebindertab: Tab;
+    deckbuildertab: Tab;
     tournamentstab: Tab;
   };
 }

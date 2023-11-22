@@ -27,6 +27,9 @@ const migrateV2 = (currentState: GameStateV1) => {
       tradebindertab: {
         acquired: currentState.tradebindertab.acquired,
       },
+      deckbuildertab: {
+        acquired: currentState.uniquecards.amount > 5,
+      },
       tournamentstab: {
         acquired: currentState.tournamentstab.acquired,
       },

@@ -40,6 +40,14 @@ export default class RulesHandler {
       state.tabs.skillstab.acquired = true;
       changed = true;
     }
+
+    if (
+      !state.tabs.deckbuildertab.acquired &&
+      state.counters.uniquecards.amount > 5
+    ) {
+      state.tabs.deckbuildertab.acquired = true;
+      changed = true;
+    }
     return changed ? state : null;
   }
 

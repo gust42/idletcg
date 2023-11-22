@@ -9,6 +9,7 @@ import Tab from "./components/tab";
 import PacksTab from "./pages/packs/packstab";
 import TradebinderTab from "./pages/tradebinder/tradebindertab";
 import SkillsTab from "./pages/skills/skillstab";
+import { DeckbuilderTab } from "./pages/deckbuilder/deckbuildertab";
 
 const gameLoop = GameLoop.getInstance();
 gameLoop.start();
@@ -51,6 +52,12 @@ function App() {
               active={activeTab === "trade"}
               onClick={() => clickTab("trade", <TradebinderTab />)}
               item={gameState.tabs.tradebindertab}
+            ></Tab>
+            <Tab
+              name="Deckbuilder"
+              active={activeTab === "deckbuilder"}
+              onClick={() => clickTab("deckbuilder", <DeckbuilderTab />)}
+              item={gameState.tabs.deckbuildertab}
             ></Tab>
             <Tab
               name="Tournaments"
