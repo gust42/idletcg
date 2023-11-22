@@ -59,7 +59,8 @@ export default function UniqueCard({
         <div className="text-[6em]">{props.trade ? "?" : props.emoji}</div>
 
         <div className=" border-t-4 border-black p-1">
-          {Math.floor(Math.sin(count) * Math.sin(count) * 100 - 50)}% winrate
+          {Math.abs(Math.floor(Math.sin(count) * Math.sin(count) * 100 - 50))}%
+          winrate
         </div>
       </div>
       {tradeDiv}
