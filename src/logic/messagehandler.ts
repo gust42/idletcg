@@ -1,4 +1,4 @@
-import { Skills } from "../interfaces/rules";
+import { Skills } from "../rules/skills/skill";
 import { PackMessages } from "./packmanager";
 
 type MessageList =

@@ -1,6 +1,6 @@
 import useGameState from "../../hooks/usegamestate";
-import { Skills } from "../../interfaces/rules";
 import { AllSkills } from "../../rules/ruleshandler";
+import { Skills } from "../../rules/skills/skill";
 import { SkillInfo } from "./skill";
 
 export default function SkillsTab() {
@@ -11,7 +11,8 @@ export default function SkillsTab() {
       <SkillInfo
         key={key}
         name={key as keyof Skills}
-        skill={gameState.skills[key as keyof Skills]}
+        state={gameState.skills[key as keyof Skills]}
+        skill={AllSkills[key as keyof Skills]}
         title={AllSkills[key as keyof Skills].title}
         description={AllSkills[key as keyof Skills].description}
       />

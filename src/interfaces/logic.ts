@@ -7,7 +7,7 @@ export interface Tab {
   acquired: boolean;
 }
 
-export interface Skill {
+export interface SkillState {
   acquired: boolean;
   level: number;
   on?: boolean;
@@ -26,16 +26,16 @@ export interface GameStateV1 {
   skillstab: Tab;
   tradebindertab: Tab;
   tournamentstab: Tab;
-  autopackskill: Skill;
-  workskill: Skill;
+  autopackskill: SkillState;
+  workskill: SkillState;
   uniquecards: Counter;
 }
 
 export interface GameState {
   skills: {
-    autoPackSkill: Skill;
-    workSkill: Skill;
-    shopkeeperFriendSkill: Skill;
+    autoPackSkill: SkillState;
+    workSkill: SkillState;
+    shopkeeperFriendSkill: SkillState;
   };
   entities: {
     badcards: Entity;

@@ -1,10 +1,9 @@
 import MessageHandler, { GenericMessage, SkillMessage } from "./messagehandler";
 import StateHandler from "../state/statehandler";
-import RulesHandler from "../rules/ruleshandler";
+import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import { GameState } from "../interfaces/logic";
 import { PackData, PackManager, PackMessages } from "./packmanager";
-import { CostForUniqueCards, SkillRule } from "../interfaces/rules";
-import { roundToNearestThousand } from "./helpers";
+import { CostForUniqueCards } from "../interfaces/rules";
 
 export default class GameLoop {
   private static instance: GameLoop;
@@ -47,9 +46,11 @@ export default class GameLoop {
       const state = this.stateHandler.getState();
       this.packManager.handleTick();
       if (state.skills.workSkill.acquired) {
-        const rule = this.rulesHandler.getRule<SkillRule>("workSkill");
-        state.entities.money.amount +=
-          rule.value + (state.skills.workSkill.level - 1) * rule.increaseEffect;
+        const rule = AllSkills.workSkill;
+
+        state.entities.money.amount += rule.effect(
+          state.skills.workSkill.level
+        );
         this.stateHandler.updateState(state);
       }
       this.lastTime = now;
@@ -71,7 +72,7 @@ export default class GameLoop {
       if (m.message === "unlockskill") {
         const data = m.data as SkillMessage;
         const state = this.stateHandler.getState();
-        const rule = this.rulesHandler.getRule<SkillRule>(data.name);
+        const rule = AllSkills[data.name].rule;
 
         if (state.entities.money.amount >= rule.requirement) {
           state.skills[data.name].acquired = true;
@@ -85,13 +86,9 @@ export default class GameLoop {
       if (m.message === "levelupskill") {
         const data = m.data as SkillMessage;
         const state = this.stateHandler.getState();
-        const rule = this.rulesHandler.getRule<SkillRule>(data.name);
+        const skill = AllSkills[data.name];
 
-        console.log(state.skills[data.name].level);
-
-        const cost = roundToNearestThousand(
-          rule.requirement ** rule.increase * state.skills[data.name].level
-        );
+        const cost = skill.cost(state.skills[data.name].level);
 
         if (state.entities.money.amount >= cost) {
           state.skills[data.name].level += 1;

@@ -1,13 +1,12 @@
-import { SkillRule } from "../../interfaces/rules";
 import { roundToNearestThousand } from "../../logic/helpers";
-import { Skill } from "./skill";
+import { Skill, SkillRule } from "./skill";
 
 export class ShopkeeperFriendSkill implements Skill {
   rule: SkillRule = {
     requirement: 6000,
     increase: 1.2,
     value: 0.9,
-    increaseEffect: 1.02,
+    increaseEffect: 0.1,
   };
 
   title = "Befriend a shopkeeper";
@@ -21,6 +20,8 @@ export class ShopkeeperFriendSkill implements Skill {
   }
 
   effect(level: number) {
-    return this.rule.value + this.rule.increaseEffect * level;
+    return level === 1
+      ? this.rule.value
+      : parseFloat((this.rule.value * 2 ** (-0.05 * level)).toFixed(2));
   }
 }

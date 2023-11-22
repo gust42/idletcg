@@ -1,6 +1,5 @@
-import { SkillRule } from "../../interfaces/rules";
 import { roundToNearestThousand } from "../../logic/helpers";
-import { Skill } from "./skill";
+import { Skill, SkillRule } from "./skill";
 
 export class AutoPackSkill implements Skill {
   rule: SkillRule = {
@@ -21,6 +20,6 @@ export class AutoPackSkill implements Skill {
   }
 
   effect(level: number) {
-    return this.rule.value + this.rule.increaseEffect * level;
+    return this.rule.value / this.rule.increaseEffect ** (level - 1);
   }
 }

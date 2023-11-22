@@ -1,9 +1,9 @@
 import { GameState } from "../interfaces/logic";
-import { Rule, Rules, Skills } from "../interfaces/rules";
+import { Rule, Rules } from "../interfaces/rules";
 import rules from "./rules.json";
 import { AutoPackSkill } from "./skills/autoPackSkill";
 import { ShopkeeperFriendSkill } from "./skills/shopkeeperFriendSkill";
-import { Skill } from "./skills/skill";
+import { Skill, Skills } from "./skills/skill";
 import { WorkSkill } from "./skills/workSkill";
 
 export const AllSkills: Record<keyof Skills, Skill> = {
