@@ -13,8 +13,17 @@ export interface SkillState {
   on?: boolean;
 }
 
-interface Counter {
+export interface Counter {
   amount: number;
+}
+
+export interface Deck {
+  slot1: number | undefined;
+  slot2: number | undefined;
+  slot3: number | undefined;
+  slot4: number | undefined;
+  slot5: number | undefined;
+  slot6: number | undefined;
 }
 
 export interface GameStateV1 {
@@ -46,11 +55,13 @@ export interface GameState {
   counters: {
     uniquecards: Counter;
   };
+  deck: {
+    cards: Deck;
+  };
   tabs: {
     packstab: Tab;
     skillstab: Tab;
     tradebindertab: Tab;
     deckbuildertab: Tab;
-    tournamentstab: Tab;
   };
 }

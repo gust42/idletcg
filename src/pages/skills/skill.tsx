@@ -54,7 +54,7 @@ export const SkillInfo = ({
               width={skillIsToggleable ? "70%" : undefined}
               onClick={levelUp}
             >
-              Level +1 ({state.level + 1})
+              Level +1 ({state.level})
             </Button>
             {skillIsToggleable && (
               <Button

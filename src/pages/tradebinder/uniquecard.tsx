@@ -48,7 +48,7 @@ export default function UniqueCard({
   }
 
   return (
-    <div className="m-3 w-[200px] bg-white h-[200px] relative">
+    <div className="w-[200px] bg-white h-[200px] relative">
       <div className="border-4 rounded text-center border-black pt-2">
         <div className="absolute left-1 top-1 border-r-4 border-b-4 border-black p-1">
           {count}

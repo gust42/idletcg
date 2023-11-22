@@ -20,6 +20,6 @@ export class AutoPackSkill implements Skill {
   }
 
   effect(level: number) {
-    return this.rule.value / this.rule.increaseEffect ** (level - 1);
+    return this.rule.value + (level - 1);
   }
 }

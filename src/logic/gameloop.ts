@@ -1,9 +1,13 @@
-import MessageHandler, { GenericMessage, SkillMessage } from "./messagehandler";
-import StateHandler from "../state/statehandler";
-import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import { GameState } from "../interfaces/logic";
-import { PackData, PackManager, PackMessages } from "./packmanager";
 import { CostForUniqueCards } from "../interfaces/rules";
+import RulesHandler, { AllSkills } from "../rules/ruleshandler";
+import StateHandler from "../state/statehandler";
+import MessageHandler, {
+  DeckMessage,
+  GenericMessage,
+  SkillMessage,
+} from "./messagehandler";
+import { PackData, PackManager, PackMessages } from "./packmanager";
 
 export default class GameLoop {
   private static instance: GameLoop;
@@ -46,9 +50,9 @@ export default class GameLoop {
       const state = this.stateHandler.getState();
       this.packManager.handleTick();
       if (state.skills.workSkill.acquired) {
-        const rule = AllSkills.workSkill;
+        const skill = AllSkills.workSkill;
 
-        state.entities.money.amount += rule.effect(
+        state.entities.money.amount += skill.effect(
           state.skills.workSkill.level
         );
         this.stateHandler.updateState(state);
@@ -141,6 +145,15 @@ export default class GameLoop {
         } else {
           MessageHandler.sendClientMessage(fail);
         }
+      }
+
+      if (m.message === "addcardtodeck") {
+        const data = m.data as DeckMessage;
+        const state = this.stateHandler.getState();
+
+        const index = `slot${data.slot}` as keyof typeof state.deck.cards;
+        state.deck.cards[index] = data.id;
+        this.stateHandler.updateState(state);
       }
     }
 
