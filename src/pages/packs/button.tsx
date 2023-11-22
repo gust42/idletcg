@@ -15,7 +15,7 @@ interface IButtonProps {
 }
 
 export default function BuyButton({ disabled, ...props }: IButtonProps) {
-  const isDisabled = props.resource.amount === 0 || disabled ? "disabled" : "";
+  const isDisabled = props.resource.amount === 0 || disabled ? true : false;
   function clickEvent(e: React.MouseEvent<HTMLDivElement>, amount: number) {
     e.preventDefault();
     if (disabled) return;
@@ -60,8 +60,12 @@ export default function BuyButton({ disabled, ...props }: IButtonProps) {
   }
 
   return (
-    <div className={isDisabled + " p-2 flex flex-row"}>
-      <Button onClick={(e) => clickEvent(e, 1)}>
+    <div className={"p-2 flex flex-row"}>
+      <Button
+        disabled={isDisabled}
+        width="230px"
+        onClick={(e) => clickEvent(e, 1)}
+      >
         {props.text}
         <div className="button-cost"> {props.cost} money</div>
       </Button>
