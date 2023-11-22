@@ -1,20 +1,23 @@
 import { Button } from "../../components/button";
-import useGameRule from "../../hooks/usegamerule";
-import { Skill } from "../../interfaces/logic";
-import { Rules, SkillRule } from "../../interfaces/rules";
+import { SkillState } from "../../interfaces/logic";
 import MessageHandler from "../../logic/messagehandler";
-import { roundToNearestThousand } from "./../../logic/helpers";
+import { Skill, Skills } from "../../rules/skills/skill";
 
 interface ISkillProps {
-  name: keyof Rules;
+  name: keyof Skills;
+  state: SkillState;
   skill: Skill;
   title: string;
   description: string;
 }
 
-export const SkillInfo = ({ name, skill, title, description }: ISkillProps) => {
-  const rule = useGameRule<SkillRule>(name);
-
+export const SkillInfo = ({
+  name,
+  state,
+  skill,
+  title,
+  description,
+}: ISkillProps) => {
   function unlockSkill() {
     MessageHandler.recieveMessage("unlockskill", { name });
   }
@@ -27,50 +30,48 @@ export const SkillInfo = ({ name, skill, title, description }: ISkillProps) => {
     MessageHandler.recieveMessage("toggleskill", { name });
   }
 
-  const skillIsToggleable = skill.on !== undefined;
+  const skillIsToggleable = state.on !== undefined;
 
   return (
     <div
       className={
         "border-2 p-1 w-[300px] h-[220px]  flex justify-between gap-2 flex-col " +
-        (skill.acquired
+        (state.acquired
           ? "cursor-auto bg-[#0c3a4d] text-white"
           : "cursor-pointer ")
       }
     >
       <div className="title">{title}</div>
       <div className="text-sm italic h-12">{description}</div>
-      <div>Amount: {rule.value + (skill.level - 1) * rule.increaseEffect}</div>
-      {skill.acquired ? (
+      <div>Amount: {skill.effect(state.level)}</div>
+      {state.acquired ? (
         <>
           <div className="requirement">
-            Requires{" "}
-            {roundToNearestThousand(
-              rule.requirement ** rule.increase * skill.level
-            )}{" "}
-            money
+            Requires {skill.cost(state.level)} money
           </div>
           <div className="flex ">
             <Button
               width={skillIsToggleable ? "70%" : undefined}
               onClick={levelUp}
             >
-              Level Up
+              Level +1 ({state.level})
             </Button>
             {skillIsToggleable && (
               <Button
-                color={skill.on ? "#8BC34A" : "#FF6347"}
+                color={state.on ? "#8BC34A" : "#FF6347"}
                 width="30%"
                 onClick={toggleSkill}
               >
-                {skill.on ? "On" : "Off"}
+                {state.on ? "On" : "Off"}
               </Button>
             )}
           </div>
         </>
       ) : (
         <>
-          <div className="requirement">Requires {rule.requirement} money</div>
+          <div className="requirement">
+            Requires {skill.rule.requirement} money
+          </div>
           <Button onClick={unlockSkill}>Unlock</Button>
         </>
       )}

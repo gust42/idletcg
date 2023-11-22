@@ -1,4 +1,4 @@
-import { Skills } from "../interfaces/rules";
+import { Skills } from "../rules/skills/skill";
 import { PackMessages } from "./packmanager";
 
 type MessageList =
@@ -6,6 +6,7 @@ type MessageList =
   | "unlockskill"
   | "levelupskill"
   | "toggleskill"
+  | "addcardtodeck"
   | "tradecard";
 
 type Message = {
@@ -13,7 +14,7 @@ type Message = {
   data: MessageData;
 };
 
-export type MessageData = GenericMessage | SkillMessage;
+export type MessageData = GenericMessage | SkillMessage | DeckMessage;
 
 export type GenericMessage = {
   [key: string]: unknown;
@@ -21,6 +22,11 @@ export type GenericMessage = {
 
 export type SkillMessage = {
   name: keyof Skills;
+};
+
+export type DeckMessage = {
+  id: number;
+  slot: number;
 };
 
 type Callback = (message: string) => void;

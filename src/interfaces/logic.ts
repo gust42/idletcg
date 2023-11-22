@@ -7,14 +7,23 @@ export interface Tab {
   acquired: boolean;
 }
 
-export interface Skill {
+export interface SkillState {
   acquired: boolean;
   level: number;
   on?: boolean;
 }
 
-interface Counter {
+export interface Counter {
   amount: number;
+}
+
+export interface Deck {
+  slot1: number | undefined;
+  slot2: number | undefined;
+  slot3: number | undefined;
+  slot4: number | undefined;
+  slot5: number | undefined;
+  slot6: number | undefined;
 }
 
 export interface GameStateV1 {
@@ -26,16 +35,16 @@ export interface GameStateV1 {
   skillstab: Tab;
   tradebindertab: Tab;
   tournamentstab: Tab;
-  autopackskill: Skill;
-  workskill: Skill;
+  autopackskill: SkillState;
+  workskill: SkillState;
   uniquecards: Counter;
 }
 
 export interface GameState {
   skills: {
-    autoPackSkill: Skill;
-    workSkill: Skill;
-    shopkeeperFriendSkill: Skill;
+    autoPackSkill: SkillState;
+    workSkill: SkillState;
+    shopkeeperFriendSkill: SkillState;
   };
   entities: {
     badcards: Entity;
@@ -46,10 +55,13 @@ export interface GameState {
   counters: {
     uniquecards: Counter;
   };
+  deck: {
+    cards: Deck;
+  };
   tabs: {
     packstab: Tab;
     skillstab: Tab;
     tradebindertab: Tab;
-    tournamentstab: Tab;
+    deckbuildertab: Tab;
   };
 }

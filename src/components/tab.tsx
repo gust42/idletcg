@@ -8,7 +8,7 @@ interface ITabProps {
 }
 
 export default function Tab(props: ITabProps) {
-  if (!props.item.acquired) return null;
+  if (!props.item?.acquired) return null;
   return (
     <div
       className={"tab " + (props.active ? "active" : "")}

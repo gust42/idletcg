@@ -1,70 +1,14 @@
-import { GameState, GameStateV1 } from "../interfaces/logic";
-
-const migrateV2 = (currentState: GameStateV1) => {
-  const newState: GameState = {
-    skills: {
-      autoPackSkill: {
-        acquired: currentState.autopackskill.acquired,
-        level: 1,
-        on: true,
-      },
-      workSkill: {
-        acquired: currentState.workskill.acquired,
-        level: 1,
-      },
-      shopkeeperFriendSkill: {
-        acquired: false,
-        level: 1,
-      },
-    },
-    tabs: {
-      packstab: {
-        acquired: currentState.packstab.acquired,
-      },
-      skillstab: {
-        acquired: currentState.skillstab.acquired,
-      },
-      tradebindertab: {
-        acquired: currentState.tradebindertab.acquired,
-      },
-      tournamentstab: {
-        acquired: currentState.tournamentstab.acquired,
-      },
-    },
-    entities: {
-      badcards: {
-        amount: currentState.badcards.amount,
-        acquired: currentState.badcards.acquired,
-      },
-      goodcards: {
-        amount: currentState.goodcards.amount,
-        acquired: currentState.goodcards.acquired,
-      },
-      metacards: {
-        amount: currentState.metacards.amount,
-        acquired: currentState.metacards.acquired,
-      },
-      money: {
-        amount: currentState.money.amount,
-        // amount: 500000,
-        acquired: currentState.money.acquired,
-      },
-    },
-    counters: {
-      uniquecards: {
-        amount: currentState.uniquecards.amount,
-      },
-    },
-  };
-
-  console.log("migrating to v2");
-  return newState;
-};
+import { GameState } from "../interfaces/logic";
+import { GameStateV2, migrateV2 } from "../migrations/v2";
+import { migrateV3 } from "../migrations/v3";
 
 export class MigrationHandler {
   private dataVersion: number = 1;
-  private migrations: { [key: number]: (state: never) => GameState } = {
+  private migrations: {
+    [key: number]: (state: never) => GameState | GameStateV2;
+  } = {
     2: migrateV2,
+    3: migrateV3,
   };
 
   constructor() {

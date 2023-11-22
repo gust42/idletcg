@@ -1,8 +1,7 @@
+import RulesHandler, { AllSkills } from "./../rules/ruleshandler";
 import StateHandler from "./../state/statehandler";
-import RulesHandler from "./../rules/ruleshandler";
-import Pack from "./pack";
 import MessageHandler from "./messagehandler";
-import { SkillRule } from "../interfaces/rules";
+import Pack from "./pack";
 
 export type PackData = { amount: number };
 export type PackMessages =
@@ -32,7 +31,7 @@ export class PackManager {
 
   public handleTick() {
     const state = this.stateHandler.getState();
-    if (state.skills.autoPackSkill.acquired && state.skills.autoPackSkill.on)
+    if (state.skills.autoPackSkill.acquired)
       this.autoOpenPack(state.skills.autoPackSkill.level);
   }
 
@@ -51,9 +50,9 @@ export class PackManager {
 
   private autoOpenPack(level: number) {
     const state = this.stateHandler.getState();
-    const rule = this.rulesHandler.getRule<SkillRule>("autoPackSkill");
+    const skill = AllSkills.autoPackSkill;
     if (state.skills.autoPackSkill.on)
-      this.openPack(rule.value + rule.increaseEffect * (level - 1), false);
+      this.openPack(skill.effect(level), false);
   }
 
   private calculatePackCost() {
@@ -62,14 +61,9 @@ export class PackManager {
     const cost = this.rulesHandler.getRuleValue("PackCost");
     if (!state.skills.shopkeeperFriendSkill.acquired) return cost;
 
-    const costSkill = this.rulesHandler.getRule<SkillRule>(
-      "shopkeeperFriendSkill"
-    );
+    const costSkill = AllSkills.shopkeeperFriendSkill;
 
-    return (
-      (cost * costSkill.value) /
-      costSkill.increaseEffect ** (state.skills.shopkeeperFriendSkill.level - 1)
-    );
+    return cost * costSkill.effect(state.skills.shopkeeperFriendSkill.level);
   }
 
   private openPack(amount: number, logParam?: boolean) {

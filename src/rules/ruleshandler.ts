@@ -1,6 +1,16 @@
 import { GameState } from "../interfaces/logic";
 import { Rule, Rules } from "../interfaces/rules";
 import rules from "./rules.json";
+import { AutoPackSkill } from "./skills/autoPackSkill";
+import { ShopkeeperFriendSkill } from "./skills/shopkeeperFriendSkill";
+import { Skill, Skills } from "./skills/skill";
+import { WorkSkill } from "./skills/workSkill";
+
+export const AllSkills: Record<keyof Skills, Skill> = {
+  workSkill: new WorkSkill(),
+  autoPackSkill: new AutoPackSkill(),
+  shopkeeperFriendSkill: new ShopkeeperFriendSkill(),
+};
 
 export default class RulesHandler {
   private rules: Rules;
@@ -28,6 +38,14 @@ export default class RulesHandler {
       state.entities.money.amount >= this.rules["CardsforSkills"].value
     ) {
       state.tabs.skillstab.acquired = true;
+      changed = true;
+    }
+
+    if (
+      !state.tabs.deckbuildertab.acquired &&
+      state.counters.uniquecards.amount > 5
+    ) {
+      state.tabs.deckbuildertab.acquired = true;
       changed = true;
     }
     return changed ? state : null;

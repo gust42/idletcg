@@ -10,19 +10,6 @@ export type CostForUniqueCards = {
   metacards: number;
 };
 
-export type Skills = {
-  autoPackSkill: SkillRule;
-  workSkill: SkillRule;
-  shopkeeperFriendSkill: SkillRule;
-};
-
-export type SkillRule = {
-  value: number;
-  requirement: number;
-  increase: number;
-  increaseEffect: number;
-};
-
 export type Rules = {
   PackCost: Rule;
   MetaCardDroprate: Rule;
@@ -34,4 +21,4 @@ export type Rules = {
   CardsForTradebinder: Rule;
   CardsforSkills: Rule;
   CostForUniqueCards: CostForUniqueCards;
-} & Skills;
+};
