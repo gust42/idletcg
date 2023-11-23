@@ -1,8 +1,6 @@
-import useGameRule from "../../hooks/usegamerule";
+import { Card } from "../../components/card";
 import useGameState from "../../hooks/usegamestate";
-import { CostForUniqueCards } from "../../interfaces/rules";
 import { rangeEmojis } from "../../logic/helpers";
-import UniqueCard from "../tradebinder/uniquecard";
 
 interface ICardPickerProps {
   onSelect: (id: number) => void;
@@ -10,7 +8,6 @@ interface ICardPickerProps {
 
 export const CardPicker = ({ onSelect }: ICardPickerProps) => {
   const gameState = useGameState();
-  const gameRule = useGameRule<CostForUniqueCards>("CostForUniqueCards");
 
   const myCards = rangeEmojis.slice(
     0,
@@ -28,15 +25,7 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
               onClick={() => onSelect(index)}
               className="cursor-pointer"
             >
-              <UniqueCard
-                trade={false}
-                key={"emj" + index}
-                click={() => {}}
-                cost={gameRule}
-                increase={gameRule.increase}
-                count={index + 1}
-                emoji={unescape("%u" + code)}
-              />
+              <Card id={index + 1} />
             </div>
           ))}
         </div>

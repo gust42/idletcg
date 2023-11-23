@@ -14,6 +14,8 @@ export default function TradebinderTab() {
     MessageHandler.recieveMessage("tradecard", { id });
   }
 
+  console.log(rangeEmojis);
+
   const myCards = rangeEmojis.slice(
     0,
     gameState.counters.uniquecards.amount + 1
