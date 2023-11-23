@@ -10,17 +10,17 @@ type Cost = {
 interface IUniqueCardProps {
   trade: boolean;
   click: (count: number) => void;
-  count: number;
+  id: number;
   cost: Cost;
   increase: number;
-  emoji: string;
 }
 
 export default function UniqueCard({
   click,
-  count,
+  id,
   trade,
-  ...props
+  increase,
+  cost,
 }: IUniqueCardProps) {
   return (
     <>
@@ -29,25 +29,20 @@ export default function UniqueCard({
           <Card id={-1} />
           <div className="absolute bottom-0  p-6 w-full">
             <p className="italic">Cost</p>
+            <div>-{Math.floor((cost.badcards * id) ** increase)} bad cards</div>
             <div>
-              -{Math.floor((props.cost.badcards * count) ** props.increase)} bad
-              cards
+              -{Math.floor((cost.goodcards * id) ** increase)} good cards
             </div>
             <div>
-              -{Math.floor((props.cost.goodcards * count) ** props.increase)}{" "}
-              good cards
+              -{Math.floor((cost.metacards * id) ** increase)} meta cards
             </div>
-            <div>
-              -{Math.floor((props.cost.metacards * count) ** props.increase)}{" "}
-              meta cards
-            </div>
-            <Button color="#8a672d" onClick={() => click(count)}>
+            <Button color="#8a672d" onClick={() => click(id)}>
               Obtain
             </Button>
           </div>
         </div>
       ) : (
-        <Card id={count} />
+        <Card id={id} />
       )}
     </>
   );

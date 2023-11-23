@@ -49,6 +49,15 @@ export default class RulesHandler {
       changed = true;
     }
 
+    const fullDeck = Object.values(state.deck.cards).every(
+      (card) => card !== undefined
+    );
+
+    if (fullDeck) {
+      state.tabs.tournamentstab.acquired = true;
+      changed = true;
+    }
+
     return changed ? state : null;
   }
 

@@ -28,7 +28,7 @@ function App() {
     setCurrentTab(type);
   }
 
-  const visibleTabs = Object.keys(gameState.tabs).filter(
+  const visibleTabs = Object.keys(tabs).filter(
     (key) => gameState.tabs[key as Tabs].acquired
   );
 

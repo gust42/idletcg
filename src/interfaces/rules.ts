@@ -3,6 +3,11 @@ export type Rule = {
   requirement?: number;
 };
 
+export type Card = {
+  code: string;
+  id: number;
+};
+
 export type CostForUniqueCards = {
   increase: number;
   badcards: number;
