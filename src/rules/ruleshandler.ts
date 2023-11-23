@@ -48,6 +48,7 @@ export default class RulesHandler {
       state.tabs.deckbuildertab.acquired = true;
       changed = true;
     }
+
     return changed ? state : null;
   }
 
