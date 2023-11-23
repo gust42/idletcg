@@ -1,10 +1,7 @@
 import { useState } from "react";
-import useGameRule from "../../hooks/usegamerule";
-import { CostForUniqueCards } from "../../interfaces/rules";
-import { rangeEmojis } from "../../logic/helpers";
 import MessageHandler from "../../logic/messagehandler";
-import UniqueCard from "../tradebinder/uniquecard";
 import { CardPicker } from "./cardpicker";
+import { Card } from "../../components/card";
 
 interface ISlotProps {
   slot: number;
@@ -13,7 +10,6 @@ interface ISlotProps {
 
 export const Slot = ({ slot, card }: ISlotProps) => {
   const [cardPickerOpen, setCardPickerOpen] = useState(false);
-  const gameRule = useGameRule<CostForUniqueCards>("CostForUniqueCards");
 
   const onSelect = (id: number) => {
     setCardPickerOpen(false);
@@ -27,24 +23,17 @@ export const Slot = ({ slot, card }: ISlotProps) => {
     <div>
       <div
         onClick={() => {
-          if (card)
+          if (card !== undefined)
             MessageHandler.recieveMessage("addcardtodeck", {
               id: undefined,
               slot,
             });
           else setCardPickerOpen(!cardPickerOpen);
         }}
-        className={`${border} w-[200px] h-[200px] text-center cursor-pointer`}
+        className={`${border} w-[200px] h-[300px] text-center rounded-3xl cursor-pointer`}
       >
         {card !== undefined ? (
-          <UniqueCard
-            click={() => {}}
-            cost={gameRule}
-            increase={0}
-            trade={false}
-            count={card}
-            emoji={unescape("%u" + rangeEmojis[card])}
-          />
+          <Card id={card} />
         ) : (
           <>
             Empty slot

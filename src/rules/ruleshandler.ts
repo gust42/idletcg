@@ -5,6 +5,8 @@ import { AutoPackSkill } from "./skills/autoPackSkill";
 import { ShopkeeperFriendSkill } from "./skills/shopkeeperFriendSkill";
 import { Skill, Skills } from "./skills/skill";
 import { WorkSkill } from "./skills/workSkill";
+import { CasualWednesday } from "./tournaments/casualwednesday";
+import { Tournament, Tournaments } from "./tournaments/tournament";
 
 export const AllSkills: Record<keyof Skills, Skill> = {
   workSkill: new WorkSkill(),
@@ -12,6 +14,9 @@ export const AllSkills: Record<keyof Skills, Skill> = {
   shopkeeperFriendSkill: new ShopkeeperFriendSkill(),
 };
 
+export const AllTournaments: Record<keyof Tournaments, Tournament> = {
+  casualwednesday: new CasualWednesday(),
+};
 export default class RulesHandler {
   private rules: Rules;
 
@@ -43,11 +48,21 @@ export default class RulesHandler {
 
     if (
       !state.tabs.deckbuildertab.acquired &&
-      state.counters.uniquecards.amount > 5
+      state.counters.uniquecards.amount >= 5
     ) {
       state.tabs.deckbuildertab.acquired = true;
       changed = true;
     }
+
+    const fullDeck = Object.values(state.deck.cards).every(
+      (card) => card !== undefined
+    );
+
+    if (fullDeck) {
+      state.tabs.tournamentstab.acquired = true;
+      changed = true;
+    }
+
     return changed ? state : null;
   }
 

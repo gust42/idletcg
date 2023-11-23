@@ -1,8 +1,6 @@
-import useGameRule from "../../hooks/usegamerule";
+import { Card } from "../../components/card";
 import useGameState from "../../hooks/usegamestate";
-import { CostForUniqueCards } from "../../interfaces/rules";
-import { rangeEmojis } from "../../logic/helpers";
-import UniqueCard from "../tradebinder/uniquecard";
+import { allCards } from "../../logic/helpers";
 
 interface ICardPickerProps {
   onSelect: (id: number) => void;
@@ -10,33 +8,32 @@ interface ICardPickerProps {
 
 export const CardPicker = ({ onSelect }: ICardPickerProps) => {
   const gameState = useGameState();
-  const gameRule = useGameRule<CostForUniqueCards>("CostForUniqueCards");
 
-  const myCards = rangeEmojis.slice(
-    0,
-    gameState.counters.uniquecards.amount + 1
-  );
+  let myCards = allCards.slice(0, gameState.counters.uniquecards.amount);
 
+  const cardsToRemove: number[] = [];
+
+  Object.keys(gameState.deck.cards).forEach((key) => {
+    const index = key as keyof typeof gameState.deck.cards;
+    const cardId = gameState.deck.cards[index];
+    if (cardId !== undefined) {
+      cardsToRemove.push(myCards[cardId].id);
+    }
+  });
+
+  myCards = myCards.filter((card) => !cardsToRemove.includes(card.id));
   return (
     <>
       <div className="absolute p-16 z-10 bg-white top-[100px] left-[100px] right-[100px] w-auto overflow-y-auto rounded shadow-md ">
         <h2 className="text-xl mb-6">Choose a card for this slot</h2>
         <div className="flex flex-row flex-wrap gap-2">
-          {myCards.map((code, index) => (
+          {myCards.map((card) => (
             <div
-              key={code}
-              onClick={() => onSelect(index)}
+              key={card.id}
+              onClick={() => onSelect(card.id)}
               className="cursor-pointer"
             >
-              <UniqueCard
-                trade={false}
-                key={"emj" + index}
-                click={() => {}}
-                cost={gameRule}
-                increase={gameRule.increase}
-                count={index + 1}
-                emoji={unescape("%u" + code)}
-              />
+              <Card id={card.id} />
             </div>
           ))}
         </div>

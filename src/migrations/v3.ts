@@ -19,6 +19,9 @@ export const migrateV3 = (currentState: GameStateV2) => {
       deckbuildertab: {
         acquired: false,
       },
+      tournamentstab: {
+        acquired: false,
+      },
     },
   };
   return newState;
