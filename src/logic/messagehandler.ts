@@ -1,4 +1,5 @@
 import { Skills } from "../rules/skills/skill";
+import { Tournaments } from "../rules/tournaments/tournament";
 import { PackMessages } from "./packmanager";
 
 type MessageList =
@@ -7,6 +8,7 @@ type MessageList =
   | "levelupskill"
   | "toggleskill"
   | "addcardtodeck"
+  | "entertournament"
   | "tradecard";
 
 type Message = {
@@ -14,7 +16,11 @@ type Message = {
   data: MessageData;
 };
 
-export type MessageData = GenericMessage | SkillMessage | DeckMessage;
+export type MessageData =
+  | GenericMessage
+  | SkillMessage
+  | DeckMessage
+  | TournamentMessage;
 
 export type GenericMessage = {
   [key: string]: unknown;
@@ -27,6 +33,10 @@ export type SkillMessage = {
 export type DeckMessage = {
   id: number;
   slot: number;
+};
+
+export type TournamentMessage = {
+  id: keyof Tournaments;
 };
 
 type Callback = (message: string) => void;

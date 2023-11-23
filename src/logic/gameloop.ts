@@ -1,11 +1,12 @@
 import { GameState } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
-import RulesHandler, { AllSkills } from "../rules/ruleshandler";
+import RulesHandler, { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
 import MessageHandler, {
   DeckMessage,
   GenericMessage,
   SkillMessage,
+  TournamentMessage,
 } from "./messagehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
 
@@ -154,6 +155,34 @@ export default class GameLoop {
         const index = `slot${data.slot}` as keyof typeof state.deck.cards;
         state.deck.cards[index] = data.id;
         this.stateHandler.updateState(state);
+      }
+
+      if (m.message === "entertournament") {
+        const data = m.data as TournamentMessage;
+        const state = this.stateHandler.getState();
+        const tournament = AllTournaments[data.id];
+        if (state.entities.money.amount >= tournament.entryFee) {
+          state.entities.money.amount -= tournament.entryFee;
+          const win = Math.random() > 0.6;
+          if (win) {
+            const reward =
+              Math.random() > 0.5 ? tournament.reward : tournament.reward / 2;
+            state.entities.money.amount += reward;
+            if (reward === tournament.reward)
+              MessageHandler.sendClientMessage(
+                `You got first place and won ${reward} money`
+              );
+            else
+              MessageHandler.sendClientMessage(
+                `You got second place and won the entry fee back`
+              );
+          } else {
+            MessageHandler.sendClientMessage(`You lost your entry fee`);
+          }
+          this.stateHandler.updateState(state);
+        } else {
+          MessageHandler.sendClientMessage("Not enough money");
+        }
       }
     }
 
