@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        button: "#61dafb",
-        "button-hover": "#2accf8",
-        "button-active": "#99dafb",
+        button: "#34495e",
+        "button-hover": "#2c3e50",
+        "button-active": "#2c3e50",
       },
     },
   },

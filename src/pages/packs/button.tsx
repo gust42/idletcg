@@ -1,6 +1,6 @@
 import React from "react";
-import BulkButton from "./bulkbutton";
 import { Button } from "../../components/button";
+import BulkButton from "./bulkbutton";
 
 interface IButtonProps {
   resource: {
