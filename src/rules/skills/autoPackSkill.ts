@@ -22,4 +22,8 @@ export class AutoPackSkill implements Skill {
   effect(level: number) {
     return this.rule.value + (level - 1);
   }
+
+  friendyEffect(level: number) {
+    return `Opens ${this.effect(level)} packs / tick`;
+  }
 }

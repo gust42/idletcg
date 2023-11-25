@@ -24,4 +24,8 @@ export class ShopkeeperFriendSkill implements Skill {
       ? this.rule.value
       : parseFloat((this.rule.value * 2 ** (-0.05 * level)).toFixed(2));
   }
+
+  friendyEffect(level: number) {
+    return `${this.effect(level) * 100}% cost of packs`;
+  }
 }

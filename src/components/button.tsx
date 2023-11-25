@@ -21,10 +21,10 @@ export const Button = ({
   return (
     <div
       style={{ width, backgroundColor: isDisabled || color }}
-      className={`p-2 text-white bg-button select-none  hover:bg-button-hover w-full rounded text-center ${cursor}`}
+      className={`p-2 text-white uppercase select-none  hover:bg-button-hover  bg-button w-full text-center ${cursor} flex flex-row`}
       onClick={onClick}
     >
-      {children}
+      <div className="flex-grow ">{children}</div>
     </div>
   );
 };

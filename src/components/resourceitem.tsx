@@ -10,11 +10,13 @@ interface IResourceItemProps {
 export default function ResourceItem(props: IResourceItemProps) {
   if (!props.resource.acquired) return null;
   return (
-    <div className="resource">
-      {props.name}:{" "}
-      {props.fixDecimal
-        ? props.resource.amount.toFixed(2)
-        : props.resource.amount}
+    <div>
+      {props.name}{" "}
+      <span className="font-semibold">
+        {props.fixDecimal
+          ? props.resource.amount.toFixed(2)
+          : props.resource.amount}
+      </span>
     </div>
   );
 }
