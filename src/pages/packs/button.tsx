@@ -60,19 +60,17 @@ export default function BuyButton({ disabled, ...props }: IButtonProps) {
   }
 
   return (
-    <div className={"p-2 flex flex-row"}>
-      <Button
-        disabled={isDisabled}
-        width="160px"
-        onClick={(e) => clickEvent(e, 1)}
-      >
+    <div>
+      <Button disabled={isDisabled} onClick={(e) => clickEvent(e, 1)}>
         {props.text}
         <div className="button-cost"> {props.cost} money</div>
       </Button>
-      {x10}
-      {x100}
-      {x1000}
-      {x10000}
+      <div className="flex flex-row gap-4 mt-2">
+        {x10}
+        {x100}
+        {x1000}
+        {x10000}
+      </div>
     </div>
   );
 }

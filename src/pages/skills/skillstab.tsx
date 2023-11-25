@@ -19,9 +19,5 @@ export default function SkillsTab() {
     );
   });
 
-  return (
-    <article style={{ display: "flex", gap: 16, flexDirection: "row" }}>
-      {skills}
-    </article>
-  );
+  return <div className="flex flex-row gap-4 flex-wrap">{skills}</div>;
 }

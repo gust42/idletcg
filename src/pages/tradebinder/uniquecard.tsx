@@ -27,7 +27,7 @@ export default function UniqueCard({
       {trade ? (
         <div className="relative">
           <Card id={-1} />
-          <div className="absolute bottom-0  p-6 w-full">
+          <div className="absolute bottom-0 bg-gray-300 p-1 h-full w-full flex  justify-between flex-col rounded-3xl">
             <p className="italic">Cost</p>
             <div>
               -{Math.floor(cost.badcards * (id + 1) ** increase)} bad cards

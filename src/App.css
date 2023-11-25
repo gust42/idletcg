@@ -69,16 +69,13 @@ body,
 
 nav {
   background-color: #282c34;
-  justify-content: flex-start;
 }
 
 .tab {
-  min-width: 90px;
-  padding: 10px;
+  padding: 6px;
   border-radius: 2px 2px 0 0;
   cursor: pointer;
   color: #fff;
-  margin-left: 10px;
 }
 
 .tab.active {

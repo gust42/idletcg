@@ -21,7 +21,7 @@ export const Button = ({
   return (
     <div
       style={{ width, backgroundColor: isDisabled || color }}
-      className={`p-2 mr-3 text-white bg-button select-none  hover:bg-button-hover w-full rounded text-center ${cursor}`}
+      className={`p-2 text-white bg-button select-none  hover:bg-button-hover w-full rounded text-center ${cursor}`}
       onClick={onClick}
     >
       {children}

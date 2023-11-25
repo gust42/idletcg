@@ -11,26 +11,21 @@ export const Card = ({ id }: ICardsProps) => {
 
   return (
     <div className="w-[100px] h-[150px] md:w-[200px] md:h-[300px]  bg-[#F2E8D7] border-2 md:border-4 rounded-3xl text-center border-black p-1 select-none">
-      <div className="border-2 md:border-4 h-full rounded-3xl border-black flex flex-col justify-between ">
+      <div className="border-2 md:border-4 h-full rounded-3xl border-black flex flex-col ">
         {!card ? (
-          <div className="text-[6em] flex align-middle flex-grow justify-center items-center mb-[140px]">
+          <div className="text-[3em] flex-grow flex justify-center items-center">
             ?
           </div>
         ) : (
           <>
-            <div className="flex flex-row justify-between p-1">
-              <div className=" border-2 md:border-4 w-16 rounded-full border-black p-1">
-                {id + 1}
-              </div>
-              <div className=" border-2 md:border-4 rounded-full border-black p-1">
-                {metaTypes[id % 3]}
-              </div>
-            </div>
-            <div className="text-[6em] mb-10">
+            <div className="text-[4em] flex-grow flex justify-center items-center">
               {String.fromCharCode(parseInt(card.code, 16))}
             </div>
 
-            <div className=" border-t-2 md:border-t-4 border-black p-1 ">
+            <div className=" border-t-2 md:border-t-4 border-black p-1  ">
+              <div className=" border-2 md:border-4 rounded-full border-black p-1">
+                {metaTypes[id % 3]}
+              </div>
               {Math.abs(Math.floor(Math.sin(id) * Math.sin(id) * 100 - 50))}%
               winrate
             </div>

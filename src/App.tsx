@@ -33,8 +33,8 @@ function App() {
   );
 
   return (
-    <div className="flex flex-col h-full text-xs md:text-base items-start">
-      <nav className="flex flex-row items-stretch">
+    <div className="flex flex-col h-full text-xs md:text-base items-stretch">
+      <nav className="flex flex-row gap-3 items-stretch overflow-x-auto">
         {visibleTabs.map((tab) => {
           const Component = tabs[tab as Tabs].component;
           return (
@@ -49,10 +49,10 @@ function App() {
         })}
       </nav>
       <div className="flex flex-row items-stretch flex-grow">
-        <aside className="p-4 bg-gray-300 min-w-fit">
+        <aside className="p-2 bg-gray-300 min-w-fit">
           <ResourceView />
         </aside>
-        <article className="p-4 flex-grow">{CurrentTab}</article>
+        <article className="p-4 flex-grow overflow-auto">{CurrentTab}</article>
       </div>
       <footer className="min-w-[150px]">
         <MessageBox></MessageBox>
