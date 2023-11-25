@@ -33,31 +33,28 @@ function App() {
   );
 
   return (
-    <div className="App">
-      <header className="App-header">IDLE TCG</header>
-      <div className="content">
-        <aside>
+    <div className="flex flex-col h-full text-xs md:text-base items-start">
+      <nav className="flex flex-row items-stretch">
+        {visibleTabs.map((tab) => {
+          const Component = tabs[tab as Tabs].component;
+          return (
+            <Tab
+              key={tab}
+              name={tabs[tab as Tabs].friendlyName}
+              active={activeTab === tab}
+              onClick={() => clickTab(tab, <Component />)}
+              item={gameState.tabs[tab as keyof typeof gameState.tabs]}
+            />
+          );
+        })}
+      </nav>
+      <div className="flex flex-row items-stretch flex-grow">
+        <aside className="p-4 bg-gray-300 min-w-fit">
           <ResourceView />
         </aside>
-        <section>
-          <nav>
-            {visibleTabs.map((tab) => {
-              const Component = tabs[tab as Tabs].component;
-              return (
-                <Tab
-                  key={tab}
-                  name={tabs[tab as Tabs].friendlyName}
-                  active={activeTab === tab}
-                  onClick={() => clickTab(tab, <Component />)}
-                  item={gameState.tabs[tab as keyof typeof gameState.tabs]}
-                />
-              );
-            })}
-          </nav>
-          {CurrentTab}
-        </section>
+        <article className="p-4 flex-grow">{CurrentTab}</article>
       </div>
-      <footer>
+      <footer className="min-w-[150px]">
         <MessageBox></MessageBox>
       </footer>
     </div>

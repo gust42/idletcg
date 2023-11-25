@@ -8,58 +8,6 @@ body,
   box-sizing: border-box;
 }
 
-.App {
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between;
-  height: 100%;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  padding: 10px;
-}
-
-.content {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  text-align: left;
-  height: 100%;
-}
-
-footer {
-  width: 100%;
-  height: 300px;
-}
-
-section {
-  width: calc(100% - 200px);
-}
-
-article {
-  padding: 10px;
-}
-
-aside {
-  min-width: 200px;
-  padding: 10px;
-  background-color: #ccc;
-  height: 100%;
-}
 
 .button-container {
   display: flex;
@@ -121,14 +69,11 @@ aside {
 
 nav {
   background-color: #282c34;
-  width: 100%;
-  display: flex;
-  flex-flow: row;
   justify-content: flex-start;
 }
 
 .tab {
-  width: 120px;
+  min-width: 90px;
   padding: 10px;
   border-radius: 2px 2px 0 0;
   cursor: pointer;
@@ -139,13 +84,4 @@ nav {
 .tab.active {
   background-color: #fff;
   color: #000;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

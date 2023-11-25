@@ -43,6 +43,7 @@ export default class RulesHandler {
       state.entities.money.amount >= this.rules["CardsforSkills"].value
     ) {
       state.tabs.skillstab.acquired = true;
+
       changed = true;
     }
 
@@ -58,7 +59,7 @@ export default class RulesHandler {
       (card) => card !== undefined
     );
 
-    if (fullDeck) {
+    if (Object.keys(state.deck.cards).length > 0 && fullDeck) {
       state.tabs.tournamentstab.acquired = true;
       changed = true;
     }

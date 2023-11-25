@@ -30,7 +30,7 @@ export const Slot = ({ slot, card }: ISlotProps) => {
             });
           else setCardPickerOpen(!cardPickerOpen);
         }}
-        className={`${border} w-[200px] h-[300px] text-center rounded-3xl cursor-pointer`}
+        className={`${border} w-[100px] h-[150px] md:w-[200px] md:h-[300px] text-center rounded-3xl cursor-pointer`}
       >
         {card !== undefined ? (
           <Card id={card} />

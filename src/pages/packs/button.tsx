@@ -63,7 +63,7 @@ export default function BuyButton({ disabled, ...props }: IButtonProps) {
     <div className={"p-2 flex flex-row"}>
       <Button
         disabled={isDisabled}
-        width="230px"
+        width="160px"
         onClick={(e) => clickEvent(e, 1)}
       >
         {props.text}

@@ -14,15 +14,14 @@ export default function TradebinderTab() {
     MessageHandler.recieveMessage("tradecard", { id });
   }
 
-  const myCards = allCards.slice(0, gameState.counters.uniquecards.amount);
+  const myCards = allCards.slice(0, gameState.counters.uniquecards.amount + 1);
 
   return (
     <article className="flex flex-row flex-wrap gap-2">
       {myCards.map((card, index) => {
-        console.log(gameState.counters.uniquecards.amount - 1, index);
         return (
           <UniqueCard
-            trade={gameState.counters.uniquecards.amount - 1 <= index}
+            trade={gameState.counters.uniquecards.amount <= index}
             key={"emj" + card.id}
             click={tradeCard}
             cost={gameRule}

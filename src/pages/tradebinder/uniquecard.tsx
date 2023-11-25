@@ -29,12 +29,14 @@ export default function UniqueCard({
           <Card id={-1} />
           <div className="absolute bottom-0  p-6 w-full">
             <p className="italic">Cost</p>
-            <div>-{Math.floor((cost.badcards * id) ** increase)} bad cards</div>
             <div>
-              -{Math.floor((cost.goodcards * id) ** increase)} good cards
+              -{Math.floor(cost.badcards * (id + 1) ** increase)} bad cards
             </div>
             <div>
-              -{Math.floor((cost.metacards * id) ** increase)} meta cards
+              -{Math.floor(cost.goodcards * (id + 1) ** increase)} good cards
+            </div>
+            <div>
+              -{Math.floor(cost.metacards * (id + 1) ** increase)} meta cards
             </div>
             <Button color="#8a672d" onClick={() => click(id)}>
               Obtain
