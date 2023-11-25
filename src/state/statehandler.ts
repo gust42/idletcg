@@ -1,52 +1,48 @@
+import { proxy } from "valtio";
 import { GameState } from "../interfaces/logic";
 import { MigrationHandler } from "../logic/migrationhandler";
 import { state } from "./state";
 
 type Subscriber = (state: GameState) => void;
 
+let loadedState = state;
+
+const savedState = localStorage.getItem("idletcg.state");
+if (savedState) loadedState = { ...state, ...JSON.parse(savedState) };
+
+const handler = new MigrationHandler();
+const migratedState = handler.migrate(loadedState as never);
+
+export let gameState = proxy(migratedState);
+
 export default class StateHandler {
-  private state: GameState;
   private subscribers: Subscriber[];
 
   constructor() {
-    const handler = new MigrationHandler();
-
-    let loadedState = state;
-
-    const savedState = localStorage.getItem("idletcg.state");
-    if (savedState) loadedState = { ...state, ...JSON.parse(savedState) };
-    this.state = handler.migrate(loadedState as never);
     this.savePersistant();
     this.subscribers = [];
   }
 
   getState(): GameState {
-    return { ...this.state };
+    return { ...gameState };
   }
 
   notify() {
-    const result = { ...this.state };
+    const result = { ...gameState };
     for (const sub of this.subscribers) {
       sub(result);
     }
   }
 
-  setState(state: GameState): GameState {
-    this.state = state;
-    this.notify();
-    this.savePersistant();
-    return { ...this.state };
-  }
-
   updateState(state: Partial<GameState>): GameState {
-    this.state = { ...this.state, ...state };
+    gameState = proxy({ ...gameState, ...state });
     this.notify();
     this.savePersistant();
-    return { ...this.state };
+    return gameState;
   }
 
   savePersistant() {
-    localStorage.setItem("idletcg.state", JSON.stringify(this.state));
+    localStorage.setItem("idletcg.state", JSON.stringify(gameState));
   }
 
   subscribe(callback: Subscriber) {

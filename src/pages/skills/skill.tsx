@@ -35,20 +35,19 @@ export const SkillInfo = ({
   return (
     <div
       className={
-        "border-2 p-1 w-[300px] h-[220px]  flex justify-between gap-2 flex-col " +
+        "border-2 p-2 w-[280px] h-[220px] flex justify-between gap-2 flex-col " +
         (state.acquired
           ? "cursor-auto bg-[#0c3a4d] text-white"
           : "cursor-pointer ")
       }
     >
-      <div className="title">{title}</div>
-      <div className="text-sm italic h-12">{description}</div>
-      <div>Amount: {skill.effect(state.level)}</div>
+      <div className="text-sm">{title}</div>
+      <div className="text-xs italic h-12">{description}</div>
+      <div>Effect</div>
+      <div>{skill.friendyEffect(state.level)}</div>
       {state.acquired ? (
         <>
-          <div className="requirement">
-            Requires {skill.cost(state.level)} money
-          </div>
+          <div className="requirement">-{skill.cost(state.level)} money</div>
           <div className="flex ">
             <Button
               width={skillIsToggleable ? "70%" : undefined}

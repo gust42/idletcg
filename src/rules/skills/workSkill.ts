@@ -22,4 +22,8 @@ export class WorkSkill implements Skill {
   effect(level: number) {
     return this.rule.value + (level - 1) * this.rule.increaseEffect;
   }
+
+  friendyEffect(level: number) {
+    return `${this.effect(level)} money / tick`;
+  }
 }

@@ -20,4 +20,6 @@ export interface Skill {
   cost(level: number): number;
 
   effect(level: number): number;
+
+  friendyEffect(level: number): string;
 }

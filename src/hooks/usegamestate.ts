@@ -1,22 +1,7 @@
-import { useState, useEffect } from "react";
-import GameLoop from "../logic/gameloop";
-import { GameState } from "../interfaces/logic";
+import { useSnapshot } from "valtio";
+import { gameState } from "../state/statehandler";
 export default function useGameState() {
-  const [gameState, setGameState] = useState(
-    GameLoop.getInstance().stateHandler.getState()
-  );
+  const state = useSnapshot(gameState);
 
-  useEffect(() => {
-    function update(state: GameState) {
-      setGameState(state);
-    }
-
-    GameLoop.getInstance().stateHandler.subscribe(update);
-
-    return () => {
-      GameLoop.getInstance().stateHandler.unsubscribe(update);
-    };
-  }, []);
-
-  return gameState;
+  return state;
 }
