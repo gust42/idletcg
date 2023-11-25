@@ -4,7 +4,7 @@ import ResourceItem from "./resourceitem";
 export default function ResourceView() {
   const gameState = useGameState();
   return (
-    <div className="resource-view">
+    <div>
       <h4>Resources</h4>
       <ResourceItem
         name="Money"

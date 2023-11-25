@@ -20,9 +20,9 @@ export const TournamentTab = () => {
   });
 
   return (
-    <div className="p-1">
-      <h1>Tournaments</h1>
-      {tournaments}
+    <div>
+      <h1 className="mb-4">Tournaments</h1>
+      <div className="flex flex-row flex-wrap gap-4">{tournaments}</div>
     </div>
   );
 };
