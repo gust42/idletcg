@@ -1,6 +1,6 @@
 import { GameState } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
-import RulesHandler, { AllSkills, AllTournaments } from "../rules/ruleshandler";
+import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
 import MessageHandler, {
   DeckMessage,
@@ -9,6 +9,7 @@ import MessageHandler, {
   TournamentMessage,
 } from "./messagehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
+import { TournamentManager, TournamentMessages } from "./tournamentmanager";
 
 export default class GameLoop {
   private static instance: GameLoop;
@@ -16,6 +17,7 @@ export default class GameLoop {
   public rulesHandler: RulesHandler;
 
   private packManager: PackManager;
+  private tournamentManager: TournamentManager;
   private lastTime: number;
   private tick: number;
 
@@ -26,6 +28,7 @@ export default class GameLoop {
     this.stateHandler = new StateHandler();
     this.rulesHandler = new RulesHandler();
     this.packManager = new PackManager(this.stateHandler, this.rulesHandler);
+    this.tournamentManager = new TournamentManager(this.stateHandler);
     this.lastTime = 0;
     this.tick = 1000;
   }
@@ -50,6 +53,7 @@ export default class GameLoop {
     if (now - this.lastTime > this.tick) {
       const state = this.stateHandler.getState();
       this.packManager.handleTick();
+      this.tournamentManager.handleTick();
       if (state.skills.workSkill.acquired) {
         const skill = AllSkills.workSkill;
 
@@ -71,6 +75,15 @@ export default class GameLoop {
         this.packManager.handleMessages(
           m.message as PackMessages,
           m.data as PackData
+        );
+      }
+
+      if (
+        TournamentManager.messageList.includes(m.message as TournamentMessages)
+      ) {
+        this.tournamentManager.handleMessages(
+          m.message as TournamentMessages,
+          m.data as TournamentMessage
         );
       }
 
@@ -157,33 +170,33 @@ export default class GameLoop {
         this.stateHandler.updateState(state);
       }
 
-      if (m.message === "entertournament") {
-        const data = m.data as TournamentMessage;
-        const state = this.stateHandler.getState();
-        const tournament = AllTournaments[data.id];
-        if (state.entities.money.amount >= tournament.entryFee) {
-          state.entities.money.amount -= tournament.entryFee;
-          const win = Math.random() > 0.6;
-          if (win) {
-            const reward =
-              Math.random() > 0.5 ? tournament.reward : tournament.reward / 2;
-            state.entities.money.amount += reward;
-            if (reward === tournament.reward)
-              MessageHandler.sendClientMessage(
-                `You got first place and won ${reward} money`
-              );
-            else
-              MessageHandler.sendClientMessage(
-                `You got second place and won the entry fee back`
-              );
-          } else {
-            MessageHandler.sendClientMessage(`You lost your entry fee`);
-          }
-          this.stateHandler.updateState(state);
-        } else {
-          MessageHandler.sendClientMessage("Not enough money");
-        }
-      }
+      // if (m.message === "entertournament") {
+      //   const data = m.data as TournamentMessage;
+      //   const state = this.stateHandler.getState();
+      //   const tournament = AllTournaments[data.id];
+      //   if (state.entities.money.amount >= tournament.entryFee) {
+      //     state.entities.money.amount -= tournament.entryFee;
+      //     const win = Math.random() > 0.6;
+      //     if (win) {
+      //       const reward =
+      //         Math.random() > 0.5 ? tournament.reward : tournament.reward / 2;
+      //       state.entities.money.amount += reward;
+      //       if (reward === tournament.reward)
+      //         MessageHandler.sendClientMessage(
+      //           `You got first place and won ${reward} money`
+      //         );
+      //       else
+      //         MessageHandler.sendClientMessage(
+      //           `You got second place and won the entry fee back`
+      //         );
+      //     } else {
+      //       MessageHandler.sendClientMessage(`You lost your entry fee`);
+      //     }
+      //     this.stateHandler.updateState(state);
+      //   } else {
+      //     MessageHandler.sendClientMessage("Not enough money");
+      //   }
+      // }
     }
 
     let state = this.stateHandler.getState();
