@@ -15,16 +15,16 @@ export const Card = ({ id, size = "medium" }: ICardsProps) => {
   let meta = "border-2 md:border-4 rounded-full border-black p-1";
 
   if (size === "small") {
-    pxs = "w-[50px] h-[75px] md:w-[100px] md:h-[150px]";
+    pxs = "w-[60px] h-[90px] md:w-[100px] md:h-[150px]";
     pic = "text-[2em]";
     meta = "border-1 md:border-2 rounded-full border-black p-0.5";
   }
 
   return (
     <div
-      className={`${pxs} bg-[#F2E8D7] border-2 md:border-4 rounded-3xl text-center border-black p-1 select-none`}
+      className={`${pxs} bg-[#faefdc]  rounded-3xl text-center border-black p-1 select-none`}
     >
-      <div className="border-2 md:border-4 h-full rounded-3xl border-black flex flex-col ">
+      <div className=" bg-[#F2E8D7] h-full rounded-3xl border-black flex flex-col ">
         {!card ? (
           <div className="text-[3em] flex-grow flex justify-center items-center">
             ?

@@ -156,8 +156,6 @@ export default class GameLoop {
             state.entities.metacards.amount - metacardCost
           );
           this.stateHandler.updateState({});
-        } else {
-          MessageHandler.sendClientMessage(fail);
         }
       }
 
@@ -170,33 +168,9 @@ export default class GameLoop {
         this.stateHandler.updateState(state);
       }
 
-      // if (m.message === "entertournament") {
-      //   const data = m.data as TournamentMessage;
-      //   const state = this.stateHandler.getState();
-      //   const tournament = AllTournaments[data.id];
-      //   if (state.entities.money.amount >= tournament.entryFee) {
-      //     state.entities.money.amount -= tournament.entryFee;
-      //     const win = Math.random() > 0.6;
-      //     if (win) {
-      //       const reward =
-      //         Math.random() > 0.5 ? tournament.reward : tournament.reward / 2;
-      //       state.entities.money.amount += reward;
-      //       if (reward === tournament.reward)
-      //         MessageHandler.sendClientMessage(
-      //           `You got first place and won ${reward} money`
-      //         );
-      //       else
-      //         MessageHandler.sendClientMessage(
-      //           `You got second place and won the entry fee back`
-      //         );
-      //     } else {
-      //       MessageHandler.sendClientMessage(`You lost your entry fee`);
-      //     }
-      //     this.stateHandler.updateState(state);
-      //   } else {
-      //     MessageHandler.sendClientMessage("Not enough money");
-      //   }
-      // }
+      if (m.message === "clearmessages") {
+        MessageHandler.sendClientMessage("", { clear: true });
+      }
     }
 
     let state = this.stateHandler.getState();

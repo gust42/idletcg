@@ -40,7 +40,6 @@ export class TournamentManager {
           Math.floor(Math.sin(opponentCard) * Math.sin(opponentCard) * 100 - 50)
         );
 
-        state.activities.tournament.gameRound++;
         if (myWinRate < opponentWinRate) {
           console.log(
             "lost game in round",
@@ -50,6 +49,8 @@ export class TournamentManager {
           );
 
           state.activities.tournament = undefined;
+
+          this.stateHandler.updateState(state);
           return;
         }
 
@@ -58,6 +59,8 @@ export class TournamentManager {
           state.activities.tournament.currentOpponent++;
           state.activities.tournament.tournamentRound++;
         }
+
+        state.activities.tournament.gameRound++;
         this.stateHandler.updateState(state);
       } else {
         // End tournament
@@ -76,6 +79,8 @@ export class TournamentManager {
         );
 
         state.activities.tournament = undefined;
+
+        this.stateHandler.updateState(state);
       }
     }
   }
@@ -86,6 +91,7 @@ export class TournamentManager {
 
     switch (message) {
       case "entertournament":
+        if (state.entities.money.amount < tournament.entryFee) return;
         state.entities.money.amount -= tournament.entryFee;
         state.activities.tournament = {
           id: data.id,

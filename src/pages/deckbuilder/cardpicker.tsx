@@ -24,7 +24,7 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
   myCards = myCards.filter((card) => !cardsToRemove.includes(card.id));
   return (
     <>
-      <div className="absolute p-16 z-10 bg-white top-[100px] left-[100px] right-[100px] w-auto overflow-y-auto rounded shadow-md ">
+      <div className="absolute p-4 z-10 bg-white top-4 left-0 right-0 md:top-[100px] md:left-[100px] md:right-[100px] w-auto overflow-y-auto rounded shadow-md ">
         <h2 className="text-xl mb-6">Choose a card for this slot</h2>
         <div className="flex flex-row flex-wrap gap-2">
           {myCards.map((card) => (
