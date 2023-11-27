@@ -36,7 +36,7 @@ export default function UniqueCard({
 
   let notEnoughCards = false;
 
-  let badCardsElement = <>-{costBadCards} bad cards</>;
+  let badCardsElement = <>{costBadCards} bad cards</>;
   if (
     state.entities.badcards.amount <
     Math.floor(cost.badcards * (id + 1) ** increase)
@@ -45,7 +45,7 @@ export default function UniqueCard({
     notEnoughCards = true;
   }
 
-  let goodCardsElement = <>-{costGoodCards} good cards</>;
+  let goodCardsElement = <>{costGoodCards} good cards</>;
   if (
     state.entities.goodcards.amount <
     Math.floor(cost.goodcards * (id + 1) ** increase)
@@ -54,7 +54,7 @@ export default function UniqueCard({
     notEnoughCards = true;
   }
 
-  let metaCardsElement = <>-{costMetaCards} meta cards</>;
+  let metaCardsElement = <>{costMetaCards} meta cards</>;
 
   if (
     state.entities.metacards.amount <
@@ -74,11 +74,12 @@ export default function UniqueCard({
             <div>{goodCardsElement}</div>
             <div>{metaCardsElement}</div>
             <Button
+              action="Trade"
               disabled={notEnoughCards}
               color="#8a672d"
               onClick={() => click(id)}
             >
-              Obtain
+              Card
             </Button>
           </div>
         </div>

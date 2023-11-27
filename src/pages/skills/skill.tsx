@@ -1,4 +1,6 @@
 import { Button } from "../../components/button";
+import { Container } from "../../components/container";
+import useGameState from "../../hooks/usegamestate";
 import { SkillState } from "../../interfaces/logic";
 import MessageHandler from "../../logic/messagehandler";
 import { Skill, Skills } from "../../rules/skills/skill";
@@ -18,6 +20,7 @@ export const SkillInfo = ({
   title,
   description,
 }: ISkillProps) => {
+  const gameState = useGameState();
   function unlockSkill() {
     MessageHandler.recieveMessage("unlockskill", { name });
   }
@@ -33,47 +36,62 @@ export const SkillInfo = ({
   const skillIsToggleable = state.on !== undefined;
 
   return (
-    <div
-      className={
-        "border-2 p-2 w-[280px] h-[220px] flex justify-between gap-2 flex-col " +
-        (state.acquired
-          ? "cursor-auto bg-[#0c3a4d] text-white"
-          : "cursor-pointer ")
-      }
-    >
-      <div className="text-sm">{title}</div>
-      <div className="text-xs italic h-12">{description}</div>
-      <div>Effect</div>
-      <div>{skill.friendyEffect(state.level)}</div>
-      {state.acquired ? (
-        <>
-          <div className="requirement">-{skill.cost(state.level)} money</div>
-          <div className="flex ">
-            <Button
-              width={skillIsToggleable ? "70%" : undefined}
-              onClick={levelUp}
-            >
-              Level +1 ({state.level})
-            </Button>
-            {skillIsToggleable && (
+    <Container>
+      <div
+        className={
+          "w-full md:w-[280px] h-[220px] flex justify-between gap-2 flex-col " +
+          (state.acquired ? "cursor-auto" : "cursor-pointer ")
+        }
+      >
+        <div className="text-sm">{title}</div>
+        <div className="text-xs italic h-12">{description}</div>
+        <div className="font-semibold">Effect</div>
+        <div>{skill.friendyEffect(state.level)}</div>
+        {state.acquired ? (
+          <>
+            <div className="border-t border-b pb-1 pt-1 border-t-slate-800 border-b-slate-800">
+              cost {skill.cost(state.level)} money
+            </div>
+            <div className="flex ">
               <Button
-                color={state.on ? "#8BC34A" : "#FF6347"}
-                width="30%"
-                onClick={toggleSkill}
+                action="Levelup"
+                width={skillIsToggleable ? "60%" : undefined}
+                onClick={levelUp}
+                disabled={
+                  gameState.entities.money.amount < skill.cost(state.level)
+                }
               >
-                {state.on ? "On" : "Off"}
+                +1 ({state.level})
               </Button>
-            )}
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="requirement">
-            Requires {skill.rule.requirement} money
-          </div>
-          <Button onClick={unlockSkill}>Unlock</Button>
-        </>
-      )}
-    </div>
+              {skillIsToggleable && (
+                <Button
+                  action="toggle"
+                  color={state.on ? "#8BC34A" : "#FF6347"}
+                  width="40%"
+                  onClick={toggleSkill}
+                >
+                  {state.on ? "On" : "Off"}
+                </Button>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="border-t border-b pb-1 pt-1 border-t-slate-800 border-b-slate-800">
+              Requires {skill.rule.requirement} money
+            </div>
+            <Button
+              action="buy"
+              onClick={unlockSkill}
+              disabled={
+                gameState.entities.money.amount < skill.rule.requirement
+              }
+            >
+              Unlock
+            </Button>
+          </>
+        )}
+      </div>
+    </Container>
   );
 };

@@ -36,7 +36,7 @@ export default function PacksTab() {
   return (
     <article className="flex flex-col gap-5">
       <BuyButton
-        text="Open pack"
+        text="Pack"
         type="buy"
         click={openPack}
         resource={gameState.entities.money}
@@ -44,21 +44,21 @@ export default function PacksTab() {
         disabled={gameState.entities.money.amount < packCostRule.value}
       ></BuyButton>
       <BuyButton
-        text={`Sell bad card (${gameState.entities.badcards.amount})`}
+        text={`Bad card (${gameState.entities.badcards.amount})`}
         type="sell"
         click={sellBadCards}
         resource={gameState.entities.badcards}
         cost={badSellValueRule.value}
       ></BuyButton>
       <BuyButton
-        text={`Sell good card (${gameState.entities.goodcards.amount})`}
+        text={`Good card (${gameState.entities.goodcards.amount})`}
         type="sell"
         click={sellGoodCards}
         resource={gameState.entities.goodcards}
         cost={goodSellValueRule.value}
       ></BuyButton>
       <BuyButton
-        text={`Sell meta card (${gameState.entities.metacards.amount})`}
+        text={`Meta card (${gameState.entities.metacards.amount})`}
         type="sell"
         click={sellMetaCards}
         resource={gameState.entities.metacards}

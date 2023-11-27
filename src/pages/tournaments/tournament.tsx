@@ -1,4 +1,5 @@
 import { Button } from "../../components/button";
+import { Container } from "../../components/container";
 import { Tournament, Tournaments } from "../../rules/tournaments/tournament";
 
 interface ITournamentProps {
@@ -13,13 +14,15 @@ export const TournamentInfo = ({
   onClick,
 }: ITournamentProps) => {
   return (
-    <div className="w-full md:w-1/4 min-w-min p-4 border bg-slate-400 border-slate-600">
+    <Container>
       <h2 className="mb-4 text-lg">{tournament.name}</h2>
       <p className="italic mb-4">{tournament.description}</p>
       <p className="font-bold mb-4">Rewards</p>
       <p className="font-semibold mb-4">1 - {tournament.reward} money</p>
       <p className="font-semibold mb-4">2 - {tournament.reward / 2} money</p>
-      <Button onClick={() => onClick(id)}>Enter ({tournament.entryFee})</Button>
-    </div>
+      <Button action="SIGNUP" onClick={() => onClick(id)}>
+        Enter ({tournament.entryFee})
+      </Button>
+    </Container>
   );
 };
