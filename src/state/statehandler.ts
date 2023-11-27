@@ -3,8 +3,6 @@ import { GameState } from "../interfaces/logic";
 import { MigrationHandler } from "../logic/migrationhandler";
 import { state } from "./state";
 
-type Subscriber = (state: GameState) => void;
-
 let loadedState = state;
 
 const savedState = localStorage.getItem("idletcg.state");
@@ -16,12 +14,7 @@ const migratedState = handler.migrate(loadedState as never);
 export let gameState = proxy(migratedState);
 
 export default class StateHandler {
-  private subscribers: Subscriber[];
-
-  constructor() {
-    this.savePersistant();
-    this.subscribers = [];
-  }
+  constructor() {}
 
   getState(): GameState {
     return { ...gameState };
