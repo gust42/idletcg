@@ -4,7 +4,7 @@ export class CasualWednesday implements Tournament {
   name = "Casual Wednesday";
   description = "A casual tournament for the Timmys.";
   entryFee = 5000;
-  reward = 10000;
+  reward = 100000;
   opponents = [
     {
       deck: {

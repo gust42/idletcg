@@ -26,4 +26,5 @@ export type Rules = {
   CardsForTradebinder: Rule;
   CardsforSkills: Rule;
   CostForUniqueCards: CostForUniqueCards;
+  TournamentRoundTicks: Rule;
 };

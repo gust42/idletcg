@@ -12,12 +12,12 @@ export const Card = ({ id, size = "medium" }: ICardsProps) => {
 
   let pxs = "w-[100px] h-[150px] md:w-[200px] md:h-[300px]";
   let pic = "text-[4em]";
-  let meta = "border-2 md:border-4 rounded-full border-black p-1";
+  let meta = "";
 
   if (size === "small") {
     pxs = "w-[60px] h-[90px] md:w-[100px] md:h-[150px]";
     pic = "text-[2em]";
-    meta = "border-1 md:border-2 rounded-full border-black p-0.5";
+    meta = "";
   }
 
   return (
@@ -26,9 +26,7 @@ export const Card = ({ id, size = "medium" }: ICardsProps) => {
     >
       <div className=" bg-[#F2E8D7] h-full rounded-3xl border-black flex flex-col ">
         {!card ? (
-          <div className="text-[3em] flex-grow flex justify-center items-center">
-            ?
-          </div>
+          ""
         ) : (
           <>
             <div
