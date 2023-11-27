@@ -30,36 +30,27 @@ export default function UniqueCard({
 }: IUniqueCardProps) {
   const state = useGameState();
 
-  const costBadCards = Math.floor(cost.badcards * (id + 1) ** increase);
-  const costGoodCards = Math.floor(cost.goodcards * (id + 1) ** increase);
-  const costMetaCards = Math.floor(cost.metacards * (id + 1) ** increase);
+  const costBadCards = Math.floor((cost.badcards * (id + 1)) ** increase);
+  const costGoodCards = Math.floor((cost.goodcards * (id + 1)) ** increase);
+  const costMetaCards = Math.floor((cost.metacards * (id + 1)) ** increase);
 
   let notEnoughCards = false;
 
   let badCardsElement = <>{costBadCards} bad cards</>;
-  if (
-    state.entities.badcards.amount <
-    Math.floor(cost.badcards * (id + 1) ** increase)
-  ) {
+  if (state.entities.badcards.amount < costBadCards) {
     badCardsElement = <NotEnough>{badCardsElement}</NotEnough>;
     notEnoughCards = true;
   }
 
   let goodCardsElement = <>{costGoodCards} good cards</>;
-  if (
-    state.entities.goodcards.amount <
-    Math.floor(cost.goodcards * (id + 1) ** increase)
-  ) {
+  if (state.entities.goodcards.amount < costGoodCards) {
     goodCardsElement = <NotEnough>{goodCardsElement}</NotEnough>;
     notEnoughCards = true;
   }
 
   let metaCardsElement = <>{costMetaCards} meta cards</>;
 
-  if (
-    state.entities.metacards.amount <
-    Math.floor(cost.metacards * (id + 1) ** increase)
-  ) {
+  if (state.entities.metacards.amount < costMetaCards) {
     metaCardsElement = <NotEnough>{metaCardsElement}</NotEnough>;
     notEnoughCards = true;
   }

@@ -22,7 +22,7 @@ export default function ResourceItem({
     const changeAmount = resource.amount - oldValue;
     const color = changeAmount > 0 ? "text-green-600" : "text-red-600";
     if (changeAmount !== 0)
-      change = <span className={`${color}`}>({changeAmount})</span>;
+      change = <span className={`${color}`}>({changeAmount.toFixed(2)})</span>;
   }
 
   return (
