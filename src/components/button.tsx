@@ -5,6 +5,8 @@ interface IButtonProps {
   width?: string;
   color?: `#${string}`;
   disabled?: boolean;
+  action: string;
+  value?: string;
 }
 
 export const Button = ({
@@ -13,6 +15,7 @@ export const Button = ({
   color,
   disabled,
   children,
+  action = "Buy",
 }: PropsWithChildren<IButtonProps>) => {
   const isDisabled = disabled ? "#bbb" : "";
 
@@ -26,10 +29,16 @@ export const Button = ({
   };
 
   return (
-    <div style={{ width }} className="p-1 bg-slate-500 rounded w-full ">
+    <div
+      style={{ width }}
+      className="p-1 bg-slate-500 uppercase rounded w-full flex flex-row items-stretch  "
+    >
+      <div className="p-1 text-white bg-slate-800 flex items-center">
+        {disabled ? "-" : action}
+      </div>
       <button
         style={{ backgroundColor: isDisabled || color }}
-        className={`p-1 text-white uppercase w-full rounded-none ${reset} hover:bg-button-hover border-slate-800  bg-slate-700 text-center ${cursor} flex flex-row`}
+        className={`p-1 text-white  flex-grow rounded-none ${reset} hover:bg-button-hover border-slate-800  bg-slate-700 text-center ${cursor} flex flex-row`}
         onClick={onPress}
       >
         <div className="flex-grow ">{children}</div>
