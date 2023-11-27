@@ -14,10 +14,20 @@ const migratedState = handler.migrate(loadedState as never);
 export let gameState = proxy(migratedState);
 
 export default class StateHandler {
+  private stateHistory: GameState = gameState;
+
   constructor() {}
 
   getState(): GameState {
     return { ...gameState };
+  }
+
+  getStateHistory() {
+    return this.stateHistory;
+  }
+
+  saveStateHistory(state: GameState) {
+    this.stateHistory = JSON.parse(JSON.stringify(state));
   }
 
   updateState(state: Partial<GameState>): GameState {

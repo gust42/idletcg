@@ -52,6 +52,7 @@ export default class GameLoop {
   loop(now: number) {
     if (now - this.lastTime > this.tick) {
       const state = this.stateHandler.getState();
+      this.stateHandler.saveStateHistory(state);
       this.packManager.handleTick();
       this.tournamentManager.handleTick();
       if (state.skills.workSkill.acquired) {

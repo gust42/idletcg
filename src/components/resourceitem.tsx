@@ -5,18 +5,33 @@ interface IResourceItemProps {
   };
   name: string;
   fixDecimal?: boolean;
+  oldValue: number;
 }
 
-export default function ResourceItem(props: IResourceItemProps) {
-  if (!props.resource.acquired) return null;
+export default function ResourceItem({
+  name,
+  resource,
+  fixDecimal,
+  oldValue,
+}: IResourceItemProps) {
+  if (!resource.acquired) return null;
+
+  let change = <></>;
+
+  if (oldValue) {
+    const changeAmount = resource.amount - oldValue;
+    const color = changeAmount > 0 ? "text-green-600" : "text-red-600";
+    if (changeAmount !== 0)
+      change = <span className={`${color}`}>({changeAmount})</span>;
+  }
+
   return (
     <div>
-      {props.name}{" "}
+      <div>{name}</div>
       <span className="font-semibold">
-        {props.fixDecimal
-          ? props.resource.amount.toFixed(2)
-          : props.resource.amount}
-      </span>
+        {fixDecimal ? resource.amount.toFixed(2) : resource.amount}
+      </span>{" "}
+      {change}
     </div>
   );
 }
