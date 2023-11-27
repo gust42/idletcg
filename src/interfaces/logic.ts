@@ -1,3 +1,5 @@
+import { Tournaments } from "../rules/tournaments/tournament";
+
 export interface Entity {
   amount: number;
   acquired: boolean;
@@ -64,5 +66,14 @@ export interface GameState {
     tradebindertab: Tab;
     deckbuildertab: Tab;
     tournamentstab: Tab;
+  };
+  activities: {
+    tournament?: {
+      id: keyof Tournaments;
+      deck: Deck;
+      currentOpponent: number;
+      gameRound: number;
+      tournamentRound: number;
+    };
   };
 }

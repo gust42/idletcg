@@ -9,6 +9,7 @@ type MessageList =
   | "toggleskill"
   | "addcardtodeck"
   | "entertournament"
+  | "clearmessages"
   | "tradecard";
 
 type Message = {
@@ -39,7 +40,9 @@ export type TournamentMessage = {
   id: keyof Tournaments;
 };
 
-type Callback = (message: string) => void;
+export type ClientMessageData = Record<string, unknown>;
+
+type Callback = (message: string, data: ClientMessageData) => void;
 
 export default class MessageHandler {
   static messageQue: Message[] = [];
@@ -62,9 +65,9 @@ export default class MessageHandler {
     return tmp;
   }
 
-  static sendClientMessage(message: string) {
+  static sendClientMessage(message: string, data: ClientMessageData = {}) {
     this.clientSubscriptions.forEach((callback: Callback) => {
-      callback(message);
+      callback(message, data);
     });
   }
 

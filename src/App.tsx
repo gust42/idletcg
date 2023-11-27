@@ -8,6 +8,7 @@ import useGameState from "./hooks/usegamestate";
 import GameLoop from "./logic/gameloop";
 import PacksTab from "./pages/packs/packstab";
 import { Tabs, tabs } from "./rules/tabs";
+import MessageHandler from "./logic/messagehandler";
 
 function App() {
   const [CurrentTab, setCurrentTab] = useState(<PacksTab />);
@@ -26,6 +27,7 @@ function App() {
   function clickTab(id: string, type: JSX.Element) {
     setActiveTab(id);
     setCurrentTab(type);
+    MessageHandler.recieveMessage("clearmessages", {});
   }
 
   const visibleTabs = Object.keys(tabs).filter(
@@ -52,12 +54,12 @@ function App() {
         <aside className="p-2 bg-gray-300 min-w-[120px] md:min-w-[160px]">
           <ResourceView />
         </aside>
-        <article className="p-4 flex-grow overflow-auto pb-14">
+        <article className="p-2 md:p-4 flex-grow overflow-auto pb-14">
           {CurrentTab}
         </article>
       </div>
       <footer className="fixed md:block bottom-0 right left-0 right-0">
-        <MessageBox></MessageBox>
+        <MessageBox />
       </footer>
     </div>
   );

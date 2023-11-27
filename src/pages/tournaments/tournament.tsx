@@ -13,7 +13,7 @@ export const TournamentInfo = ({
   onClick,
 }: ITournamentProps) => {
   return (
-    <div className="w-full md:w-1/4 min-w-min p-4 border-2 border-black rounded-3xl">
+    <div className="w-full md:w-1/4 min-w-min p-4 border bg-slate-400 border-slate-600">
       <h2 className="mb-4 text-lg">{tournament.name}</h2>
       <p className="italic mb-4">{tournament.description}</p>
       <p className="font-bold mb-4">Rewards</p>

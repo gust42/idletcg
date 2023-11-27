@@ -34,7 +34,7 @@ export default function PacksTab() {
   }
 
   return (
-    <article className="flex flex-col gap-4">
+    <article className="flex flex-col gap-5">
       <BuyButton
         text="Open pack"
         type="buy"

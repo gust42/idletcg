@@ -27,30 +27,13 @@ export default class StateHandler {
     return { ...gameState };
   }
 
-  notify() {
-    const result = { ...gameState };
-    for (const sub of this.subscribers) {
-      sub(result);
-    }
-  }
-
   updateState(state: Partial<GameState>): GameState {
     gameState = proxy({ ...gameState, ...state });
-    this.notify();
     this.savePersistant();
     return gameState;
   }
 
   savePersistant() {
     localStorage.setItem("idletcg.state", JSON.stringify(gameState));
-  }
-
-  subscribe(callback: Subscriber) {
-    this.subscribers.push(callback);
-  }
-
-  unsubscribe(callback: Subscriber) {
-    const index = this.subscribers.findIndex((c) => c === callback);
-    this.subscribers.splice(index, 1);
   }
 }
