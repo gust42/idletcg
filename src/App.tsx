@@ -6,9 +6,9 @@ import ResourceView from "./components/resourceview";
 import Tab from "./components/tab";
 import useGameState from "./hooks/usegamestate";
 import GameLoop from "./logic/gameloop";
+import MessageHandler from "./logic/messagehandler";
 import PacksTab from "./pages/packs/packstab";
 import { Tabs, tabs } from "./rules/tabs";
-import MessageHandler from "./logic/messagehandler";
 
 function App() {
   const [CurrentTab, setCurrentTab] = useState(<PacksTab />);
@@ -51,7 +51,7 @@ function App() {
         })}
       </nav>
       <div className="flex flex-row items-stretch flex-grow">
-        <aside className="p-2 bg-gray-300 min-w-[120px] md:min-w-[160px]">
+        <aside className="p-2 bg-gray-300 min-w-[140px] md:min-w-[180px]">
           <ResourceView />
         </aside>
         <article className="p-2 md:p-4 flex-grow overflow-auto pb-14">

@@ -16,7 +16,7 @@ interface IButtonProps {
 
 export default function BuyButton({ disabled, ...props }: IButtonProps) {
   const isDisabled = props.resource.amount === 0 || disabled ? true : false;
-  function clickEvent(_e: React.MouseEvent<HTMLButtonElement>, amount: number) {
+  function clickEvent(_e: React.MouseEvent<HTMLDivElement>, amount: number) {
     if (disabled) return;
 
     if (props.click) props.click(amount);

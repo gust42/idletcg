@@ -1,7 +1,7 @@
 import { Button } from "../../components/button";
 
 interface BulkButtonProps {
-  click: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  click: (e: React.MouseEvent<HTMLDivElement>) => void;
   amount: number;
   action?: string;
 }

@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 
 interface IButtonProps {
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
   width?: string;
   color?: `#${string}`;
   disabled?: boolean;
@@ -21,9 +21,10 @@ export const Button = ({
 
   const cursor = disabled ? "cursor-not-allowed" : "cursor-pointer";
 
-  const reset = "outline-none active:outline-none focus:outline-none";
+  const reset =
+    "outline-none hover:border-slate-800 active:border-border-slate-800 active:outline-none active:bg-none focus:outline-none rounded-none";
 
-  const onPress = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onPress = (e: React.MouseEvent<HTMLDivElement>) => {
     if (disabled) return;
     onClick(e);
   };
@@ -31,19 +32,21 @@ export const Button = ({
   return (
     <div
       style={{ width }}
-      className="p-1 bg-slate-500 uppercase rounded w-full flex flex-row items-stretch  "
+      className="p-1 bg-slate-500 uppercase rounded  hover:bg-slate-800 w-full flex flex-row items-stretch  "
+      onClick={onPress}
     >
-      <div
-        className={`p-1 text-white ${
-          disabled ? "bg-[#bbb]" : "bg-slate-800"
-        } flex items-center`}
-      >
-        {disabled ? "-" : action}
-      </div>
+      {disabled ? (
+        ""
+      ) : (
+        <button
+          className={`uppercase ${reset} p-1 text-white bg-slate-800 flex items-center`}
+        >
+          {action}
+        </button>
+      )}
       <button
         style={{ backgroundColor: isDisabled || color }}
-        className={`p-1 text-white  flex-grow rounded-none ${reset} hover:bg-button-hover border-slate-800  bg-slate-700 text-center ${cursor} flex flex-row`}
-        onClick={onPress}
+        className={`uppercase p-1 text-white  flex-grow rounded-none ${reset} border-slate-800  bg-slate-700 text-center ${cursor} flex flex-row`}
       >
         <div className="flex-grow ">{children}</div>
       </button>

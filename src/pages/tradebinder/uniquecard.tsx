@@ -59,7 +59,7 @@ export default function UniqueCard({
       {trade ? (
         <div className="relative">
           <Card id={-1} />
-          <div className="absolute bottom-0 bg-gray-300 p-1 pt-4 pb-4 h-full w-full flex  justify-between flex-col rounded-3xl">
+          <div className="absolute bottom-0 top-0 right-0 left-0 bg-[#00000020] p-1 pt-4 pb-4  flex  justify-between flex-col rounded-3xl">
             <p className="italic">Cost</p>
             <div>{badCardsElement}</div>
             <div>{goodCardsElement}</div>
@@ -67,7 +67,6 @@ export default function UniqueCard({
             <Button
               action="Trade"
               disabled={notEnoughCards}
-              color="#8a672d"
               onClick={() => click(id)}
             >
               Card

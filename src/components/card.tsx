@@ -26,9 +26,7 @@ export const Card = ({ id, size = "medium" }: ICardsProps) => {
     >
       <div className=" bg-[#F2E8D7] h-full rounded-3xl border-black flex flex-col ">
         {!card ? (
-          <div className="text-[3em] flex-grow flex justify-center items-center">
-            ?
-          </div>
+          ""
         ) : (
           <>
             <div
