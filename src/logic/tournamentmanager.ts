@@ -1,6 +1,7 @@
 import { AllTournaments } from "../rules/ruleshandler";
 import { Tournaments } from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
+import RulesHandler from "./../rules/ruleshandler";
 
 export type TournamentMessages = "entertournament";
 
@@ -11,11 +12,25 @@ export class TournamentManager {
 
   private stateHandler: StateHandler;
 
-  constructor(stateHandler: StateHandler) {
+  private rulesHandler: RulesHandler;
+
+  private tickCounter = 0;
+
+  constructor(stateHandler: StateHandler, rulesHandler: RulesHandler) {
     this.stateHandler = stateHandler;
+    this.rulesHandler = rulesHandler;
+
+    this.tickCounter = this.rulesHandler.getRuleValue("TournamentRoundTicks");
   }
 
   public handleTick() {
+    if (
+      this.tickCounter < this.rulesHandler.getRuleValue("TournamentRoundTicks")
+    ) {
+      this.tickCounter++;
+      return;
+    }
+    this.tickCounter = 0;
     const state = this.stateHandler.getState();
     if (state.activities.tournament) {
       const tournament = AllTournaments[state.activities.tournament.id];
@@ -40,7 +55,7 @@ export class TournamentManager {
           Math.floor(Math.sin(opponentCard) * Math.sin(opponentCard) * 100 - 50)
         );
 
-        if (myWinRate < opponentWinRate) {
+        if (myWinRate <= opponentWinRate) {
           console.log(
             "lost game in round",
             state.activities.tournament.gameRound,
@@ -58,9 +73,9 @@ export class TournamentManager {
           state.activities.tournament.gameRound = 0;
           state.activities.tournament.currentOpponent++;
           state.activities.tournament.tournamentRound++;
+        } else {
+          state.activities.tournament.gameRound++;
         }
-
-        state.activities.tournament.gameRound++;
         this.stateHandler.updateState(state);
       } else {
         // End tournament
@@ -81,6 +96,10 @@ export class TournamentManager {
         state.activities.tournament = undefined;
 
         this.stateHandler.updateState(state);
+
+        this.tickCounter = this.rulesHandler.getRuleValue(
+          "TournamentRoundTicks"
+        );
       }
     }
   }

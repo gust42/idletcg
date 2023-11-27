@@ -28,7 +28,10 @@ export default class GameLoop {
     this.stateHandler = new StateHandler();
     this.rulesHandler = new RulesHandler();
     this.packManager = new PackManager(this.stateHandler, this.rulesHandler);
-    this.tournamentManager = new TournamentManager(this.stateHandler);
+    this.tournamentManager = new TournamentManager(
+      this.stateHandler,
+      this.rulesHandler
+    );
     this.lastTime = 0;
     this.tick = 1000;
   }
