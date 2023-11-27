@@ -33,7 +33,11 @@ export const Button = ({
       style={{ width }}
       className="p-1 bg-slate-500 uppercase rounded w-full flex flex-row items-stretch  "
     >
-      <div className="p-1 text-white bg-slate-800 flex items-center">
+      <div
+        className={`p-1 text-white ${
+          disabled ? "bg-[#bbb]" : "bg-slate-800"
+        } flex items-center`}
+      >
         {disabled ? "-" : action}
       </div>
       <button

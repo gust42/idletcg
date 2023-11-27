@@ -51,7 +51,7 @@ function App() {
         })}
       </nav>
       <div className="flex flex-row items-stretch flex-grow">
-        <aside className="p-2 bg-gray-300 min-w-[100px] md:min-w-[160px]">
+        <aside className="p-2 bg-gray-300 min-w-[120px] md:min-w-[160px]">
           <ResourceView />
         </aside>
         <article className="p-2 md:p-4 flex-grow overflow-auto pb-14">
