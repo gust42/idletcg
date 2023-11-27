@@ -9,7 +9,7 @@ export default function MessageBox() {
     <div className="message-box">
       {messages.map((m, i) => {
         return (
-          <div key={i} className="message">
+          <div key={i} className="message p-2">
             {m}
           </div>
         );
