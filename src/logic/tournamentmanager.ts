@@ -28,12 +28,12 @@ export class TournamentManager {
   }
 
   public handleTick() {
-    // if (
-    //   this.tickCounter < this.rulesHandler.getRuleValue("TournamentRoundTicks")
-    // ) {
-    //   this.tickCounter++;
-    //   return;
-    // }
+    if (
+      this.tickCounter < this.rulesHandler.getRuleValue("TournamentRoundTicks")
+    ) {
+      this.tickCounter++;
+      return;
+    }
     this.tickCounter = 0;
     const state = this.stateHandler.getState();
     if (state.activities.tournament && state.logs.tournament) {

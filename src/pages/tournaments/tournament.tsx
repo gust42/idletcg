@@ -21,7 +21,9 @@ export const TournamentInfo = ({
       <p className="font-semibold mb-4">
         12 points - {tournament.reward} money
       </p>
-      <p className="font-semibold mb-4">9 - {tournament.reward / 2} money</p>
+      <p className="font-semibold mb-4">
+        9 points - {tournament.reward / 2} money
+      </p>
       <Button action="SIGNUP" onClick={() => onClick(id)}>
         Enter ({tournament.entryFee})
       </Button>

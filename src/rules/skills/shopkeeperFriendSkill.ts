@@ -22,9 +22,7 @@ export class ShopkeeperFriendSkill implements Skill {
   effect(level: number) {
     return level === 1
       ? this.rule.value
-      : Math.floor(
-          parseFloat((this.rule.value * 2 ** (-0.05 * level)).toFixed(2))
-        );
+      : parseFloat((this.rule.value * 2 ** (-0.05 * level)).toFixed(2));
   }
 
   friendyEffect(level: number) {

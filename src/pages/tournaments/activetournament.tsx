@@ -25,9 +25,8 @@ export const ActiveTournament = () => {
     const myWinRate = generateWinRatio(myCard);
     const opponentWinRate = generateWinRatio(opponentCard);
     play.push(
-      <div key={i} className="flex flex-row gap-4 items-center">
+      <div key={i} className="flex flex-row gap-2 items-center  justify-evenly">
         <Card size="small" id={myCard} />
-        <Card size="small" id={opponentCard} />
 
         <div>
           {myWinRate > opponentWinRate ? (
@@ -38,26 +37,51 @@ export const ActiveTournament = () => {
             <div className="text-yellow-600">Draw!</div>
           )}
         </div>
+
+        <Card size="small" id={opponentCard} />
+      </div>
+    );
+  }
+
+  if (tournamentState.currentOpponent >= 4) {
+    return (
+      <div>
+        <div className="text-2xl font-bold">Tournament finished!</div>
+        <div className="text-lg">
+          You got {tournamentLog.points} points and{" "}
+          {tournamentLog.points === 12
+            ? tournament.reward
+            : tournamentLog.points === 9
+            ? tournament.reward / 2
+            : 0}{" "}
+          money
+        </div>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-2">
-      <div>Tournament round: {tournamentState.currentOpponent + 1}</div>
-      <div>
-        {
-          tournamentLog.rounds[
-            tournamentState.currentOpponent === 0
-              ? 0
-              : tournamentState.currentOpponent - 1
-          ]?.points
-        }
+      <div className="flex flex-row justify-between">
+        <div>Tournament round: {tournamentState.currentOpponent + 1} / 4</div>
+        <div>
+          My points:{" "}
+          {
+            tournamentLog.rounds[
+              tournamentState.currentOpponent === 0
+                ? 0
+                : tournamentState.currentOpponent - 1
+            ]?.points
+          }{" "}
+          / 12
+        </div>
       </div>
-      <div className="font-semibold">My card ---- Opponent cardd</div>
+      <div className="font-semibold flex flex-row justify-evenly">
+        <div>My cards</div> <div>Opponent cards</div>
+      </div>
       <div className="flex flex-col gap-4">{play}</div>
       {tournamentState.gameRound < 6 && (
-        <div className="mt-4">Thinking about next play...</div>
+        <div className="mt-4 text-lg">Thinking about next the play...</div>
       )}
     </div>
   );
