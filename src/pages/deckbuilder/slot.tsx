@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { Card } from "../../components/card";
 import MessageHandler from "../../logic/messagehandler";
 import { CardPicker } from "./cardpicker";
-import { Card } from "../../components/card";
 
 interface ISlotProps {
   slot: number;
@@ -30,7 +30,7 @@ export const Slot = ({ slot, card }: ISlotProps) => {
             });
           else setCardPickerOpen(!cardPickerOpen);
         }}
-        className={`${border} w-[100px] h-[150px] md:w-[200px] md:h-[300px] text-center rounded-3xl cursor-pointer`}
+        className={`${border} w-[90px] h-[135px] md:w-[200px] md:h-[300px] text-center rounded-3xl cursor-pointer`}
       >
         {card !== undefined ? (
           <Card id={card} />

@@ -16,3 +16,22 @@ export interface Tournament {
   entryFee: number;
   reward: number;
 }
+
+export function generateWinRatio(id: number) {
+  let currentValue = 30; // Starting value
+
+  // Predefined array of irregular increments
+  const irregularIncrements = [
+    5, -3, 8, -2, 10, -4, 7, 3, -1, 6, -5, 2, -8, 4, -7, 1, -6, 9, -3, 5,
+  ];
+
+  // Use predefined increments cyclically
+  const increment = irregularIncrements[id % irregularIncrements.length];
+  currentValue += increment;
+
+  // Linear trend
+  const linearIncrement = 1.15; // Adjust as needed
+  currentValue += id * linearIncrement;
+
+  return Math.floor(currentValue);
+}
