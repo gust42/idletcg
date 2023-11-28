@@ -9,6 +9,18 @@ export type Opponents = {
   name: string;
 };
 
+export type TournamentLogRound = {
+  opponentDeck: Deck;
+  myDeck: Deck;
+  result: "win" | "loss" | "draw";
+  points: number;
+};
+
+export type TournamentLog = {
+  rounds: TournamentLogRound[];
+  points: number;
+};
+
 export interface Tournament {
   opponents: Opponents[];
   name: string;
