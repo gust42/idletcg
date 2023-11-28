@@ -4,9 +4,9 @@ import { Skill, SkillRule } from "./skill";
 export class WorkSkill implements Skill {
   rule: SkillRule = {
     requirement: 1500,
-    increase: 1.2,
+    increase: 1.15,
     value: 10,
-    increaseEffect: 10,
+    increaseEffect: 2,
   };
 
   title = "Start content creation on social media";
@@ -20,7 +20,9 @@ export class WorkSkill implements Skill {
   }
 
   effect(level: number) {
-    return this.rule.value + (level - 1) * this.rule.increaseEffect;
+    return Math.floor(
+      (this.rule.value + (level - 1)) ** this.rule.increaseEffect
+    );
   }
 
   friendyEffect(level: number) {

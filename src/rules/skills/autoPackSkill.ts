@@ -6,7 +6,7 @@ export class AutoPackSkill implements Skill {
     requirement: 3000,
     value: 1,
     increase: 1.2,
-    increaseEffect: 1,
+    increaseEffect: 5,
   };
 
   title = "Boyfriend / Girlfriend";
@@ -20,7 +20,7 @@ export class AutoPackSkill implements Skill {
   }
 
   effect(level: number) {
-    return this.rule.value + (level - 1);
+    return this.rule.value + (level - 1) * this.rule.increaseEffect;
   }
 
   friendyEffect(level: number) {

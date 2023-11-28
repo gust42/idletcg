@@ -4,7 +4,7 @@ import { Slot } from "./slot";
 export const DeckbuilderTab = () => {
   const gameState = useGameState();
   return (
-    <div className="flex flex-row flex-wrap gap-4">
+    <div className="flex flex-row flex-wrap gap-2">
       {Array.from({ length: 6 }).map((_, i) => {
         const index = `slot${i + 1}` as keyof typeof gameState.deck.cards;
         return (

@@ -24,6 +24,7 @@ export const migrateV4 = (currentState: GameStateV2) => {
       },
     },
     activities: {},
+    logs: {},
   };
   return newState;
 };

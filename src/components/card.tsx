@@ -1,4 +1,5 @@
 import { allCards } from "../logic/helpers";
+import { generateWinRatio } from "../rules/tournaments/tournament";
 
 interface ICardsProps {
   id: number;
@@ -10,7 +11,7 @@ const metaTypes = ["Aggro", "Control", "Combo"];
 export const Card = ({ id, size = "medium" }: ICardsProps) => {
   const card = allCards.find((card) => card.id === id);
 
-  let pxs = "w-[100px] h-[150px] md:w-[200px] md:h-[300px]";
+  let pxs = "w-[90px] h-[135px] md:w-[200px] md:h-[300px]";
   let pic = "text-[4em]";
   let meta = "";
 
@@ -37,8 +38,7 @@ export const Card = ({ id, size = "medium" }: ICardsProps) => {
 
             <div className=" border-t-2 md:border-t-4 border-black p-1  ">
               <div className={`${meta}`}>{metaTypes[id % 3]}</div>
-              {Math.abs(Math.floor(Math.sin(id) * Math.sin(id) * 100 - 50))}%
-              {size !== "small" && <>winrate</>}
+              {generateWinRatio(id)}%{size !== "small" && <> power</>}
             </div>
           </>
         )}

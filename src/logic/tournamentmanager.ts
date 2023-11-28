@@ -1,5 +1,9 @@
 import { AllTournaments } from "../rules/ruleshandler";
-import { Tournaments } from "../rules/tournaments/tournament";
+import {
+  TournamentLog,
+  Tournaments,
+  generateWinRatio,
+} from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
 
@@ -32,42 +36,12 @@ export class TournamentManager {
     }
     this.tickCounter = 0;
     const state = this.stateHandler.getState();
-    if (state.activities.tournament) {
+    if (state.activities.tournament && state.logs.tournament) {
       const tournament = AllTournaments[state.activities.tournament.id];
-      const currentOpponent =
-        tournament.opponents[state.activities.tournament.currentOpponent];
-      const currentDeck = state.activities.tournament.deck;
       const currentRound = state.activities.tournament.tournamentRound;
-      const currentGame = state.activities.tournament.gameRound;
 
       if (currentRound < tournament.opponents.length) {
         // Play game
-        const myCard = currentDeck[
-          `slot${currentGame + 1}` as keyof typeof currentDeck
-        ] as number;
-        const opponentCard = currentOpponent.deck[
-          `slot${currentGame + 1}` as keyof typeof currentDeck
-        ] as number;
-        const myWinRate = Math.abs(
-          Math.floor(Math.sin(myCard) * Math.sin(myCard) * 100 - 50)
-        );
-        const opponentWinRate = Math.abs(
-          Math.floor(Math.sin(opponentCard) * Math.sin(opponentCard) * 100 - 50)
-        );
-
-        if (myWinRate <= opponentWinRate) {
-          console.log(
-            "lost game in round",
-            state.activities.tournament.gameRound,
-            myWinRate,
-            opponentWinRate
-          );
-
-          state.activities.tournament = undefined;
-
-          this.stateHandler.updateState(state);
-          return;
-        }
 
         if (state.activities.tournament.gameRound >= 6) {
           state.activities.tournament.gameRound = 0;
@@ -79,19 +53,12 @@ export class TournamentManager {
         this.stateHandler.updateState(state);
       } else {
         // End tournament
-        if (state.activities.tournament.tournamentRound === 4) {
-          // Win tournament
-          console.log("won tournament");
+
+        if (state.logs.tournament.points >= 12) {
           state.entities.money.amount += tournament.reward;
-        } else if (state.activities.tournament.tournamentRound === 3) {
-          console.log("second place");
+        } else if (state.logs.tournament.points >= 9) {
           state.entities.money.amount += tournament.reward / 2;
         }
-
-        console.log(
-          "lost tournament",
-          state.activities.tournament.tournamentRound
-        );
 
         state.activities.tournament = undefined;
 
@@ -101,6 +68,58 @@ export class TournamentManager {
           "TournamentRoundTicks"
         );
       }
+    }
+  }
+
+  public runTournament(id: keyof Tournaments) {
+    const log: TournamentLog = {
+      rounds: [],
+      points: 0,
+    };
+    const state = this.stateHandler.getState();
+
+    const tournament = AllTournaments[id];
+
+    if (state.activities.tournament) {
+      for (let i = 0; i < tournament.opponents.length; i++) {
+        const currentOpponent =
+          tournament.opponents[state.activities.tournament.currentOpponent];
+        const currentDeck = state.activities.tournament.deck;
+
+        let wins = 0;
+        for (let j = 0; j < 6; j++) {
+          const myCard = currentDeck[
+            `slot${j + 1}` as keyof typeof currentDeck
+          ] as number;
+          const opponentCard = currentOpponent.deck[
+            `slot${j + 1}` as keyof typeof currentDeck
+          ] as number;
+          const myWinRate = generateWinRatio(myCard);
+          const opponentWinRate = generateWinRatio(opponentCard);
+
+          if (myWinRate > opponentWinRate) {
+            wins++;
+          }
+        }
+
+        const result = wins > 3 ? "win" : wins < 3 ? "loss" : "draw";
+
+        if (result === "win") {
+          log.points += 3;
+        } else if (result === "draw") {
+          log.points += 1;
+        }
+
+        log.rounds.push({
+          myDeck: currentDeck,
+          opponentDeck: currentOpponent.deck,
+          result: result,
+          points: log.points,
+        });
+      }
+      state.logs.tournament = log;
+      this.stateHandler.updateState(state);
+      console.log(log);
     }
   }
 
@@ -120,6 +139,8 @@ export class TournamentManager {
           tournamentRound: 0,
         };
         this.stateHandler.updateState(state);
+
+        this.runTournament(data.id);
         break;
     }
   }

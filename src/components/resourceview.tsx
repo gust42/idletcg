@@ -7,7 +7,7 @@ export default function ResourceView() {
   const oldState = GameLoop.getInstance().stateHandler.getStateHistory();
   return (
     <div
-      className=" sticky top-0
+      className=" sticky top-0 overflow-hidden
   "
     >
       <h4 className="text-lg mb-4">Resources</h4>

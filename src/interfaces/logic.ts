@@ -1,4 +1,4 @@
-import { Tournaments } from "../rules/tournaments/tournament";
+import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
 
 export interface Entity {
   amount: number;
@@ -75,5 +75,8 @@ export interface GameState {
       gameRound: number;
       tournamentRound: number;
     };
+  };
+  logs: {
+    tournament?: TournamentLog;
   };
 }
