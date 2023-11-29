@@ -40,7 +40,7 @@ export default class RulesHandler {
 
     if (
       !state.tabs.skillstab.acquired &&
-      state.entities.money.amount >= this.rules["CardsforSkills"].value
+      state.entities.money.amount >= this.rules["MoneyForSkills"].value
     ) {
       state.tabs.skillstab.acquired = true;
 

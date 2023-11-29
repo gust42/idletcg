@@ -1,6 +1,4 @@
-import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
-import { CostForUniqueCards } from "../../interfaces/rules";
 import { allCards } from "../../logic/helpers";
 import MessageHandler from "../../logic/messagehandler";
 import "./tradebinder.css";
@@ -8,7 +6,6 @@ import UniqueCard from "./uniquecard";
 
 export default function TradebinderTab() {
   const gameState = useGameState();
-  const gameRule = useGameRule<CostForUniqueCards>("CostForUniqueCards");
 
   function tradeCard(id: number) {
     MessageHandler.recieveMessage("tradecard", { id });
@@ -24,8 +21,6 @@ export default function TradebinderTab() {
             trade={gameState.counters.uniquecards.amount <= index}
             key={"emj" + card.id}
             click={tradeCard}
-            cost={gameRule}
-            increase={gameRule.increase}
             id={card.id}
           />
         );

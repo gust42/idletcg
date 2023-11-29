@@ -10,15 +10,15 @@ export type Opponents = {
 };
 
 export type TournamentLogRound = {
-  opponentDeck: Deck;
-  myDeck: Deck;
   result: "win" | "loss" | "draw";
   points: number;
+  opponentDeck: Deck;
 };
 
 export type TournamentLog = {
   rounds: TournamentLogRound[];
   points: number;
+  myDeck: Deck;
 };
 
 export interface Tournament {

@@ -1,10 +1,12 @@
 import useGameState from "../hooks/usegamestate";
 import GameLoop from "../logic/gameloop";
 import ResourceItem from "./resourceitem";
+import { TournamentProgress } from "./tournamentprogress";
 
 export default function ResourceView() {
   const gameState = useGameState();
   const oldState = GameLoop.getInstance().stateHandler.getStateHistory();
+
   return (
     <div
       className=" sticky top-0 overflow-hidden
@@ -34,6 +36,13 @@ export default function ResourceView() {
           oldValue={oldState.entities.metacards.amount}
         />
       </div>
+
+      {gameState.tabs.tournamentstab.acquired && (
+        <>
+          <h4 className="text-lg mt-4 mb-4">Activities</h4>
+          <TournamentProgress />
+        </>
+      )}
     </div>
   );
 }

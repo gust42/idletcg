@@ -24,7 +24,9 @@ export type Rules = {
   BadCardSellValue: Rule;
   MetaCardSellValue: Rule;
   CardsForTradebinder: Rule;
-  CardsforSkills: Rule;
+  MoneyForSkills: Rule;
   CostForUniqueCards: CostForUniqueCards;
   TournamentRoundTicks: Rule;
+  TickLength: Rule;
+  DeckSize: Rule;
 };
