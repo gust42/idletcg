@@ -1,7 +1,7 @@
 import { GameState } from "../interfaces/logic";
-import { CostForUniqueCards } from "../interfaces/rules";
 import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
+import { calculateUniqueCardCost } from "./helpers";
 import MessageHandler, {
   DeckMessage,
   GenericMessage,
@@ -33,7 +33,7 @@ export default class GameLoop {
       this.rulesHandler
     );
     this.lastTime = 0;
-    this.tick = 1000;
+    this.tick = this.rulesHandler.getRuleValue("TickLength");
   }
 
   static getInstance() {
@@ -131,33 +131,28 @@ export default class GameLoop {
       if (m.message === "tradecard") {
         const data = m.data as GenericMessage;
         const state = this.stateHandler.getState();
-        const rule =
-          this.rulesHandler.getRule<CostForUniqueCards>("CostForUniqueCards");
         let fail = "";
-        const badcardCost =
-          (rule.badcards * (data.id as number)) ** rule.increase;
-        const goodcardCost =
-          (rule.goodcards * (data.id as number)) ** rule.increase;
-        const metacardCost =
-          (rule.metacards * (data.id as number)) ** rule.increase;
 
-        if (state.entities.badcards.amount <= badcardCost)
+        const [costBadCards, costGoodCards, costMetaCards] =
+          calculateUniqueCardCost(data.id as number);
+
+        if (state.entities.badcards.amount <= costBadCards)
           fail += "Not enough bad cards \n";
-        if (state.entities.goodcards.amount <= goodcardCost)
-          fail += "Not enough good cards";
-        if (state.entities.metacards.amount <= metacardCost)
+        if (state.entities.goodcards.amount <= costGoodCards)
+          fail += "Not enough good cards \n";
+        if (state.entities.metacards.amount <= costMetaCards)
           fail += "Not enough meta cards";
 
         if (!fail) {
           state.counters.uniquecards.amount++;
           state.entities.badcards.amount = Math.floor(
-            state.entities.badcards.amount - badcardCost
+            state.entities.badcards.amount - costBadCards
           );
           state.entities.goodcards.amount = Math.floor(
-            state.entities.goodcards.amount - goodcardCost
+            state.entities.goodcards.amount - costGoodCards
           );
           state.entities.metacards.amount = Math.floor(
-            state.entities.metacards.amount - metacardCost
+            state.entities.metacards.amount - costMetaCards
           );
           this.stateHandler.updateState({});
         }

@@ -3,7 +3,7 @@ import useGameState from "../../hooks/usegamestate";
 import { allCards } from "../../logic/helpers";
 
 interface ICardPickerProps {
-  onSelect: (id: number) => void;
+  onSelect: (id: number | undefined) => void;
 }
 
 export const CardPicker = ({ onSelect }: ICardPickerProps) => {
@@ -30,7 +30,10 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
           {myCards.map((card) => (
             <div
               key={card.id}
-              onClick={() => onSelect(card.id)}
+              onClick={(ev: React.MouseEvent<HTMLDivElement>) => {
+                ev.stopPropagation();
+                onSelect(card.id);
+              }}
               className="cursor-pointer"
             >
               <Card id={card.id} />
@@ -38,7 +41,10 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
           ))}
         </div>
       </div>
-      <div className="absolute top-0 left-0 w-screen h-screen bg-black opacity-50 z-0" />
+      <div
+        onClick={() => onSelect(undefined)}
+        className="absolute top-0 left-0 w-screen h-screen bg-black opacity-50 z-0"
+      />
     </>
   );
 };

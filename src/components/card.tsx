@@ -8,10 +8,12 @@ interface ICardsProps {
 
 const metaTypes = ["Aggro", "Control", "Combo"];
 
+export const cardSize = "w-[90px] h-[135px] md:w-[150px] md:h-[225px]";
+
 export const Card = ({ id, size = "medium" }: ICardsProps) => {
   const card = allCards.find((card) => card.id === id);
 
-  let pxs = "w-[90px] h-[135px] md:w-[200px] md:h-[300px]";
+  let pxs = cardSize;
   let pic = "text-[4em]";
   let meta = "";
 

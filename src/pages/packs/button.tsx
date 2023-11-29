@@ -77,7 +77,7 @@ export default function BuyButton({ disabled, ...props }: IButtonProps) {
   }
 
   return (
-    <div>
+    <div className="min-h-[120px] w-full md:w-[320px] flex flex-col">
       <Button
         action={props.type}
         disabled={isDisabled}

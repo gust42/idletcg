@@ -37,20 +37,26 @@ export const SkillInfo = ({
 
   return (
     <Container>
-      <div
-        className={
-          "w-full md:w-[280px] h-[220px] flex justify-between gap-2 flex-col " +
-          (state.acquired ? "cursor-auto" : "cursor-pointer ")
-        }
-      >
-        <div className="text-sm">{title}</div>
-        <div className="text-xs italic h-12">{description}</div>
-        <div className="font-semibold">Effect</div>
+      <div className={" flex justify-between gap-2 flex-col"}>
+        <div className="text">{title}</div>
+        <div className="text-sm italic h-12">{description}</div>
+        <div className="font-semibold">
+          Current effect on level {state.level}
+        </div>
         <div>{skill.friendyEffect(state.level)}</div>
         {state.acquired ? (
           <>
-            <div className="border-t border-b pb-1 pt-1 border-t-slate-800 border-b-slate-800">
-              cost {skill.cost(state.level)} money
+            <div className="font-semibold pt-1">Next level</div>
+            <div className=" pb-1 flex flex-row justify-between">
+              <span>
+                <span>{skill.friendyEffect(state.level + 1)}</span>
+              </span>
+              <span>
+                Cost{" "}
+                <span className="font-semibold">
+                  {skill.cost(state.level)} money
+                </span>
+              </span>
             </div>
             <div className="flex ">
               <Button

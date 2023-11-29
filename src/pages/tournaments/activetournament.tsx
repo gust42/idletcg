@@ -61,18 +61,15 @@ export const ActiveTournament = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full md:w-[400px]">
       <div className="flex flex-row justify-between">
         <div>Tournament round: {tournamentState.currentOpponent + 1} / 4</div>
         <div>
           My points:{" "}
-          {
-            tournamentLog.rounds[
-              tournamentState.currentOpponent === 0
-                ? 0
-                : tournamentState.currentOpponent - 1
-            ]?.points
-          }{" "}
+          {tournamentState.currentOpponent === 0
+            ? 0
+            : tournamentLog.rounds[tournamentState.currentOpponent - 1]
+                ?.points}{" "}
           / 12
         </div>
       </div>

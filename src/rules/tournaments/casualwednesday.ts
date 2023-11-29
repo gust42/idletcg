@@ -3,8 +3,8 @@ import { Tournament } from "./tournament";
 export class CasualWednesday implements Tournament {
   name = "Casual Wednesday";
   description = "A casual tournament for the Timmys.";
-  entryFee = 5000;
-  reward = 100000;
+  entryFee = 10000;
+  reward = 250000;
   opponents = [
     {
       deck: {

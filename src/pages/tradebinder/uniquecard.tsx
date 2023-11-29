@@ -2,53 +2,39 @@ import { PropsWithChildren } from "react";
 import { Button } from "../../components/button";
 import { Card } from "../../components/card";
 import useGameState from "../../hooks/usegamestate";
-
-type Cost = {
-  badcards: number;
-  goodcards: number;
-  metacards: number;
-};
+import { calculateUniqueCardCost } from "../../logic/helpers";
 
 interface IUniqueCardProps {
   trade: boolean;
   click: (count: number) => void;
   id: number;
-  cost: Cost;
-  increase: number;
 }
 
 const NotEnough = ({ children }: PropsWithChildren) => {
   return <div className="text-red-500">{children}</div>;
 };
 
-export default function UniqueCard({
-  click,
-  id,
-  trade,
-  increase,
-  cost,
-}: IUniqueCardProps) {
+export default function UniqueCard({ click, id, trade }: IUniqueCardProps) {
   const state = useGameState();
 
-  const costBadCards = Math.floor((cost.badcards * (id + 1)) ** increase);
-  const costGoodCards = Math.floor((cost.goodcards * (id + 1)) ** increase);
-  const costMetaCards = Math.floor((cost.metacards * (id + 1)) ** increase);
+  const [costBadCards, costGoodCards, costMetaCards] =
+    calculateUniqueCardCost(id);
 
   let notEnoughCards = false;
 
-  let badCardsElement = <>{costBadCards} bad cards</>;
+  let badCardsElement = <>{costBadCards} bad</>;
   if (state.entities.badcards.amount < costBadCards) {
     badCardsElement = <NotEnough>{badCardsElement}</NotEnough>;
     notEnoughCards = true;
   }
 
-  let goodCardsElement = <>{costGoodCards} good cards</>;
+  let goodCardsElement = <>{costGoodCards} good</>;
   if (state.entities.goodcards.amount < costGoodCards) {
     goodCardsElement = <NotEnough>{goodCardsElement}</NotEnough>;
     notEnoughCards = true;
   }
 
-  let metaCardsElement = <>{costMetaCards} meta cards</>;
+  let metaCardsElement = <>{costMetaCards} meta</>;
 
   if (state.entities.metacards.amount < costMetaCards) {
     metaCardsElement = <NotEnough>{metaCardsElement}</NotEnough>;
@@ -59,8 +45,8 @@ export default function UniqueCard({
       {trade ? (
         <div className="relative">
           <Card id={-1} />
-          <div className="absolute bottom-0 top-0 right-0 left-0 bg-[#00000020] p-1 pt-4 pb-4  flex  justify-between flex-col rounded-3xl">
-            <p className="italic">Cost</p>
+          <div className="absolute bottom-0 top-0 right-0 left-0 bg-[#00000020] p-1 pt-2 pb-4  flex text-center justify-between flex-col rounded-3xl">
+            <p className="italic">Card cost</p>
             <div>{badCardsElement}</div>
             <div>{goodCardsElement}</div>
             <div>{metaCardsElement}</div>
@@ -69,7 +55,7 @@ export default function UniqueCard({
               disabled={notEnoughCards}
               onClick={() => click(id)}
             >
-              Card
+              {notEnoughCards ? "Trade" : "Card"}
             </Button>
           </div>
         </div>

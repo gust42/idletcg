@@ -72,19 +72,20 @@ export class TournamentManager {
   }
 
   public runTournament(id: keyof Tournaments) {
-    const log: TournamentLog = {
-      rounds: [],
-      points: 0,
-    };
-    const state = this.stateHandler.getState();
-
     const tournament = AllTournaments[id];
 
+    const state = this.stateHandler.getState();
     if (state.activities.tournament) {
+      const currentDeck = state.activities.tournament.deck;
+
+      const log: TournamentLog = {
+        rounds: [],
+        points: 0,
+        myDeck: currentDeck,
+      };
+
       for (let i = 0; i < tournament.opponents.length; i++) {
-        const currentOpponent =
-          tournament.opponents[state.activities.tournament.currentOpponent];
-        const currentDeck = state.activities.tournament.deck;
+        const currentOpponent = tournament.opponents[i];
 
         let wins = 0;
         for (let j = 0; j < 6; j++) {
@@ -96,6 +97,8 @@ export class TournamentManager {
           ] as number;
           const myWinRate = generateWinRatio(myCard);
           const opponentWinRate = generateWinRatio(opponentCard);
+
+          console.log(myWinRate, opponentWinRate);
 
           if (myWinRate > opponentWinRate) {
             wins++;
@@ -111,10 +114,9 @@ export class TournamentManager {
         }
 
         log.rounds.push({
-          myDeck: currentDeck,
-          opponentDeck: currentOpponent.deck,
           result: result,
           points: log.points,
+          opponentDeck: currentOpponent.deck,
         });
       }
       state.logs.tournament = log;

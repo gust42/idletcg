@@ -21,18 +21,24 @@
     "value": 100
   },
   "CardsForTradebinder": {
+    "value": 10000
+  },
+  "MoneyForSkills": {
     "value": 1000
   },
-  "CardsforSkills": {
-    "value": 1500
-  },
   "CostForUniqueCards": {
-    "badcards": 500,
-    "goodcards": 50,
-    "metacards": 5,
-    "increase": 1.15
+    "badcards": 600,
+    "goodcards": 60,
+    "metacards": 4,
+    "increase": 1.4
   },
   "TournamentRoundTicks": {
     "value": 5
+  },
+  "TickLength": {
+    "value": 1000
+  },
+  "DeckSize": {
+    "value": 6
   }
 }
