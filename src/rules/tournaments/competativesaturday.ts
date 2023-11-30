@@ -5,6 +5,7 @@ export class CompetitiveSaturday implements Tournament {
   description = "A serious tournament for skilled players.";
   entryFee = 100000;
   reward = 3500000;
+  ratingRequirement = 2000;
   opponents = [
     {
       deck: {

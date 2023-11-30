@@ -1,3 +1,4 @@
+import { deepmerge } from "deepmerge-ts";
 import { proxy } from "valtio";
 import { GameState } from "../interfaces/logic";
 import { MigrationHandler } from "../logic/migrationhandler";
@@ -6,10 +7,10 @@ import { state } from "./state";
 let loadedState = state;
 
 const savedState = localStorage.getItem("idletcg.state");
-if (savedState) loadedState = { ...state, ...JSON.parse(savedState) };
+if (savedState) loadedState = deepmerge(state, JSON.parse(savedState));
 
 const handler = new MigrationHandler();
-const migratedState = handler.migrate(loadedState);
+const migratedState = handler.migrate(loadedState as never);
 
 export let gameState = proxy(migratedState);
 

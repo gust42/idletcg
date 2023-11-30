@@ -28,12 +28,12 @@ export class TournamentManager {
   }
 
   public handleTick() {
-    if (
-      this.tickCounter < this.rulesHandler.getRuleValue("TournamentRoundTicks")
-    ) {
-      this.tickCounter++;
-      return;
-    }
+    // if (
+    //   this.tickCounter < this.rulesHandler.getRuleValue("TournamentRoundTicks")
+    // ) {
+    //   this.tickCounter++;
+    //   return;
+    // }
     this.tickCounter = 0;
     const state = this.stateHandler.getState();
 
@@ -64,6 +64,10 @@ export class TournamentManager {
         } else if (state.logs.tournament.points >= 6) {
           state.entities.money.amount += tournament.reward / 4;
         }
+
+        state.entities.rating.amount += state.logs.tournament.points;
+        if (!state.entities.rating.acquired)
+          state.entities.rating.acquired = true;
 
         state.activities.tournament = undefined;
 
@@ -125,7 +129,6 @@ export class TournamentManager {
         });
       }
       state.logs.tournament = log;
-      console.log(log);
       this.stateHandler.updateState(state);
     }
   }

@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 import MessageBox from "./components/messagebox";
+import { OfflineModal, Paused } from "./components/paused";
 import ResourceView from "./components/resourceview";
 import Tab from "./components/tab";
 import useGameState from "./hooks/usegamestate";
+import { GameState } from "./interfaces/logic";
 import GameLoop, { offlineHandler } from "./logic/gameloop";
+import { calculateOfflineDiff } from "./logic/helpers";
 import MessageHandler from "./logic/messagehandler";
 import PacksTab from "./pages/packs/packstab";
 import { Tabs, tabs } from "./rules/tabs";
-import { OfflineModal, Paused } from "./components/paused";
-import { GameState } from "./interfaces/logic";
-import { calculateOfflineDiff } from "./logic/helpers";
 
 function App() {
   const [CurrentTab, setCurrentTab] = useState(<PacksTab />);
@@ -25,11 +25,11 @@ function App() {
   useEffect(() => {
     const gameLoop = GameLoop.getInstance();
 
-    if (Date.now() - gameState.counters.time.amount > 10000) {
-      const [newStatus, oldStatus] = offlineHandler.calculateOfflineTime();
+    const [newStatus, oldStatus] = offlineHandler.calculateOfflineTime();
 
-      setOfflineModalOpen(true);
+    if (Date.now() - gameState.counters.time.amount > 10000) {
       setOfflineDiff(calculateOfflineDiff(newStatus, oldStatus));
+      setOfflineModalOpen(true);
     } else gameLoop.start();
 
     return () => {

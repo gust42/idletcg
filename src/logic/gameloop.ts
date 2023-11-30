@@ -18,6 +18,8 @@ export default class GameLoop {
   public stateHandler: StateHandler;
   public rulesHandler: RulesHandler;
 
+  public lastTickTime: number = 0;
+
   private packManager: PackManager;
   private tournamentManager: TournamentManager;
   private lastTime: number;
@@ -71,7 +73,12 @@ export default class GameLoop {
       let state = this.stateHandler.getState();
       this.stateHandler.saveStateHistory(state);
       state = this.tick(state);
+
       state.counters.time.amount = Date.now();
+      this.lastTickTime = Date.now();
+
+      // state.entities.rating.amount = 1000;
+
       this.stateHandler.updateState(state);
       this.lastTime = now;
     }

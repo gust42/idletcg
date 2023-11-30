@@ -1,10 +1,6 @@
 import GameLoop from "./gameloop";
 
 export class OfflineHandler {
-  constructor() {
-    console.log("OfflineHandler constructor");
-  }
-
   public tickCounter: number = 0;
   public totalTicks: number = 0;
 
@@ -28,15 +24,12 @@ export class OfflineHandler {
     gameLoop.stateHandler.saveStateHistory(state);
 
     const history = gameLoop.stateHandler.getStateHistory();
-    console.log("money before", state.entities.money.amount);
 
-    if (ticks < 10000)
+    if (ticks < 500000)
       for (let i = 0; i < ticks; i++) {
         state = gameLoop.tick(state);
         this.tickCounter++;
       }
-
-    console.log("money after", state.entities.money.amount);
 
     gameLoop.stateHandler.updateState(state);
 

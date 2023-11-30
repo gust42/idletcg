@@ -57,37 +57,16 @@ export function calculateTournamentTime(id?: keyof Tournaments) {
 }
 
 export function calculateOfflineDiff(newState: GameState, oldState: GameState) {
-  return {
-    ...newState,
-    entities: {
-      money: {
-        acquired: oldState.entities.money.acquired,
-        amount: newState.entities.money.amount - oldState.entities.money.amount,
-      },
-      badcards: {
-        acquired: oldState.entities.badcards.acquired,
-        amount:
-          newState.entities.badcards.amount - oldState.entities.badcards.amount,
-      },
-      goodcards: {
-        acquired: oldState.entities.goodcards.acquired,
-        amount:
-          newState.entities.goodcards.amount -
-          oldState.entities.goodcards.amount,
-      },
-      metacards: {
-        acquired: oldState.entities.metacards.acquired,
-        amount:
-          newState.entities.metacards.amount -
-          oldState.entities.metacards.amount,
-      },
-      rating: {
-        acquired: oldState.entities.rating.acquired,
-        amount:
-          newState.entities.rating.amount - oldState.entities.rating.amount,
-      },
-    },
-  };
+  const stateDiff: GameState = JSON.parse(JSON.stringify(newState));
+  Object.keys(newState.entities).forEach((k) => {
+    const key = k as keyof typeof newState.entities;
+    stateDiff.entities[key] = {
+      acquired: oldState.entities[key].acquired,
+      amount: newState.entities[key].amount - oldState.entities[key].amount,
+    };
+  });
+
+  return stateDiff;
 }
 
 export function formatSeconds(d: number) {

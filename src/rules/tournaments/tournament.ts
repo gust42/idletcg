@@ -29,6 +29,7 @@ export interface Tournament {
   description: string;
   entryFee: number;
   reward: number;
+  ratingRequirement: number;
 }
 
 export const metaTypes = ["Aggro", "Control", "Combo"];

@@ -8,30 +8,6 @@ body,
   box-sizing: border-box;
 }
 
-
-.button-container {
-  display: flex;
-  flex-flow: row;
-  justify-content: flex-start;
-  :hover {
-    background-color: #2accf8;
-  }
-
-  :active {
-    background-color: #99dafb;
-  }
-}
-
-.disabled .button {
-  background-color: #ccc;
-  color: #000;
-  cursor: not-allowed;
-
-  :hover {
-    background-color: #ccc;
-  }
-}
-
 .button-cost {
   font-size: 0.9em;
   font-style: italic;
@@ -41,8 +17,6 @@ body,
   background-color: #282c34;
   color: #fff;
 }
-
-
 
 nav {
   background-color: #282c34;

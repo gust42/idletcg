@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import GameLoop, { offlineHandler } from "../logic/gameloop";
-import { Modal } from "./modal";
-import { Button } from "./button";
-import { GameState } from "../interfaces/logic";
-import { Change } from "./resourceitem";
-import { calculateOfflineDiff, formatSeconds } from "../logic/helpers";
 import useGameRule from "../hooks/usegamerule";
+import { GameState } from "../interfaces/logic";
+import GameLoop, { offlineHandler } from "../logic/gameloop";
+import { calculateOfflineDiff, formatSeconds } from "../logic/helpers";
+import { Button } from "./button";
+import { Modal } from "./modal";
+import { Change } from "./resourceitem";
 
 export const OfflineModal = ({
   open,
@@ -69,17 +69,22 @@ export const OfflineModal = ({
 };
 
 export const Paused = () => {
-  const [paused, setPaused] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [stateDiff, setStateDiff] = useState<GameState>();
+
   useEffect(() => {
     function handleVisibilityChange() {
       const gameLoop = GameLoop.getInstance();
       if (document.visibilityState === "visible") {
         const [newState, oldState] = offlineHandler.calculateOfflineTime();
-        setStateDiff(calculateOfflineDiff(newState, oldState));
+
+        if (Date.now() - gameLoop.lastTickTime > 10000) {
+          setStateDiff(calculateOfflineDiff(newState, oldState));
+          setModalOpen(true);
+        }
       } else {
         gameLoop.stop();
-        setPaused(true);
+        setModalOpen(false);
       }
     }
 
@@ -90,12 +95,12 @@ export const Paused = () => {
     };
   }, []);
 
-  if (!paused) return null;
+  if (!modalOpen) return null;
   return (
     <OfflineModal
-      open={paused}
+      open={modalOpen}
       diff={stateDiff}
-      onClose={() => setPaused(false)}
+      onClose={() => setModalOpen(false)}
     />
   );
 };
