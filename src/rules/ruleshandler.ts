@@ -6,6 +6,8 @@ import { ShopkeeperFriendSkill } from "./skills/shopkeeperFriendSkill";
 import { Skill, Skills } from "./skills/skill";
 import { WorkSkill } from "./skills/workSkill";
 import { CasualWednesday } from "./tournaments/casualwednesday";
+import { CompetitiveSaturday } from "./tournaments/competativesaturday";
+import { FunFriday } from "./tournaments/funfridays";
 import { Tournament, Tournaments } from "./tournaments/tournament";
 
 export const AllSkills: Record<keyof Skills, Skill> = {
@@ -16,6 +18,8 @@ export const AllSkills: Record<keyof Skills, Skill> = {
 
 export const AllTournaments: Record<keyof Tournaments, Tournament> = {
   casualwednesday: new CasualWednesday(),
+  funfriday: new FunFriday(),
+  competativesaturday: new CompetitiveSaturday(),
 };
 export default class RulesHandler {
   private rules: Rules;

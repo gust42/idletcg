@@ -37,8 +37,6 @@ export const migrateV3 = (currentState: GameStateV2) => {
         slot2: undefined,
         slot3: undefined,
         slot4: undefined,
-        slot5: undefined,
-        slot6: undefined,
       },
     },
     tabs: {
