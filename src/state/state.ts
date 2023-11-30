@@ -10,12 +10,12 @@ export const state: GameState = {
     workSkill: {
       acquired: false,
       level: 1,
-      on: false,
+      on: undefined,
     },
     shopkeeperFriendSkill: {
       acquired: false,
       level: 1,
-      on: false,
+      on: undefined,
     },
   },
   activities: {
