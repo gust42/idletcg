@@ -5,48 +5,41 @@ export class CasualWednesday implements Tournament {
   description = "A casual tournament for the Timmys.";
   entryFee = 10000;
   reward = 250000;
+  ratingRequirement = 1000;
   opponents = [
     {
       deck: {
-        slot1: 1,
-        slot2: 1,
+        slot1: 7,
+        slot2: 10,
         slot3: 1,
-        slot4: 1,
-        slot5: 1,
-        slot6: 1,
+        slot4: 13,
       },
       name: "Timmy the Terrible",
     },
     {
       deck: {
-        slot1: 2,
-        slot2: 2,
-        slot3: 2,
-        slot4: 2,
-        slot5: 2,
-        slot6: 2,
+        slot1: 6,
+        slot2: 15,
+        slot3: 12,
+        slot4: 18,
       },
       name: "Timmy of Smaller Stature",
     },
     {
       deck: {
-        slot1: 3,
-        slot2: 3,
-        slot3: 3,
-        slot4: 3,
-        slot5: 3,
-        slot6: 3,
+        slot1: 8,
+        slot2: 11,
+        slot3: 5,
+        slot4: 14,
       },
       name: "Timmy the Tiny",
     },
     {
       deck: {
-        slot1: 4,
+        slot1: 1,
         slot2: 4,
-        slot3: 4,
-        slot4: 4,
-        slot5: 4,
-        slot6: 4,
+        slot3: 7,
+        slot4: 10,
       },
       name: "Timmy of Smarts",
     },

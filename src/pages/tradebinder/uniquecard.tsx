@@ -51,11 +51,11 @@ export default function UniqueCard({ click, id, trade }: IUniqueCardProps) {
             <div>{goodCardsElement}</div>
             <div>{metaCardsElement}</div>
             <Button
-              action="Trade"
+              action=""
               disabled={notEnoughCards}
               onClick={() => click(id)}
             >
-              {notEnoughCards ? "Trade" : "Card"}
+              Trade
             </Button>
           </div>
         </div>

@@ -27,10 +27,10 @@
     "value": 1000
   },
   "CostForUniqueCards": {
-    "badcards": 600,
-    "goodcards": 60,
-    "metacards": 4,
-    "increase": 1.4
+    "badcards": 1200,
+    "goodcards": 160,
+    "metacards": 16,
+    "increase": 1.35
   },
   "TournamentRoundTicks": {
     "value": 5
@@ -39,6 +39,6 @@
     "value": 1000
   },
   "DeckSize": {
-    "value": 6
+    "value": 4
   }
 }

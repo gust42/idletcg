@@ -11,16 +11,22 @@ export const TournamentTab = () => {
     MessageHandler.recieveMessage("entertournament", { id });
   }
 
-  const tournaments = Object.keys(AllTournaments).map((key) => {
-    return (
-      <TournamentInfo
-        key={key}
-        id={key as keyof Tournaments}
-        tournament={AllTournaments[key as keyof Tournaments]}
-        onClick={enterTournament}
-      />
-    );
-  });
+  const tournaments = Object.keys(AllTournaments)
+    .filter(
+      (t) =>
+        gameState.entities.rating.amount + 400 >=
+        AllTournaments[t as keyof Tournaments].ratingRequirement
+    )
+    .map((key) => {
+      return (
+        <TournamentInfo
+          key={key}
+          id={key as keyof Tournaments}
+          tournament={AllTournaments[key as keyof Tournaments]}
+          onClick={enterTournament}
+        />
+      );
+    });
 
   if (gameState.activities.tournament?.id !== undefined) {
     return <ActiveTournament />;

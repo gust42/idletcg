@@ -8,18 +8,22 @@ import MessageHandler, {
   SkillMessage,
   TournamentMessage,
 } from "./messagehandler";
+import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
 import { TournamentManager, TournamentMessages } from "./tournamentmanager";
 
+export const offlineHandler = new OfflineHandler();
 export default class GameLoop {
   private static instance: GameLoop;
   public stateHandler: StateHandler;
   public rulesHandler: RulesHandler;
 
+  public lastTickTime: number = 0;
+
   private packManager: PackManager;
   private tournamentManager: TournamentManager;
   private lastTime: number;
-  private tick: number;
+  private tickCounter: number;
 
   private running: boolean = false;
 
@@ -33,7 +37,7 @@ export default class GameLoop {
       this.rulesHandler
     );
     this.lastTime = 0;
-    this.tick = this.rulesHandler.getRuleValue("TickLength");
+    this.tickCounter = this.rulesHandler.getRuleValue("TickLength");
   }
 
   static getInstance() {
@@ -52,20 +56,30 @@ export default class GameLoop {
     this.running = false;
   }
 
-  loop(now: number) {
-    if (now - this.lastTime > this.tick) {
-      const state = this.stateHandler.getState();
-      this.stateHandler.saveStateHistory(state);
-      this.packManager.handleTick();
-      this.tournamentManager.handleTick();
-      if (state.skills.workSkill.acquired) {
-        const skill = AllSkills.workSkill;
+  tick(state: GameState) {
+    this.packManager.handleTick();
+    this.tournamentManager.handleTick();
+    if (state.skills.workSkill.acquired) {
+      const skill = AllSkills.workSkill;
 
-        state.entities.money.amount += skill.effect(
-          state.skills.workSkill.level
-        );
-        this.stateHandler.updateState(state);
-      }
+      state.entities.money.amount += skill.effect(state.skills.workSkill.level);
+    }
+
+    return state;
+  }
+
+  loop(now: number) {
+    if (now - this.lastTime > this.tickCounter) {
+      let state = this.stateHandler.getState();
+      this.stateHandler.saveStateHistory(state);
+      state = this.tick(state);
+
+      state.counters.time.amount = Date.now();
+      this.lastTickTime = Date.now();
+
+      // state.entities.rating.amount = 1000;
+
+      this.stateHandler.updateState(state);
       this.lastTime = now;
     }
 

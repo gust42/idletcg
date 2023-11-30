@@ -2,7 +2,7 @@ import { AllTournaments } from "../rules/ruleshandler";
 import {
   TournamentLog,
   Tournaments,
-  generateWinRatio,
+  calculateWinner,
 } from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
@@ -36,6 +36,9 @@ export class TournamentManager {
     }
     this.tickCounter = 0;
     const state = this.stateHandler.getState();
+
+    const deckSize = this.rulesHandler.getRuleValue("DeckSize");
+
     if (state.activities.tournament && state.logs.tournament) {
       const tournament = AllTournaments[state.activities.tournament.id];
       const currentRound = state.activities.tournament.tournamentRound;
@@ -43,7 +46,7 @@ export class TournamentManager {
       if (currentRound < tournament.opponents.length) {
         // Play game
 
-        if (state.activities.tournament.gameRound >= 6) {
+        if (state.activities.tournament.gameRound >= deckSize) {
           state.activities.tournament.gameRound = 0;
           state.activities.tournament.currentOpponent++;
           state.activities.tournament.tournamentRound++;
@@ -58,7 +61,13 @@ export class TournamentManager {
           state.entities.money.amount += tournament.reward;
         } else if (state.logs.tournament.points >= 9) {
           state.entities.money.amount += tournament.reward / 2;
+        } else if (state.logs.tournament.points >= 6) {
+          state.entities.money.amount += tournament.reward / 4;
         }
+
+        state.entities.rating.amount += state.logs.tournament.points;
+        if (!state.entities.rating.acquired)
+          state.entities.rating.acquired = true;
 
         state.activities.tournament = undefined;
 
@@ -75,37 +84,37 @@ export class TournamentManager {
     const tournament = AllTournaments[id];
 
     const state = this.stateHandler.getState();
+    const deckSize = this.rulesHandler.getRuleValue("DeckSize");
     if (state.activities.tournament) {
       const currentDeck = state.activities.tournament.deck;
 
       const log: TournamentLog = {
         rounds: [],
         points: 0,
-        myDeck: currentDeck,
+        myDeck: { ...currentDeck },
       };
 
       for (let i = 0; i < tournament.opponents.length; i++) {
         const currentOpponent = tournament.opponents[i];
 
         let wins = 0;
-        for (let j = 0; j < 6; j++) {
+        for (let j = 0; j < deckSize; j++) {
           const myCard = currentDeck[
             `slot${j + 1}` as keyof typeof currentDeck
           ] as number;
           const opponentCard = currentOpponent.deck[
             `slot${j + 1}` as keyof typeof currentDeck
           ] as number;
-          const myWinRate = generateWinRatio(myCard);
-          const opponentWinRate = generateWinRatio(opponentCard);
 
-          console.log(myWinRate, opponentWinRate);
-
-          if (myWinRate > opponentWinRate) {
+          const result = calculateWinner(myCard, opponentCard);
+          if (result === "win") {
             wins++;
+          } else if (result === "loss") {
+            wins--;
           }
         }
 
-        const result = wins > 3 ? "win" : wins < 3 ? "loss" : "draw";
+        const result = wins > 0 ? "win" : wins < 0 ? "loss" : "draw";
 
         if (result === "win") {
           log.points += 3;
@@ -121,7 +130,6 @@ export class TournamentManager {
       }
       state.logs.tournament = log;
       this.stateHandler.updateState(state);
-      console.log(log);
     }
   }
 
@@ -135,7 +143,7 @@ export class TournamentManager {
         state.entities.money.amount -= tournament.entryFee;
         state.activities.tournament = {
           id: data.id,
-          deck: state.deck.cards,
+          deck: { ...state.deck.cards },
           currentOpponent: 0,
           gameRound: 0,
           tournamentRound: 0,

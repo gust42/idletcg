@@ -1,16 +1,15 @@
 import { allCards } from "../logic/helpers";
-import { generateWinRatio } from "../rules/tournaments/tournament";
+import { generateWinRatio, metaTypes } from "../rules/tournaments/tournament";
 
 interface ICardsProps {
   id: number;
   size?: "small" | "medium" | "large";
+  winRateMod?: number;
 }
-
-const metaTypes = ["Aggro", "Control", "Combo"];
 
 export const cardSize = "w-[90px] h-[135px] md:w-[150px] md:h-[225px]";
 
-export const Card = ({ id, size = "medium" }: ICardsProps) => {
+export const Card = ({ id, size = "medium", winRateMod = 1 }: ICardsProps) => {
   const card = allCards.find((card) => card.id === id);
 
   let pxs = cardSize;
@@ -22,6 +21,9 @@ export const Card = ({ id, size = "medium" }: ICardsProps) => {
     pic = "text-[2em]";
     meta = "";
   }
+
+  const winRateColor =
+    winRateMod > 1 ? "text-green-600" : winRateMod < 1 ? "text-red-600" : "";
 
   return (
     <div
@@ -40,7 +42,10 @@ export const Card = ({ id, size = "medium" }: ICardsProps) => {
 
             <div className=" border-t-2 md:border-t-4 border-black p-1  ">
               <div className={`${meta}`}>{metaTypes[id % 3]}</div>
-              {generateWinRatio(id)}%{size !== "small" && <> power</>}
+              <span className={winRateColor}>
+                {Math.floor(generateWinRatio(id) * winRateMod)}%
+                {size !== "small" && <> power</>}
+              </span>
             </div>
           </>
         )}

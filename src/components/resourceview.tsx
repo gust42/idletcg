@@ -35,6 +35,12 @@ export default function ResourceView() {
           resource={gameState.entities.metacards}
           oldValue={oldState.entities.metacards.amount}
         />
+
+        <ResourceItem
+          name="Rating"
+          resource={gameState.entities.rating}
+          oldValue={oldState.entities.rating.amount}
+        />
       </div>
 
       {gameState.tabs.tournamentstab.acquired && (

@@ -1,17 +1,9 @@
 import { GameState } from "../interfaces/logic";
-import { GameStateV2, migrateV2 } from "../migrations/v2";
-import { migrateV3 } from "../migrations/v3";
-import { migrateV4 } from "../migrations/v4";
-
 export class MigrationHandler {
   private dataVersion: number = 1;
   private migrations: {
-    [key: number]: (state: never) => GameState | GameStateV2;
-  } = {
-    2: migrateV2,
-    3: migrateV3,
-    4: migrateV4,
-  };
+    [key: number]: (state: never) => GameState;
+  } = {};
 
   constructor() {
     this.loadDataVersion();
@@ -28,7 +20,7 @@ export class MigrationHandler {
       }
     });
 
-    return migratedState as GameState;
+    return state;
   }
 
   private loadDataVersion() {

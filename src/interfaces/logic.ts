@@ -24,8 +24,6 @@ export interface Deck {
   slot2: number | undefined;
   slot3: number | undefined;
   slot4: number | undefined;
-  slot5: number | undefined;
-  slot6: number | undefined;
 }
 
 export interface GameStateV1 {
@@ -53,9 +51,11 @@ export interface GameState {
     goodcards: Entity;
     metacards: Entity;
     money: Entity;
+    rating: Entity;
   };
   counters: {
     uniquecards: Counter;
+    time: Counter;
   };
   deck: {
     cards: Deck;

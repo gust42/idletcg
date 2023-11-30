@@ -1,3 +1,4 @@
+import { GameState } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
 import { AllTournaments } from "../rules/ruleshandler";
 import { Tournaments } from "../rules/tournaments/tournament";
@@ -53,4 +54,29 @@ export function calculateTournamentTime(id?: keyof Tournaments) {
     (totalTicks * tickLength) / 1000,
     (remainingTicks * tickLength) / 1000,
   ] as const;
+}
+
+export function calculateOfflineDiff(newState: GameState, oldState: GameState) {
+  const stateDiff: GameState = JSON.parse(JSON.stringify(newState));
+  Object.keys(newState.entities).forEach((k) => {
+    const key = k as keyof typeof newState.entities;
+    stateDiff.entities[key] = {
+      acquired: oldState.entities[key].acquired,
+      amount: newState.entities[key].amount - oldState.entities[key].amount,
+    };
+  });
+
+  return stateDiff;
+}
+
+export function formatSeconds(d: number) {
+  d = Number(d);
+  const h = Math.floor(d / 3600);
+  const m = Math.floor((d % 3600) / 60);
+  const s = Math.floor((d % 3600) % 60);
+
+  const hDisplay = h > 0 ? h + "h" : "";
+  const mDisplay = m > 0 ? m + "m" : "";
+  const sDisplay = s > 0 ? s + "s" : "";
+  return hDisplay + mDisplay + sDisplay;
 }

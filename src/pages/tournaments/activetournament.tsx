@@ -1,7 +1,10 @@
 import { Card } from "../../components/card";
 import useGameState from "../../hooks/usegamestate";
 import { AllTournaments } from "../../rules/ruleshandler";
-import { generateWinRatio } from "../../rules/tournaments/tournament";
+import {
+  calculateWinRateModFromMeta,
+  calculateWinner,
+} from "../../rules/tournaments/tournament";
 
 export const ActiveTournament = () => {
   const gameState = useGameState();
@@ -22,23 +25,27 @@ export const ActiveTournament = () => {
     const opponentCard = tournament.opponents[tournamentState.currentOpponent]
       .deck[index] as number;
 
-    const myWinRate = generateWinRatio(myCard);
-    const opponentWinRate = generateWinRatio(opponentCard);
+    const myMod = calculateWinRateModFromMeta(myCard, opponentCard);
+    const opponentMod = calculateWinRateModFromMeta(opponentCard, myCard);
+    const result = calculateWinner(myCard, opponentCard);
     play.push(
-      <div key={i} className="flex flex-row gap-2 items-center  justify-evenly">
-        <Card size="small" id={myCard} />
+      <div
+        key={i}
+        className="flex flex-row gap-2 items-center  justify-between"
+      >
+        <Card winRateMod={myMod} size="small" id={myCard} />
 
         <div>
-          {myWinRate > opponentWinRate ? (
+          {result === "win" ? (
             <div className="text-green-600">You win!</div>
-          ) : myWinRate < opponentWinRate ? (
+          ) : result === "loss" ? (
             <div className="text-red-600">You lose!</div>
           ) : (
             <div className="text-yellow-600">Draw!</div>
           )}
         </div>
 
-        <Card size="small" id={opponentCard} />
+        <Card winRateMod={opponentMod} size="small" id={opponentCard} />
       </div>
     );
   }
@@ -53,6 +60,8 @@ export const ActiveTournament = () => {
             ? tournament.reward
             : tournamentLog.points === 9
             ? tournament.reward / 2
+            : tournamentLog.points === 6
+            ? tournament.reward / 4
             : 0}{" "}
           money
         </div>
