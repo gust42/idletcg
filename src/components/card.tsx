@@ -27,9 +27,9 @@ export const Card = ({ id, size = "medium", winRateMod = 1 }: ICardsProps) => {
 
   return (
     <div
-      className={`${pxs} bg-[#faefdc]  rounded-3xl text-center border-black p-1 select-none`}
+      className={`${pxs} bg-[#faefdc]  rounded-3xl text-center  p-1 select-none`}
     >
-      <div className=" bg-[#F2E8D7] h-full rounded-3xl border-black flex flex-col ">
+      <div className=" bg-[#F2E8D7] h-full rounded-3xl  flex flex-col ">
         {!card ? (
           ""
         ) : (
@@ -40,7 +40,7 @@ export const Card = ({ id, size = "medium", winRateMod = 1 }: ICardsProps) => {
               {String.fromCharCode(parseInt(card.code, 16))}
             </div>
 
-            <div className=" border-t-2 md:border-t-4 border-black p-1  ">
+            <div className=" border-t-2 md:border-t-4 border-[#faefdc] p-1  ">
               <div className={`${meta}`}>{metaTypes[id % 3]}</div>
               <span className={winRateColor}>
                 {Math.floor(generateWinRatio(id) * winRateMod)}%
