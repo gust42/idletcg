@@ -61,25 +61,30 @@ export function calculateOfflineDiff(newState: GameState, oldState: GameState) {
     ...newState,
     entities: {
       money: {
-        acquired: true,
+        acquired: oldState.entities.money.acquired,
         amount: newState.entities.money.amount - oldState.entities.money.amount,
       },
       badcards: {
-        acquired: true,
+        acquired: oldState.entities.badcards.acquired,
         amount:
           newState.entities.badcards.amount - oldState.entities.badcards.amount,
       },
       goodcards: {
-        acquired: true,
+        acquired: oldState.entities.goodcards.acquired,
         amount:
           newState.entities.goodcards.amount -
           oldState.entities.goodcards.amount,
       },
       metacards: {
-        acquired: true,
+        acquired: oldState.entities.metacards.acquired,
         amount:
           newState.entities.metacards.amount -
           oldState.entities.metacards.amount,
+      },
+      rating: {
+        acquired: oldState.entities.rating.acquired,
+        amount:
+          newState.entities.rating.amount - oldState.entities.rating.amount,
       },
     },
   };

@@ -1,43 +1,81 @@
-import { GameStateV1 } from "../interfaces/logic";
+import { GameState } from "../interfaces/logic";
 
-export const state: GameStateV1 = {
-  badcards: {
-    amount: 0,
-    acquired: false,
+export const state: GameState = {
+  skills: {
+    autoPackSkill: {
+      acquired: false,
+      level: 1,
+      on: true,
+    },
+    workSkill: {
+      acquired: false,
+      level: 1,
+      on: false,
+    },
+    shopkeeperFriendSkill: {
+      acquired: false,
+      level: 1,
+      on: false,
+    },
   },
-  goodcards: {
-    amount: 0,
-    acquired: false,
+  activities: {
+    tournament: undefined,
   },
-  metacards: {
-    amount: 0,
-    acquired: false,
+  entities: {
+    money: {
+      amount: 50,
+      acquired: true,
+    },
+    badcards: {
+      amount: 0,
+      acquired: false,
+    },
+    goodcards: {
+      amount: 0,
+      acquired: false,
+    },
+    metacards: {
+      amount: 0,
+      acquired: false,
+    },
+    rating: {
+      amount: 1000,
+      acquired: false,
+    },
   },
-  money: {
-    amount: 50,
-    acquired: true,
+  deck: {
+    cards: {
+      slot1: undefined,
+      slot2: undefined,
+      slot3: undefined,
+      slot4: undefined,
+    },
   },
-  packstab: {
-    acquired: true,
+  tabs: {
+    packstab: {
+      acquired: true,
+    },
+    skillstab: {
+      acquired: false,
+    },
+    tradebindertab: {
+      acquired: false,
+    },
+    deckbuildertab: {
+      acquired: false,
+    },
+    tournamentstab: {
+      acquired: false,
+    },
   },
-  skillstab: {
-    acquired: false,
+  counters: {
+    uniquecards: {
+      amount: 0,
+    },
+    time: {
+      amount: Date.now(),
+    },
   },
-  tradebindertab: {
-    acquired: false,
-  },
-  tournamentstab: {
-    acquired: false,
-  },
-  autopackskill: {
-    acquired: false,
-    level: 1,
-  },
-  workskill: {
-    acquired: false,
-    level: 1,
-  },
-  uniquecards: {
-    amount: 0,
-  },
+
+  logs: {},
 };

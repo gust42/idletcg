@@ -9,7 +9,7 @@ const savedState = localStorage.getItem("idletcg.state");
 if (savedState) loadedState = { ...state, ...JSON.parse(savedState) };
 
 const handler = new MigrationHandler();
-const migratedState = handler.migrate(loadedState as never);
+const migratedState = handler.migrate(loadedState);
 
 export let gameState = proxy(migratedState);
 

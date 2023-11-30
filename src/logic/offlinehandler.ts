@@ -30,10 +30,11 @@ export class OfflineHandler {
     const history = gameLoop.stateHandler.getStateHistory();
     console.log("money before", state.entities.money.amount);
 
-    for (let i = 0; i < ticks; i++) {
-      state = gameLoop.tick(state);
-      this.tickCounter++;
-    }
+    if (ticks < 10000)
+      for (let i = 0; i < ticks; i++) {
+        state = gameLoop.tick(state);
+        this.tickCounter++;
+      }
 
     console.log("money after", state.entities.money.amount);
 

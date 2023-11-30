@@ -51,6 +51,7 @@ export interface GameState {
     goodcards: Entity;
     metacards: Entity;
     money: Entity;
+    rating: Entity;
   };
   counters: {
     uniquecards: Counter;

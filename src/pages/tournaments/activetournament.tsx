@@ -60,6 +60,8 @@ export const ActiveTournament = () => {
             ? tournament.reward
             : tournamentLog.points === 9
             ? tournament.reward / 2
+            : tournamentLog.points === 6
+            ? tournament.reward / 4
             : 0}{" "}
           money
         </div>
