@@ -56,6 +56,7 @@ export interface GameState {
   };
   counters: {
     uniquecards: Counter;
+    time: Counter;
   };
   deck: {
     cards: Deck;

@@ -8,6 +8,17 @@ interface IResourceItemProps {
   oldValue: number;
 }
 
+export const Change = ({ change }: { change: number }) => {
+  const color = change > 0 ? "text-green-600" : "text-red-600";
+  const arrow = change > 0 ? "&#11165;" : "&#11167;";
+  return (
+    <span className={`${color}`}>
+      <span dangerouslySetInnerHTML={{ __html: arrow }} />
+      {Math.abs(Math.round(change * 100) / 100)}
+    </span>
+  );
+};
+
 export default function ResourceItem({
   name,
   resource,
@@ -20,16 +31,8 @@ export default function ResourceItem({
 
   if (oldValue) {
     const changeAmount = resource.amount - oldValue;
-    const color = changeAmount > 0 ? "text-green-600" : "text-red-600";
-    const arrow = changeAmount > 0 ? "&uarr;" : "&darr;";
 
-    if (changeAmount !== 0)
-      change = (
-        <span className={`${color}`}>
-          <span dangerouslySetInnerHTML={{ __html: arrow }} />
-          {Math.abs(Math.round(changeAmount * 100) / 100)}
-        </span>
-      );
+    if (changeAmount !== 0) change = <Change change={changeAmount} />;
   }
 
   return (

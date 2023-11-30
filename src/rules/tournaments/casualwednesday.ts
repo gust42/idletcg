@@ -9,10 +9,10 @@ export class CasualWednesday implements Tournament {
     {
       deck: {
         slot1: 1,
-        slot2: 1,
-        slot3: 1,
-        slot4: 1,
-        slot5: 1,
+        slot2: 4,
+        slot3: 7,
+        slot4: 10,
+        slot5: 13,
         slot6: 1,
       },
       name: "Timmy the Terrible",
@@ -41,12 +41,12 @@ export class CasualWednesday implements Tournament {
     },
     {
       deck: {
-        slot1: 4,
-        slot2: 4,
-        slot3: 4,
-        slot4: 4,
-        slot5: 4,
-        slot6: 4,
+        slot1: 5,
+        slot2: 5,
+        slot3: 5,
+        slot4: 5,
+        slot5: 5,
+        slot6: 5,
       },
       name: "Timmy of Smarts",
     },

@@ -25,7 +25,10 @@ export const ActiveTournament = () => {
     const myWinRate = generateWinRatio(myCard);
     const opponentWinRate = generateWinRatio(opponentCard);
     play.push(
-      <div key={i} className="flex flex-row gap-2 items-center  justify-evenly">
+      <div
+        key={i}
+        className="flex flex-row gap-2 items-center  justify-between"
+      >
         <Card size="small" id={myCard} />
 
         <div>

@@ -5,23 +5,37 @@ import MessageBox from "./components/messagebox";
 import ResourceView from "./components/resourceview";
 import Tab from "./components/tab";
 import useGameState from "./hooks/usegamestate";
-import GameLoop from "./logic/gameloop";
+import GameLoop, { offlineHandler } from "./logic/gameloop";
 import MessageHandler from "./logic/messagehandler";
 import PacksTab from "./pages/packs/packstab";
 import { Tabs, tabs } from "./rules/tabs";
+import { OfflineModal, Paused } from "./components/paused";
+import { GameState } from "./interfaces/logic";
+import { calculateOfflineDiff } from "./logic/helpers";
 
 function App() {
   const [CurrentTab, setCurrentTab] = useState(<PacksTab />);
   const [activeTab, setActiveTab] = useState("packstab");
+  const [offlineDiff, setOfflineDiff] = useState<undefined | GameState>(
+    undefined
+  );
+  const [offlineModalOpen, setOfflineModalOpen] = useState(false);
   const gameState = useGameState();
 
   useEffect(() => {
     const gameLoop = GameLoop.getInstance();
-    gameLoop.start();
+
+    if (Date.now() - gameState.counters.time.amount > 10000) {
+      const [newStatus, oldStatus] = offlineHandler.calculateOfflineTime();
+
+      setOfflineModalOpen(true);
+      setOfflineDiff(calculateOfflineDiff(newStatus, oldStatus));
+    } else gameLoop.start();
 
     return () => {
       gameLoop.stop();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function clickTab(id: string, type: JSX.Element) {
@@ -61,6 +75,12 @@ function App() {
       <footer className="fixed md:block bottom-0 right left-0 right-0">
         <MessageBox />
       </footer>
+      <Paused />
+      <OfflineModal
+        onClose={() => setOfflineModalOpen(false)}
+        open={offlineModalOpen}
+        diff={offlineDiff}
+      />
     </div>
   );
 }

@@ -21,8 +21,6 @@ export const TournamentProgress = () => {
   }, [remaining]);
 
   if (!gameState.activities.tournament) return null;
-
-  console.log(gameState.activities.tournament);
   const tournament = AllTournaments[gameState.activities.tournament.id];
   return (
     gameState.activities.tournament && (
@@ -31,11 +29,11 @@ export const TournamentProgress = () => {
         <div>
           <div>Current points</div>
           <div className="font-semibold">
-            {
-              gameState.logs.tournament?.rounds[
-                gameState.activities.tournament.currentOpponent
-              ]?.points
-            }
+            {gameState.activities.tournament.currentOpponent === 0
+              ? 0
+              : gameState.logs.tournament?.rounds[
+                  gameState.activities.tournament.currentOpponent - 1
+                ]?.points}
             points
           </div>
         </div>

@@ -81,7 +81,7 @@ export class TournamentManager {
       const log: TournamentLog = {
         rounds: [],
         points: 0,
-        myDeck: currentDeck,
+        myDeck: { ...currentDeck },
       };
 
       for (let i = 0; i < tournament.opponents.length; i++) {
@@ -98,14 +98,14 @@ export class TournamentManager {
           const myWinRate = generateWinRatio(myCard);
           const opponentWinRate = generateWinRatio(opponentCard);
 
-          console.log(myWinRate, opponentWinRate);
-
           if (myWinRate > opponentWinRate) {
             wins++;
+          } else if (myWinRate < opponentWinRate) {
+            wins--;
           }
         }
 
-        const result = wins > 3 ? "win" : wins < 3 ? "loss" : "draw";
+        const result = wins > 0 ? "win" : wins < 0 ? "loss" : "draw";
 
         if (result === "win") {
           log.points += 3;
@@ -120,8 +120,8 @@ export class TournamentManager {
         });
       }
       state.logs.tournament = log;
-      this.stateHandler.updateState(state);
       console.log(log);
+      this.stateHandler.updateState(state);
     }
   }
 
@@ -135,7 +135,7 @@ export class TournamentManager {
         state.entities.money.amount -= tournament.entryFee;
         state.activities.tournament = {
           id: data.id,
-          deck: state.deck.cards,
+          deck: { ...state.deck.cards },
           currentOpponent: 0,
           gameRound: 0,
           tournamentRound: 0,

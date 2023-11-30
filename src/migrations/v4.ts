@@ -23,6 +23,12 @@ export const migrateV4 = (currentState: GameStateV2) => {
         acquired: false,
       },
     },
+    counters: {
+      ...currentState.counters,
+      time: {
+        amount: 0,
+      },
+    },
     activities: {},
     logs: {},
   };
