@@ -35,7 +35,7 @@ export const Button = ({
       className="p-1 bg-slate-600 uppercase rounded select-none  hover:bg-slate-800 w-full flex flex-row items-stretch  "
       onClick={onPress}
     >
-      {disabled ? (
+      {disabled || !action ? (
         ""
       ) : (
         <button
