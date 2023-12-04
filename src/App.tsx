@@ -6,9 +6,7 @@ import { OfflineModal, Paused } from "./components/paused";
 import ResourceView from "./components/resourceview";
 import Tab from "./components/tab";
 import useGameState from "./hooks/usegamestate";
-import { GameState } from "./interfaces/logic";
 import GameLoop, { offlineHandler } from "./logic/gameloop";
-import { calculateOfflineDiff } from "./logic/helpers";
 import MessageHandler from "./logic/messagehandler";
 import PacksTab from "./pages/packs/packstab";
 import { Tabs, tabs } from "./rules/tabs";
@@ -16,19 +14,15 @@ import { Tabs, tabs } from "./rules/tabs";
 function App() {
   const [CurrentTab, setCurrentTab] = useState(<PacksTab />);
   const [activeTab, setActiveTab] = useState("packstab");
-  const [offlineDiff, setOfflineDiff] = useState<undefined | GameState>(
-    undefined
-  );
   const [offlineModalOpen, setOfflineModalOpen] = useState(false);
   const gameState = useGameState();
 
   useEffect(() => {
     const gameLoop = GameLoop.getInstance();
 
-    const [newStatus, oldStatus] = offlineHandler.calculateOfflineTime();
+    offlineHandler.calculateOfflineTime();
 
     if (Date.now() - gameState.counters.time.amount > 10000) {
-      setOfflineDiff(calculateOfflineDiff(newStatus, oldStatus));
       setOfflineModalOpen(true);
     } else gameLoop.start();
 
@@ -79,7 +73,6 @@ function App() {
       <OfflineModal
         onClose={() => setOfflineModalOpen(false)}
         open={offlineModalOpen}
-        diff={offlineDiff}
       />
     </div>
   );

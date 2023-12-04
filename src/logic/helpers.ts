@@ -56,13 +56,17 @@ export function calculateTournamentTime(id?: keyof Tournaments) {
   ] as const;
 }
 
-export function calculateOfflineDiff(newState: GameState, oldState: GameState) {
+export function calculateOfflineDiff(
+  newState?: GameState,
+  oldState?: GameState
+) {
+  if (!newState || !oldState) return {} as GameState;
   const stateDiff: GameState = JSON.parse(JSON.stringify(newState));
   Object.keys(newState.entities).forEach((k) => {
     const key = k as keyof typeof newState.entities;
     stateDiff.entities[key] = {
-      acquired: oldState.entities[key].acquired,
-      amount: newState.entities[key].amount - oldState.entities[key].amount,
+      acquired: oldState?.entities[key].acquired,
+      amount: newState.entities[key].amount - oldState?.entities[key].amount,
     };
   });
 
