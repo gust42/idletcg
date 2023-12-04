@@ -3,28 +3,38 @@ import { Container } from "../../components/container";
 import useGameState from "../../hooks/usegamestate";
 import { Tournament, Tournaments } from "../../rules/tournaments/tournament";
 
-interface ITournamentProps {
+interface ILastTournamentProps {
   id: keyof Tournaments;
-  tournament: Tournament;
-  onClick: (id: keyof Tournaments) => void;
+  onClick: () => void;
 }
 
-const LastTournament = () => {
+const LastTournament = ({ id, onClick }: ILastTournamentProps) => {
   const state = useGameState();
 
-  if (state.logs.tournament) {
+  const log = state.logs.tournament?.[id];
+
+  if (log) {
     return (
-      <div>
-        <p className="font-bold mb-4">Last run</p>
-        <p className="font-semibold mb-4">
-          {state.logs.tournament.points} points
-        </p>
+      <div className="flex flex-row justify-between mb-4 items-center">
+        <div className="flex-grow flex row gap-2">
+          <p className="font-bold ">Last run</p>
+          <p className="font-semibold ">{log.points} points</p>
+        </div>
+        <Button width="100px" action="" onClick={onClick}>
+          Show log
+        </Button>
       </div>
     );
   }
 
   return null;
 };
+
+interface ITournamentProps {
+  id: keyof Tournaments;
+  tournament: Tournament;
+  onClick: (id: keyof Tournaments, showLog: boolean) => void;
+}
 
 export const TournamentInfo = ({
   id,
@@ -53,22 +63,24 @@ export const TournamentInfo = ({
 
       <p className="font-bold mb-4">Rewards</p>
       <p className="font-semibold mb-4">
-        12 points - {tournament.reward} money
+        {tournament.opponents.length * 3} points - {tournament.reward} money
       </p>
       <p className="font-semibold mb-4">
-        9 points - {tournament.reward / 2} money
+        {tournament.opponents.length * 3 - 3} points - {tournament.reward / 2}{" "}
+        money
       </p>
 
       <p className="font-semibold mb-4">
-        6 points - {tournament.reward / 4} money
+        {tournament.opponents.length * 3 - 6} points - {tournament.reward / 4}{" "}
+        money
       </p>
-      <LastTournament />
+      <LastTournament onClick={() => onClick(id, true)} id={id} />
       <Button
         disabled={
           gameState.entities.rating.amount < tournament.ratingRequirement
         }
         action="SIGNUP"
-        onClick={() => onClick(id)}
+        onClick={() => onClick(id, false)}
       >
         Enter ({tournament.entryFee})
       </Button>

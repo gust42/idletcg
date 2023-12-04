@@ -33,7 +33,12 @@ export const SkillInfo = ({
     MessageHandler.recieveMessage("toggleskill", { name });
   }
 
+  if (!skill.visible(gameState)) return null;
+
   const skillIsToggleable = state.on !== undefined;
+
+  const isMaxLevel =
+    !!skill.rule.maxLevel && state.level >= skill.rule.maxLevel;
 
   return (
     <Container>
@@ -44,57 +49,61 @@ export const SkillInfo = ({
           Current effect on level {state.level}
         </div>
         <div>{skill.friendyEffect(state.level)}</div>
-        {state.acquired ? (
+        {!isMaxLevel && (
           <>
-            <div className="font-semibold pt-1">Next level</div>
-            <div className=" pb-1 flex flex-row justify-between">
-              <span>
-                <span>{skill.friendyEffect(state.level + 1)}</span>
-              </span>
-              <span>
-                Cost{" "}
-                <span className="font-semibold">
-                  {skill.cost(state.level)} money
-                </span>
-              </span>
-            </div>
-            <div className="flex ">
-              <Button
-                action="Levelup"
-                width={skillIsToggleable ? "60%" : undefined}
-                onClick={levelUp}
-                disabled={
-                  gameState.entities.money.amount < skill.cost(state.level)
-                }
-              >
-                +1 ({state.level})
-              </Button>
-              {skillIsToggleable && (
+            {state.acquired ? (
+              <>
+                <div className="font-semibold pt-1">Next level</div>
+                <div className=" pb-1 flex flex-row justify-between">
+                  <span>
+                    <span>{skill.friendyEffect(state.level + 1)}</span>
+                  </span>
+                  <span>
+                    Cost{" "}
+                    <span className="font-semibold">
+                      {skill.cost(state.level)} money
+                    </span>
+                  </span>
+                </div>
+                <div className="flex ">
+                  <Button
+                    action="Levelup"
+                    width={skillIsToggleable ? "60%" : undefined}
+                    onClick={levelUp}
+                    disabled={
+                      gameState.entities.money.amount < skill.cost(state.level)
+                    }
+                  >
+                    +1 ({state.level})
+                  </Button>
+                  {skillIsToggleable && (
+                    <Button
+                      action="toggle"
+                      color={state.on ? "#8BC34A" : "#FF6347"}
+                      width="40%"
+                      onClick={toggleSkill}
+                    >
+                      {state.on ? "On" : "Off"}
+                    </Button>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="border-t border-b pb-1 pt-1 border-t-slate-800 border-b-slate-800">
+                  Requires {skill.rule.requirement} money
+                </div>
                 <Button
-                  action="toggle"
-                  color={state.on ? "#8BC34A" : "#FF6347"}
-                  width="40%"
-                  onClick={toggleSkill}
+                  action="buy"
+                  onClick={unlockSkill}
+                  disabled={
+                    gameState.entities.money.amount < skill.rule.requirement
+                  }
                 >
-                  {state.on ? "On" : "Off"}
+                  Unlock
                 </Button>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="border-t border-b pb-1 pt-1 border-t-slate-800 border-b-slate-800">
-              Requires {skill.rule.requirement} money
-            </div>
-            <Button
-              action="buy"
-              onClick={unlockSkill}
-              disabled={
-                gameState.entities.money.amount < skill.rule.requirement
-              }
-            >
-              Unlock
-            </Button>
+              </>
+            )}
           </>
         )}
       </div>

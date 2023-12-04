@@ -10,7 +10,7 @@ interface IResourceItemProps {
 
 export const Change = ({ change }: { change: number }) => {
   const color = change > 0 ? "text-green-600" : "text-red-600";
-  const arrow = change > 0 ? "&#11165;" : "&#11167;";
+  const arrow = change > 0 ? "&uArr;" : "&dArr;";
   return (
     <span className={`${color}`}>
       <span dangerouslySetInnerHTML={{ __html: arrow }} />

@@ -1,12 +1,15 @@
+import { GameState } from "../interfaces/logic";
 import GameLoop from "./gameloop";
 
 export class OfflineHandler {
   public tickCounter: number = 0;
   public totalTicks: number = 0;
 
+  public state?: GameState = undefined;
+
   calculateOfflineTime() {
     const gameLoop = GameLoop.getInstance();
-    let state = gameLoop.stateHandler.getState();
+    const state = JSON.parse(JSON.stringify(gameLoop.stateHandler.getState()));
 
     const tickLength =
       GameLoop.getInstance().rulesHandler.getRuleValue("TickLength");
@@ -23,18 +26,25 @@ export class OfflineHandler {
 
     gameLoop.stateHandler.saveStateHistory(state);
 
-    const history = gameLoop.stateHandler.getStateHistory();
+    this.run(ticks, gameLoop, () => {
+      gameLoop.stateHandler.savePersistant();
+      gameLoop.start();
+    });
 
-    if (ticks < 500000)
-      for (let i = 0; i < ticks; i++) {
-        state = gameLoop.tick(state);
-        this.tickCounter++;
-      }
+    return this.totalTicks;
+  }
 
-    gameLoop.stateHandler.updateState(state);
+  run(ticks: number, gameLoop: GameLoop, onDone: () => void) {
+    const ticksToRun = Math.min(ticks, 1000);
+    for (let i = 0; i < ticksToRun; i++) {
+      gameLoop.tick();
+      this.tickCounter++;
+    }
 
-    gameLoop.start();
-
-    return [state, history] as const;
+    if (ticks > 0) {
+      setTimeout(() => this.run(ticks - 1000, gameLoop, onDone), 0);
+    } else {
+      onDone();
+    }
   }
 }

@@ -5,7 +5,7 @@ export class FunFriday implements Tournament {
   description = "An enjoyable tournament for the casual players.";
   entryFee = 20000;
   reward = 400000;
-  ratingRequirement = 1500;
+  ratingRequirement = 1200;
   opponents = [
     {
       deck: {
@@ -42,6 +42,24 @@ export class FunFriday implements Tournament {
         slot4: 17,
       },
       name: "Sunny Susan",
+    },
+    {
+      deck: {
+        slot1: 4,
+        slot2: 18,
+        slot3: 19,
+        slot4: 20,
+      },
+      name: "Happy Harry",
+    },
+    {
+      deck: {
+        slot1: 21,
+        slot2: 22,
+        slot3: 23,
+        slot4: 24,
+      },
+      name: "Smiling Sam",
     },
   ];
 }

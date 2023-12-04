@@ -12,15 +12,24 @@ if (savedState) loadedState = deepmerge(state, JSON.parse(savedState));
 const handler = new MigrationHandler();
 const migratedState = handler.migrate(loadedState as never);
 
-export let gameState = proxy(migratedState);
-
+const gameState = proxy(migratedState);
 export default class StateHandler {
-  private stateHistory: GameState = gameState;
+  private _gameState: GameState = gameState;
+
+  public get gameState() {
+    return this._gameState;
+  }
+
+  public set gameState(state: GameState) {
+    this._gameState = state;
+  }
+
+  private stateHistory: GameState = this.gameState;
 
   constructor() {}
 
   getState(): GameState {
-    return { ...gameState };
+    return { ...this.gameState };
   }
 
   getStateHistory() {
@@ -32,12 +41,11 @@ export default class StateHandler {
   }
 
   updateState(state: Partial<GameState>): GameState {
-    gameState = proxy({ ...gameState, ...state });
-    this.savePersistant();
-    return gameState;
+    this.gameState = proxy({ ...gameState, ...state });
+    return this.gameState;
   }
 
   savePersistant() {
-    localStorage.setItem("idletcg.state", JSON.stringify(gameState));
+    localStorage.setItem("idletcg.state", JSON.stringify(this.gameState));
   }
 }

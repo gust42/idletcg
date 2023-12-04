@@ -56,7 +56,8 @@ export default class GameLoop {
     this.running = false;
   }
 
-  tick(state: GameState) {
+  tick() {
+    const state = this.stateHandler.getState();
     this.packManager.handleTick();
     this.tournamentManager.handleTick();
     if (state.skills.workSkill.acquired) {
@@ -65,19 +66,17 @@ export default class GameLoop {
       state.entities.money.amount += skill.effect(state.skills.workSkill.level);
     }
 
-    return state;
+    this.stateHandler.updateState(state);
   }
 
   loop(now: number) {
     if (now - this.lastTime > this.tickCounter) {
-      let state = this.stateHandler.getState();
+      const state = this.stateHandler.getState();
       this.stateHandler.saveStateHistory(state);
-      state = this.tick(state);
+      this.tick();
 
       state.counters.time.amount = Date.now();
       this.lastTickTime = Date.now();
-
-      // state.entities.rating.amount = 1000;
 
       this.stateHandler.updateState(state);
       this.lastTime = now;
@@ -206,6 +205,7 @@ export default class GameLoop {
       state = this.stateHandler.updateState(state);
     }
 
+    this.stateHandler.savePersistant();
     if (this.running) window.requestAnimationFrame(this.loop.bind(this));
   }
 }

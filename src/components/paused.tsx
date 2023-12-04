@@ -9,23 +9,40 @@ import { Change } from "./resourceitem";
 
 export const OfflineModal = ({
   open,
-  diff,
   onClose,
 }: {
   open: boolean;
-  diff: GameState | undefined;
   onClose: () => void;
 }) => {
   const [ticks, setTicks] = useState(0);
   const [totalTicks, setTotalTicks] = useState(0);
 
+  const [diff, setStateDiff] = useState<GameState>();
+
   const tickLength = useGameRule("TickLength");
 
   useEffect(() => {
+    const oldState = GameLoop.getInstance().stateHandler.getStateHistory();
     const interval = setInterval(() => {
       setTicks(offlineHandler.tickCounter);
       setTotalTicks(offlineHandler.totalTicks);
+
+      if (offlineHandler.tickCounter < offlineHandler.totalTicks) {
+        setStateDiff(
+          calculateOfflineDiff(
+            GameLoop.getInstance().stateHandler.gameState,
+            oldState
+          )
+        );
+      }
     }, 100);
+
+    setStateDiff(
+      calculateOfflineDiff(
+        GameLoop.getInstance().stateHandler.gameState,
+        oldState
+      )
+    );
 
     return () => {
       clearInterval(interval);
@@ -34,7 +51,7 @@ export const OfflineModal = ({
 
   return (
     <Modal open={open} onClose={() => {}}>
-      <h2 className="text-xl mb-8">Coming back from offline</h2>
+      <h2 className="text-xl mb-8">Welcome back</h2>
       {ticks !== totalTicks && (
         <div className="mb-4">
           Running tick {ticks} of {totalTicks}
@@ -44,7 +61,7 @@ export const OfflineModal = ({
         <>
           <h4 className="text-lg mb-2">
             You were offline for{" "}
-            {formatSeconds((ticks * tickLength.value) / 1000)}
+            {formatSeconds((totalTicks * tickLength.value) / 1000)}
           </h4>
           <ul className="flex flex-col gap-2 mb-4">
             {Object.keys(diff.entities).map((key) => {
@@ -70,18 +87,16 @@ export const OfflineModal = ({
 
 export const Paused = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [stateDiff, setStateDiff] = useState<GameState>();
 
   useEffect(() => {
     function handleVisibilityChange() {
       const gameLoop = GameLoop.getInstance();
       if (document.visibilityState === "visible") {
-        const [newState, oldState] = offlineHandler.calculateOfflineTime();
-
         if (Date.now() - gameLoop.lastTickTime > 10000) {
-          setStateDiff(calculateOfflineDiff(newState, oldState));
           setModalOpen(true);
         }
+
+        offlineHandler.calculateOfflineTime();
       } else {
         gameLoop.stop();
         setModalOpen(false);
@@ -96,11 +111,5 @@ export const Paused = () => {
   }, []);
 
   if (!modalOpen) return null;
-  return (
-    <OfflineModal
-      open={modalOpen}
-      diff={stateDiff}
-      onClose={() => setModalOpen(false)}
-    />
-  );
+  return <OfflineModal open={modalOpen} onClose={() => setModalOpen(false)} />;
 };

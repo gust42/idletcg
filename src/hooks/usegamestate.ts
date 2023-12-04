@@ -1,7 +1,8 @@
 import { useSnapshot } from "valtio";
-import { gameState } from "../state/statehandler";
+import { GameState } from "../interfaces/logic";
+import GameLoop from "../logic/gameloop";
 export default function useGameState() {
-  const state = useSnapshot(gameState);
+  const state = useSnapshot(GameLoop.getInstance().stateHandler.gameState);
 
-  return state;
+  return state as GameState;
 }
