@@ -1,6 +1,6 @@
 import { GameState } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
-import { AllTournaments } from "../rules/ruleshandler";
+import { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import { Tournaments } from "../rules/tournaments/tournament";
 import GameLoop from "./gameloop";
 
@@ -35,11 +35,19 @@ export function calculateTournamentTime(id?: keyof Tournaments) {
   const tournament = AllTournaments[id];
 
   const deckSize = GameLoop.getInstance().rulesHandler.getRuleValue("DeckSize");
-  const roundTicks = GameLoop.getInstance().rulesHandler.getRuleValue(
+  const ruleRoundTick = GameLoop.getInstance().rulesHandler.getRuleValue(
     "TournamentRoundTicks"
   );
   const tickLength =
     GameLoop.getInstance().rulesHandler.getRuleValue("TickLength");
+
+  const roundTicks = Math.max(
+    ruleRoundTick -
+      AllSkills.tournamentGrinder.effect(
+        gameState.skills.tournamentGrinder.level
+      ),
+    1
+  );
 
   const totalTicks = tournament.opponents.length * deckSize * roundTicks;
 

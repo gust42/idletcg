@@ -1,4 +1,5 @@
-import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
+import { Skills } from "../rules/skills/skill";
+import { TournamentEntry, Tournaments } from "../rules/tournaments/tournament";
 
 export interface Entity {
   amount: number;
@@ -41,11 +42,7 @@ export interface GameStateV1 {
 }
 
 export interface GameState {
-  skills: {
-    autoPackSkill: SkillState;
-    workSkill: SkillState;
-    shopkeeperFriendSkill: SkillState;
-  };
+  skills: Record<keyof Skills, SkillState>;
   entities: {
     badcards: Entity;
     goodcards: Entity;
@@ -77,6 +74,6 @@ export interface GameState {
     };
   };
   logs: {
-    tournament?: TournamentLog;
+    tournament: TournamentEntry;
   };
 }

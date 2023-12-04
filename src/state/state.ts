@@ -1,4 +1,5 @@
 import { GameState } from "../interfaces/logic";
+import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
   skills: {
@@ -13,6 +14,11 @@ export const state: GameState = {
       on: undefined,
     },
     shopkeeperFriendSkill: {
+      acquired: false,
+      level: 1,
+      on: undefined,
+    },
+    tournamentGrinder: {
       acquired: false,
       level: 1,
       on: undefined,
@@ -77,5 +83,7 @@ export const state: GameState = {
     },
   },
 
-  logs: {},
+  logs: {
+    tournament: {} as TournamentEntry,
+  },
 };

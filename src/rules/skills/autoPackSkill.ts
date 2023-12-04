@@ -26,4 +26,8 @@ export class AutoPackSkill implements Skill {
   friendyEffect(level: number) {
     return `Opens ${this.effect(level)} packs / tick`;
   }
+
+  visible() {
+    return true;
+  }
 }

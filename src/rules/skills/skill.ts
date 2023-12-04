@@ -1,7 +1,10 @@
+import { GameState } from "../../interfaces/logic";
+
 export type Skills = {
   autoPackSkill: SkillRule;
   workSkill: SkillRule;
   shopkeeperFriendSkill: SkillRule;
+  tournamentGrinder: SkillRule;
 };
 
 export type SkillRule = {
@@ -9,6 +12,7 @@ export type SkillRule = {
   requirement: number;
   increase: number;
   increaseEffect: number;
+  maxLevel?: number;
 };
 export interface Skill {
   rule: SkillRule;
@@ -22,4 +26,6 @@ export interface Skill {
   effect(level: number): number;
 
   friendyEffect(level: number): string;
+
+  visible(state: GameState): boolean;
 }

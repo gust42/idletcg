@@ -70,7 +70,6 @@ export default class GameLoop {
   }
 
   loop(now: number) {
-    console.log("running");
     if (now - this.lastTime > this.tickCounter) {
       const state = this.stateHandler.getState();
       this.stateHandler.saveStateHistory(state);
@@ -78,8 +77,6 @@ export default class GameLoop {
 
       state.counters.time.amount = Date.now();
       this.lastTickTime = Date.now();
-
-      // state.entities.rating.amount = 1000;
 
       this.stateHandler.updateState(state);
       this.lastTime = now;

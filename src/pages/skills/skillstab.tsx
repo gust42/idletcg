@@ -7,14 +7,15 @@ export default function SkillsTab() {
   const gameState = useGameState();
 
   const skills = Object.keys(AllSkills).map((key) => {
+    const skill = AllSkills[key as keyof Skills];
     return (
       <SkillInfo
         key={key}
         name={key as keyof Skills}
         state={gameState.skills[key as keyof Skills]}
-        skill={AllSkills[key as keyof Skills]}
-        title={AllSkills[key as keyof Skills].title}
-        description={AllSkills[key as keyof Skills].description}
+        skill={skill}
+        title={skill.title}
+        description={skill.description}
       />
     );
   });

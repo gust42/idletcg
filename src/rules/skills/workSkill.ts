@@ -28,4 +28,8 @@ export class WorkSkill implements Skill {
   friendyEffect(level: number) {
     return `${this.effect(level)} money / tick`;
   }
+
+  visible() {
+    return true;
+  }
 }

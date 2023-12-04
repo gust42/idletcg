@@ -1,4 +1,4 @@
-import { AllTournaments } from "../rules/ruleshandler";
+import { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import {
   TournamentLog,
   Tournaments,
@@ -28,20 +28,27 @@ export class TournamentManager {
   }
 
   public handleTick() {
+    const state = this.stateHandler.getState();
+    const skill = AllSkills.tournamentGrinder;
     if (
-      this.tickCounter < this.rulesHandler.getRuleValue("TournamentRoundTicks")
+      this.tickCounter <
+      this.rulesHandler.getRuleValue("TournamentRoundTicks") -
+        skill.effect(state.skills.tournamentGrinder.level)
     ) {
       this.tickCounter++;
       return;
     }
     this.tickCounter = 0;
-    const state = this.stateHandler.getState();
 
     const deckSize = this.rulesHandler.getRuleValue("DeckSize");
 
-    if (state.activities.tournament && state.logs.tournament) {
+    if (
+      state.activities.tournament &&
+      state.logs.tournament[state.activities.tournament.id]
+    ) {
       const tournament = AllTournaments[state.activities.tournament.id];
       const currentRound = state.activities.tournament.tournamentRound;
+      const log = state.logs.tournament[state.activities.tournament.id];
 
       if (currentRound < tournament.opponents.length) {
         // Play game
@@ -57,15 +64,15 @@ export class TournamentManager {
       } else {
         // End tournament
 
-        if (state.logs.tournament.points >= 12) {
+        if (log.points >= 12) {
           state.entities.money.amount += tournament.reward;
-        } else if (state.logs.tournament.points >= 9) {
+        } else if (log.points >= 9) {
           state.entities.money.amount += tournament.reward / 2;
-        } else if (state.logs.tournament.points >= 6) {
+        } else if (log.points >= 6) {
           state.entities.money.amount += tournament.reward / 4;
         }
 
-        state.entities.rating.amount += state.logs.tournament.points;
+        state.entities.rating.amount += log.points;
         if (!state.entities.rating.acquired)
           state.entities.rating.acquired = true;
 
@@ -128,7 +135,7 @@ export class TournamentManager {
           opponentDeck: currentOpponent.deck,
         });
       }
-      state.logs.tournament = log;
+      state.logs.tournament[state.activities.tournament.id] = log;
       this.stateHandler.updateState(state);
     }
   }
