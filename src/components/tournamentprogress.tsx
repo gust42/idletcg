@@ -1,24 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useGameState from "../hooks/usegamestate";
 import { calculateTournamentTime } from "../logic/helpers";
 import { AllTournaments } from "../rules/ruleshandler";
+import { useTimer } from "../hooks/useTimer";
 
 export const TournamentProgress = () => {
   const gameState = useGameState();
 
   const [counter, setCounter] = useState(0);
 
-  const [, remaining] = calculateTournamentTime(
+  const [totalTime] = calculateTournamentTime(
     gameState.activities.tournament?.id
   );
 
-  useEffect(() => {
-    setCounter(remaining);
-    const interval = setInterval(() => {
-      setCounter((remaining) => remaining - 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [remaining]);
+  useTimer(() => {
+    console.log("callback");
+    setCounter(counter + 1);
+  });
 
   if (!gameState.activities.tournament) return null;
   const tournament = AllTournaments[gameState.activities.tournament.id];
@@ -39,7 +37,7 @@ export const TournamentProgress = () => {
         </div>
         <div>
           <div>Time remaining</div>
-          <div className="font-semibold">{counter}s</div>
+          <div className="font-semibold">{totalTime - counter}s</div>
         </div>
       </div>
     )
