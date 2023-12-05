@@ -17,6 +17,8 @@ export type TournamentLogRound = {
   opponentDeck: Deck;
 };
 
+export type TournamentEntry = Record<keyof Tournaments, TournamentLog>;
+
 export type TournamentLog = {
   rounds: TournamentLogRound[];
   points: number;

@@ -4,6 +4,7 @@ import rules from "./rules.json";
 import { AutoPackSkill } from "./skills/autoPackSkill";
 import { ShopkeeperFriendSkill } from "./skills/shopkeeperFriendSkill";
 import { Skill, Skills } from "./skills/skill";
+import { TournamentGrinder } from "./skills/tournamentGrinder";
 import { WorkSkill } from "./skills/workSkill";
 import { CasualWednesday } from "./tournaments/casualwednesday";
 import { CompetitiveSaturday } from "./tournaments/competativesaturday";
@@ -14,6 +15,7 @@ export const AllSkills: Record<keyof Skills, Skill> = {
   workSkill: new WorkSkill(),
   autoPackSkill: new AutoPackSkill(),
   shopkeeperFriendSkill: new ShopkeeperFriendSkill(),
+  tournamentGrinder: new TournamentGrinder(),
 };
 
 export const AllTournaments: Record<keyof Tournaments, Tournament> = {
