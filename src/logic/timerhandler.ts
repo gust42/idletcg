@@ -17,7 +17,6 @@ export class TimerHandler {
   }
 
   run() {
-    console.log("running timers");
     this.timers.forEach((timer) => timer());
   }
 }

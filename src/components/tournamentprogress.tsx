@@ -14,7 +14,6 @@ export const TournamentProgress = () => {
   );
 
   useTimer(() => {
-    console.log("callback");
     setCounter(counter + 1);
   });
 
