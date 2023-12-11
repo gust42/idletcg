@@ -10,6 +10,7 @@ import MessageHandler, {
 } from "./messagehandler";
 import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
+import { TimerHandler } from "./timerhandler";
 import { TournamentManager, TournamentMessages } from "./tournamentmanager";
 
 export const offlineHandler = new OfflineHandler();
@@ -23,6 +24,7 @@ export default class GameLoop {
   private packManager: PackManager;
   private tournamentManager: TournamentManager;
   private lastTime: number;
+  private lastTimerTick: number = 0;
   private tickCounter: number;
 
   private running: boolean = false;
@@ -176,7 +178,14 @@ export default class GameLoop {
         const state = this.stateHandler.getState();
 
         const index = `slot${data.slot}` as keyof typeof state.deck.cards;
-        state.deck.cards[index] = data.id;
+        if (data.person === "me") {
+          state.deck.cards[index] = data.id;
+        } else {
+          const person = state.team.find((p) => p.name === data.person);
+          if (person) {
+            person.deck[index] = data.id;
+          }
+        }
         this.stateHandler.updateState(state);
       }
 
@@ -203,6 +212,11 @@ export default class GameLoop {
       );
       state.entities.money.amount += 50;
       state = this.stateHandler.updateState(state);
+    }
+
+    if (now - this.lastTimerTick >= 1000) {
+      TimerHandler.getInstance().run();
+      this.lastTimerTick = now;
     }
 
     this.stateHandler.savePersistant();

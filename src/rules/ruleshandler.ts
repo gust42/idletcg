@@ -70,6 +70,11 @@ export default class RulesHandler {
       changed = true;
     }
 
+    if (state.team.length > 0) {
+      state.tabs.teamtab.acquired = true;
+      changed = true;
+    }
+
     return changed ? state : null;
   }
 

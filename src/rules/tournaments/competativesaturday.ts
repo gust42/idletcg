@@ -6,6 +6,17 @@ export class CompetitiveSaturday implements Tournament {
   entryFee = 100000;
   reward = 3500000;
   ratingRequirement = 2000;
+  teammember = {
+    name: "Terry",
+    speed: 0.7,
+    rating: 2000,
+    deck: {
+      slot1: undefined,
+      slot2: undefined,
+      slot3: undefined,
+      slot4: undefined,
+    },
+  };
   opponents = [
     {
       deck: {

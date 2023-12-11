@@ -6,6 +6,17 @@ export class CasualWednesday implements Tournament {
   entryFee = 10000;
   reward = 250000;
   ratingRequirement = 1000;
+  teammember = {
+    name: "Timmy",
+    speed: 0.2,
+    rating: 1000,
+    deck: {
+      slot1: undefined,
+      slot2: undefined,
+      slot3: undefined,
+      slot4: undefined,
+    },
+  };
   opponents = [
     {
       deck: {

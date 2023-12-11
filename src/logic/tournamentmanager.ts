@@ -1,3 +1,4 @@
+import { Deck } from "../interfaces/logic";
 import { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import {
   TournamentLog,
@@ -6,13 +7,16 @@ import {
 } from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
+import { calculateTotalTournamentTime } from "./helpers";
+import { AssignTournamentMessage, TournamentMessage } from "./messagehandler";
 
-export type TournamentMessages = "entertournament";
-
-export type TournamentData = { id: keyof Tournaments };
+export type TournamentMessages = "entertournament" | "assigntournament";
 
 export class TournamentManager {
-  static messageList: TournamentMessages[] = ["entertournament"];
+  static messageList: TournamentMessages[] = [
+    "entertournament",
+    "assigntournament",
+  ];
 
   private stateHandler: StateHandler;
 
@@ -28,6 +32,8 @@ export class TournamentManager {
   }
 
   public handleTick() {
+    this.handleTeamMemberTick();
+
     const state = this.stateHandler.getState();
     const skill = AllSkills.tournamentGrinder;
     if (
@@ -66,6 +72,8 @@ export class TournamentManager {
 
         if (log.points >= 12) {
           state.entities.money.amount += tournament.reward;
+          if (!state.team.find((t) => t.name === tournament.teammember.name))
+            state.team.push(tournament.teammember);
         } else if (log.points >= 9) {
           state.entities.money.amount += tournament.reward / 2;
         } else if (log.points >= 6) {
@@ -87,60 +95,96 @@ export class TournamentManager {
     }
   }
 
-  public runTournament(id: keyof Tournaments) {
-    const tournament = AllTournaments[id];
-
+  private handleTeamMemberTick() {
     const state = this.stateHandler.getState();
-    const deckSize = this.rulesHandler.getRuleValue("DeckSize");
-    if (state.activities.tournament) {
-      const currentDeck = state.activities.tournament.deck;
 
-      const log: TournamentLog = {
-        rounds: [],
-        points: 0,
-        myDeck: { ...currentDeck },
-      };
+    state.team.forEach((t) => {
+      if (t.currentTournament) {
+        const tournament = AllTournaments[t.currentTournament];
+        const ticks = t.tournamentTicks as number;
+        const totalTicks = calculateTotalTournamentTime(
+          t.currentTournament,
+          1 + t.speed
+        );
+        console.log(ticks, totalTicks, totalTicks - ticks);
+        if (totalTicks - ticks <= 0) {
+          // Run tournament
+          const log = this.runTournament(t.currentTournament, t.deck);
 
-      for (let i = 0; i < tournament.opponents.length; i++) {
-        const currentOpponent = tournament.opponents[i];
-
-        let wins = 0;
-        for (let j = 0; j < deckSize; j++) {
-          const myCard = currentDeck[
-            `slot${j + 1}` as keyof typeof currentDeck
-          ] as number;
-          const opponentCard = currentOpponent.deck[
-            `slot${j + 1}` as keyof typeof currentDeck
-          ] as number;
-
-          const result = calculateWinner(myCard, opponentCard);
-          if (result === "win") {
-            wins++;
-          } else if (result === "loss") {
-            wins--;
+          if (log.points >= 12) {
+            state.entities.money.amount += tournament.reward;
+            if (!state.team.find((t) => t.name === tournament.teammember.name))
+              state.team.push(tournament.teammember);
+          } else if (log.points >= 9) {
+            state.entities.money.amount += tournament.reward / 2;
+          } else if (log.points >= 6) {
+            state.entities.money.amount += tournament.reward / 4;
           }
+
+          t.rating += log.points;
+          t.tournamentTicks = 0;
+        } else {
+          t.tournamentTicks = ticks + 1;
         }
-
-        const result = wins > 0 ? "win" : wins < 0 ? "loss" : "draw";
-
-        if (result === "win") {
-          log.points += 3;
-        } else if (result === "draw") {
-          log.points += 1;
-        }
-
-        log.rounds.push({
-          result: result,
-          points: log.points,
-          opponentDeck: currentOpponent.deck,
-        });
       }
-      state.logs.tournament[state.activities.tournament.id] = log;
-      this.stateHandler.updateState(state);
-    }
+    });
+
+    this.stateHandler.updateState(state);
   }
 
-  public handleMessages(message: TournamentMessages, data: TournamentData) {
+  public runTournament(id: keyof Tournaments, currentDeck: Deck) {
+    const tournament = AllTournaments[id];
+
+    const deckSize = this.rulesHandler.getRuleValue("DeckSize");
+
+    const log: TournamentLog = {
+      rounds: [],
+      points: 0,
+      myDeck: { ...currentDeck },
+    };
+
+    for (let i = 0; i < tournament.opponents.length; i++) {
+      const currentOpponent = tournament.opponents[i];
+
+      let wins = 0;
+      for (let j = 0; j < deckSize; j++) {
+        const myCard = currentDeck[
+          `slot${j + 1}` as keyof typeof currentDeck
+        ] as number;
+        const opponentCard = currentOpponent.deck[
+          `slot${j + 1}` as keyof typeof currentDeck
+        ] as number;
+
+        const result = calculateWinner(myCard, opponentCard);
+        if (result === "win") {
+          wins++;
+        } else if (result === "loss") {
+          wins--;
+        }
+      }
+
+      const result = wins > 0 ? "win" : wins < 0 ? "loss" : "draw";
+
+      if (result === "win") {
+        log.points += 3;
+      } else if (result === "draw") {
+        log.points += 1;
+      }
+
+      log.rounds.push({
+        result: result,
+        points: log.points,
+        opponentDeck: currentOpponent.deck,
+      });
+    }
+
+    return log;
+  }
+
+  public handleMessages(
+    message: TournamentMessages,
+    data: TournamentMessage | AssignTournamentMessage
+  ) {
     const state = this.stateHandler.getState();
     const tournament = AllTournaments[data.id];
 
@@ -155,10 +199,32 @@ export class TournamentManager {
           gameRound: 0,
           tournamentRound: 0,
         };
-        this.stateHandler.updateState(state);
 
-        this.runTournament(data.id);
+        state.logs.tournament[state.activities.tournament.id] =
+          this.runTournament(data.id, state.activities.tournament.deck);
+        this.stateHandler.updateState(state);
+        break;
+      case "assigntournament":
+        this.assignTeamMemberToTournament(data as AssignTournamentMessage);
         break;
     }
+  }
+
+  private assignTeamMemberToTournament(data: AssignTournamentMessage) {
+    const state = this.stateHandler.getState();
+
+    const person = state.team.find((t) => t.name === data.person);
+    if (person) {
+      person.currentTournament = data.id;
+      person.tournamentTicks = 0;
+    } else {
+      const person = state.team.find((t) => t.currentTournament === data.id);
+      if (person) {
+        person.currentTournament = undefined;
+        person.tournamentTicks = undefined;
+      }
+    }
+
+    this.stateHandler.updateState(state);
   }
 }

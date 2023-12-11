@@ -8,12 +8,12 @@ import Tab from "./components/tab";
 import useGameState from "./hooks/usegamestate";
 import GameLoop, { offlineHandler } from "./logic/gameloop";
 import MessageHandler from "./logic/messagehandler";
-import PacksTab from "./pages/packs/packstab";
 import { Tabs, tabs } from "./rules/tabs";
 
 function App() {
-  const [CurrentTab, setCurrentTab] = useState(<PacksTab />);
-  const [activeTab, setActiveTab] = useState("packstab");
+  const savedTab = localStorage.getItem("activeTab");
+
+  const [activeTab, setActiveTab] = useState(savedTab || "packstab");
   const [offlineModalOpen, setOfflineModalOpen] = useState(false);
   const gameState = useGameState();
 
@@ -32,9 +32,9 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function clickTab(id: string, type: JSX.Element) {
+  function clickTab(id: string) {
     setActiveTab(id);
-    setCurrentTab(type);
+    localStorage.setItem("activeTab", id);
     MessageHandler.recieveMessage("clearmessages", {});
   }
 
@@ -42,17 +42,17 @@ function App() {
     (key) => gameState.tabs[key as Tabs].acquired
   );
 
+  const TabComponent = tabs[activeTab as Tabs].component;
   return (
     <div className="flex flex-col h-full text-xs md:text-base items-stretch">
       <nav className="flex flex-row gap-3 items-stretch flex-shrink-0 overflow-x-auto pt-3">
         {visibleTabs.map((tab) => {
-          const Component = tabs[tab as Tabs].component;
           return (
             <Tab
               key={tab}
               name={tabs[tab as Tabs].friendlyName}
               active={activeTab === tab}
-              onClick={() => clickTab(tab, <Component />)}
+              onClick={() => clickTab(tab)}
               item={gameState.tabs[tab as keyof typeof gameState.tabs]}
             />
           );
@@ -63,7 +63,7 @@ function App() {
           <ResourceView />
         </aside>
         <article className="bg-gradient-to-b from-slate-200 to-slate-300 p-2 md:p-4 flex-grow overflow-auto">
-          {CurrentTab}
+          <TabComponent />
         </article>
       </div>
       <footer className="fixed md:block bottom-0 right left-0 right-0">

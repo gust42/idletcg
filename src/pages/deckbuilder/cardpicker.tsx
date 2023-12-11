@@ -12,7 +12,18 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
 
   let myCards = allCards.slice(0, gameState.counters.uniquecards.amount);
 
-  const cardsToRemove: number[] = [];
+  const allUsedCardsInTeam = gameState.team.reduce<number[]>((acc, cur) => {
+    Object.keys(cur.deck).forEach((key) => {
+      const index = key as keyof typeof cur.deck;
+      const cardId = cur.deck[index];
+      if (cardId !== undefined) {
+        acc.push(cardId);
+      }
+    });
+    return acc;
+  }, []);
+
+  const cardsToRemove: number[] = [...allUsedCardsInTeam];
 
   Object.keys(gameState.deck.cards).forEach((key) => {
     const index = key as keyof typeof gameState.deck.cards;

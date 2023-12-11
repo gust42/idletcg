@@ -73,6 +73,9 @@ export const state: GameState = {
     tournamentstab: {
       acquired: false,
     },
+    teamtab: {
+      acquired: false,
+    },
   },
   counters: {
     uniquecards: {
@@ -82,8 +85,8 @@ export const state: GameState = {
       amount: Date.now(),
     },
   },
-
   logs: {
     tournament: {} as TournamentEntry,
   },
+  team: [],
 };

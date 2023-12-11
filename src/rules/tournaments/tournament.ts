@@ -1,4 +1,4 @@
-import { Deck } from "../../interfaces/logic";
+import { Deck, TeamMember } from "../../interfaces/logic";
 
 export interface Tournaments {
   casualwednesday: Tournament;
@@ -32,6 +32,7 @@ export interface Tournament {
   entryFee: number;
   reward: number;
   ratingRequirement: number;
+  teammember: TeamMember;
 }
 
 export const metaTypes = ["Aggro", "Control", "Combo"];

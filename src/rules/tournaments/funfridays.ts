@@ -6,6 +6,17 @@ export class FunFriday implements Tournament {
   entryFee = 20000;
   reward = 400000;
   ratingRequirement = 1200;
+  teammember = {
+    name: "Sam",
+    speed: 0.4,
+    rating: 1200,
+    deck: {
+      slot1: undefined,
+      slot2: undefined,
+      slot3: undefined,
+      slot4: undefined,
+    },
+  };
   opponents = [
     {
       deck: {

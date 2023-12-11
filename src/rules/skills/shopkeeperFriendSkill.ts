@@ -7,6 +7,7 @@ export class ShopkeeperFriendSkill implements Skill {
     increase: 1.2,
     value: 0.9,
     increaseEffect: 0.1,
+    maxLevel: 20,
   };
 
   title = "Befriend a shopkeeper";

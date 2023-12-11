@@ -2,6 +2,7 @@ import { Button } from "../../components/button";
 import { Container } from "../../components/container";
 import useGameState from "../../hooks/usegamestate";
 import { Tournament, Tournaments } from "../../rules/tournaments/tournament";
+import { TournamentJoinButton } from "./tournamentjoinbutton";
 
 interface ILastTournamentProps {
   id: keyof Tournaments;
@@ -75,15 +76,7 @@ export const TournamentInfo = ({
         money
       </p>
       <LastTournament onClick={() => onClick(id, true)} id={id} />
-      <Button
-        disabled={
-          gameState.entities.rating.amount < tournament.ratingRequirement
-        }
-        action="SIGNUP"
-        onClick={() => onClick(id, false)}
-      >
-        Enter ({tournament.entryFee})
-      </Button>
+      <TournamentJoinButton id={id} onClick={onClick} />
     </Container>
   );
 };

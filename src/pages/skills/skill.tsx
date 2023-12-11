@@ -43,7 +43,19 @@ export const SkillInfo = ({
   return (
     <Container>
       <div className={" flex justify-between gap-2 flex-col"}>
-        <div className="text">{title}</div>
+        <div className="text flex flex-row justify-between h-10">
+          {title}{" "}
+          {skillIsToggleable && (
+            <Button
+              action="toggle"
+              color={state.on ? "#8BC34A" : "#FF6347"}
+              width="40%"
+              onClick={toggleSkill}
+            >
+              {state.on ? "On" : "Off"}
+            </Button>
+          )}
+        </div>
         <div className="text-sm italic h-12">{description}</div>
         <div className="font-semibold">
           Current effect on level {state.level}
@@ -68,7 +80,6 @@ export const SkillInfo = ({
                 <div className="flex ">
                   <Button
                     action="Levelup"
-                    width={skillIsToggleable ? "60%" : undefined}
                     onClick={levelUp}
                     disabled={
                       gameState.entities.money.amount < skill.cost(state.level)
@@ -76,16 +87,6 @@ export const SkillInfo = ({
                   >
                     +1 ({state.level})
                   </Button>
-                  {skillIsToggleable && (
-                    <Button
-                      action="toggle"
-                      color={state.on ? "#8BC34A" : "#FF6347"}
-                      width="40%"
-                      onClick={toggleSkill}
-                    >
-                      {state.on ? "On" : "Off"}
-                    </Button>
-                  )}
                 </div>
               </>
             ) : (
