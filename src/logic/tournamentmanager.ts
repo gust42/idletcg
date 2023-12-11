@@ -66,6 +66,9 @@ export class TournamentManager {
 
         if (log.points >= 12) {
           state.entities.money.amount += tournament.reward;
+          if (!state.team.find((t) => t.name === tournament.teammember.name))
+            state.team.push(tournament.teammember);
+          console.log(state.team);
         } else if (log.points >= 9) {
           state.entities.money.amount += tournament.reward / 2;
         } else if (log.points >= 6) {

@@ -80,7 +80,6 @@ export const SkillInfo = ({
                 <div className="flex ">
                   <Button
                     action="Levelup"
-                    width={skillIsToggleable ? "60%" : undefined}
                     onClick={levelUp}
                     disabled={
                       gameState.entities.money.amount < skill.cost(state.level)
@@ -88,16 +87,6 @@ export const SkillInfo = ({
                   >
                     +1 ({state.level})
                   </Button>
-                  {skillIsToggleable && (
-                    <Button
-                      action="toggle"
-                      color={state.on ? "#8BC34A" : "#FF6347"}
-                      width="40%"
-                      onClick={toggleSkill}
-                    >
-                      {state.on ? "On" : "Off"}
-                    </Button>
-                  )}
                 </div>
               </>
             ) : (

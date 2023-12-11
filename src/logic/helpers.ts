@@ -92,3 +92,14 @@ export function formatSeconds(d: number) {
   const sDisplay = s > 0 ? s + "s" : "";
   return hDisplay + mDisplay + sDisplay;
 }
+
+export const getCardSize = (size: "small" | "medium" | "large") => {
+  switch (size) {
+    case "small":
+      return ["w-[60px] h-[90px] md:w-[100px] md:h-[150px]", "text-[2em]"];
+    case "medium":
+      return ["w-[90px] h-[135px] md:w-[150px] md:h-[225px]", "text-[4em]"];
+    case "large":
+      return ["w-[120px] h-[180px] md:w-[200px] md:h-[300px]", "text-[6em]"];
+  }
+};

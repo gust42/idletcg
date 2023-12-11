@@ -4,6 +4,7 @@ import PacksTab from "../pages/packs/packstab";
 import SkillsTab from "../pages/skills/skillstab";
 import { TournamentTab } from "../pages/tournaments/tournamenttab";
 import TradebinderTab from "../pages/tradebinder/tradebindertab";
+import { TeamTab } from "../pages/team/teamtab";
 
 export type Tabs =
   | "teamtab"
@@ -37,7 +38,7 @@ export const tabs: Record<Tabs, TabRule> = {
   },
   teamtab: {
     friendlyName: "Team",
-    component: TournamentTab,
+    component: TeamTab,
   },
   skillstab: {
     friendlyName: "Skills",

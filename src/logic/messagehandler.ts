@@ -34,6 +34,7 @@ export type SkillMessage = {
 export type DeckMessage = {
   id: number;
   slot: number;
+  person: "me" | string;
 };
 
 export type TournamentMessage = {

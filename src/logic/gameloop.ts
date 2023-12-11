@@ -178,7 +178,14 @@ export default class GameLoop {
         const state = this.stateHandler.getState();
 
         const index = `slot${data.slot}` as keyof typeof state.deck.cards;
-        state.deck.cards[index] = data.id;
+        if (data.person === "me") {
+          state.deck.cards[index] = data.id;
+        } else {
+          const person = state.team.find((p) => p.name === data.person);
+          if (person) {
+            person.deck[index] = data.id;
+          }
+        }
         this.stateHandler.updateState(state);
       }
 

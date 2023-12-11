@@ -1,4 +1,4 @@
-import { allCards } from "../logic/helpers";
+import { allCards, getCardSize } from "../logic/helpers";
 import { generateWinRatio, metaTypes } from "../rules/tournaments/tournament";
 
 interface ICardsProps {
@@ -7,20 +7,11 @@ interface ICardsProps {
   winRateMod?: number;
 }
 
-export const cardSize = "w-[90px] h-[135px] md:w-[150px] md:h-[225px]";
-
 export const Card = ({ id, size = "medium", winRateMod = 1 }: ICardsProps) => {
   const card = allCards.find((card) => card.id === id);
 
-  let pxs = cardSize;
-  let pic = "text-[4em]";
-  let meta = "";
-
-  if (size === "small") {
-    pxs = "w-[60px] h-[90px] md:w-[100px] md:h-[150px]";
-    pic = "text-[2em]";
-    meta = "";
-  }
+  const [pxs, pic] = getCardSize(size);
+  const meta = "";
 
   const winRateColor =
     winRateMod > 1 ? "text-green-600" : winRateMod < 1 ? "text-red-600" : "";
