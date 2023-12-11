@@ -29,6 +29,24 @@ export function calculateUniqueCardCost(id: number) {
   return [costBadCards, costGoodCards, costMetaCards] as const;
 }
 
+export const calculateTotalTournamentTime = (
+  id: keyof Tournaments,
+  modifier = 1
+) => {
+  const tournament = AllTournaments[id];
+  const ruleRoundTick = GameLoop.getInstance().rulesHandler.getRuleValue(
+    "TournamentRoundTicks"
+  );
+  const tickLength =
+    GameLoop.getInstance().rulesHandler.getRuleValue("TickLength");
+
+  const deckSize = GameLoop.getInstance().rulesHandler.getRuleValue("DeckSize");
+
+  const totalTicks = tournament.opponents.length * deckSize * ruleRoundTick;
+
+  return (totalTicks * tickLength * modifier) / 1000;
+};
+
 export function calculateTournamentTime(id?: keyof Tournaments) {
   const gameState = GameLoop.getInstance().stateHandler.getState();
   if (!id) return [0, 0] as const;

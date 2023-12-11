@@ -32,6 +32,8 @@ export interface TeamMember {
   rating: number;
   speed: number;
   deck: Deck;
+  currentTournament?: keyof Tournaments;
+  tournamentTicks?: number;
 }
 
 export interface GameState {

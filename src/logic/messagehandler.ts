@@ -9,6 +9,7 @@ type MessageList =
   | "toggleskill"
   | "addcardtodeck"
   | "entertournament"
+  | "assigntournament"
   | "clearmessages"
   | "tradecard";
 
@@ -21,6 +22,7 @@ export type MessageData =
   | GenericMessage
   | SkillMessage
   | DeckMessage
+  | AssignTournamentMessage
   | TournamentMessage;
 
 export type GenericMessage = {
@@ -41,6 +43,11 @@ export type TournamentMessage = {
   id: keyof Tournaments;
 };
 
+export type AssignTournamentMessage = {
+  id: keyof Tournaments;
+  person: string;
+};
+
 export type ClientMessageData = Record<string, unknown>;
 
 type Callback = (message: string, data: ClientMessageData) => void;
@@ -54,10 +61,10 @@ export default class MessageHandler {
     this.clientSubscriptions = [];
   }
 
-  static recieveMessage(message: MessageList, data: MessageData) {
+  static recieveMessage<T = MessageData>(message: MessageList, data: T) {
     if (!this.messageQue) this.init();
     console.log(message, data);
-    this.messageQue.push({ message, data });
+    this.messageQue.push({ message, data: data as MessageData });
   }
 
   static getandClearMessages(): Message[] {

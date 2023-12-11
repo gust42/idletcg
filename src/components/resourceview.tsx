@@ -1,11 +1,17 @@
 import useGameState from "../hooks/usegamestate";
 import GameLoop from "../logic/gameloop";
+import { calculateTotalTournamentTime } from "../logic/helpers";
+import { AllTournaments } from "../rules/ruleshandler";
 import ResourceItem from "./resourceitem";
 import { TournamentProgress } from "./tournamentprogress";
 
 export default function ResourceView() {
   const gameState = useGameState();
   const oldState = GameLoop.getInstance().stateHandler.getStateHistory();
+
+  const teamMemberTournament = gameState.team.filter(
+    (member) => member.currentTournament
+  );
 
   return (
     <div
@@ -49,6 +55,24 @@ export default function ResourceView() {
           <TournamentProgress />
         </>
       )}
+      <div className="mt-8">
+        {teamMemberTournament.map((member) => {
+          const id = member.currentTournament as keyof typeof AllTournaments;
+          const tournament = AllTournaments[id];
+          return (
+            <div key={member.name} className="flex flex-col gap-2">
+              <div className="font-semibold">{member.name} is playing</div>
+              <div className="font-semibold">{tournament.name}</div>
+              <div>Time remaining</div>
+              <div className="font-semibold">
+                {calculateTotalTournamentTime(id, 1 + member.speed) -
+                  (member.tournamentTicks ?? 0)}
+                s
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
