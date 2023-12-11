@@ -27,18 +27,11 @@ export interface Deck {
   slot4: number | undefined;
 }
 
-export interface GameStateV1 {
-  badcards: Entity;
-  goodcards: Entity;
-  metacards: Entity;
-  money: Entity;
-  packstab: Tab;
-  skillstab: Tab;
-  tradebindertab: Tab;
-  tournamentstab: Tab;
-  autopackskill: SkillState;
-  workskill: SkillState;
-  uniquecards: Counter;
+export interface TeamMember {
+  name: string;
+  rating: number;
+  speed: number;
+  deck: Deck;
 }
 
 export interface GameState {
@@ -63,6 +56,7 @@ export interface GameState {
     tradebindertab: Tab;
     deckbuildertab: Tab;
     tournamentstab: Tab;
+    teamtab: Tab;
   };
   activities: {
     tournament?: {
@@ -76,4 +70,5 @@ export interface GameState {
   logs: {
     tournament: TournamentEntry;
   };
+  team: TeamMember[];
 }

@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { DeckbuilderTab } from "../pages/deckbuilder/deckbuildertab";
 import PacksTab from "../pages/packs/packstab";
 import SkillsTab from "../pages/skills/skillstab";
@@ -5,6 +6,7 @@ import { TournamentTab } from "../pages/tournaments/tournamenttab";
 import TradebinderTab from "../pages/tradebinder/tradebindertab";
 
 export type Tabs =
+  | "teamtab"
   | "packstab"
   | "skillstab"
   | "tradebindertab"
@@ -13,7 +15,7 @@ export type Tabs =
 
 export type TabRule = {
   friendlyName: string;
-  component: React.ComponentType;
+  component: () => ReactNode;
 };
 
 export const tabs: Record<Tabs, TabRule> = {
@@ -31,6 +33,10 @@ export const tabs: Record<Tabs, TabRule> = {
   },
   tournamentstab: {
     friendlyName: "Tournaments",
+    component: TournamentTab,
+  },
+  teamtab: {
+    friendlyName: "Team",
     component: TournamentTab,
   },
   skillstab: {
