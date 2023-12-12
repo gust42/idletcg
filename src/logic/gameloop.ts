@@ -58,6 +58,10 @@ export default class GameLoop {
     this.running = false;
   }
 
+  isRunning() {
+    return this.running;
+  }
+
   tick() {
     const state = this.stateHandler.getState();
     this.packManager.handleTick();

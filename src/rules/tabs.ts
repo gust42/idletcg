@@ -2,9 +2,9 @@ import { ReactNode } from "react";
 import { DeckbuilderTab } from "../pages/deckbuilder/deckbuildertab";
 import PacksTab from "../pages/packs/packstab";
 import SkillsTab from "../pages/skills/skillstab";
+import { TeamTab } from "../pages/team/teamtab";
 import { TournamentTab } from "../pages/tournaments/tournamenttab";
 import TradebinderTab from "../pages/tradebinder/tradebindertab";
-import { TeamTab } from "../pages/team/teamtab";
 
 export type Tabs =
   | "teamtab"
@@ -14,12 +14,12 @@ export type Tabs =
   | "tournamentstab"
   | "deckbuildertab";
 
-export type TabRule = {
+export type RouteConfig = {
   friendlyName: string;
   component: () => ReactNode;
 };
 
-export const tabs: Record<Tabs, TabRule> = {
+export const tabs: Record<Tabs, RouteConfig> = {
   packstab: {
     friendlyName: "Packs",
     component: PacksTab,

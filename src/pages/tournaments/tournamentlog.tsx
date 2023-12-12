@@ -1,23 +1,24 @@
 import { useState } from "react";
-import useGameState from "../../hooks/usegamestate";
 import { AllTournaments } from "../../rules/ruleshandler";
 import { TournamentLog as TLog } from "../../rules/tournaments/tournament";
 import { TournamentPlay } from "./tournamentplay";
 import { TournamentResult } from "./tournamentresult";
 
 interface ITournamentLogProps {
-  id: keyof typeof AllTournaments;
+  log: TLog;
 }
 
-export const TournamentLog = ({ id }: ITournamentLogProps) => {
-  const gameState = useGameState();
-  const tournament = AllTournaments[id];
-  const log = gameState.logs.tournament[id] as TLog;
+export const TournamentLog = ({ log }: ITournamentLogProps) => {
+  const tournament = AllTournaments[log.id];
 
   const [opponent, setOpponent] = useState(0);
 
+  if (!log) {
+    return "No current log";
+  }
+
   const opponentButtons = Array.from(
-    Array(tournament.opponents.length).keys()
+    Array(tournament.opponents?.length).keys()
   ).map((i) => {
     return (
       <div

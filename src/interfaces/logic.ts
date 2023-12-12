@@ -1,5 +1,9 @@
 import { Skills } from "../rules/skills/skill";
-import { TournamentEntry, Tournaments } from "../rules/tournaments/tournament";
+import {
+  TournamentEntry,
+  TournamentLog,
+  Tournaments,
+} from "../rules/tournaments/tournament";
 
 export interface Entity {
   amount: number;
@@ -34,6 +38,7 @@ export interface TeamMember {
   deck: Deck;
   currentTournament?: keyof Tournaments;
   tournamentTicks?: number;
+  lastTournament?: TournamentLog;
 }
 
 export interface GameState {

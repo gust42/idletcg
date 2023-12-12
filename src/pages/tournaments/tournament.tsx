@@ -1,19 +1,19 @@
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
 import useGameState from "../../hooks/usegamestate";
-import { Tournament, Tournaments } from "../../rules/tournaments/tournament";
+import { navigate } from "../../logic/navigation";
+import {
+  Tournament,
+  TournamentLog,
+  Tournaments,
+} from "../../rules/tournaments/tournament";
 import { TournamentJoinButton } from "./tournamentjoinbutton";
 
 interface ILastTournamentProps {
-  id: keyof Tournaments;
-  onClick: () => void;
+  log: TournamentLog;
 }
 
-const LastTournament = ({ id, onClick }: ILastTournamentProps) => {
-  const state = useGameState();
-
-  const log = state.logs.tournament?.[id];
-
+export const LastTournament = ({ log }: ILastTournamentProps) => {
   if (log) {
     return (
       <div className="flex flex-row justify-between mb-4 items-center">
@@ -21,7 +21,13 @@ const LastTournament = ({ id, onClick }: ILastTournamentProps) => {
           <p className="font-bold ">Last run</p>
           <p className="font-semibold ">{log.points} points</p>
         </div>
-        <Button width="100px" action="" onClick={onClick}>
+        <Button
+          width="100px"
+          action=""
+          onClick={() => {
+            navigate("tournamentlog", { log });
+          }}
+        >
           Show log
         </Button>
       </div>
@@ -34,7 +40,7 @@ const LastTournament = ({ id, onClick }: ILastTournamentProps) => {
 interface ITournamentProps {
   id: keyof Tournaments;
   tournament: Tournament;
-  onClick: (id: keyof Tournaments, showLog: boolean) => void;
+  onClick: (id: keyof Tournaments) => void;
 }
 
 export const TournamentInfo = ({
@@ -75,7 +81,7 @@ export const TournamentInfo = ({
         {tournament.opponents.length * 3 - 6} points - {tournament.reward / 4}{" "}
         money
       </p>
-      <LastTournament onClick={() => onClick(id, true)} id={id} />
+      <LastTournament log={gameState.logs.tournament[id]} />
       <TournamentJoinButton id={id} onClick={onClick} />
     </Container>
   );

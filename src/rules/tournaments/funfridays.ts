@@ -1,6 +1,7 @@
-import { Tournament } from "./tournament";
+import { Tournament, Tournaments } from "./tournament";
 
 export class FunFriday implements Tournament {
+  id = "funfriday" as keyof Tournaments;
   name = "Fun Friday";
   description = "An enjoyable tournament for the casual players.";
   entryFee = 20000;
@@ -9,7 +10,7 @@ export class FunFriday implements Tournament {
   teammember = {
     name: "Sam",
     speed: 0.4,
-    rating: 1200,
+    rating: 1000,
     deck: {
       slot1: undefined,
       slot2: undefined,

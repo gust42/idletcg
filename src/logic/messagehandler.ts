@@ -44,7 +44,7 @@ export type TournamentMessage = {
 };
 
 export type AssignTournamentMessage = {
-  id: keyof Tournaments;
+  id?: keyof Tournaments;
   person: string;
 };
 
