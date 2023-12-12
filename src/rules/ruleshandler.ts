@@ -55,7 +55,7 @@ export default class RulesHandler {
 
     if (
       !state.tabs.deckbuildertab.acquired &&
-      state.counters.uniquecards.amount >= 5
+      state.counters.uniquecards.amount >= 3
     ) {
       state.tabs.deckbuildertab.acquired = true;
       changed = true;

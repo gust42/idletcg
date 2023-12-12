@@ -14,8 +14,6 @@ export class WorkSkill implements Skill {
   description = "Earns money over time";
 
   cost(level: number) {
-    level = 3;
-
     return level == 1
       ? this.rule.requirement
       : roundToNearestThousand(
