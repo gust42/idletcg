@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { memo, useState } from "react";
+import { useTimer } from "../hooks/useTimer";
 import useGameState from "../hooks/usegamestate";
 import { calculateTournamentTime } from "../logic/helpers";
 import { AllTournaments } from "../rules/ruleshandler";
-import { useTimer } from "../hooks/useTimer";
 
-export const TournamentProgress = () => {
+export const TournamentProgress = memo(() => {
   const gameState = useGameState();
 
   const [counter, setCounter] = useState(0);
@@ -17,13 +17,16 @@ export const TournamentProgress = () => {
     setCounter(counter + 1);
   });
 
-  if (!gameState.activities.tournament) return null;
+  if (!gameState.activities.tournament) {
+    if (counter > 0) setCounter(0);
+    return null;
+  }
 
   const tournament = AllTournaments[gameState.activities.tournament.id];
 
   const log = gameState.logs.tournament[gameState.activities.tournament.id];
 
-  if (counter <= 0) return null;
+  console.log("rerender", counter);
 
   return (
     gameState.activities.tournament && (
@@ -39,11 +42,11 @@ export const TournamentProgress = () => {
             points
           </div>
         </div>
-        <div>
-          <div>Time remaining</div>
+        <div className="flex flex-row gap-4">
+          Time
           <div className="font-semibold">{totalTime - counter}s</div>
         </div>
       </div>
     )
   );
-};
+});

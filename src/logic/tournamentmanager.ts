@@ -7,7 +7,10 @@ import {
 } from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
-import { calculateTotalTournamentTime } from "./helpers";
+import {
+  calculateTotalTournamentTime,
+  getTournamentPrizeMoney,
+} from "./helpers";
 import { AssignTournamentMessage, TournamentMessage } from "./messagehandler";
 
 export type TournamentMessages = "entertournament" | "assigntournament";
@@ -70,15 +73,17 @@ export class TournamentManager {
       } else {
         // End tournament
 
-        if (log.points >= 12) {
-          state.entities.money.amount += tournament.reward;
-          if (!state.team.find((t) => t.name === tournament.teammember.name))
-            state.team.push(tournament.teammember);
-        } else if (log.points >= 9) {
-          state.entities.money.amount += tournament.reward / 2;
-        } else if (log.points >= 6) {
-          state.entities.money.amount += tournament.reward / 4;
-        }
+        const prizeMoney = getTournamentPrizeMoney(
+          state.activities.tournament.id,
+          log
+        );
+        state.entities.money.amount += prizeMoney;
+
+        if (
+          log.points >= tournament.opponents.length * 3 &&
+          !state.team.find((t) => t.name === tournament.teammember.name)
+        )
+          state.team.push(tournament.teammember);
 
         state.entities.rating.amount += log.points;
         if (!state.entities.rating.acquired)
@@ -100,29 +105,21 @@ export class TournamentManager {
 
     state.team.forEach((t) => {
       if (t.currentTournament) {
-        const tournament = AllTournaments[t.currentTournament];
         const ticks = t.tournamentTicks as number;
         const totalTicks = calculateTotalTournamentTime(
           t.currentTournament,
           1 + t.speed
         );
-        console.log(ticks, totalTicks, totalTicks - ticks);
         if (totalTicks - ticks <= 0) {
           // Run tournament
           const log = this.runTournament(t.currentTournament, t.deck);
 
-          if (log.points >= 12) {
-            state.entities.money.amount += tournament.reward;
-            if (!state.team.find((t) => t.name === tournament.teammember.name))
-              state.team.push(tournament.teammember);
-          } else if (log.points >= 9) {
-            state.entities.money.amount += tournament.reward / 2;
-          } else if (log.points >= 6) {
-            state.entities.money.amount += tournament.reward / 4;
-          }
+          const prizeMoney = getTournamentPrizeMoney(t.currentTournament, log);
+          state.entities.money.amount += prizeMoney;
 
           t.rating += log.points;
           t.tournamentTicks = 0;
+          t.lastTournament = log;
         } else {
           t.tournamentTicks = ticks + 1;
         }
@@ -138,6 +135,7 @@ export class TournamentManager {
     const deckSize = this.rulesHandler.getRuleValue("DeckSize");
 
     const log: TournamentLog = {
+      id,
       rounds: [],
       points: 0,
       myDeck: { ...currentDeck },
@@ -185,29 +183,35 @@ export class TournamentManager {
     message: TournamentMessages,
     data: TournamentMessage | AssignTournamentMessage
   ) {
-    const state = this.stateHandler.getState();
-    const tournament = AllTournaments[data.id];
-
     switch (message) {
       case "entertournament":
-        if (state.entities.money.amount < tournament.entryFee) return;
-        state.entities.money.amount -= tournament.entryFee;
-        state.activities.tournament = {
-          id: data.id,
-          deck: { ...state.deck.cards },
-          currentOpponent: 0,
-          gameRound: 0,
-          tournamentRound: 0,
-        };
-
-        state.logs.tournament[state.activities.tournament.id] =
-          this.runTournament(data.id, state.activities.tournament.deck);
-        this.stateHandler.updateState(state);
+        this.enterTournament(data as TournamentMessage);
         break;
       case "assigntournament":
         this.assignTeamMemberToTournament(data as AssignTournamentMessage);
         break;
     }
+  }
+
+  private enterTournament(data: TournamentMessage) {
+    const state = this.stateHandler.getState();
+    const tournament = AllTournaments[data.id];
+
+    if (state.entities.money.amount < tournament.entryFee) return;
+    state.entities.money.amount -= tournament.entryFee;
+    state.activities.tournament = {
+      id: data.id,
+      deck: { ...state.deck.cards },
+      currentOpponent: 0,
+      gameRound: 0,
+      tournamentRound: 0,
+    };
+
+    state.logs.tournament[state.activities.tournament.id] = this.runTournament(
+      data.id,
+      state.activities.tournament.deck
+    );
+    this.stateHandler.updateState(state);
   }
 
   private assignTeamMemberToTournament(data: AssignTournamentMessage) {
@@ -217,12 +221,6 @@ export class TournamentManager {
     if (person) {
       person.currentTournament = data.id;
       person.tournamentTicks = 0;
-    } else {
-      const person = state.team.find((t) => t.currentTournament === data.id);
-      if (person) {
-        person.currentTournament = undefined;
-        person.tournamentTicks = undefined;
-      }
     }
 
     this.stateHandler.updateState(state);

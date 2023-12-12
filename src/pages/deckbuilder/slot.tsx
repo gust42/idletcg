@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "../../components/card";
-import { CardPicker } from "./cardpicker";
 import { getCardSize } from "../../logic/helpers";
+import { CardPicker } from "./cardpicker";
 
 interface ISlotProps {
   slot: number;
@@ -37,7 +37,7 @@ export const Slot = ({ slot, card, onSelect, size = "medium" }: ISlotProps) => {
           <Card size={size} id={card} />
         ) : (
           <div className="flex flex-col justify-center h-full gap-4 -mt-4">
-            Empty slot
+            {size !== "small" && <>Empty slot</>}
             <div className={pic}>+</div>
           </div>
         )}

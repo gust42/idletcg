@@ -6,7 +6,7 @@ export class WorkSkill implements Skill {
     requirement: 1500,
     increase: 1.25,
     value: 10,
-    increaseEffect: 1.9,
+    increaseEffect: 1.8,
   };
 
   title = "Start content creation on social media";

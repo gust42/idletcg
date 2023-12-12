@@ -1,7 +1,7 @@
 import { GameState } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
 import { AllSkills, AllTournaments } from "../rules/ruleshandler";
-import { Tournaments } from "../rules/tournaments/tournament";
+import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
 import GameLoop from "./gameloop";
 
 export function roundToNearestThousand(num: number): number {
@@ -67,7 +67,9 @@ export function calculateTournamentTime(id?: keyof Tournaments) {
     1
   );
 
-  const totalTicks = tournament.opponents.length * deckSize * roundTicks;
+  const totalTicks =
+    tournament.opponents.length * deckSize * roundTicks +
+    tournament.opponents.length * roundTicks;
 
   const passedTicks = gameState.activities.tournament
     ? gameState.activities.tournament.currentOpponent * deckSize * roundTicks +
@@ -121,3 +123,21 @@ export const getCardSize = (size: "small" | "medium" | "large") => {
       return ["w-[120px] h-[180px] md:w-[200px] md:h-[300px]", "text-[6em]"];
   }
 };
+
+export function getTournamentPrizeMoney(
+  id: keyof Tournaments,
+  log: TournamentLog
+) {
+  const tournament = AllTournaments[id];
+
+  const maxPoints = tournament.opponents.length * 3;
+
+  if (log.points >= maxPoints) {
+    return tournament.reward;
+  } else if (log.points >= maxPoints - 3) {
+    return tournament.reward / 2;
+  } else if (log.points >= maxPoints - 6) {
+    return tournament.reward / 4;
+  }
+  return 0;
+}

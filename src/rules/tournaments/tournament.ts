@@ -20,6 +20,7 @@ export type TournamentLogRound = {
 export type TournamentEntry = Record<keyof Tournaments, TournamentLog>;
 
 export type TournamentLog = {
+  id: keyof Tournaments;
   rounds: TournamentLogRound[];
   points: number;
   myDeck: Deck;
@@ -27,6 +28,7 @@ export type TournamentLog = {
 
 export interface Tournament {
   opponents: Opponents[];
+  id: keyof Tournaments;
   name: string;
   description: string;
   entryFee: number;

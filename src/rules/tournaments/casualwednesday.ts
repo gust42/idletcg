@@ -1,6 +1,7 @@
-import { Tournament } from "./tournament";
+import { Tournament, Tournaments } from "./tournament";
 
 export class CasualWednesday implements Tournament {
+  id = "casualwednesday" as keyof Tournaments;
   name = "Casual Wednesday";
   description = "A casual tournament for the Timmys.";
   entryFee = 10000;

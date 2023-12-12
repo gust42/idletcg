@@ -36,10 +36,15 @@ export class OfflineHandler {
 
   run(ticks: number, gameLoop: GameLoop, onDone: () => void) {
     const ticksToRun = Math.min(ticks, 1000);
+    const state = gameLoop.stateHandler.getState();
     for (let i = 0; i < ticksToRun; i++) {
       gameLoop.tick();
       this.tickCounter++;
+      state.counters.time.amount += 1000;
     }
+
+    gameLoop.stateHandler.updateState(state);
+    gameLoop.stateHandler.savePersistant();
 
     if (ticks > 0) {
       setTimeout(() => this.run(ticks - 1000, gameLoop, onDone), 0);

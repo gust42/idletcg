@@ -9,6 +9,8 @@ export default function ResourceView() {
   const gameState = useGameState();
   const oldState = GameLoop.getInstance().stateHandler.getStateHistory();
 
+  if (!GameLoop.getInstance().isRunning()) return null;
+
   const teamMemberTournament = gameState.team.filter(
     (member) => member.currentTournament
   );
@@ -55,19 +57,21 @@ export default function ResourceView() {
           <TournamentProgress />
         </>
       )}
-      <div className="mt-8">
+      <div className="mt-4">
         {teamMemberTournament.map((member) => {
           const id = member.currentTournament as keyof typeof AllTournaments;
           const tournament = AllTournaments[id];
           return (
-            <div key={member.name} className="flex flex-col gap-2">
-              <div className="font-semibold">{member.name} is playing</div>
+            <div key={member.name} className="flex flex-col gap-1 mb-4">
+              <div className="">{member.name} is playing</div>
               <div className="font-semibold">{tournament.name}</div>
-              <div>Time remaining</div>
-              <div className="font-semibold">
-                {calculateTotalTournamentTime(id, 1 + member.speed) -
-                  (member.tournamentTicks ?? 0)}
-                s
+              <div className="flex flex-row gap-4">
+                Time
+                <div className="font-semibold">
+                  {calculateTotalTournamentTime(id, 1 + member.speed) -
+                    (member.tournamentTicks ?? 0)}
+                  s
+                </div>
               </div>
             </div>
           );
