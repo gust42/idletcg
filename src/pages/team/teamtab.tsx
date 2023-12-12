@@ -6,7 +6,6 @@ export const TeamTab = () => {
 
   return (
     <div>
-      <h1 className="mb-8 ">Team</h1>
       <div className="flex flex-row flex-wrap gap-4">
         {state.team.map((member) => (
           <TeamMemberComponent key={member.name} member={member} />
