@@ -2,6 +2,20 @@ import { GameState } from "../interfaces/logic";
 import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
+  pack: {
+    amount: {
+      acquired: false,
+      amount: 0,
+    },
+    meta: {
+      acquired: false,
+      amount: 0,
+    },
+    good: {
+      acquired: false,
+      amount: 0,
+    },
+  },
   skills: {
     autoPackSkill: {
       acquired: false,
@@ -46,6 +60,10 @@ export const state: GameState = {
     },
     rating: {
       amount: 1000,
+      acquired: false,
+    },
+    packbonuspoints: {
+      amount: 0,
       acquired: false,
     },
   },

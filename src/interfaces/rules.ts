@@ -17,6 +17,9 @@ export type CostForUniqueCards = {
 
 export type Rules = {
   PackCost: Rule;
+  CardsInPack: Rule;
+  GoodUnlock: Rule;
+  MetaUnlock: Rule;
   MetaCardDroprate: Rule;
   GoodCardDroprate: Rule;
   GoodCardPackMax: Rule;

@@ -2,6 +2,15 @@
   "PackCost": {
     "value": 10
   },
+  "CardsInPack": {
+    "value": 5
+  },
+  "GoodUnlock": {
+    "value": 10
+  },
+  "MetaUnlock": {
+    "value": 100
+  },
   "MetaCardDroprate": {
     "value": 0.03
   },
