@@ -4,8 +4,16 @@ import { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
 import GameLoop from "./gameloop";
 
+export function roundToNearestX(num: number, x: number): number {
+  if (num < x) return Math.floor(num);
+  const amount = Math.round(num / x) * x;
+  return amount;
+}
+
 export function roundToNearestThousand(num: number): number {
-  return Math.round(num / 1000) * 1000;
+  if (num < 1000) return num;
+  const amount = Math.round(num / 1000) * 1000;
+  return amount;
 }
 
 export const allCards = Array.from({ length: 256 }, (_v, k) => ({
@@ -140,4 +148,9 @@ export function getTournamentPrizeMoney(
     return tournament.reward / 4;
   }
   return 0;
+}
+
+export function calculatePackAmountCost(level: number) {
+  console.log("level", level);
+  return roundToNearestX(5 ** ((level + 1) / 2), 10);
 }

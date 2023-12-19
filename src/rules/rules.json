@@ -6,34 +6,34 @@
     "value": 5
   },
   "GoodUnlock": {
-    "value": 10
+    "value": 80
   },
   "MetaUnlock": {
-    "value": 100
+    "value": 600
   },
   "MetaCardDroprate": {
-    "value": 0.03
+    "value": 0.02
   },
   "GoodCardDroprate": {
-    "value": 0.3
+    "value": 0.25
   },
   "GoodCardPackMax": {
     "value": 2
   },
   "GoodCardSellValue": {
-    "value": 10
+    "value": 5
   },
   "BadCardSellValue": {
-    "value": 0.5
+    "value": 2
   },
   "MetaCardSellValue": {
-    "value": 100
+    "value": 50
   },
   "CardsForTradebinder": {
-    "value": 10000
+    "value": 15000
   },
   "MoneyForSkills": {
-    "value": 1000
+    "value": 7000
   },
   "CostForUniqueCards": {
     "badcards": 1200,

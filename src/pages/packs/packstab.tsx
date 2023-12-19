@@ -5,7 +5,7 @@ import useGameState from "../../hooks/usegamestate";
 import { Container } from "../../components/container";
 import { Button } from "../../components/button";
 import { HelpText, Title } from "../../components/typography";
-import { roundToNearestThousand } from "../../logic/helpers";
+import { calculatePackAmountCost } from "../../logic/helpers";
 
 export default function PacksTab() {
   const gameState = useGameState();
@@ -15,6 +15,8 @@ export default function PacksTab() {
   const badSellValueRule = useGameRule("BadCardSellValue");
   const metaSellValueRule = useGameRule("MetaCardSellValue");
   const cardsInPackRule = useGameRule("CardsInPack");
+  const goodCost = useGameRule("GoodUnlock");
+  const metaCost = useGameRule("MetaUnlock");
 
   function openPack(amount: number) {
     MessageHandler.recieveMessage("openpack", { amount: amount ? amount : 1 });
@@ -38,7 +40,7 @@ export default function PacksTab() {
     });
   }
 
-  const cost = roundToNearestThousand(5 ** gameState.pack.amount.amount);
+  const cost = calculatePackAmountCost(gameState.pack.amount.amount);
   return (
     <article className="flex flex-col gap-5">
       <Container>
@@ -77,10 +79,13 @@ export default function PacksTab() {
               onClick={() => {
                 MessageHandler.recieveMessage("unlockgood", {});
               }}
-              disabled={gameState.pack.good.amount === 1}
+              disabled={
+                goodCost.value > gameState.entities.packbonuspoints.amount
+              }
               action="unlock"
             >
               Unlock good cards
+              <div className="button-cost">{goodCost.value} points</div>
             </Button>
           )}
 
@@ -89,38 +94,43 @@ export default function PacksTab() {
               onClick={() => {
                 MessageHandler.recieveMessage("unlockmeta", {});
               }}
-              disabled={gameState.pack.meta.amount === 1}
+              disabled={
+                metaCost.value > gameState.entities.packbonuspoints.amount
+              }
               action="unlock"
             >
               Unlock meta cards
+              <div className="button-cost">{metaCost.value} points</div>
             </Button>
           )}
         </div>
       </Container>
-      <Container>
-        <Title>Cards</Title>
-        <BuyButton
-          text={`Bad card (${gameState.entities.badcards.amount})`}
-          type="sell"
-          click={sellBadCards}
-          resource={gameState.entities.badcards}
-          cost={badSellValueRule.value}
-        ></BuyButton>
-        <BuyButton
-          text={`Good card (${gameState.entities.goodcards.amount})`}
-          type="sell"
-          click={sellGoodCards}
-          resource={gameState.entities.goodcards}
-          cost={goodSellValueRule.value}
-        ></BuyButton>
-        <BuyButton
-          text={`Meta card (${gameState.entities.metacards.amount})`}
-          type="sell"
-          click={sellMetaCards}
-          resource={gameState.entities.metacards}
-          cost={metaSellValueRule.value}
-        ></BuyButton>
-      </Container>
+      {gameState.entities.badcards.acquired && (
+        <Container>
+          <Title>Cards</Title>
+          <BuyButton
+            text={`Bad card (${gameState.entities.badcards.amount})`}
+            type="sell"
+            click={sellBadCards}
+            resource={gameState.entities.badcards}
+            cost={badSellValueRule.value}
+          ></BuyButton>
+          <BuyButton
+            text={`Good card (${gameState.entities.goodcards.amount})`}
+            type="sell"
+            click={sellGoodCards}
+            resource={gameState.entities.goodcards}
+            cost={goodSellValueRule.value}
+          ></BuyButton>
+          <BuyButton
+            text={`Meta card (${gameState.entities.metacards.amount})`}
+            type="sell"
+            click={sellMetaCards}
+            resource={gameState.entities.metacards}
+            cost={metaSellValueRule.value}
+          ></BuyButton>
+        </Container>
+      )}
     </article>
   );
 }

@@ -1,6 +1,7 @@
 import useGameState from "../hooks/usegamestate";
 import GameLoop from "../logic/gameloop";
 import { calculateTotalTournamentTime } from "../logic/helpers";
+import { navigate } from "../logic/navigation";
 import { AllTournaments } from "../rules/ruleshandler";
 import ResourceItem from "./resourceitem";
 import { TournamentProgress } from "./tournamentprogress";
@@ -17,7 +18,7 @@ export default function ResourceView() {
 
   return (
     <div
-      className=" sticky top-0 overflow-hidden
+      className=" sticky top-0 overflow-hidden flex flex-col h-full
   "
     >
       <h4 className="text-lg mb-4">Resources</h4>
@@ -83,6 +84,14 @@ export default function ResourceView() {
             </div>
           );
         })}
+      </div>
+      <div
+        className="mt-4 underline cursor-pointer"
+        onClick={() => {
+          navigate("settings");
+        }}
+      >
+        Settings
       </div>
     </div>
   );

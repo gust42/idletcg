@@ -26,7 +26,12 @@ export default class Pack {
           Math.random() < rules.getRuleValue("GoodCardDroprate") ? 1 : 0;
       }
     }
-    this.badcards = state.pack.amount.amount - this.metacards - this.goodcards;
+    this.badcards =
+      rules.getRuleValue("CardsInPack") +
+      state.pack.amount.amount -
+      this.metacards -
+      this.goodcards;
+    console.log(this.badcards);
   }
 
   getCards(): Cards {

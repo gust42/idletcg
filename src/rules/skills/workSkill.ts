@@ -3,7 +3,7 @@ import { Skill, SkillRule } from "./skill";
 
 export class WorkSkill implements Skill {
   rule: SkillRule = {
-    requirement: 1500,
+    requirement: 10000,
     increase: 1.25,
     value: 10,
     increaseEffect: 1.8,
@@ -17,7 +17,7 @@ export class WorkSkill implements Skill {
     return level == 1
       ? this.rule.requirement
       : roundToNearestThousand(
-          this.rule.requirement ** this.rule.increase * (level - 1)
+          this.rule.requirement ** (this.rule.increase * (level - 1))
         );
   }
 

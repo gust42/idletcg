@@ -1,6 +1,6 @@
 import RulesHandler, { AllSkills } from "./../rules/ruleshandler";
 import StateHandler from "./../state/statehandler";
-import { roundToNearestThousand } from "./helpers";
+import { calculatePackAmountCost, roundToNearestThousand } from "./helpers";
 import MessageHandler from "./messagehandler";
 import Pack from "./pack";
 
@@ -66,7 +66,7 @@ export class PackManager {
 
   private upgradeAmount() {
     const state = this.stateHandler.getState();
-    const cost = roundToNearestThousand(5 ** state.pack.amount.amount);
+    const cost = calculatePackAmountCost(state.pack.amount.amount);
     if (state.entities.packbonuspoints.amount >= cost) {
       state.pack.amount.amount += 1;
       state.entities.packbonuspoints.amount -= cost;
