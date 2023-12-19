@@ -1,6 +1,6 @@
 import RulesHandler, { AllSkills } from "./../rules/ruleshandler";
 import StateHandler from "./../state/statehandler";
-import { calculatePackAmountCost, roundToNearestThousand } from "./helpers";
+import { calculatePackAmountCost } from "./helpers";
 import MessageHandler from "./messagehandler";
 import Pack from "./pack";
 
