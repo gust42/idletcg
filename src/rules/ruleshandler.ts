@@ -70,8 +70,32 @@ export default class RulesHandler {
       changed = true;
     }
 
-    if (state.team.length > 0) {
+    if (!state.tabs.teamtab.acquired && state.team.length > 0) {
       state.tabs.teamtab.acquired = true;
+      changed = true;
+    }
+
+    if (
+      !state.pack.amount.acquired &&
+      state.entities.packbonuspoints.amount > 1
+    ) {
+      state.pack.amount.acquired = true;
+      changed = true;
+    }
+
+    if (
+      !state.pack.good.acquired &&
+      state.entities.packbonuspoints.amount > 5
+    ) {
+      state.pack.good.acquired = true;
+      changed = true;
+    }
+
+    if (
+      !state.pack.meta.acquired &&
+      state.entities.packbonuspoints.amount > 50
+    ) {
+      state.pack.meta.acquired = true;
       changed = true;
     }
 

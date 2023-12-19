@@ -3,7 +3,7 @@ import { Skill, SkillRule } from "./skill";
 
 export class ShopkeeperFriendSkill implements Skill {
   rule: SkillRule = {
-    requirement: 6000,
+    requirement: 24000,
     increase: 1.2,
     value: 0.9,
     increaseEffect: 0.1,

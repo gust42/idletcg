@@ -43,12 +43,18 @@ export interface TeamMember {
 
 export interface GameState {
   skills: Record<keyof Skills, SkillState>;
+  pack: {
+    amount: Entity;
+    meta: Entity;
+    good: Entity;
+  };
   entities: {
     badcards: Entity;
     goodcards: Entity;
     metacards: Entity;
     money: Entity;
     rating: Entity;
+    packbonuspoints: Entity;
   };
   counters: {
     uniquecards: Counter;
