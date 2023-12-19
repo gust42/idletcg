@@ -1,5 +1,6 @@
 import RulesHandler, { AllSkills } from "./../rules/ruleshandler";
 import StateHandler from "./../state/statehandler";
+import { roundToNearestThousand } from "./helpers";
 import MessageHandler from "./messagehandler";
 import Pack from "./pack";
 
@@ -9,6 +10,9 @@ export type PackMessages =
   | "sellbadcards"
   | "sellgoodcards"
   | "sellmetacards"
+  | "upgradeamount"
+  | "unlockgood"
+  | "unlockmeta"
   | "autobuy";
 
 export class PackManager {
@@ -17,6 +21,9 @@ export class PackManager {
     "sellbadcards",
     "sellgoodcards",
     "sellmetacards",
+    "upgradeamount",
+    "unlockgood",
+    "unlockmeta",
     "autobuy",
   ];
 
@@ -45,6 +52,45 @@ export class PackManager {
       case "sellbadcards":
         this.sellCards(message, data.amount);
         break;
+      case "upgradeamount":
+        this.upgradeAmount();
+        break;
+      case "unlockgood":
+        this.unlockGood();
+        break;
+      case "unlockmeta":
+        this.unlockMeta();
+        break;
+    }
+  }
+
+  private upgradeAmount() {
+    const state = this.stateHandler.getState();
+    const cost = roundToNearestThousand(5 ** state.pack.amount.amount);
+    if (state.entities.packbonuspoints.amount >= cost) {
+      state.pack.amount.amount += 1;
+      state.entities.packbonuspoints.amount -= cost;
+      this.stateHandler.updateState(state);
+    }
+  }
+
+  private unlockGood() {
+    const state = this.stateHandler.getState();
+    const rule = this.rulesHandler.getRuleValue("GoodUnlock");
+    if (state.entities.packbonuspoints.amount >= rule) {
+      state.pack.good.amount = 1;
+      state.entities.packbonuspoints.amount -= rule;
+      this.stateHandler.updateState(state);
+    }
+  }
+
+  private unlockMeta() {
+    const state = this.stateHandler.getState();
+    const rule = this.rulesHandler.getRuleValue("MetaUnlock");
+    if (state.entities.packbonuspoints.amount >= rule) {
+      state.pack.meta.amount = 1;
+      state.entities.packbonuspoints.amount -= rule;
+      this.stateHandler.updateState(state);
     }
   }
 

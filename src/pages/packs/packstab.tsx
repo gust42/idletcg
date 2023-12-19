@@ -5,6 +5,7 @@ import useGameState from "../../hooks/usegamestate";
 import { Container } from "../../components/container";
 import { Button } from "../../components/button";
 import { HelpText, Title } from "../../components/typography";
+import { roundToNearestThousand } from "../../logic/helpers";
 
 export default function PacksTab() {
   const gameState = useGameState();
@@ -37,7 +38,7 @@ export default function PacksTab() {
     });
   }
 
-  console.log(gameState.pack.good.acquired);
+  const cost = roundToNearestThousand(5 ** gameState.pack.amount.amount);
   return (
     <article className="flex flex-col gap-5">
       <Container>
@@ -47,7 +48,9 @@ export default function PacksTab() {
           will unlock something more.
         </HelpText>
         <BuyButton
-          text="Pack"
+          text={`Open pack (${
+            gameState.pack.amount.amount + cardsInPackRule.value
+          } cards)`}
           type="buy"
           click={openPack}
           resource={gameState.entities.money}
@@ -57,18 +60,23 @@ export default function PacksTab() {
         <div className="flex flex-col gap-1">
           {gameState.pack.amount.acquired && (
             <Button
-              onClick={() => {}}
-              disabled={gameState.pack.amount.amount >= 10}
+              onClick={() => {
+                MessageHandler.recieveMessage("upgradeamount", {});
+              }}
+              disabled={cost > gameState.entities.packbonuspoints.amount}
               action="upgrade"
             >
               Cards in pack (
               {gameState.pack.amount.amount + cardsInPackRule.value})
+              <div className="button-cost">{cost} points</div>
             </Button>
           )}
 
-          {gameState.pack.good.acquired && (
+          {gameState.pack.good.acquired && gameState.pack.good.amount !== 1 && (
             <Button
-              onClick={() => {}}
+              onClick={() => {
+                MessageHandler.recieveMessage("unlockgood", {});
+              }}
               disabled={gameState.pack.good.amount === 1}
               action="unlock"
             >
@@ -76,9 +84,11 @@ export default function PacksTab() {
             </Button>
           )}
 
-          {gameState.pack.meta.acquired && (
+          {gameState.pack.meta.acquired && gameState.pack.meta.amount !== 1 && (
             <Button
-              onClick={() => {}}
+              onClick={() => {
+                MessageHandler.recieveMessage("unlockmeta", {});
+              }}
               disabled={gameState.pack.meta.amount === 1}
               action="unlock"
             >
