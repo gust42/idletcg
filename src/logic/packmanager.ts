@@ -122,8 +122,21 @@ export class PackManager {
       let badcards = 0,
         goodcards = 0,
         metacards = 0;
+
+      const metaCardDropRate =
+        this.rulesHandler.getRuleValue("MetaCardDroprate");
+      const goodCardDropRate =
+        this.rulesHandler.getRuleValue("GoodCardDroprate");
+      const goodCardPackMax = this.rulesHandler.getRuleValue("GoodCardPackMax");
+      const cardsInPack = this.rulesHandler.getRuleValue("CardsInPack");
+
       for (let i = 0; i < amount; i++) {
-        const pack = new Pack();
+        const pack = new Pack(
+          metaCardDropRate,
+          goodCardDropRate,
+          goodCardPackMax,
+          cardsInPack
+        );
 
         badcards += pack.badcards;
         goodcards += pack.goodcards;

@@ -36,7 +36,7 @@
     "value": 7000
   },
   "CostForUniqueCards": {
-    "badcards": 1200,
+    "badcards": 5000,
     "goodcards": 160,
     "metacards": 16,
     "increase": 1.35

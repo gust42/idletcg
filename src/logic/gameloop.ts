@@ -76,9 +76,11 @@ export default class GameLoop {
   }
 
   loop(now: number) {
+    // console.time("loop");
     if (now - this.lastTime > this.tickCounter) {
+      this.stateHandler.savePersistant();
       const state = this.stateHandler.getState();
-      this.stateHandler.saveStateHistory(state);
+      this.stateHandler.saveStateHistory(this.stateHandler.gameState);
       this.tick();
 
       state.counters.time.amount = Date.now();
@@ -223,7 +225,8 @@ export default class GameLoop {
       this.lastTimerTick = now;
     }
 
-    this.stateHandler.savePersistant();
+    this.stateHandler.pushState();
+    // console.timeEnd("loop");
     if (this.running) window.requestAnimationFrame(this.loop.bind(this));
   }
 }

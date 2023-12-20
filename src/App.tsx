@@ -21,9 +21,9 @@ function App() {
   useEffect(() => {
     const gameLoop = GameLoop.getInstance();
 
-    offlineHandler.calculateOfflineTime();
+    const ticks = offlineHandler.checkOffline();
 
-    if (Date.now() - gameState.counters.time.amount > 10000) {
+    if (ticks > 10) {
       setOfflineModalOpen(true);
     } else gameLoop.start();
 

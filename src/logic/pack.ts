@@ -11,27 +11,25 @@ export default class Pack {
   metacards = 0;
   badcards: number;
 
-  constructor() {
-    const rules = GameLoop.getInstance().rulesHandler;
+  constructor(
+    metaDropRate: number,
+    goodDropRate: number,
+    goodPackMax: number,
+    cardsInPack: number
+  ) {
     const state = GameLoop.getInstance().stateHandler.getState();
 
     if (state.pack.meta.amount === 1) {
-      this.metacards =
-        Math.random() < rules.getRuleValue("MetaCardDroprate") ? 1 : 0;
+      this.metacards = Math.random() < metaDropRate ? 1 : 0;
     }
 
     if (state.pack.good.amount === 1) {
-      for (let i = 0; i < rules.getRuleValue("GoodCardPackMax"); i++) {
-        this.goodcards +=
-          Math.random() < rules.getRuleValue("GoodCardDroprate") ? 1 : 0;
+      for (let i = 0; i < goodPackMax; i++) {
+        this.goodcards += Math.random() < goodDropRate ? 1 : 0;
       }
     }
     this.badcards =
-      rules.getRuleValue("CardsInPack") +
-      state.pack.amount.amount -
-      this.metacards -
-      this.goodcards;
-    console.log(this.badcards);
+      cardsInPack + state.pack.amount.amount - this.metacards - this.goodcards;
   }
 
   getCards(): Cards {
