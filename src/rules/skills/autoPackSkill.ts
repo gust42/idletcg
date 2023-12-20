@@ -5,8 +5,8 @@ export class AutoPackSkill implements Skill {
   rule: SkillRule = {
     requirement: 20000,
     value: 1,
-    increase: 1.2,
-    increaseEffect: 5,
+    increase: 1.6,
+    increaseEffect: 3,
   };
 
   title = "Boyfriend / Girlfriend";
@@ -15,12 +15,12 @@ export class AutoPackSkill implements Skill {
 
   cost(level: number) {
     return roundToNearestThousand(
-      this.rule.requirement ** (this.rule.increase * level)
+      this.rule.requirement * Math.pow(this.rule.increase, level)
     );
   }
 
   effect(level: number) {
-    return this.rule.value + (level - 1) * this.rule.increaseEffect;
+    return Math.max((level - 1) * this.rule.increaseEffect, this.rule.value);
   }
 
   friendyEffect(level: number) {

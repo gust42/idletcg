@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { subscribe } from "valtio";
 import useGameRule from "../hooks/usegamerule";
 import { GameState } from "../interfaces/logic";
 import GameLoop, { offlineHandler } from "../logic/gameloop";
@@ -6,6 +7,7 @@ import { calculateOfflineDiff, formatSeconds } from "../logic/helpers";
 import { Button } from "./button";
 import { Modal } from "./modal";
 import { Change } from "./resourceitem";
+import { HelpText, Title } from "./typography";
 
 export const OfflineModal = ({
   open,
@@ -16,6 +18,7 @@ export const OfflineModal = ({
 }) => {
   const [ticks, setTicks] = useState(0);
   const [totalTicks, setTotalTicks] = useState(0);
+  const [timePerRun, setTimePerRun] = useState(0);
 
   const [diff, setStateDiff] = useState<GameState>();
 
@@ -23,19 +26,18 @@ export const OfflineModal = ({
 
   useEffect(() => {
     const oldState = GameLoop.getInstance().stateHandler.getStateHistory();
-    const interval = setInterval(() => {
-      setTicks(offlineHandler.tickCounter);
-      setTotalTicks(offlineHandler.totalTicks);
 
-      if (offlineHandler.tickCounter < offlineHandler.totalTicks) {
-        setStateDiff(
-          calculateOfflineDiff(
-            GameLoop.getInstance().stateHandler.gameState,
-            oldState
-          )
-        );
-      }
-    }, 100);
+    const unsubscribe = subscribe(offlineHandler.offlineState, () => {
+      setTicks(offlineHandler.offlineState.tickCounter);
+      setTotalTicks(offlineHandler.offlineState.totalTicks);
+      setTimePerRun(offlineHandler.timeRemaning);
+      setStateDiff(
+        calculateOfflineDiff(
+          GameLoop.getInstance().stateHandler.getState(),
+          oldState
+        )
+      );
+    });
 
     setStateDiff(
       calculateOfflineDiff(
@@ -45,24 +47,31 @@ export const OfflineModal = ({
     );
 
     return () => {
-      clearInterval(interval);
+      unsubscribe();
     };
   }, []);
 
+  const isDone = ticks === totalTicks;
+
   return (
     <Modal open={open} onClose={() => {}}>
-      <h2 className="text-xl mb-8">Welcome back</h2>
-      {ticks !== totalTicks && (
-        <div className="mb-4">
-          Running tick {ticks} of {totalTicks}
+      <Title>
+        You were offline for{" "}
+        {formatSeconds((totalTicks * tickLength.value) / 1000)}
+      </Title>
+      <div className="mb-4">
+        <Title>Running offline calculations</Title>
+        <div>
+          <span className={isDone ? "text-green-600" : ""}>
+            {!isDone ? <>{timePerRun}s remaining</> : "Done!"}
+          </span>{" "}
+          ({ticks} / {totalTicks} ticks)
         </div>
-      )}
+      </div>
+
       {diff && (
         <>
-          <h4 className="text-lg mb-2">
-            You were offline for{" "}
-            {formatSeconds((totalTicks * tickLength.value) / 1000)}
-          </h4>
+          <HelpText>While offline you gained</HelpText>
           <ul className="flex flex-col gap-2 mb-4">
             {Object.keys(diff.entities).map((key) => {
               const entity = diff.entities[key as keyof typeof diff.entities];
@@ -78,7 +87,7 @@ export const OfflineModal = ({
           </ul>
         </>
       )}
-      <Button action="" onClick={onClose}>
+      <Button action="" disabled={!isDone} onClick={onClose}>
         <span className="text-lg">Ok</span>
       </Button>
     </Modal>
@@ -92,11 +101,10 @@ export const Paused = () => {
     function handleVisibilityChange() {
       const gameLoop = GameLoop.getInstance();
       if (document.visibilityState === "visible") {
-        if (Date.now() - gameLoop.lastTickTime > 10000) {
+        const ticks = offlineHandler.checkOffline();
+        if (ticks >= 60) {
           setModalOpen(true);
         }
-
-        offlineHandler.calculateOfflineTime();
       } else {
         gameLoop.stop();
         setModalOpen(false);

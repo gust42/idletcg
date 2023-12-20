@@ -26,8 +26,6 @@ export const TournamentProgress = memo(() => {
 
   const log = gameState.logs.tournament[gameState.activities.tournament.id];
 
-  console.log("rerender", counter);
-
   return (
     gameState.activities.tournament && (
       <div className="flex flex-col gap-2">

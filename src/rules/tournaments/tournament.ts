@@ -71,13 +71,13 @@ export function calculateWinRateModFromMeta(
     (myMetaType === "Control" && opponentMetaType === "Combo") ||
     (myMetaType === "Combo" && opponentMetaType === "Aggro")
   )
-    mod = 1.2;
+    mod = 1.15;
   if (
     (myMetaType === "Control" && opponentMetaType === "Aggro") ||
     (myMetaType === "Combo" && opponentMetaType === "Control") ||
     (myMetaType === "Aggro" && opponentMetaType === "Combo")
   )
-    mod = 0.8;
+    mod = 0.85;
 
   return mod;
 }

@@ -10,8 +10,6 @@ export default function ResourceView() {
   const gameState = useGameState();
   const oldState = GameLoop.getInstance().stateHandler.getStateHistory();
 
-  if (!GameLoop.getInstance().isRunning()) return null;
-
   const teamMemberTournament = gameState.team.filter(
     (member) => member.currentTournament
   );

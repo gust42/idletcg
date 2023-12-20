@@ -1,5 +1,6 @@
 import { deepmerge } from "deepmerge-ts";
 import { proxy } from "valtio";
+import { mergeDeep } from "../helpers/object";
 import { GameState } from "../interfaces/logic";
 import { MigrationHandler } from "../logic/migrationhandler";
 import { state } from "./state";
@@ -12,16 +13,18 @@ if (savedState) loadedState = deepmerge(state, JSON.parse(savedState));
 const handler = new MigrationHandler();
 const migratedState = handler.migrate(loadedState as never);
 
-const gameState = proxy(migratedState);
-export default class StateHandler {
-  private _gameState: GameState = gameState;
+const gameState = {
+  internal: structuredClone(migratedState),
+  external: proxy(structuredClone(migratedState)),
+};
 
+export default class StateHandler {
   public get gameState() {
-    return this._gameState;
+    return gameState.external;
   }
 
   public set gameState(state: GameState) {
-    this._gameState = state;
+    gameState.external = state;
   }
 
   private stateHistory: GameState = this.gameState;
@@ -29,7 +32,7 @@ export default class StateHandler {
   constructor() {}
 
   getState(): GameState {
-    return { ...this.gameState };
+    return gameState.internal;
   }
 
   getStateHistory() {
@@ -41,11 +44,18 @@ export default class StateHandler {
   }
 
   updateState(state: Partial<GameState>): GameState {
-    this.gameState = proxy({ ...gameState, ...state });
-    return this.gameState;
+    gameState.internal = { ...gameState.internal, ...state };
+
+    return gameState.internal;
+  }
+
+  pushState() {
+    // console.time("pushState");
+    mergeDeep(gameState.external, gameState.internal);
+    // console.timeEnd("pushState");
   }
 
   savePersistant() {
-    localStorage.setItem("idletcg.state", JSON.stringify(this.gameState));
+    localStorage.setItem("idletcg.state", JSON.stringify(gameState.external));
   }
 }

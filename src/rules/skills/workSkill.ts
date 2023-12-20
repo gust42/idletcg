@@ -4,9 +4,9 @@ import { Skill, SkillRule } from "./skill";
 export class WorkSkill implements Skill {
   rule: SkillRule = {
     requirement: 10000,
-    increase: 1.25,
-    value: 10,
-    increaseEffect: 1.8,
+    increase: 1.8,
+    value: 5,
+    increaseEffect: 1.5,
   };
 
   title = "Start content creation on social media";
@@ -14,11 +14,9 @@ export class WorkSkill implements Skill {
   description = "Earns money over time";
 
   cost(level: number) {
-    return level == 1
-      ? this.rule.requirement
-      : roundToNearestThousand(
-          this.rule.requirement ** (this.rule.increase * (level - 1))
-        );
+    return roundToNearestThousand(
+      this.rule.requirement * Math.pow(this.rule.increase, level)
+    );
   }
 
   effect(level: number) {

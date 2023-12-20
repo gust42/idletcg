@@ -151,6 +151,5 @@ export function getTournamentPrizeMoney(
 }
 
 export function calculatePackAmountCost(level: number) {
-  console.log("level", level);
   return roundToNearestX(5 ** ((level + 1) / 2), 10);
 }
