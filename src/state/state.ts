@@ -2,6 +2,11 @@ import { GameState } from "../interfaces/logic";
 import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
+  trophys: {
+    casualwednesday: 0,
+    funfriday: 0,
+    competativesaturday: 0
+  },
   pack: {
     amount: {
       acquired: false,
