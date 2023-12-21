@@ -11,6 +11,7 @@ export function mergeDeep(target: object, source: object) {
         mergeDeep(target[key], source[key]);
       } else {
         if (Array.isArray(source[key])) {
+          if (!target[key]) target[key] = [] as never;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           for (const i in source[key] as any) {
             if (!target[key][i])
