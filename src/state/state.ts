@@ -99,6 +99,9 @@ export const state: GameState = {
     teamtab: {
       acquired: false,
     },
+    trophystab: {
+      acquired: false,
+    }
   },
   counters: {
     uniquecards: {

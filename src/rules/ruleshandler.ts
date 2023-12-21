@@ -98,6 +98,20 @@ export default class RulesHandler {
       state.pack.meta.acquired = true;
       changed = true;
     }
+    
+    const nrOfTrophies = () => {
+      const trophys = state.trophys;
+      let totalTrophys: number = 0;
+      for(const trophy in trophys){
+        totalTrophys += trophys[trophy as keyof Tournaments];
+      }
+      return totalTrophys;
+    };
+    if(!state.tabs.trophystab.acquired &&
+    nrOfTrophies() > 0){
+      state.tabs.trophystab.acquired = true;
+      changed = true;
+    }
 
     return changed ? state : null;
   }

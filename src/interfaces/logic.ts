@@ -71,6 +71,7 @@ export interface GameState {
     deckbuildertab: Tab;
     tournamentstab: Tab;
     teamtab: Tab;
+    trophystab: Tab;
   };
   activities: {
     tournament?: {
