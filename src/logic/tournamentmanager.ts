@@ -39,6 +39,7 @@ export class TournamentManager {
 
     const state = this.stateHandler.getState();
     const skill = AllSkills.tournamentGrinder;
+    
     if (
       this.tickCounter <
       this.rulesHandler.getRuleValue("TournamentRoundTicks") -
@@ -78,7 +79,9 @@ export class TournamentManager {
           log
         );
         state.entities.money.amount += prizeMoney;
-
+        if(log.points >= tournament.opponents.length * 3){
+          state.trophys[state.activities.tournament.id] ++;
+        }
         if (
           log.points >= tournament.opponents.length * 3 &&
           !state.team.find((t) => t.name === tournament.teammember.name)

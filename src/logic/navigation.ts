@@ -8,6 +8,7 @@ import { TournamentLog } from "../pages/tournaments/tournamentlog";
 import { TournamentTab } from "../pages/tournaments/tournamenttab";
 import TradebinderTab from "../pages/tradebinder/tradebindertab";
 import { Settings } from "../pages/settings/settings";
+import TrophysTab from "../pages/trophys/trophystab";
 
 type RouteConfig = {
   [key: string]: {
@@ -49,6 +50,10 @@ export const routeConfig: RouteConfig = {
   tournamentlog: {
     friendlyName: "Tournament log",
     component: TournamentLog,
+  },
+  trophystab:{
+    friendlyName: "Trophys",
+    component: TrophysTab,
   },
   settings: {
     friendlyName: "Settings",

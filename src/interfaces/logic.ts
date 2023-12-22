@@ -43,6 +43,7 @@ export interface TeamMember {
 
 export interface GameState {
   skills: Record<keyof Skills, SkillState>;
+  trophys: Record<keyof Tournaments, number>;
   pack: {
     amount: Entity;
     meta: Entity;
@@ -70,6 +71,7 @@ export interface GameState {
     deckbuildertab: Tab;
     tournamentstab: Tab;
     teamtab: Tab;
+    trophystab: Tab;
   };
   activities: {
     tournament?: {

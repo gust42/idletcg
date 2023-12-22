@@ -81,6 +81,9 @@ export const TournamentInfo = ({
         {tournament.opponents.length * 3 - 6} points - {tournament.reward / 4}{" "}
         money
       </p>
+      <p className="font-semibold mb-4">
+        Trophys: {gameState.trophys[id]}
+      </p>
       <LastTournament log={gameState.logs.tournament[id]} />
       <TournamentJoinButton id={id} onClick={onClick} />
     </Container>
