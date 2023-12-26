@@ -32,4 +32,5 @@ export type Rules = {
   TournamentRoundTicks: Rule;
   TickLength: Rule;
   DeckSize: Rule;
+  PackSupplyTick: Rule;
 };

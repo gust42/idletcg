@@ -36,8 +36,8 @@
     "value": 7000
   },
   "CostForUniqueCards": {
-    "badcards": 4000,
-    "goodcards": 160,
+    "badcards": 3000,
+    "goodcards": 200,
     "metacards": 16,
     "increase": 1.35
   },
@@ -49,5 +49,8 @@
   },
   "DeckSize": {
     "value": 4
+  },
+  "PackSupplyTick": {
+    "value": 2
   }
 }

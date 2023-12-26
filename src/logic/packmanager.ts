@@ -1,10 +1,14 @@
+import { GameState } from "../interfaces/logic";
 import RulesHandler, { AllSkills } from "./../rules/ruleshandler";
 import StateHandler from "./../state/statehandler";
-import { calculatePackAmountCost } from "./helpers";
+import { calculatePackUpgradeCost } from "./helpers";
 import MessageHandler from "./messagehandler";
 import Pack from "./pack";
 
 export type PackData = { amount: number };
+
+export type PackUpgradeData = { skill: keyof GameState["pack"] };
+
 export type PackMessages =
   | "openpack"
   | "sellbadcards"
@@ -13,6 +17,7 @@ export type PackMessages =
   | "upgradeamount"
   | "unlockgood"
   | "unlockmeta"
+  | "upgrade"
   | "autobuy";
 
 export class PackManager {
@@ -24,6 +29,7 @@ export class PackManager {
     "upgradeamount",
     "unlockgood",
     "unlockmeta",
+    "upgrade",
     "autobuy",
   ];
 
@@ -40,17 +46,27 @@ export class PackManager {
     const state = this.stateHandler.getState();
     if (state.skills.autoPackSkill.acquired)
       this.autoOpenPack(state.skills.autoPackSkill.level);
+
+    const amount = this.rulesHandler.getRuleValue("PackSupplyTick");
+    state.entities.packsupply.amount += amount + state.pack.supply.amount * 2;
   }
 
-  public handleMessages(message: PackMessages, data: PackData) {
+  public handleMessages(
+    message: PackMessages,
+    data: PackData | PackUpgradeData
+  ) {
+    const messageData = data as PackData;
     switch (message) {
       case "openpack":
-        this.openPack(data.amount);
+        this.openPack(messageData.amount);
         break;
       case "sellmetacards":
       case "sellgoodcards":
       case "sellbadcards":
-        this.sellCards(message, data.amount);
+        this.sellCards(message, messageData.amount);
+        break;
+      case "upgrade":
+        this.upgrade(data as PackUpgradeData);
         break;
       case "upgradeamount":
         this.upgradeAmount();
@@ -64,9 +80,28 @@ export class PackManager {
     }
   }
 
+  private getUpgradeCost(skill: keyof GameState["pack"], level: number) {
+    if (skill === "amount" || skill === "supply")
+      return calculatePackUpgradeCost(level);
+    if (skill === "good") return this.rulesHandler.getRuleValue("GoodUnlock");
+    if (skill === "meta") return this.rulesHandler.getRuleValue("MetaUnlock");
+
+    return 0;
+  }
+
+  private upgrade(data: PackUpgradeData) {
+    const state = this.stateHandler.getState();
+    const cost = this.getUpgradeCost(data.skill, state.pack[data.skill].amount);
+    if (state.entities.packbonuspoints.amount >= cost) {
+      state.pack[data.skill].amount += 1;
+      state.entities.packbonuspoints.amount -= cost;
+      this.stateHandler.updateState(state);
+    }
+  }
+
   private upgradeAmount() {
     const state = this.stateHandler.getState();
-    const cost = calculatePackAmountCost(state.pack.amount.amount);
+    const cost = calculatePackUpgradeCost(state.pack.amount.amount);
     if (state.entities.packbonuspoints.amount >= cost) {
       state.pack.amount.amount += 1;
       state.entities.packbonuspoints.amount -= cost;
@@ -118,7 +153,10 @@ export class PackManager {
 
     const cost = this.calculatePackCost();
 
-    if (state.entities.money.amount >= cost * amount) {
+    if (
+      state.entities.money.amount >= cost * amount &&
+      amount <= state.entities.packsupply.amount
+    ) {
       let badcards = 0,
         goodcards = 0,
         metacards = 0;
@@ -158,6 +196,8 @@ export class PackManager {
         state.entities.packbonuspoints.acquired = true;
 
       state.entities.packbonuspoints.amount += 1 * amount;
+
+      state.entities.packsupply.amount -= amount;
 
       if (log)
         MessageHandler.sendClientMessage(

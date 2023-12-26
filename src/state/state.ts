@@ -5,7 +5,7 @@ export const state: GameState = {
   trophys: {
     casualwednesday: 0,
     funfriday: 0,
-    competativesaturday: 0
+    competativesaturday: 0,
   },
   pack: {
     amount: {
@@ -17,6 +17,10 @@ export const state: GameState = {
       amount: 0,
     },
     good: {
+      acquired: false,
+      amount: 0,
+    },
+    supply: {
       acquired: false,
       amount: 0,
     },
@@ -71,6 +75,10 @@ export const state: GameState = {
       amount: 0,
       acquired: false,
     },
+    packsupply: {
+      amount: 10000,
+      acquired: true,
+    },
   },
   deck: {
     cards: {
@@ -101,7 +109,7 @@ export const state: GameState = {
     },
     trophystab: {
       acquired: false,
-    }
+    },
   },
   counters: {
     uniquecards: {
