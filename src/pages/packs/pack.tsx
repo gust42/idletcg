@@ -95,7 +95,7 @@ export const Pack = () => {
           />
           <PackUpgrade
             skill="express"
-            text={`Express pack deliviery`}
+            text={`Express pack delivery`}
             cost={expressCost.value}
             acquired={
               gameState.entities.packbonuspoints.amount >
