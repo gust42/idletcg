@@ -49,6 +49,7 @@ export interface GameState {
     meta: Entity;
     good: Entity;
     supply: Entity;
+    express: Entity;
   };
   entities: {
     badcards: Entity;

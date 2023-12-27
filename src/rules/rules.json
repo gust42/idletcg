@@ -52,5 +52,11 @@
   },
   "PackSupplyTick": {
     "value": 2
+  },
+  "PackExpressPointRequirement": {
+    "value": 10000
+  },
+  "PackExpressCost": {
+    "value": 100
   }
 }

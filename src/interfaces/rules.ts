@@ -33,4 +33,6 @@ export type Rules = {
   TickLength: Rule;
   DeckSize: Rule;
   PackSupplyTick: Rule;
+  PackExpressPointRequirement: Rule;
+  PackExpressCost: Rule;
 };

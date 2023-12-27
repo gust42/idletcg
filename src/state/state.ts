@@ -24,6 +24,10 @@ export const state: GameState = {
       acquired: false,
       amount: 0,
     },
+    express: {
+      acquired: false,
+      amount: 0,
+    },
   },
   skills: {
     autoPackSkill: {

@@ -11,15 +11,25 @@ export const Pack = () => {
   const gameState = useGameState();
   const packAmountCost = calculatePackUpgradeCost(gameState.pack.amount.amount);
   const packSupplyCost = calculatePackUpgradeCost(gameState.pack.supply.amount);
+  const expressCost = useGameRule("PackExpressPointRequirement");
   const cardsInPackRule = useGameRule("CardsInPack");
   const goodCost = useGameRule("GoodUnlock");
   const metaCost = useGameRule("MetaUnlock");
   const packCostRule = useGameRule("PackCost");
   const packSupplyRule = useGameRule("PackSupplyTick");
+  const packExpressCost = useGameRule("PackExpressCost");
 
   function openPack(amount: number) {
     MessageHandler.recieveMessage("openpack", { amount: amount ? amount : 1 });
   }
+
+  function openExpress(amount: number) {
+    MessageHandler.recieveMessage("openpack", {
+      amount: amount ? amount : 1,
+      type: "express",
+    });
+  }
+
   return (
     <Container>
       <div className="md:w-[320px]">
@@ -38,6 +48,16 @@ export const Pack = () => {
           cost={packCostRule.value}
           disabled={gameState.entities.money.amount < packCostRule.value}
         />
+        {gameState.pack.express.amount === 1 && (
+          <BuyButton
+            text="Express pack (no supply limit)"
+            type="buy"
+            click={openExpress}
+            resource={gameState.entities.money}
+            cost={packExpressCost.value}
+            disabled={gameState.entities.money.amount < packExpressCost.value}
+          />
+        )}
         <div className="flex flex-col gap-1">
           <PackUpgrade
             skill="amount"
@@ -69,9 +89,19 @@ export const Pack = () => {
             text={`Unlock meta cards`}
             cost={metaCost.value}
             acquired={
-              !gameState.pack.good.acquired && gameState.pack.meta.amount !== 1
+              gameState.pack.good.acquired && gameState.pack.meta.amount !== 1
             }
             packPoints={gameState.entities.packbonuspoints.amount}
+          />
+          <PackUpgrade
+            skill="express"
+            text={`Express pack deliviery`}
+            cost={expressCost.value}
+            acquired={
+              gameState.entities.packbonuspoints.amount >
+                expressCost.value * 0.8 && gameState.pack.express.amount !== 1
+            }
+            packPoints={expressCost.value}
           />
         </div>
       </div>
