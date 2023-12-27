@@ -32,4 +32,11 @@ export type Rules = {
   TournamentRoundTicks: Rule;
   TickLength: Rule;
   DeckSize: Rule;
+  PackSupplyTick: Rule;
+  PackExpressPointRequirement: Rule;
+  PackExpressCost: Rule;
+  X10Cost: Rule;
+  X100Cost: Rule;
+  X1000Cost: Rule;
+  XAllCost: Rule;
 };

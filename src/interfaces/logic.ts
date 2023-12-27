@@ -55,6 +55,12 @@ export interface GameState {
     amount: Entity;
     meta: Entity;
     good: Entity;
+    supply: Entity;
+    express: Entity;
+    x10: Entity;
+    x100: Entity;
+    x1000: Entity;
+    xAll: Entity;
   };
   entities: {
     badcards: Entity;
@@ -63,6 +69,7 @@ export interface GameState {
     money: Entity;
     rating: Entity;
     packbonuspoints: Entity;
+    packsupply: Entity;
   };
   counters: {
     uniquecards: Counter;
