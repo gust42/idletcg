@@ -36,9 +36,9 @@
     "value": 7000
   },
   "CostForUniqueCards": {
-    "badcards": 3000,
-    "goodcards": 200,
-    "metacards": 16,
+    "badcards": 2000,
+    "goodcards": 100,
+    "metacards": 10,
     "increase": 1.35
   },
   "TournamentRoundTicks": {
@@ -51,12 +51,24 @@
     "value": 4
   },
   "PackSupplyTick": {
-    "value": 2
+    "value": 10
   },
   "PackExpressPointRequirement": {
-    "value": 10000
+    "value": 100000
   },
   "PackExpressCost": {
+    "value": 1000
+  },
+  "X10Cost": {
     "value": 100
+  },
+  "X100Cost": {
+    "value": 1000
+  },
+  "X1000Cost": {
+    "value": 10000
+  },
+  "XAllCost": {
+    "value": 100000
   }
 }

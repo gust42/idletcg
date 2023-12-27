@@ -122,9 +122,16 @@ export class PackManager {
 
     const cost = this.calculatePackCost(type);
 
+    // If amount is -1, buy as many packs as possible
+    if (amount === -1) {
+      amount = Math.floor(state.entities.money.amount / cost);
+      if (type !== "express")
+        amount = Math.min(amount, state.entities.packsupply.amount);
+    }
+
     if (
       state.entities.money.amount >= cost * amount &&
-      amount <= state.entities.packsupply.amount
+      (amount <= state.entities.packsupply.amount || type === "express")
     ) {
       let badcards = 0,
         goodcards = 0,
@@ -185,6 +192,7 @@ export class PackManager {
     if (message === "sellbadcards") {
       const state = this.stateHandler.getState();
       if (state.entities.badcards.amount >= data) {
+        if (data === -1) data = state.entities.badcards.amount;
         state.entities.money.amount +=
           this.rulesHandler.getRuleValue("BadCardSellValue") * data;
         state.entities.badcards.amount -= data;
@@ -195,6 +203,7 @@ export class PackManager {
     if (message === "sellgoodcards") {
       const state = this.stateHandler.getState();
       if (state.entities.goodcards.amount >= data) {
+        if (data === -1) data = state.entities.goodcards.amount;
         state.entities.money.amount +=
           this.rulesHandler.getRuleValue("GoodCardSellValue") * data;
         state.entities.goodcards.amount -= data;
@@ -205,6 +214,7 @@ export class PackManager {
     if (message === "sellmetacards") {
       const state = this.stateHandler.getState();
       if (state.entities.metacards.amount >= data) {
+        if (data === -1) data = state.entities.metacards.amount;
         state.entities.money.amount +=
           this.rulesHandler.getRuleValue("MetaCardSellValue") * data;
         state.entities.metacards.amount -= data as number;

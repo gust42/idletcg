@@ -28,6 +28,22 @@ export const state: GameState = {
       acquired: false,
       amount: 0,
     },
+    x10: {
+      acquired: false,
+      amount: 0,
+    },
+    x100: {
+      acquired: false,
+      amount: 0,
+    },
+    x1000: {
+      acquired: false,
+      amount: 0,
+    },
+    xAll: {
+      acquired: false,
+      amount: 0,
+    },
   },
   skills: {
     autoPackSkill: {

@@ -18,6 +18,10 @@ export const Pack = () => {
   const packCostRule = useGameRule("PackCost");
   const packSupplyRule = useGameRule("PackSupplyTick");
   const packExpressCost = useGameRule("PackExpressCost");
+  const x10Cost = useGameRule("X10Cost");
+  const x100Cost = useGameRule("X100Cost");
+  const x1000Cost = useGameRule("X1000Cost");
+  const xAllCost = useGameRule("XAllCost");
 
   function openPack(amount: number) {
     MessageHandler.recieveMessage("openpack", { amount: amount ? amount : 1 });
@@ -39,9 +43,7 @@ export const Pack = () => {
           will unlock something more. Packs is resupplied every tick
         </HelpText>
         <BuyButton
-          text={`Open pack (${
-            gameState.pack.amount.amount + cardsInPackRule.value
-          } cards)`}
+          text={`Open pack`}
           type="buy"
           click={openPack}
           resource={gameState.entities.money}
@@ -50,7 +52,7 @@ export const Pack = () => {
         />
         {gameState.pack.express.amount === 1 && (
           <BuyButton
-            text="Express pack (no supply limit)"
+            text="Express pack"
             type="buy"
             click={openExpress}
             resource={gameState.entities.money}
@@ -102,6 +104,46 @@ export const Pack = () => {
                 expressCost.value * 0.8 && gameState.pack.express.amount !== 1
             }
             packPoints={expressCost.value}
+          />
+          <PackUpgrade
+            skill="x10"
+            text={`Buy 10 packs at once`}
+            cost={x10Cost.value}
+            acquired={
+              gameState.entities.packbonuspoints.amount > x10Cost.value * 0.8 &&
+              gameState.pack.x10.amount !== 1
+            }
+            packPoints={x10Cost.value}
+          />
+          <PackUpgrade
+            skill="x100"
+            text={`Buy 100 packs at once`}
+            cost={x100Cost.value}
+            acquired={
+              gameState.entities.packbonuspoints.amount >
+                x100Cost.value * 0.8 && gameState.pack.x100.amount !== 1
+            }
+            packPoints={x100Cost.value}
+          />
+          <PackUpgrade
+            skill="x1000"
+            text={`Buy 1000 packs at once`}
+            cost={x1000Cost.value}
+            acquired={
+              gameState.entities.packbonuspoints.amount >
+                x1000Cost.value * 0.8 && gameState.pack.x1000.amount !== 1
+            }
+            packPoints={x1000Cost.value}
+          />
+          <PackUpgrade
+            skill="xAll"
+            text={`Buy as many packs as you can`}
+            cost={xAllCost.value}
+            acquired={
+              gameState.entities.packbonuspoints.amount >
+                xAllCost.value * 0.8 && gameState.pack.xAll.amount !== 1
+            }
+            packPoints={xAllCost.value}
           />
         </div>
       </div>

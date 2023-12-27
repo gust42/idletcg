@@ -13,7 +13,7 @@ export default function BulkButton({
 }: BulkButtonProps) {
   return (
     <Button width={"33%"} action={action} onClick={click}>
-      x{amount}
+      {amount === -1 ? "All" : `x${amount}`}
     </Button>
   );
 }

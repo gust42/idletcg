@@ -33,7 +33,9 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
     }
   });
 
-  myCards = myCards.filter((card) => !cardsToRemove.includes(card.id));
+  myCards = myCards
+    .filter((card) => !cardsToRemove.includes(card.id))
+    .reverse();
   return (
     <Modal onClose={() => onSelect(undefined)} open={true}>
       <h2 className="text-xl mb-6">Choose a card for this slot</h2>
