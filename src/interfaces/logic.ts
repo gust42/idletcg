@@ -50,6 +50,10 @@ export interface GameState {
     good: Entity;
     supply: Entity;
     express: Entity;
+    x10: Entity;
+    x100: Entity;
+    x1000: Entity;
+    xAll: Entity;
   };
   entities: {
     badcards: Entity;
