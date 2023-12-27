@@ -48,6 +48,8 @@ export interface GameState {
     amount: Entity;
     meta: Entity;
     good: Entity;
+    supply: Entity;
+    express: Entity;
   };
   entities: {
     badcards: Entity;
@@ -56,6 +58,7 @@ export interface GameState {
     money: Entity;
     rating: Entity;
     packbonuspoints: Entity;
+    packsupply: Entity;
   };
   counters: {
     uniquecards: Counter;
@@ -71,6 +74,7 @@ export interface GameState {
     deckbuildertab: Tab;
     tournamentstab: Tab;
     teamtab: Tab;
+    trophystab: Tab;
   };
   activities: {
     tournament?: {

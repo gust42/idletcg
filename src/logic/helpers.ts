@@ -150,6 +150,6 @@ export function getTournamentPrizeMoney(
   return 0;
 }
 
-export function calculatePackAmountCost(level: number) {
+export function calculatePackUpgradeCost(level: number) {
   return roundToNearestX(5 ** ((level + 1) / 2), 10);
 }

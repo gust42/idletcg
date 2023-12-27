@@ -44,7 +44,7 @@ export function generateWinRatio(id: number) {
 
   // Predefined array of irregular increments
   const irregularIncrements = [
-    5, -3, 8, -2, 10, -4, 7, 3, -1, 6, -5, 2, -8, 4, -7, 1, -6, 9, -3, 5,
+    5, 2, 8, 4, 10, 5, 7, 3, 3, 6, 8, 2, 6, 4, 7, 1, 6, 9, 4, 5,
   ];
 
   // Use predefined increments cyclically
@@ -52,7 +52,7 @@ export function generateWinRatio(id: number) {
   currentValue += increment;
 
   // Linear trend
-  const linearIncrement = 1.15; // Adjust as needed
+  const linearIncrement = 1.1; // Adjust as needed
   currentValue += id * linearIncrement;
 
   return Math.floor(currentValue);
