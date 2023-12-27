@@ -16,6 +16,8 @@ export function roundToNearestThousand(num: number): number {
   return amount;
 }
 
+export const allTrophies = ["casualwednesday", "funfriday", "competativesaturday"] as const;
+
 export const allCards = Array.from({ length: 256 }, (_v, k) => ({
   id: k,
   code: (k + 9728).toString(16),

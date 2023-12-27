@@ -31,6 +31,12 @@ export interface Deck {
   slot4: number | undefined;
 }
 
+export interface TrophyCase {
+  slot1: string | undefined;
+  slot2: string | undefined;
+  slot3: string | undefined;
+}
+
 export interface TeamMember {
   name: string;
   rating: number;
@@ -44,6 +50,7 @@ export interface TeamMember {
 export interface GameState {
   skills: Record<keyof Skills, SkillState>;
   trophys: Record<keyof Tournaments, number>;
+  trophycase: TrophyCase;
   pack: {
     amount: Entity;
     meta: Entity;

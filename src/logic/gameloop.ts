@@ -3,6 +3,7 @@ import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
 import { calculateUniqueCardCost } from "./helpers";
 import MessageHandler, {
+  TrophyMessage,
   DeckMessage,
   GenericMessage,
   SkillMessage,
@@ -194,6 +195,13 @@ export default class GameLoop {
         }
         this.stateHandler.updateState(state);
       }
+      if(m.message === "addtrophy") {
+        const data = m.data as TrophyMessage;
+        const state = this.stateHandler.getState();
+        const index = `slot${data.slot}` as keyof typeof state.trophycase;
+        state.trophycase[index] = data.trophy;
+        this.stateHandler.updateState(state);
+      };
 
       if (m.message === "clearmessages") {
         MessageHandler.sendClientMessage("", { clear: true });

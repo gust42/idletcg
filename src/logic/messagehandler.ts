@@ -11,7 +11,8 @@ type MessageList =
   | "entertournament"
   | "assigntournament"
   | "clearmessages"
-  | "tradecard";
+  | "tradecard"
+  | "addtrophy";
 
 type Message = {
   message: MessageList;
@@ -32,7 +33,10 @@ export type GenericMessage = {
 export type SkillMessage = {
   name: keyof Skills;
 };
-
+export type TrophyMessage = {
+  trophy: string;
+  slot: number;
+};
 export type DeckMessage = {
   id: number;
   slot: number;
