@@ -5,8 +5,8 @@ export class WorkSkill implements Skill {
   rule: SkillRule = {
     requirement: 10000,
     increase: 1.8,
-    value: 5,
-    increaseEffect: 1.5,
+    value: 3,
+    increaseEffect: 2,
   };
 
   title = "Start content creation on social media";

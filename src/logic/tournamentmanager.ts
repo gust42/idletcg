@@ -25,13 +25,17 @@ export class TournamentManager {
 
   private rulesHandler: RulesHandler;
 
-  private tickCounter = 0;
+  private _tickCounter = 0;
+
+  public get tickCounter() {
+    return this._tickCounter;
+  }
 
   constructor(stateHandler: StateHandler, rulesHandler: RulesHandler) {
     this.stateHandler = stateHandler;
     this.rulesHandler = rulesHandler;
 
-    this.tickCounter = this.rulesHandler.getRuleValue("TournamentRoundTicks");
+    this._tickCounter = this.rulesHandler.getRuleValue("TournamentRoundTicks");
   }
 
   public handleTick() {
@@ -39,16 +43,15 @@ export class TournamentManager {
 
     const state = this.stateHandler.getState();
     const skill = AllSkills.tournamentGrinder;
-    
     if (
       this.tickCounter <
       this.rulesHandler.getRuleValue("TournamentRoundTicks") -
         skill.effect(state.skills.tournamentGrinder.level)
     ) {
-      this.tickCounter++;
+      this._tickCounter++;
       return;
     }
-    this.tickCounter = 0;
+    this._tickCounter = 0;
 
     const deckSize = this.rulesHandler.getRuleValue("DeckSize");
 
@@ -79,8 +82,8 @@ export class TournamentManager {
           log
         );
         state.entities.money.amount += prizeMoney;
-        if(log.points >= tournament.opponents.length * 3){
-          state.trophys[state.activities.tournament.id] ++;
+        if (log.points >= tournament.opponents.length * 3) {
+          state.trophys[state.activities.tournament.id]++;
         }
         if (
           log.points >= tournament.opponents.length * 3 &&
@@ -96,7 +99,7 @@ export class TournamentManager {
 
         this.stateHandler.updateState(state);
 
-        this.tickCounter = this.rulesHandler.getRuleValue(
+        this._tickCounter = this.rulesHandler.getRuleValue(
           "TournamentRoundTicks"
         );
       }

@@ -5,10 +5,11 @@ import SkillsTab from "../pages/skills/skillstab";
 import { TeamTab } from "../pages/team/teamtab";
 import { TournamentTab } from "../pages/tournaments/tournamenttab";
 import TradebinderTab from "../pages/tradebinder/tradebindertab";
+import TrophysTab from "../pages/trophys/trophystab";
 // import TrophysTab from "../pages/trophys/trophystab";
 
 export type Tabs =
-  // | "trophystab"
+  | "trophystab"
   | "teamtab"
   | "packstab"
   | "skillstab"
@@ -46,8 +47,8 @@ export const tabs: Record<Tabs, RouteConfig> = {
     friendlyName: "Skills",
     component: SkillsTab,
   },
-  // trophystab:{
-  //   friendlyName: "Trophys",
-  //   component: TrophysTab
-  // },
+  trophystab: {
+    friendlyName: "Trophys",
+    component: TrophysTab,
+  },
 };

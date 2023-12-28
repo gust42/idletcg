@@ -16,7 +16,11 @@ export function roundToNearestThousand(num: number): number {
   return amount;
 }
 
-export const allTrophies = ["casualwednesday", "funfriday", "competativesaturday"] as const;
+export const allTrophies = [
+  "casualwednesday",
+  "funfriday",
+  "competativesaturday",
+] as const;
 
 export const allCards = Array.from({ length: 256 }, (_v, k) => ({
   id: k,
@@ -77,12 +81,14 @@ export function calculateTournamentTime(id?: keyof Tournaments) {
     1
   );
 
+  const oneRound = deckSize * roundTicks;
+
   const totalTicks =
-    tournament.opponents.length * deckSize * roundTicks +
+    tournament.opponents.length * oneRound +
     tournament.opponents.length * roundTicks;
 
   const passedTicks = gameState.activities.tournament
-    ? gameState.activities.tournament.currentOpponent * deckSize * roundTicks +
+    ? gameState.activities.tournament.currentOpponent * oneRound +
       gameState.activities.tournament.gameRound * roundTicks
     : 0;
 

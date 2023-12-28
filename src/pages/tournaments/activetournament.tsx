@@ -1,13 +1,48 @@
+import { useEffect, useState } from "react";
 import useGameState from "../../hooks/usegamestate";
-import { AllTournaments } from "../../rules/ruleshandler";
+import { GameState } from "../../interfaces/logic";
+import GameLoop from "../../logic/gameloop";
+import { AllSkills, AllTournaments } from "../../rules/ruleshandler";
 import { TournamentLog } from "../../rules/tournaments/tournament";
 import { TournamentPlay } from "./tournamentplay";
 import { TournamentResult } from "./tournamentresult";
+import { TimerHandler } from "../../logic/timerhandler";
+
+function calculateRoundTime(state: GameState) {
+  const gameLoop = GameLoop.getInstance();
+  const totalTicks =
+    gameLoop.rulesHandler.getRuleValue("TournamentRoundTicks") -
+    AllSkills.tournamentGrinder.effect(state.skills.tournamentGrinder.level);
+  const tickLength = gameLoop.rulesHandler.getRuleValue("TickLength");
+  return (
+    ((totalTicks - gameLoop.tournamentManager.tickCounter) * tickLength) / 1000
+  );
+}
 
 export const ActiveTournament = () => {
   const gameState = useGameState();
 
+  const totalTicks =
+    GameLoop.getInstance().rulesHandler.getRuleValue("TournamentRoundTicks") -
+    AllSkills.tournamentGrinder.effect(
+      gameState.skills.tournamentGrinder.level
+    );
+
+  const [roundTime, setRoundTime] = useState(totalTicks);
+
   const tournamentState = gameState.activities.tournament;
+
+  useEffect(() => {
+    if (!tournamentState) return;
+    const timer = TimerHandler.getInstance().setTimer(() => {
+      setRoundTime(calculateRoundTime(gameState));
+    });
+
+    return () => {
+      TimerHandler.getInstance().removeTimer(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!tournamentState) return <div>no tournament</div>;
 
@@ -40,7 +75,9 @@ export const ActiveTournament = () => {
         log={log}
       />
       {tournamentState.gameRound < 4 && (
-        <div className="mt-4 text-lg">Thinking about the next play...</div>
+        <div className="mt-4 text-lg">
+          Thinking about the next play... {roundTime}s
+        </div>
       )}
     </div>
   );

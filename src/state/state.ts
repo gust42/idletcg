@@ -1,5 +1,5 @@
 import { GameState } from "../interfaces/logic";
-import {  TournamentEntry } from "../rules/tournaments/tournament";
+import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
   trophys: {
@@ -143,10 +143,9 @@ export const state: GameState = {
     tournament: {} as TournamentEntry,
   },
   team: [],
-
   trophycase: {
     slot1: undefined,
     slot2: undefined,
-    slot3: undefined
+    slot3: undefined,
   },
 };

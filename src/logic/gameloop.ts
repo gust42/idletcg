@@ -19,11 +19,11 @@ export default class GameLoop {
   private static instance: GameLoop;
   public stateHandler: StateHandler;
   public rulesHandler: RulesHandler;
+  public tournamentManager: TournamentManager;
 
   public lastTickTime: number = 0;
 
   private packManager: PackManager;
-  private tournamentManager: TournamentManager;
   private lastTime: number;
   private lastTimerTick: number = 0;
   private tickCounter: number;
@@ -195,13 +195,13 @@ export default class GameLoop {
         }
         this.stateHandler.updateState(state);
       }
-      if(m.message === "addtrophy") {
+      if (m.message === "addtrophy") {
         const data = m.data as TrophyMessage;
         const state = this.stateHandler.getState();
         const index = `slot${data.slot}` as keyof typeof state.trophycase;
         state.trophycase[index] = data.trophy;
         this.stateHandler.updateState(state);
-      };
+      }
 
       if (m.message === "clearmessages") {
         MessageHandler.sendClientMessage("", { clear: true });
