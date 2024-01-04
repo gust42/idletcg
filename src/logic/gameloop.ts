@@ -225,18 +225,18 @@ export default class GameLoop {
     }
 
     state = this.stateHandler.getState();
-    if (
-      state.entities.badcards.amount === 0 &&
-      state.entities.goodcards.amount === 0 &&
-      state.entities.metacards.amount === 0 &&
-      state.entities.money.amount < this.rulesHandler.getRuleValue("PackCost")
-    ) {
-      MessageHandler.sendClientMessage(
-        "Your aunt visits and gives you 50 money"
-      );
-      state.entities.money.amount += 50;
-      state = this.stateHandler.updateState(state);
-    }
+    // if (
+    //   state.entities.badcards.amount === 0 &&
+    //   state.entities.goodcards.amount === 0 &&
+    //   state.entities.metacards.amount === 0 &&
+    //   state.entities.money.amount < this.rulesHandler.getRuleValue("PackCost")
+    // ) {
+    //   MessageHandler.sendClientMessage(
+    //     "Your aunt visits and gives you 50 money"
+    //   );
+    //   state.entities.money.amount += 50;
+    //   state = this.stateHandler.updateState(state);
+    // }
 
     if (now - this.lastTimerTick >= 1000) {
       TimerHandler.getInstance().run();

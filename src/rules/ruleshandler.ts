@@ -57,9 +57,11 @@ export default class RulesHandler {
     }
 
     if (
-      !state.routes.skills.acquired &&
-      state.entities.money.amount >= this.rules["MoneyForSkills"].value
+      !state.routes.skillstab.acquired &&
+      state.entities.packbonuspoints.amount >=
+        this.rules["MoneyForSkills"].value
     ) {
+      state.routes.skillstab.acquired = true;
       state.routes.skills.acquired = true;
       state.routes.skills.notify = true;
 
@@ -80,10 +82,11 @@ export default class RulesHandler {
     );
 
     if (
-      !state.routes.tournaments.acquired &&
+      !state.routes.tournamentstab.acquired &&
       Object.keys(state.deck.cards).length > 0 &&
       fullDeck
     ) {
+      state.routes.tournamentstab.acquired = true;
       state.routes.tournaments.acquired = true;
       state.routes.tournamentstab.notify = true;
       changed = true;
@@ -98,7 +101,7 @@ export default class RulesHandler {
 
     if (
       !state.pack.amount.acquired &&
-      state.entities.packbonuspoints.amount > 1
+      state.entities.packbonuspoints.amount >= 10
     ) {
       state.pack.amount.acquired = true;
       state.routes.packstab.notify = true;
@@ -108,7 +111,7 @@ export default class RulesHandler {
 
     if (
       !state.pack.good.acquired &&
-      state.entities.packbonuspoints.amount > 5
+      state.entities.packbonuspoints.amount >= 10
     ) {
       state.pack.good.acquired = true;
       state.routes.packstab.notify = true;
@@ -118,10 +121,9 @@ export default class RulesHandler {
 
     if (
       !state.pack.meta.acquired &&
-      state.entities.packbonuspoints.amount > 50
+      state.entities.packbonuspoints.amount >= 50
     ) {
       state.pack.meta.acquired = true;
-
       state.routes.packstab.notify = true;
       state.routes.packpoints.notify = true;
       changed = true;
@@ -129,11 +131,11 @@ export default class RulesHandler {
 
     if (
       !state.pack.supply.acquired &&
-      state.entities.packbonuspoints.amount > 1000
+      state.entities.packbonuspoints.amount >= 1000
     ) {
       state.pack.supply.acquired = true;
 
-      state.routes.pack.notify = true;
+      state.routes.packstab.notify = true;
       state.routes.packpoints.notify = true;
       changed = true;
     }

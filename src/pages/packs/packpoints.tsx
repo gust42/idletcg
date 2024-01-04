@@ -67,41 +67,29 @@ export const PackPoints = () => {
           skill="x10"
           text={`Buy 10 packs at once`}
           cost={x10Cost.value}
-          acquired={
-            gameState.entities.packbonuspoints.amount > x10Cost.value * 0.8 &&
-            gameState.pack.x10.amount !== 1
-          }
-          packPoints={x10Cost.value}
+          acquired={gameState.pack.x10.amount !== 1}
+          packPoints={gameState.entities.packbonuspoints.amount}
         />
         <PackUpgrade
           skill="x100"
           text={`Buy 100 packs at once`}
           cost={x100Cost.value}
-          acquired={
-            gameState.entities.packbonuspoints.amount > x100Cost.value * 0.8 &&
-            gameState.pack.x100.amount !== 1
-          }
-          packPoints={x100Cost.value}
+          acquired={gameState.pack.x100.amount !== 1}
+          packPoints={gameState.entities.packbonuspoints.amount}
         />
         <PackUpgrade
           skill="x1000"
           text={`Buy 1000 packs at once`}
           cost={x1000Cost.value}
-          acquired={
-            gameState.entities.packbonuspoints.amount > x1000Cost.value * 0.8 &&
-            gameState.pack.x1000.amount !== 1
-          }
-          packPoints={x1000Cost.value}
+          acquired={gameState.pack.x1000.amount !== 1}
+          packPoints={gameState.entities.packbonuspoints.amount}
         />
         <PackUpgrade
           skill="xAll"
           text={`Buy as many packs as you can`}
           cost={xAllCost.value}
-          acquired={
-            gameState.entities.packbonuspoints.amount > xAllCost.value * 0.8 &&
-            gameState.pack.xAll.amount !== 1
-          }
-          packPoints={xAllCost.value}
+          acquired={gameState.pack.xAll.amount !== 1}
+          packPoints={gameState.entities.packbonuspoints.amount}
         />
       </div>
     </div>

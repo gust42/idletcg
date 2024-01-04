@@ -32,7 +32,7 @@ export const Button = ({
   return (
     <div
       style={{ width }}
-      className="p-1 bg-slate-600 uppercase rounded select-none  hover:bg-slate-800 w-full flex flex-row items-stretch  "
+      className="p-[2px] bg-slate-600 uppercase rounded select-none  hover:bg-slate-800 w-full flex flex-row items-stretch  "
       onClick={onPress}
     >
       {disabled || !action ? (

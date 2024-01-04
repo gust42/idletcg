@@ -36,7 +36,7 @@ export type SkillMessage = {
   name: keyof Skills;
 };
 export type TrophyMessage = {
-  trophy: string;
+  trophy: keyof Tournaments;
   slot: number;
 };
 export type DeckMessage = {

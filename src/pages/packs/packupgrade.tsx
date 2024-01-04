@@ -9,6 +9,7 @@ interface IPackUpgradeProps {
   cost: number;
   acquired: boolean;
   packPoints: number;
+  disabled?: boolean;
 }
 
 export const PackUpgrade = ({
