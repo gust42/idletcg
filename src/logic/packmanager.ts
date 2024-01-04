@@ -168,8 +168,11 @@ export class PackManager {
 
       if (badcards > 0) state.entities.badcards.acquired = true;
 
-      if (!state.entities.packbonuspoints.acquired)
+      if (!state.entities.packbonuspoints.acquired) {
         state.entities.packbonuspoints.acquired = true;
+        state.routes.packstab.notify = true;
+        state.routes.packpoints.notify = true;
+      }
 
       state.entities.packbonuspoints.amount += 1 * amount;
 

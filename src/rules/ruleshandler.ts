@@ -32,32 +32,48 @@ export default class RulesHandler {
 
   checkActiveRules(state: GameState) {
     let changed = false;
+
+    if (
+      !state.routes.packpoints.acquired &&
+      state.entities.packbonuspoints.amount > 5
+    ) {
+      state.routes.packpoints.acquired = true;
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
+      changed = true;
+    }
+
     const totalcards =
       state.entities.badcards.amount +
       state.entities.goodcards.amount +
       state.entities.metacards.amount;
     if (
-      !state.tabs.tradebindertab.acquired &&
+      !state.routes.tradebindertab.acquired &&
       totalcards >= this.rules["CardsForTradebinder"].value
     ) {
-      state.tabs.tradebindertab.acquired = true;
+      state.routes.tradebindertab.acquired = true;
+      state.routes.tradebindertab.notify = true;
       changed = true;
     }
 
     if (
-      !state.tabs.skillstab.acquired &&
-      state.entities.money.amount >= this.rules["MoneyForSkills"].value
+      !state.routes.skillstab.acquired &&
+      state.entities.packbonuspoints.amount >=
+        this.rules["MoneyForSkills"].value
     ) {
-      state.tabs.skillstab.acquired = true;
+      state.routes.skillstab.acquired = true;
+      state.routes.skills.acquired = true;
+      state.routes.skills.notify = true;
 
       changed = true;
     }
 
     if (
-      !state.tabs.deckbuildertab.acquired &&
+      !state.routes.deckbuildertab.acquired &&
       state.counters.uniquecards.amount >= 3
     ) {
-      state.tabs.deckbuildertab.acquired = true;
+      state.routes.deckbuildertab.acquired = true;
+      state.routes.deckbuildertab.notify = true;
       changed = true;
     }
 
@@ -65,45 +81,62 @@ export default class RulesHandler {
       (card) => card !== undefined
     );
 
-    if (Object.keys(state.deck.cards).length > 0 && fullDeck) {
-      state.tabs.tournamentstab.acquired = true;
+    if (
+      !state.routes.tournamentstab.acquired &&
+      Object.keys(state.deck.cards).length > 0 &&
+      fullDeck
+    ) {
+      state.routes.tournamentstab.acquired = true;
+      state.routes.tournaments.acquired = true;
+      state.routes.tournamentstab.notify = true;
       changed = true;
     }
 
-    if (!state.tabs.teamtab.acquired && state.team.length > 0) {
-      state.tabs.teamtab.acquired = true;
+    if (!state.routes.team.acquired && state.team.length > 0) {
+      state.routes.team.acquired = true;
+      state.routes.tournamentstab.notify = true;
+      state.routes.team.notify = true;
       changed = true;
     }
 
     if (
       !state.pack.amount.acquired &&
-      state.entities.packbonuspoints.amount > 1
+      state.entities.packbonuspoints.amount >= 10
     ) {
       state.pack.amount.acquired = true;
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
       changed = true;
     }
 
     if (
       !state.pack.good.acquired &&
-      state.entities.packbonuspoints.amount > 5
+      state.entities.packbonuspoints.amount >= 10
     ) {
       state.pack.good.acquired = true;
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
       changed = true;
     }
 
     if (
       !state.pack.meta.acquired &&
-      state.entities.packbonuspoints.amount > 50
+      state.entities.packbonuspoints.amount >= 50
     ) {
       state.pack.meta.acquired = true;
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
       changed = true;
     }
 
     if (
       !state.pack.supply.acquired &&
-      state.entities.packbonuspoints.amount > 1000
+      state.entities.packbonuspoints.amount >= 1000
     ) {
       state.pack.supply.acquired = true;
+
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
       changed = true;
     }
 
@@ -115,8 +148,10 @@ export default class RulesHandler {
       }
       return totalTrophys;
     };
-    if (!state.tabs.trophystab.acquired && nrOfTrophies() > 0) {
-      state.tabs.trophystab.acquired = true;
+    if (!state.routes.trophys.acquired && nrOfTrophies() > 0) {
+      state.routes.trophys.acquired = true;
+      state.routes.skillstab.notify = true;
+      state.routes.trophys.notify = true;
       changed = true;
     }
 

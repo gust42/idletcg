@@ -1,6 +1,7 @@
 import { Skills } from "../rules/skills/skill";
 import { Tournaments } from "../rules/tournaments/tournament";
 import { PackMessages } from "./packmanager";
+import { AllRouteNames } from "./navigation";
 
 type MessageList =
   | PackMessages
@@ -11,7 +12,9 @@ type MessageList =
   | "entertournament"
   | "assigntournament"
   | "clearmessages"
-  | "tradecard";
+  | "tradecard"
+  | "clearnotifier"
+  | "addtrophy";
 
 type Message = {
   message: MessageList;
@@ -32,11 +35,17 @@ export type GenericMessage = {
 export type SkillMessage = {
   name: keyof Skills;
 };
-
+export type TrophyMessage = {
+  trophy: keyof Tournaments;
+  slot: number;
+};
 export type DeckMessage = {
   id: number;
   slot: number;
   person: "me" | string;
+};
+export type NotifierMessage = {
+  route: AllRouteNames;
 };
 
 export type TournamentMessage = {

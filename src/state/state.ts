@@ -108,27 +108,62 @@ export const state: GameState = {
       slot4: undefined,
     },
   },
-  tabs: {
+  routes: {
+    packpoints: {
+      acquired: false,
+      notify: false,
+    },
+    pack: {
+      acquired: true,
+      notify: false,
+    },
+    tournamentlog: {
+      acquired: true,
+      notify: false,
+    },
+    settings: {
+      acquired: true,
+      notify: false,
+    },
+    activetournament: {
+      acquired: true,
+      notify: false,
+    },
+    tournaments: {
+      acquired: false,
+      notify: false,
+    },
+    team: {
+      acquired: false,
+      notify: false,
+    },
+    skills: {
+      acquired: false,
+      notify: false,
+    },
+    trophys: {
+      acquired: false,
+      notify: false,
+    },
     packstab: {
       acquired: true,
+      notify: false,
     },
     skillstab: {
       acquired: false,
+      notify: false,
     },
     tradebindertab: {
       acquired: false,
+      notify: false,
     },
     deckbuildertab: {
       acquired: false,
+      notify: false,
     },
     tournamentstab: {
       acquired: false,
-    },
-    teamtab: {
-      acquired: false,
-    },
-    trophystab: {
-      acquired: false,
+      notify: false,
     },
   },
   counters: {
@@ -143,4 +178,9 @@ export const state: GameState = {
     tournament: {} as TournamentEntry,
   },
   team: [],
+  trophycase: {
+    slot1: undefined,
+    slot2: undefined,
+    slot3: undefined,
+  },
 };

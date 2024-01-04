@@ -21,15 +21,3 @@ body,
 nav {
   background-color: #282c34;
 }
-
-.tab {
-  padding: 6px;
-  border-radius: 2px 2px 0 0;
-  cursor: pointer;
-  color: #fff;
-}
-
-.tab.active {
-  background-color: #fff;
-  color: #000;
-}

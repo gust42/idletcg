@@ -1,53 +1,36 @@
-import { ReactNode } from "react";
-import { DeckbuilderTab } from "../pages/deckbuilder/deckbuildertab";
-import PacksTab from "../pages/packs/packstab";
-import SkillsTab from "../pages/skills/skillstab";
-import { TeamTab } from "../pages/team/teamtab";
-import { TournamentTab } from "../pages/tournaments/tournamenttab";
-import TradebinderTab from "../pages/tradebinder/tradebindertab";
-// import TrophysTab from "../pages/trophys/trophystab";
+import { RouteNames } from "./../logic/navigation";
 
 export type Tabs =
-  // | "trophystab"
-  | "teamtab"
   | "packstab"
   | "skillstab"
   | "tradebindertab"
   | "tournamentstab"
   | "deckbuildertab";
 
-export type RouteConfig = {
+export type TabConfig = {
   friendlyName: string;
-  component: () => ReactNode;
+  route: RouteNames;
 };
 
-export const tabs: Record<Tabs, RouteConfig> = {
+export const tabs: Record<Tabs, TabConfig> = {
   packstab: {
     friendlyName: "Packs",
-    component: PacksTab,
+    route: "packstab",
   },
   tradebindertab: {
     friendlyName: "Trade Binder",
-    component: TradebinderTab,
+    route: "tradebindertab",
   },
   deckbuildertab: {
     friendlyName: "Deck Builder",
-    component: DeckbuilderTab,
+    route: "deckbuildertab",
   },
   tournamentstab: {
     friendlyName: "Tournaments",
-    component: TournamentTab,
-  },
-  teamtab: {
-    friendlyName: "Team",
-    component: TeamTab,
+    route: "tournamentstab",
   },
   skillstab: {
-    friendlyName: "Skills",
-    component: SkillsTab,
+    friendlyName: "Player",
+    route: "skillstab",
   },
-  // trophystab:{
-  //   friendlyName: "Trophys",
-  //   component: TrophysTab
-  // },
 };

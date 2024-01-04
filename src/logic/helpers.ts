@@ -11,7 +11,7 @@ export function roundToNearestX(num: number, x: number): number {
 }
 
 export function roundToNearestThousand(num: number): number {
-  if (num < 1000) return num;
+  if (num < 1000) return Math.round(num);
   const amount = Math.round(num / 1000) * 1000;
   return amount;
 }
@@ -26,13 +26,13 @@ export function calculateUniqueCardCost(id: number) {
     GameLoop.getInstance().rulesHandler.getRule<CostForUniqueCards>(
       "CostForUniqueCards"
     );
-  const costBadCards = Math.floor((cost.badcards * (id + 1)) ** cost.increase);
-  const costGoodCards = Math.floor(
-    (cost.goodcards * (id + 1)) ** cost.increase
-  );
-  const costMetaCards = Math.floor(
-    (cost.metacards * (id + 1)) ** cost.increase
-  );
+
+  const increase = cost.increase - (10 - id) / 100;
+
+  console.log(id);
+  const costBadCards = Math.floor((cost.badcards * (id + 1)) ** increase);
+  const costGoodCards = Math.floor((cost.goodcards * (id + 1)) ** increase);
+  const costMetaCards = Math.floor((cost.metacards * (id + 1)) ** increase);
 
   return [costBadCards, costGoodCards, costMetaCards] as const;
 }
@@ -75,12 +75,14 @@ export function calculateTournamentTime(id?: keyof Tournaments) {
     1
   );
 
+  const oneRound = deckSize * roundTicks;
+
   const totalTicks =
-    tournament.opponents.length * deckSize * roundTicks +
+    tournament.opponents.length * oneRound +
     tournament.opponents.length * roundTicks;
 
   const passedTicks = gameState.activities.tournament
-    ? gameState.activities.tournament.currentOpponent * deckSize * roundTicks +
+    ? gameState.activities.tournament.currentOpponent * oneRound +
       gameState.activities.tournament.gameRound * roundTicks
     : 0;
 

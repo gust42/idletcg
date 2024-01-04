@@ -1,3 +1,4 @@
+import { AllRouteNames } from "../logic/navigation";
 import { Skills } from "../rules/skills/skill";
 import {
   TournamentEntry,
@@ -10,8 +11,9 @@ export interface Entity {
   acquired: boolean;
 }
 
-export interface Tab {
+export interface Route {
   acquired: boolean;
+  notify: boolean;
 }
 
 export interface SkillState {
@@ -31,6 +33,12 @@ export interface Deck {
   slot4: number | undefined;
 }
 
+export interface TrophyCase {
+  slot1: keyof Tournaments | undefined;
+  slot2: keyof Tournaments | undefined;
+  slot3: keyof Tournaments | undefined;
+}
+
 export interface TeamMember {
   name: string;
   rating: number;
@@ -44,6 +52,7 @@ export interface TeamMember {
 export interface GameState {
   skills: Record<keyof Skills, SkillState>;
   trophys: Record<keyof Tournaments, number>;
+  trophycase: TrophyCase;
   pack: {
     amount: Entity;
     meta: Entity;
@@ -71,15 +80,7 @@ export interface GameState {
   deck: {
     cards: Deck;
   };
-  tabs: {
-    packstab: Tab;
-    skillstab: Tab;
-    tradebindertab: Tab;
-    deckbuildertab: Tab;
-    tournamentstab: Tab;
-    teamtab: Tab;
-    trophystab: Tab;
-  };
+  routes: Record<AllRouteNames, Route>;
   activities: {
     tournament?: {
       id: keyof Tournaments;

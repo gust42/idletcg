@@ -1,22 +1,25 @@
-import { Slot } from "../deckbuilder/slot";
 import useGameState from "../../hooks/usegamestate";
-import { state } from "../../state/state";
+import MessageHandler from "../../logic/messagehandler";
+import { AllTournaments } from "../../rules/ruleshandler";
+import { TrophySlot } from "./trophyslot";
 
 export default function TrophysTab() {
   const gameState = useGameState();
-  const t: number = Object.keys(state.trophys).length;
-  const onSelect = () => {
-    //placeholder to get it to run
+  const nrOfTrophies = Object.keys(AllTournaments).length;
+
+  const onSelect = (trophy: string | undefined, slot: number) => {
+    MessageHandler.recieveMessage("addtrophy", { trophy, slot });
   };
+
   return (
     <div className="flex flex-row flex-wrap gap-2">
-      {Array.from({ length: t }).map((_, i) => {
-        const index = `slot${i + 1}` as keyof typeof gameState.trophys;
+      {Array.from({ length: nrOfTrophies }).map((_, i) => {
+        const index = `slot${i + 1}` as keyof typeof gameState.trophycase;
         return (
-          <Slot
+          <TrophySlot
             onSelect={onSelect}
             key={index}
-            card={gameState.trophys[index]}
+            trophy={gameState.trophycase[index]}
             slot={i + 1}
           />
         );

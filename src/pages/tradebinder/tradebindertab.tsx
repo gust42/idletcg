@@ -13,7 +13,7 @@ export default function TradebinderTab() {
 
   return (
     <article className="flex flex-row flex-wrap gap-2">
-      <TradeCard id={myCards.length - 1} />
+      <TradeCard id={myCards.length} />
       {myCards.map((card) => {
         return <UniqueCard key={"emj" + card.id} id={card.id} />;
       })}

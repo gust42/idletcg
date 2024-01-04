@@ -9,19 +9,50 @@ import { TournamentTab } from "../pages/tournaments/tournamenttab";
 import TradebinderTab from "../pages/tradebinder/tradebindertab";
 import { Settings } from "../pages/settings/settings";
 import TrophysTab from "../pages/trophys/trophystab";
+import { PackPoints } from "../pages/packs/packpoints";
 
-type RouteConfig = {
-  [key: string]: {
-    friendlyName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    component: React.FunctionComponent<any>;
-  };
+export type RouteNames =
+  | "packstab"
+  | "skillstab"
+  | "tradebindertab"
+  | "tournamentstab"
+  | "deckbuildertab"
+  | "activetournament"
+  | "tournamentlog"
+  | "settings";
+
+export type AllSubroutes =
+  | SkillsSubroutes
+  | TournamentSubroutes
+  | PackSubroutes;
+
+export type AllRouteNames = RouteNames | AllSubroutes;
+
+export type SkillsSubroutes = "skills" | "trophys";
+export type TournamentSubroutes = "tournaments" | "team";
+export type PackSubroutes = "pack" | "packpoints";
+
+export type Route = {
+  friendlyName: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component?: React.FunctionComponent<any>;
+  routes?: Partial<
+    Record<
+      AllSubroutes,
+      { friendlyName: string; component: React.FunctionComponent }
+    >
+  >;
 };
+
+type RouteConfig = Record<RouteNames, Route>;
 
 export const routeConfig: RouteConfig = {
   packstab: {
     friendlyName: "Packs",
-    component: PacksTab,
+    routes: {
+      pack: { friendlyName: "Packs", component: PacksTab },
+      packpoints: { friendlyName: "Pack Points", component: PackPoints },
+    },
   },
   tradebindertab: {
     friendlyName: "Trade Binder",
@@ -33,15 +64,17 @@ export const routeConfig: RouteConfig = {
   },
   tournamentstab: {
     friendlyName: "Tournaments",
-    component: TournamentTab,
-  },
-  teamtab: {
-    friendlyName: "Team",
-    component: TeamTab,
+    routes: {
+      tournaments: { friendlyName: "Tournaments", component: TournamentTab },
+      team: { friendlyName: "Team", component: TeamTab },
+    },
   },
   skillstab: {
-    friendlyName: "Skills",
-    component: SkillsTab,
+    friendlyName: "Player",
+    routes: {
+      skills: { friendlyName: "Skills", component: SkillsTab },
+      trophys: { friendlyName: "Trophys", component: TrophysTab },
+    },
   },
   activetournament: {
     friendlyName: "Active tournament",
@@ -51,10 +84,6 @@ export const routeConfig: RouteConfig = {
     friendlyName: "Tournament log",
     component: TournamentLog,
   },
-  trophystab:{
-    friendlyName: "Trophys",
-    component: TrophysTab,
-  },
   settings: {
     friendlyName: "Settings",
     component: Settings,
@@ -62,7 +91,7 @@ export const routeConfig: RouteConfig = {
 };
 
 type RouteState = {
-  route: keyof typeof routeConfig;
+  route: AllRouteNames;
   props: Record<string, unknown>;
 };
 
@@ -75,8 +104,17 @@ export const routeState = proxy<RouteState>({
   props: savedTab?.props ?? {},
 });
 
-export const navigate = (route: keyof typeof routeConfig, props = {}) => {
+export const navigate = (route: AllRouteNames, props = {}) => {
   routeState.route = route;
   routeState.props = props;
   localStorage.setItem("routeState", JSON.stringify({ route, props }));
+};
+
+export const findParentRoute = (route: AllSubroutes) => {
+  const parentKey = Object.keys(routeConfig).find((key) => {
+    const subroute = routeConfig[key as keyof typeof routeConfig].routes;
+    return subroute ? Object.keys(subroute).includes(route) : false;
+  });
+
+  return parentKey ? routeConfig[parentKey as keyof typeof routeConfig] : null;
 };

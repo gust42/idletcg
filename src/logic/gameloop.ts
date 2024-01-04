@@ -3,10 +3,12 @@ import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
 import { calculateUniqueCardCost } from "./helpers";
 import MessageHandler, {
+  TrophyMessage,
   DeckMessage,
   GenericMessage,
   SkillMessage,
   TournamentMessage,
+  NotifierMessage,
 } from "./messagehandler";
 import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
@@ -18,11 +20,11 @@ export default class GameLoop {
   private static instance: GameLoop;
   public stateHandler: StateHandler;
   public rulesHandler: RulesHandler;
+  public tournamentManager: TournamentManager;
 
   public lastTickTime: number = 0;
 
   private packManager: PackManager;
-  private tournamentManager: TournamentManager;
   private lastTime: number;
   private lastTimerTick: number = 0;
   private tickCounter: number;
@@ -119,6 +121,8 @@ export default class GameLoop {
 
         if (state.entities.money.amount >= rule.requirement) {
           state.skills[data.name].acquired = true;
+          state.routes.skillstab.notify = true;
+          state.routes.skills.notify = true;
           state.entities.money.amount -= rule.requirement;
           this.stateHandler.updateState(state);
         } else {
@@ -194,6 +198,20 @@ export default class GameLoop {
         }
         this.stateHandler.updateState(state);
       }
+      if (m.message === "addtrophy") {
+        const data = m.data as TrophyMessage;
+        const state = this.stateHandler.getState();
+        const index = `slot${data.slot}` as keyof typeof state.trophycase;
+        state.trophycase[index] = data.trophy;
+        this.stateHandler.updateState(state);
+      }
+
+      if (m.message === "clearnotifier") {
+        const data = m.data as NotifierMessage;
+        const state = this.stateHandler.getState();
+        state.routes[data.route].notify = false;
+        this.stateHandler.updateState(state);
+      }
 
       if (m.message === "clearmessages") {
         MessageHandler.sendClientMessage("", { clear: true });
@@ -207,18 +225,18 @@ export default class GameLoop {
     }
 
     state = this.stateHandler.getState();
-    if (
-      state.entities.badcards.amount === 0 &&
-      state.entities.goodcards.amount === 0 &&
-      state.entities.metacards.amount === 0 &&
-      state.entities.money.amount < this.rulesHandler.getRuleValue("PackCost")
-    ) {
-      MessageHandler.sendClientMessage(
-        "Your aunt visits and gives you 50 money"
-      );
-      state.entities.money.amount += 50;
-      state = this.stateHandler.updateState(state);
-    }
+    // if (
+    //   state.entities.badcards.amount === 0 &&
+    //   state.entities.goodcards.amount === 0 &&
+    //   state.entities.metacards.amount === 0 &&
+    //   state.entities.money.amount < this.rulesHandler.getRuleValue("PackCost")
+    // ) {
+    //   MessageHandler.sendClientMessage(
+    //     "Your aunt visits and gives you 50 money"
+    //   );
+    //   state.entities.money.amount += 50;
+    //   state = this.stateHandler.updateState(state);
+    // }
 
     if (now - this.lastTimerTick >= 1000) {
       TimerHandler.getInstance().run();

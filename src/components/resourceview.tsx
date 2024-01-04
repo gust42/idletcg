@@ -57,7 +57,7 @@ export default function ResourceView() {
         />
       </div>
 
-      {gameState.tabs.tournamentstab.acquired && (
+      {gameState.routes.tournamentstab.acquired && (
         <>
           <h4 className="text-lg mt-4 mb-4">Activities</h4>
           <TournamentProgress />
