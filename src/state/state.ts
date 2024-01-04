@@ -109,6 +109,14 @@ export const state: GameState = {
     },
   },
   routes: {
+    packpoints: {
+      acquired: false,
+      notify: false,
+    },
+    pack: {
+      acquired: true,
+      notify: false,
+    },
     tournamentlog: {
       acquired: true,
       notify: false,

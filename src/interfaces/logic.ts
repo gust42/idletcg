@@ -34,9 +34,9 @@ export interface Deck {
 }
 
 export interface TrophyCase {
-  slot1: string | undefined;
-  slot2: string | undefined;
-  slot3: string | undefined;
+  slot1: keyof Tournaments | undefined;
+  slot2: keyof Tournaments | undefined;
+  slot3: keyof Tournaments | undefined;
 }
 
 export interface TeamMember {

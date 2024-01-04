@@ -9,6 +9,7 @@ import { TournamentTab } from "../pages/tournaments/tournamenttab";
 import TradebinderTab from "../pages/tradebinder/tradebindertab";
 import { Settings } from "../pages/settings/settings";
 import TrophysTab from "../pages/trophys/trophystab";
+import { PackPoints } from "../pages/packs/packpoints";
 
 export type RouteNames =
   | "packstab"
@@ -20,20 +21,26 @@ export type RouteNames =
   | "tournamentlog"
   | "settings";
 
-export type AllSubroutes = SkillsSubroutes | TournamentSubroutes;
+export type AllSubroutes =
+  | SkillsSubroutes
+  | TournamentSubroutes
+  | PackSubroutes;
 
 export type AllRouteNames = RouteNames | AllSubroutes;
 
 export type SkillsSubroutes = "skills" | "trophys";
 export type TournamentSubroutes = "tournaments" | "team";
+export type PackSubroutes = "pack" | "packpoints";
 
-export type Route<T extends string = string> = {
+export type Route = {
   friendlyName: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component?: React.FunctionComponent<any>;
-  routes?: Record<
-    T,
-    { friendlyName: string; component: React.FunctionComponent }
+  routes?: Partial<
+    Record<
+      AllSubroutes,
+      { friendlyName: string; component: React.FunctionComponent }
+    >
   >;
 };
 
@@ -42,7 +49,10 @@ type RouteConfig = Record<RouteNames, Route>;
 export const routeConfig: RouteConfig = {
   packstab: {
     friendlyName: "Packs",
-    component: PacksTab,
+    routes: {
+      pack: { friendlyName: "Packs", component: PacksTab },
+      packpoints: { friendlyName: "Pack Points", component: PackPoints },
+    },
   },
   tradebindertab: {
     friendlyName: "Trade Binder",
@@ -100,7 +110,7 @@ export const navigate = (route: AllRouteNames, props = {}) => {
   localStorage.setItem("routeState", JSON.stringify({ route, props }));
 };
 
-export const findParentRoute = (route: string) => {
+export const findParentRoute = (route: AllSubroutes) => {
   const parentKey = Object.keys(routeConfig).find((key) => {
     const subroute = routeConfig[key as keyof typeof routeConfig].routes;
     return subroute ? Object.keys(subroute).includes(route) : false;

@@ -1,4 +1,4 @@
-import { AllRouteNames, routeConfig } from "./../logic/navigation";
+import { RouteNames } from "./../logic/navigation";
 
 export type Tabs =
   | "packstab"
@@ -9,12 +9,7 @@ export type Tabs =
 
 export type TabConfig = {
   friendlyName: string;
-  route: AllRouteNames;
-
-  tabs?: Record<
-    string,
-    { friendlyName: string; route: keyof typeof routeConfig }
-  >;
+  route: RouteNames;
 };
 
 export const tabs: Record<Tabs, TabConfig> = {
@@ -32,10 +27,10 @@ export const tabs: Record<Tabs, TabConfig> = {
   },
   tournamentstab: {
     friendlyName: "Tournaments",
-    route: "tournaments",
+    route: "tournamentstab",
   },
   skillstab: {
     friendlyName: "Player",
-    route: "skills",
+    route: "skillstab",
   },
 };

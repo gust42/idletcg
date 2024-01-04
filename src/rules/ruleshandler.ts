@@ -32,6 +32,17 @@ export default class RulesHandler {
 
   checkActiveRules(state: GameState) {
     let changed = false;
+
+    if (
+      !state.routes.packpoints.acquired &&
+      state.entities.packbonuspoints.amount > 5
+    ) {
+      state.routes.packpoints.acquired = true;
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
+      changed = true;
+    }
+
     const totalcards =
       state.entities.badcards.amount +
       state.entities.goodcards.amount +
@@ -41,6 +52,7 @@ export default class RulesHandler {
       totalcards >= this.rules["CardsForTradebinder"].value
     ) {
       state.routes.tradebindertab.acquired = true;
+      state.routes.tradebindertab.notify = true;
       changed = true;
     }
 
@@ -49,6 +61,7 @@ export default class RulesHandler {
       state.entities.money.amount >= this.rules["MoneyForSkills"].value
     ) {
       state.routes.skills.acquired = true;
+      state.routes.skills.notify = true;
 
       changed = true;
     }
@@ -58,6 +71,7 @@ export default class RulesHandler {
       state.counters.uniquecards.amount >= 3
     ) {
       state.routes.deckbuildertab.acquired = true;
+      state.routes.deckbuildertab.notify = true;
       changed = true;
     }
 
@@ -71,11 +85,14 @@ export default class RulesHandler {
       fullDeck
     ) {
       state.routes.tournaments.acquired = true;
+      state.routes.tournamentstab.notify = true;
       changed = true;
     }
 
     if (!state.routes.team.acquired && state.team.length > 0) {
       state.routes.team.acquired = true;
+      state.routes.tournamentstab.notify = true;
+      state.routes.team.notify = true;
       changed = true;
     }
 
@@ -84,6 +101,8 @@ export default class RulesHandler {
       state.entities.packbonuspoints.amount > 1
     ) {
       state.pack.amount.acquired = true;
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
       changed = true;
     }
 
@@ -92,6 +111,8 @@ export default class RulesHandler {
       state.entities.packbonuspoints.amount > 5
     ) {
       state.pack.good.acquired = true;
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
       changed = true;
     }
 
@@ -100,6 +121,9 @@ export default class RulesHandler {
       state.entities.packbonuspoints.amount > 50
     ) {
       state.pack.meta.acquired = true;
+
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
       changed = true;
     }
 
@@ -108,6 +132,9 @@ export default class RulesHandler {
       state.entities.packbonuspoints.amount > 1000
     ) {
       state.pack.supply.acquired = true;
+
+      state.routes.pack.notify = true;
+      state.routes.packpoints.notify = true;
       changed = true;
     }
 
@@ -121,6 +148,7 @@ export default class RulesHandler {
     };
     if (!state.routes.trophys.acquired && nrOfTrophies() > 0) {
       state.routes.trophys.acquired = true;
+      state.routes.skillstab.notify = true;
       state.routes.trophys.notify = true;
       changed = true;
     }

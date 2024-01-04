@@ -8,6 +8,7 @@ import MessageHandler, {
   GenericMessage,
   SkillMessage,
   TournamentMessage,
+  NotifierMessage,
 } from "./messagehandler";
 import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
@@ -120,6 +121,8 @@ export default class GameLoop {
 
         if (state.entities.money.amount >= rule.requirement) {
           state.skills[data.name].acquired = true;
+          state.routes.skillstab.notify = true;
+          state.routes.skills.notify = true;
           state.entities.money.amount -= rule.requirement;
           this.stateHandler.updateState(state);
         } else {
@@ -200,6 +203,13 @@ export default class GameLoop {
         const state = this.stateHandler.getState();
         const index = `slot${data.slot}` as keyof typeof state.trophycase;
         state.trophycase[index] = data.trophy;
+        this.stateHandler.updateState(state);
+      }
+
+      if (m.message === "clearnotifier") {
+        const data = m.data as NotifierMessage;
+        const state = this.stateHandler.getState();
+        state.routes[data.route].notify = false;
         this.stateHandler.updateState(state);
       }
 

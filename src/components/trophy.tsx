@@ -1,23 +1,29 @@
 import { getCardSize } from "../logic/helpers";
+import { AllTournaments } from "../rules/ruleshandler";
+import { Tournaments } from "../rules/tournaments/tournament";
 
-interface ITrophyProps{
-    trophy: string | undefined;
-    size?: "small" | "medium" | "large";
+interface ITrophyProps {
+  trophy: keyof Tournaments | undefined;
+  size?: "small" | "medium" | "large";
 }
-export const Trophy = ({trophy: id, size = "medium"}: ITrophyProps) => {
-    const trophy = id;
-    const [pxs, pic] = getCardSize(size);
-        return (
-            <div className={`${pxs} bg-[#faefdc]  rounded-3xl text-center  p-1 select-none`}>
-                <div className=" bg-[#F2E8D7] h-full rounded-3xl  flex flex-col ">
-                    {!trophy ? ("") : (
-                        <>
-                            <div className={`${pic} flex-grow flex justify-center items-center`}>
-                                {trophy}
-                            </div>
-                        </>
-                    )}
-                </div>
+export const Trophy = ({ trophy: id, size = "medium" }: ITrophyProps) => {
+  const trophy = id ? AllTournaments[id] : "";
+  const [pxs] = getCardSize(size);
+  return (
+    <div
+      className={`${pxs} bg-stone-300  rounded text-center  p-1 select-none`}
+    >
+      <div className=" bg-stone-200 h-full rounded  flex flex-col ">
+        {!trophy ? (
+          ""
+        ) : (
+          <>
+            <div className={`flex-grow flex justify-center items-center`}>
+              {trophy.name}
             </div>
-        )
-    }
+          </>
+        )}
+      </div>
+    </div>
+  );
+};

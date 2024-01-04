@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import MessageBox from "./components/messagebox";
 import { Navigation } from "./components/navigation";
 import { OfflineModal, Paused } from "./components/paused";
 import ResourceView from "./components/resourceview";
@@ -53,9 +52,9 @@ function App() {
           <Navigation />
         </article>
       </div>
-      <footer className="fixed md:block bottom-0 right left-0 right-0">
+      {/* <footer className="fixed md:block bottom-0 right left-0 right-0">
         <MessageBox />
-      </footer>
+      </footer> */}
       <Paused />
       {offlineModalOpen && (
         <OfflineModal

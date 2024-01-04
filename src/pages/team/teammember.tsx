@@ -32,6 +32,11 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
     });
   };
 
+  const numberOfCards = Object.keys(member.deck);
+  const fullDeck =
+    Object.values(member.deck).every((card) => card !== undefined) &&
+    numberOfCards.length === rule.value;
+
   return (
     <Container>
       <div className="text-xl">{member.name}</div>
@@ -63,6 +68,7 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
 
       <Button
         action="PLAYING"
+        disabled={!fullDeck}
         onClick={() => {
           setOpen(true);
         }}

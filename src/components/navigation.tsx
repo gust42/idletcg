@@ -1,5 +1,6 @@
 import { useSnapshot } from "valtio";
 import {
+  AllSubroutes,
   RouteNames,
   findParentRoute,
   routeConfig,
@@ -10,19 +11,37 @@ import { InlineTabs } from "./inlinetabs";
 export const Navigation = () => {
   const state = useSnapshot(routeState);
 
-  const parentRoute = findParentRoute(state.route as string);
+  const Component = routeConfig[state.route as RouteNames]?.component;
+  // If we don't have a component, we're probably a subroute
+  if (!Component) {
+    let parentRoute = findParentRoute(state.route as AllSubroutes);
 
-  if (parentRoute) {
-    const Component = parentRoute.routes?.[state.route].component as React.FC;
+    let route = state.route as AllSubroutes;
+    let parentRouteName = "" as RouteNames;
+    // Not a subroute, need to find first subroute for this route
+    if (!parentRoute) {
+      const subRoutes = Object.keys(
+        routeConfig[state.route as RouteNames]?.routes || {}
+      );
+      route = subRoutes[0] as AllSubroutes;
+      parentRoute = routeConfig[state.route as RouteNames];
+      parentRouteName = state.route as RouteNames;
+    }
+
+    const Component = parentRoute?.routes?.[route as AllSubroutes]
+      ?.component as React.FC;
+
+    if (!Component) return null;
     return (
       <>
-        <InlineTabs parentRoute={parentRoute} />
+        <InlineTabs
+          parentRoute={parentRoute}
+          parentRouteName={parentRouteName}
+        />
         <Component {...state.props} />
       </>
     );
   }
 
-  const Component = routeConfig[state.route as RouteNames].component;
-  if (!Component) return null;
   return <Component {...state.props} />;
 };
