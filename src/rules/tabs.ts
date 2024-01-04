@@ -1,7 +1,6 @@
 import { routeConfig } from "./../logic/navigation";
 
 export type Tabs =
-  | "teamtab"
   | "packstab"
   | "skillstab"
   | "tradebindertab"
@@ -33,11 +32,7 @@ export const tabs: Record<Tabs, TabConfig> = {
   },
   tournamentstab: {
     friendlyName: "Tournaments",
-    route: "tournamentstab",
-  },
-  teamtab: {
-    friendlyName: "Team",
-    route: "teamtab",
+    route: "tournaments",
   },
   skillstab: {
     friendlyName: "Player",

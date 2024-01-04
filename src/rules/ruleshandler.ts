@@ -37,27 +37,27 @@ export default class RulesHandler {
       state.entities.goodcards.amount +
       state.entities.metacards.amount;
     if (
-      !state.tabs.tradebindertab.acquired &&
+      !state.routes.tradebindertab.acquired &&
       totalcards >= this.rules["CardsForTradebinder"].value
     ) {
-      state.tabs.tradebindertab.acquired = true;
+      state.routes.tradebindertab.acquired = true;
       changed = true;
     }
 
     if (
-      !state.tabs.skillstab.acquired &&
+      !state.routes.skills.acquired &&
       state.entities.money.amount >= this.rules["MoneyForSkills"].value
     ) {
-      state.tabs.skillstab.acquired = true;
+      state.routes.skills.acquired = true;
 
       changed = true;
     }
 
     if (
-      !state.tabs.deckbuildertab.acquired &&
+      !state.routes.deckbuildertab.acquired &&
       state.counters.uniquecards.amount >= 3
     ) {
-      state.tabs.deckbuildertab.acquired = true;
+      state.routes.deckbuildertab.acquired = true;
       changed = true;
     }
 
@@ -65,13 +65,17 @@ export default class RulesHandler {
       (card) => card !== undefined
     );
 
-    if (Object.keys(state.deck.cards).length > 0 && fullDeck) {
-      state.tabs.tournamentstab.acquired = true;
+    if (
+      !state.routes.tournaments.acquired &&
+      Object.keys(state.deck.cards).length > 0 &&
+      fullDeck
+    ) {
+      state.routes.tournaments.acquired = true;
       changed = true;
     }
 
-    if (!state.tabs.teamtab.acquired && state.team.length > 0) {
-      state.tabs.teamtab.acquired = true;
+    if (!state.routes.team.acquired && state.team.length > 0) {
+      state.routes.team.acquired = true;
       changed = true;
     }
 
@@ -115,8 +119,8 @@ export default class RulesHandler {
       }
       return totalTrophys;
     };
-    if (!state.tabs.trophystab.acquired && nrOfTrophies() > 0) {
-      state.tabs.trophystab.acquired = true;
+    if (!state.routes.trophys.acquired && nrOfTrophies() > 0) {
+      state.routes.trophys.acquired = true;
       changed = true;
     }
 

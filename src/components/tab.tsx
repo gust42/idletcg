@@ -24,8 +24,6 @@ export default function Tab({ item, tab }: ITabProps) {
 
   const parentRoute = findParentRoute(route.route as string);
   if (parentRoute?.routes && !active) {
-    console.log(parentRoute.routes, route.route);
-
     active =
       Object.keys(parentRoute.routes).includes(route.route as string) &&
       parentRoute.friendlyName === tab.friendlyName;
@@ -35,9 +33,7 @@ export default function Tab({ item, tab }: ITabProps) {
 
   return (
     <div
-      className={
-        "p-2 rounded-t cursor-pointer text-white " + (activeStyle || "")
-      }
+      className={"p-2 rounded cursor-pointer text-white " + (activeStyle || "")}
       onClick={onClick}
     >
       {tab.friendlyName}

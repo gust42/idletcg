@@ -20,9 +20,7 @@ export type Route = {
   >;
 };
 
-type RouteConfig = {
-  [key: string]: Route;
-};
+type RouteConfig = Record<string, Route>;
 
 export const routeConfig: RouteConfig = {
   packstab: {
@@ -39,11 +37,10 @@ export const routeConfig: RouteConfig = {
   },
   tournamentstab: {
     friendlyName: "Tournaments",
-    component: TournamentTab,
-  },
-  teamtab: {
-    friendlyName: "Team",
-    component: TeamTab,
+    routes: {
+      tournaments: { friendlyName: "Tournaments", component: TournamentTab },
+      team: { friendlyName: "Team", component: TeamTab },
+    },
   },
   skillstab: {
     friendlyName: "Player",
@@ -59,10 +56,6 @@ export const routeConfig: RouteConfig = {
   tournamentlog: {
     friendlyName: "Tournament log",
     component: TournamentLog,
-  },
-  trophystab: {
-    friendlyName: "Trophys",
-    component: TrophysTab,
   },
   settings: {
     friendlyName: "Settings",

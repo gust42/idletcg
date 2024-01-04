@@ -30,6 +30,6 @@ export class TournamentGrinder implements Skill {
   }
 
   visible(gameState: GameState) {
-    return gameState.tabs.tournamentstab.acquired;
+    return gameState.routes.tournamentstab.acquired;
   }
 }

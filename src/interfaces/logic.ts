@@ -1,3 +1,4 @@
+import { routeConfig } from "../logic/navigation";
 import { Skills } from "../rules/skills/skill";
 import {
   TournamentEntry,
@@ -10,8 +11,9 @@ export interface Entity {
   acquired: boolean;
 }
 
-export interface Tab {
+export interface Route {
   acquired: boolean;
+  notify: boolean;
 }
 
 export interface SkillState {
@@ -78,15 +80,7 @@ export interface GameState {
   deck: {
     cards: Deck;
   };
-  tabs: {
-    packstab: Tab;
-    skillstab: Tab;
-    tradebindertab: Tab;
-    deckbuildertab: Tab;
-    tournamentstab: Tab;
-    teamtab: Tab;
-    trophystab: Tab;
-  };
+  routes: Record<keyof typeof routeConfig, Route>;
   activities: {
     tournament?: {
       id: keyof Tournaments;

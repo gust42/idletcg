@@ -29,17 +29,17 @@ function App() {
   }, []);
 
   const visibleTabs = Object.keys(tabs).filter(
-    (key) => gameState.tabs[key as Tabs].acquired
+    (key) => gameState.routes[key as Tabs].acquired
   );
 
   return (
     <div className="flex flex-col h-full text-xs md:text-base items-stretch">
-      <nav className="flex flex-row gap-3 items-stretch flex-shrink-0 overflow-x-auto pt-3">
+      <nav className="flex flex-row gap-3 items-stretch flex-shrink-0 overflow-x-auto p-1">
         {visibleTabs.map((tab) => {
           return (
             <Tab
               key={tab}
-              item={gameState.tabs[tab as keyof typeof gameState.tabs]}
+              item={gameState.routes[tab as keyof typeof gameState.routes]}
               tab={tabs[tab as Tabs]}
             />
           );

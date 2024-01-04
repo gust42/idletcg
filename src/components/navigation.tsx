@@ -12,11 +12,12 @@ export const Navigation = () => {
     return (
       <>
         <InlineTabs parentRoute={parentRoute} />
-        <Component {...state.props} />;
+        <Component {...state.props} />
       </>
     );
   }
 
   const Component = routeConfig[state.route].component as React.FC;
+  if (!Component) return null;
   return <Component {...state.props} />;
 };
