@@ -121,6 +121,7 @@ export default class RulesHandler {
     };
     if (!state.routes.trophys.acquired && nrOfTrophies() > 0) {
       state.routes.trophys.acquired = true;
+      state.routes.trophys.notify = true;
       changed = true;
     }
 

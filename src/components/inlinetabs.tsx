@@ -1,12 +1,17 @@
 import { useSnapshot } from "valtio";
-import { Route, navigate, routeState } from "../logic/navigation";
+import {
+  AllRouteNames,
+  Route,
+  navigate,
+  routeState,
+} from "../logic/navigation";
 import MessageHandler from "../logic/messagehandler";
 import useGameState from "../hooks/usegamestate";
 
 interface ITabProps {
   name: string;
   active?: boolean;
-  route: string;
+  route: AllRouteNames;
 }
 
 const TabComponent = ({ name, active, route }: ITabProps) => {
@@ -35,7 +40,7 @@ export const InlineTabs = ({ parentRoute }: IInlineTabsProps) => {
   if (!parentRoute.routes) return null;
 
   const visibleTabs = Object.keys(parentRoute.routes).filter(
-    (key) => gameState.routes[key as keyof typeof gameState.routes].acquired
+    (key) => gameState.routes[key as AllRouteNames].acquired
   );
   return (
     visibleTabs.length > 1 && (
@@ -48,7 +53,7 @@ export const InlineTabs = ({ parentRoute }: IInlineTabsProps) => {
                 key={key}
                 name={tab!.friendlyName}
                 active={key === route.route}
-                route={key}
+                route={key as AllRouteNames}
               />
             );
           })}

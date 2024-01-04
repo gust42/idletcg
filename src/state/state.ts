@@ -109,6 +109,18 @@ export const state: GameState = {
     },
   },
   routes: {
+    tournamentlog: {
+      acquired: true,
+      notify: false,
+    },
+    settings: {
+      acquired: true,
+      notify: false,
+    },
+    activetournament: {
+      acquired: true,
+      notify: false,
+    },
     tournaments: {
       acquired: false,
       notify: false,
@@ -142,14 +154,6 @@ export const state: GameState = {
       notify: false,
     },
     tournamentstab: {
-      acquired: false,
-      notify: false,
-    },
-    teamtab: {
-      acquired: false,
-      notify: false,
-    },
-    trophystab: {
       acquired: false,
       notify: false,
     },

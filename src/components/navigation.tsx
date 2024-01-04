@@ -1,5 +1,10 @@
 import { useSnapshot } from "valtio";
-import { findParentRoute, routeConfig, routeState } from "../logic/navigation";
+import {
+  RouteNames,
+  findParentRoute,
+  routeConfig,
+  routeState,
+} from "../logic/navigation";
 import { InlineTabs } from "./inlinetabs";
 
 export const Navigation = () => {
@@ -17,7 +22,7 @@ export const Navigation = () => {
     );
   }
 
-  const Component = routeConfig[state.route].component as React.FC;
+  const Component = routeConfig[state.route as RouteNames].component;
   if (!Component) return null;
   return <Component {...state.props} />;
 };

@@ -1,4 +1,4 @@
-import { routeConfig } from "./../logic/navigation";
+import { AllRouteNames, routeConfig } from "./../logic/navigation";
 
 export type Tabs =
   | "packstab"
@@ -9,7 +9,7 @@ export type Tabs =
 
 export type TabConfig = {
   friendlyName: string;
-  route: keyof typeof routeConfig;
+  route: AllRouteNames;
 
   tabs?: Record<
     string,

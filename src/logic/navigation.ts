@@ -10,17 +10,34 @@ import TradebinderTab from "../pages/tradebinder/tradebindertab";
 import { Settings } from "../pages/settings/settings";
 import TrophysTab from "../pages/trophys/trophystab";
 
-export type Route = {
+export type RouteNames =
+  | "packstab"
+  | "skillstab"
+  | "tradebindertab"
+  | "tournamentstab"
+  | "deckbuildertab"
+  | "activetournament"
+  | "tournamentlog"
+  | "settings";
+
+export type AllSubroutes = SkillsSubroutes | TournamentSubroutes;
+
+export type AllRouteNames = RouteNames | AllSubroutes;
+
+export type SkillsSubroutes = "skills" | "trophys";
+export type TournamentSubroutes = "tournaments" | "team";
+
+export type Route<T extends string = string> = {
   friendlyName: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component?: React.FunctionComponent<any>;
   routes?: Record<
-    string,
+    T,
     { friendlyName: string; component: React.FunctionComponent }
   >;
 };
 
-type RouteConfig = Record<string, Route>;
+type RouteConfig = Record<RouteNames, Route>;
 
 export const routeConfig: RouteConfig = {
   packstab: {
@@ -64,7 +81,7 @@ export const routeConfig: RouteConfig = {
 };
 
 type RouteState = {
-  route: keyof typeof routeConfig;
+  route: AllRouteNames;
   props: Record<string, unknown>;
 };
 
@@ -77,7 +94,7 @@ export const routeState = proxy<RouteState>({
   props: savedTab?.props ?? {},
 });
 
-export const navigate = (route: keyof typeof routeConfig, props = {}) => {
+export const navigate = (route: AllRouteNames, props = {}) => {
   routeState.route = route;
   routeState.props = props;
   localStorage.setItem("routeState", JSON.stringify({ route, props }));

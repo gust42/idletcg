@@ -1,4 +1,4 @@
-import { routeConfig } from "../logic/navigation";
+import { AllRouteNames } from "../logic/navigation";
 import { Skills } from "../rules/skills/skill";
 import {
   TournamentEntry,
@@ -80,7 +80,7 @@ export interface GameState {
   deck: {
     cards: Deck;
   };
-  routes: Record<keyof typeof routeConfig, Route>;
+  routes: Record<AllRouteNames, Route>;
   activities: {
     tournament?: {
       id: keyof Tournaments;
