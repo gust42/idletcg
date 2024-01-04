@@ -10,12 +10,18 @@ import TradebinderTab from "../pages/tradebinder/tradebindertab";
 import { Settings } from "../pages/settings/settings";
 import TrophysTab from "../pages/trophys/trophystab";
 
+export type Route = {
+  friendlyName: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component?: React.FunctionComponent<any>;
+  routes?: Record<
+    string,
+    { friendlyName: string; component: React.FunctionComponent }
+  >;
+};
+
 type RouteConfig = {
-  [key: string]: {
-    friendlyName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    component: React.FunctionComponent<any>;
-  };
+  [key: string]: Route;
 };
 
 export const routeConfig: RouteConfig = {
@@ -40,8 +46,11 @@ export const routeConfig: RouteConfig = {
     component: TeamTab,
   },
   skillstab: {
-    friendlyName: "Skills",
-    component: SkillsTab,
+    friendlyName: "Player",
+    routes: {
+      skills: { friendlyName: "Skills", component: SkillsTab },
+      trophys: { friendlyName: "Trophys", component: TrophysTab },
+    },
   },
   activetournament: {
     friendlyName: "Active tournament",
@@ -51,7 +60,7 @@ export const routeConfig: RouteConfig = {
     friendlyName: "Tournament log",
     component: TournamentLog,
   },
-  trophystab:{
+  trophystab: {
     friendlyName: "Trophys",
     component: TrophysTab,
   },
@@ -79,4 +88,13 @@ export const navigate = (route: keyof typeof routeConfig, props = {}) => {
   routeState.route = route;
   routeState.props = props;
   localStorage.setItem("routeState", JSON.stringify({ route, props }));
+};
+
+export const findParentRoute = (route: string) => {
+  const parentKey = Object.keys(routeConfig).find((key) => {
+    const subroute = routeConfig[key as keyof typeof routeConfig].routes;
+    return subroute ? Object.keys(subroute).includes(route) : false;
+  });
+
+  return parentKey ? routeConfig[parentKey as keyof typeof routeConfig] : null;
 };

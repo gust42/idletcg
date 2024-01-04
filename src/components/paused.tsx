@@ -25,7 +25,9 @@ export const OfflineModal = ({
   const tickLength = useGameRule("TickLength");
 
   useEffect(() => {
-    const oldState = GameLoop.getInstance().stateHandler.getStateHistory();
+    const oldState = JSON.parse(
+      JSON.stringify(GameLoop.getInstance().stateHandler.getStateHistory())
+    );
 
     const unsubscribe = subscribe(offlineHandler.offlineState, () => {
       setTicks(offlineHandler.offlineState.tickCounter);

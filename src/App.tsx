@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-
-import { useSnapshot } from "valtio";
 import MessageBox from "./components/messagebox";
 import { Navigation } from "./components/navigation";
 import { OfflineModal, Paused } from "./components/paused";
@@ -9,14 +7,11 @@ import ResourceView from "./components/resourceview";
 import Tab from "./components/tab";
 import useGameState from "./hooks/usegamestate";
 import GameLoop, { offlineHandler } from "./logic/gameloop";
-import MessageHandler from "./logic/messagehandler";
-import { navigate, routeState } from "./logic/navigation";
 import { Tabs, tabs } from "./rules/tabs";
 
 function App() {
   const [offlineModalOpen, setOfflineModalOpen] = useState(false);
   const gameState = useGameState();
-  const { route } = useSnapshot(routeState);
 
   useEffect(() => {
     const gameLoop = GameLoop.getInstance();
@@ -33,12 +28,6 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function clickTab(id: keyof typeof routeState) {
-    navigate(id);
-    localStorage.setItem("activeTab", id);
-    MessageHandler.recieveMessage("clearmessages", {});
-  }
-
   const visibleTabs = Object.keys(tabs).filter(
     (key) => gameState.tabs[key as Tabs].acquired
   );
@@ -50,10 +39,8 @@ function App() {
           return (
             <Tab
               key={tab}
-              name={tabs[tab as Tabs].friendlyName}
-              active={route === tab}
-              onClick={() => clickTab(tab as keyof typeof routeState)}
               item={gameState.tabs[tab as keyof typeof gameState.tabs]}
+              tab={tabs[tab as Tabs]}
             />
           );
         })}
@@ -70,10 +57,12 @@ function App() {
         <MessageBox />
       </footer>
       <Paused />
-      <OfflineModal
-        onClose={() => setOfflineModalOpen(false)}
-        open={offlineModalOpen}
-      />
+      {offlineModalOpen && (
+        <OfflineModal
+          onClose={() => setOfflineModalOpen(false)}
+          open={offlineModalOpen}
+        />
+      )}
     </div>
   );
 }
