@@ -1,4 +1,5 @@
 import { Card } from "../../components/card";
+import useGameState from "../../hooks/usegamestate";
 import {
   Tournament,
   TournamentLog,
@@ -19,15 +20,20 @@ export const TournamentPlay = ({
   gameRound,
   opponent,
 }: ITournamentPlayProps) => {
+  const gameState = useGameState();
   const play = [];
   for (let i = 1; i <= gameRound; i++) {
     const index = `slot${i}` as keyof typeof log.myDeck;
     const myCard = log.myDeck[index] as number;
     const opponentCard = log.rounds[opponent].opponentDeck[index] as number;
 
-    const myMod = calculateWinRateModFromMeta(myCard, opponentCard);
-    const opponentMod = calculateWinRateModFromMeta(opponentCard, myCard);
-    const result = calculateWinner(myCard, opponentCard);
+    const myMod = calculateWinRateModFromMeta(myCard, opponentCard, gameState);
+    const opponentMod = calculateWinRateModFromMeta(
+      opponentCard,
+      myCard,
+      gameState
+    );
+    const result = calculateWinner(myCard, opponentCard, gameState);
     play.push(
       <div
         key={i}

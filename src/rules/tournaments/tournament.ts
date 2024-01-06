@@ -1,4 +1,9 @@
-import { Deck, TeamMember } from "../../interfaces/logic";
+import { Deck, GameState, TeamMember } from "../../interfaces/logic";
+import {
+  applyAdeptEffect,
+  applyAntiWeaknessEffect,
+  applyOverKillEffect,
+} from "../../logic/cardmastery";
 
 export interface Tournaments {
   casualwednesday: Tournament;
@@ -39,7 +44,11 @@ export interface Tournament {
 
 export const metaTypes = ["Aggro", "Control", "Combo"];
 
-export function generateWinRatio(id: number) {
+/*** Generates a win ratio based on the id of the card
+ * @param id The id of the card
+ * @param state The current state of the game, only pass when calculating the win ratio of the player
+ */
+export function generateWinRatio(id: number, state?: GameState) {
   let currentValue = 30; // Starting value
 
   // Predefined array of irregular increments
@@ -55,23 +64,33 @@ export function generateWinRatio(id: number) {
   const linearIncrement = 1.5; // Adjust as needed
   currentValue += id * linearIncrement;
 
+  if (state)
+    currentValue = applyAdeptEffect(
+      currentValue,
+      metaTypes[id % metaTypes.length],
+      state
+    );
+
   return Math.floor(currentValue);
 }
 
 export function calculateWinRateModFromMeta(
   myCard: number,
-  oppoentCard: number
+  oppoentCard: number,
+  state: GameState
 ) {
   const myMetaType = metaTypes[myCard % metaTypes.length];
   const opponentMetaType = metaTypes[oppoentCard % metaTypes.length];
 
   let mod = 1;
+  // If my card is strong against opponent card, increase win rate
   if (
     (myMetaType === "Aggro" && opponentMetaType === "Control") ||
     (myMetaType === "Control" && opponentMetaType === "Combo") ||
     (myMetaType === "Combo" && opponentMetaType === "Aggro")
   )
     mod = 1.15;
+  // If my card is weak against opponent card, decrease win rate
   if (
     (myMetaType === "Control" && opponentMetaType === "Aggro") ||
     (myMetaType === "Combo" && opponentMetaType === "Control") ||
@@ -79,15 +98,29 @@ export function calculateWinRateModFromMeta(
   )
     mod = 0.85;
 
+  if (mod < 1) {
+    mod = applyAntiWeaknessEffect(
+      mod,
+      metaTypes[myCard % metaTypes.length],
+      state
+    );
+  } else if (mod > 1) {
+    mod = applyOverKillEffect(mod, metaTypes[myCard % metaTypes.length], state);
+  }
+
   return mod;
 }
 
-export function calculateWinner(myCard: number, opponentCard: number) {
-  const myWinRate = generateWinRatio(myCard);
+export function calculateWinner(
+  myCard: number,
+  opponentCard: number,
+  state: GameState
+) {
+  const myWinRate = generateWinRatio(myCard, state);
   const opponentWinRate = generateWinRatio(opponentCard);
 
-  const myMod = calculateWinRateModFromMeta(myCard, opponentCard);
-  const opponentMod = calculateWinRateModFromMeta(opponentCard, myCard);
+  const myMod = calculateWinRateModFromMeta(myCard, opponentCard, state);
+  const opponentMod = calculateWinRateModFromMeta(opponentCard, myCard, state);
 
   if (myWinRate * myMod > opponentWinRate * opponentMod) {
     return "win";

@@ -2,6 +2,19 @@ import { GameState } from "../interfaces/logic";
 import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
+  cardmastery: {
+    path: undefined,
+    skills: {
+      path1: {
+        id: undefined,
+        level: 0,
+      },
+      path2: {
+        id: undefined,
+        level: 0,
+      },
+    },
+  },
   trophys: {
     casualwednesday: 0,
     funfriday: 0,
@@ -162,6 +175,14 @@ export const state: GameState = {
       notify: false,
     },
     tournamentstab: {
+      acquired: false,
+      notify: false,
+    },
+    deckbuilder: {
+      acquired: false,
+      notify: false,
+    },
+    cardmastery: {
       acquired: false,
       notify: false,
     },

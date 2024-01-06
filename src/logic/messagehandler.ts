@@ -2,8 +2,10 @@ import { Skills } from "../rules/skills/skill";
 import { Tournaments } from "../rules/tournaments/tournament";
 import { PackMessages } from "./packmanager";
 import { AllRouteNames } from "./navigation";
+import { CardMasteryMessages } from "./cardmastery";
 
 type MessageList =
+  | CardMasteryMessages
   | PackMessages
   | "unlockskill"
   | "levelupskill"
@@ -16,7 +18,7 @@ type MessageList =
   | "clearnotifier"
   | "addtrophy";
 
-type Message = {
+export type Message = {
   message: MessageList;
   data: MessageData;
 };

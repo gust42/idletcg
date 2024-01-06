@@ -1,4 +1,5 @@
 import { AllRouteNames } from "../logic/navigation";
+import { AbilityNames, PathNames } from "../rules/cardmastery";
 import { Skills } from "../rules/skills/skill";
 import {
   TournamentEntry,
@@ -50,6 +51,19 @@ export interface TeamMember {
 }
 
 export interface GameState {
+  cardmastery: {
+    path: PathNames | undefined;
+    skills: {
+      path1: {
+        id: AbilityNames | undefined;
+        level: number;
+      };
+      path2: {
+        id: AbilityNames | undefined;
+        level: number;
+      };
+    };
+  };
   skills: Record<keyof Skills, SkillState>;
   trophys: Record<keyof Tournaments, number>;
   trophycase: TrophyCase;
