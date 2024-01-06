@@ -1,3 +1,4 @@
+import useGameState from "../hooks/usegamestate";
 import { allCards, getCardSize } from "../logic/helpers";
 import { generateWinRatio, metaTypes } from "../rules/tournaments/tournament";
 
@@ -8,6 +9,7 @@ interface ICardsProps {
 }
 
 export const Card = ({ id, size = "medium", winRateMod = 1 }: ICardsProps) => {
+  const state = useGameState();
   const card = allCards.find((card) => card.id === id);
 
   const [pxs, pic] = getCardSize(size);
@@ -34,7 +36,7 @@ export const Card = ({ id, size = "medium", winRateMod = 1 }: ICardsProps) => {
             <div className=" border-t-2 md:border-t-4 border-[#faefdc] p-1  ">
               <div className={`${meta}`}>{metaTypes[id % 3]}</div>
               <span className={winRateColor}>
-                {Math.floor(generateWinRatio(id) * winRateMod)}%
+                {Math.floor(generateWinRatio(id, state) * winRateMod)}%
                 {size !== "small" && <> power</>}
               </span>
             </div>

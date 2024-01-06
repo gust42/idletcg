@@ -7,6 +7,7 @@ import {
 } from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
+import GameLoop from "./gameloop";
 import {
   calculateTotalTournamentTime,
   getTournamentPrizeMoney,
@@ -159,7 +160,11 @@ export class TournamentManager {
           `slot${j + 1}` as keyof typeof currentDeck
         ] as number;
 
-        const result = calculateWinner(myCard, opponentCard);
+        const result = calculateWinner(
+          myCard,
+          opponentCard,
+          GameLoop.getInstance().stateHandler.getState()
+        );
         if (result === "win") {
           wins++;
         } else if (result === "loss") {

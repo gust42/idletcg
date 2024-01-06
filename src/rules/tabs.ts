@@ -18,7 +18,7 @@ export const tabs: Record<Tabs, TabConfig> = {
     route: "packstab",
   },
   tradebindertab: {
-    friendlyName: "Trade Binder",
+    friendlyName: "Binder",
     route: "tradebindertab",
   },
   deckbuildertab: {

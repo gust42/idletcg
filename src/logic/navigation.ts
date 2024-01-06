@@ -10,6 +10,7 @@ import TradebinderTab from "../pages/tradebinder/tradebindertab";
 import { Settings } from "../pages/settings/settings";
 import TrophysTab from "../pages/trophys/trophystab";
 import { PackPoints } from "../pages/packs/packpoints";
+import { CardMastery } from "../pages/deckbuilder/cardmastery";
 
 export type RouteNames =
   | "packstab"
@@ -24,6 +25,7 @@ export type RouteNames =
 export type AllSubroutes =
   | SkillsSubroutes
   | TournamentSubroutes
+  | DeckbuilderSubroutes
   | PackSubroutes;
 
 export type AllRouteNames = RouteNames | AllSubroutes;
@@ -31,6 +33,7 @@ export type AllRouteNames = RouteNames | AllSubroutes;
 export type SkillsSubroutes = "skills" | "trophys";
 export type TournamentSubroutes = "tournaments" | "team";
 export type PackSubroutes = "pack" | "packpoints";
+export type DeckbuilderSubroutes = "deckbuilder" | "cardmastery";
 
 export type Route = {
   friendlyName: string;
@@ -60,7 +63,10 @@ export const routeConfig: RouteConfig = {
   },
   deckbuildertab: {
     friendlyName: "Deck Builder",
-    component: DeckbuilderTab,
+    routes: {
+      deckbuilder: { friendlyName: "Deck Builder", component: DeckbuilderTab },
+      cardmastery: { friendlyName: "Card Mastery", component: CardMastery },
+    },
   },
   tournamentstab: {
     friendlyName: "Tournaments",

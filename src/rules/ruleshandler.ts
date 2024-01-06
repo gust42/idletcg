@@ -69,10 +69,11 @@ export default class RulesHandler {
     }
 
     if (
-      !state.routes.deckbuildertab.acquired &&
+      !state.routes.deckbuilder.acquired &&
       state.counters.uniquecards.amount >= 3
     ) {
       state.routes.deckbuildertab.acquired = true;
+      state.routes.deckbuilder.acquired = true;
       state.routes.deckbuildertab.notify = true;
       changed = true;
     }
@@ -137,6 +138,16 @@ export default class RulesHandler {
 
       state.routes.packstab.notify = true;
       state.routes.packpoints.notify = true;
+      changed = true;
+    }
+
+    if (
+      !state.routes.cardmastery.acquired &&
+      state.entities.rating.amount > 1000
+    ) {
+      state.routes.cardmastery.acquired = true;
+      state.routes.deckbuildertab.notify = true;
+      state.routes.cardmastery.notify = true;
       changed = true;
     }
 

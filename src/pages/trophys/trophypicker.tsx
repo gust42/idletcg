@@ -1,7 +1,6 @@
 import { Modal } from "../../components/modal";
 import { Trophy } from "../../components/trophy";
 import useGameState from "../../hooks/usegamestate";
-import { AllTournaments } from "../../rules/ruleshandler";
 import { Tournaments } from "../../rules/tournaments/tournament";
 
 interface ITrophyPickerProps {
@@ -10,7 +9,9 @@ interface ITrophyPickerProps {
 
 export const TrophyPicker = ({ onSelect }: ITrophyPickerProps) => {
   const gameState = useGameState();
-  let tournamentNames = Object.keys(AllTournaments);
+  let tournamentNames = Object.keys(gameState.trophys).filter(
+    (name) => gameState.trophys[name as keyof Tournaments] > 0
+  );
 
   tournamentNames = tournamentNames.filter((name) => {
     return !Object.values(gameState.trophycase).includes(

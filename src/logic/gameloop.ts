@@ -1,6 +1,7 @@
 import { GameState } from "../interfaces/logic";
 import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
+import { handleCardMasteryMessage } from "./cardmastery";
 import { calculateUniqueCardCost } from "./helpers";
 import MessageHandler, {
   TrophyMessage,
@@ -216,6 +217,9 @@ export default class GameLoop {
       if (m.message === "clearmessages") {
         MessageHandler.sendClientMessage("", { clear: true });
       }
+
+      const state = handleCardMasteryMessage(m, this.stateHandler.getState());
+      if (state) this.stateHandler.updateState(state);
     }
 
     let state = this.stateHandler.getState();
