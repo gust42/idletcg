@@ -42,7 +42,7 @@ export default function Tab({ item, tab }: ITabProps) {
       parentRoute.friendlyName === tab.friendlyName;
   }
 
-  const activeStyle = active ? "bg-white text-black" : "";
+  const activeStyle = active ? "bg-white text-black" : "text-white";
 
   let notify = null;
   if (state.routes[tab.route].notify) {
@@ -51,7 +51,7 @@ export default function Tab({ item, tab }: ITabProps) {
 
   return (
     <div
-      className={`p-2 rounded cursor-pointer grow text-white relative ${activeStyle}`}
+      className={`p-2 rounded cursor-pointer grow relative ${activeStyle}`}
       onClick={onClick}
     >
       {tab.friendlyName}

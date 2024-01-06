@@ -27,7 +27,7 @@
     "value": 1
   },
   "MetaCardSellValue": {
-    "value": 100
+    "value": 1000
   },
   "CardsForTradebinder": {
     "value": 15000
@@ -37,7 +37,7 @@
   },
   "CostForUniqueCards": {
     "badcards": 500,
-    "goodcards": 70,
+    "goodcards": 60,
     "metacards": 5,
     "increase": 1.6
   },
@@ -69,6 +69,6 @@
     "value": 5000
   },
   "XAllCost": {
-    "value": 100000 
+    "value": 10000000
   }
 }
