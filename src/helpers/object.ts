@@ -12,10 +12,19 @@ export function mergeDeep(target: object, source: object) {
       } else {
         if (Array.isArray(source[key])) {
           if (!target[key]) target[key] = [] as never;
+
+          if ((source[key] as []).length === 0) {
+            target[key] = [] as never;
+          }
+
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           for (const i in source[key] as any) {
-            if (!target[key][i])
-              target[key][i] = (isObject(source[key][i]) ? {} : []) as never;
+            if (!target[key][i]) {
+              if (isObject(source[key][i])) target[key][i] = {} as never;
+              else if (Array.isArray(source[key][i]))
+                target[key][i] = [] as never;
+              else target[key][i] = source[key][i] as never;
+            }
             mergeDeep(target[key][i], source[key][i]);
           }
         } else {

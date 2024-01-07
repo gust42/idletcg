@@ -27,7 +27,9 @@ export function calculateUniqueCardCost(id: number) {
       "CostForUniqueCards"
     );
 
-  const increase = cost.increase - (10 - id * 2) / 100;
+  const row = Math.floor(id / 3);
+
+  const increase = cost.increase ** (1 + row / 10);
 
   const costBadCards = Math.floor((cost.badcards * (id + 1)) ** increase);
   const costGoodCards = Math.floor((cost.goodcards * (id + 1)) ** increase);
@@ -127,7 +129,7 @@ export const getCardSize = (size: "small" | "medium" | "large") => {
     case "small":
       return ["w-[60px] h-[90px] md:w-[100px] md:h-[150px]", "text-[2em]"];
     case "medium":
-      return ["w-[90px] h-[135px] md:w-[140px] md:h-[210px]", "text-[4em]"];
+      return ["w-[84px] h-[124px] md:w-[140px] md:h-[210px]", "text-[4em]"];
     case "large":
       return ["w-[120px] h-[180px] md:w-[200px] md:h-[300px]", "text-[6em]"];
   }

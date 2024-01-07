@@ -51,6 +51,9 @@ export interface TeamMember {
 }
 
 export interface GameState {
+  binder: {
+    cards: number[];
+  };
   cardmastery: {
     path: PathNames | undefined;
     usedPoints: number;

@@ -1,7 +1,6 @@
 import { Card } from "../../components/card";
 import { Modal } from "../../components/modal";
 import useGameState from "../../hooks/usegamestate";
-import { allCards } from "../../logic/helpers";
 
 interface ICardPickerProps {
   onSelect: (id: number | undefined) => void;
@@ -10,7 +9,7 @@ interface ICardPickerProps {
 export const CardPicker = ({ onSelect }: ICardPickerProps) => {
   const gameState = useGameState();
 
-  let myCards = allCards.slice(0, gameState.counters.uniquecards.amount);
+  // let myCards = allCards.slice(0, gameState.counters.uniquecards.amount);
 
   const allUsedCardsInTeam = gameState.team.reduce<number[]>((acc, cur) => {
     Object.keys(cur.deck).forEach((key) => {
@@ -29,12 +28,12 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
     const index = key as keyof typeof gameState.deck.cards;
     const cardId = gameState.deck.cards[index];
     if (cardId !== undefined) {
-      cardsToRemove.push(myCards[cardId].id);
+      cardsToRemove.push(cardId);
     }
   });
 
-  myCards = myCards
-    .filter((card) => !cardsToRemove.includes(card.id))
+  const myCards = gameState.binder.cards
+    .filter((card) => !cardsToRemove.includes(card))
     .reverse();
   return (
     <Modal onClose={() => onSelect(undefined)} open={true}>
@@ -42,14 +41,14 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
       <div className="flex flex-row flex-wrap gap-2">
         {myCards.map((card) => (
           <div
-            key={card.id}
+            key={card}
             onClick={(ev: React.MouseEvent<HTMLDivElement>) => {
               ev.stopPropagation();
-              onSelect(card.id);
+              onSelect(card);
             }}
             className="cursor-pointer"
           >
-            <Card id={card.id} />
+            <Card id={card} />
           </div>
         ))}
       </div>
