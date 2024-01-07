@@ -5,10 +5,16 @@ import { generateWinRatio, metaTypes } from "../rules/tournaments/tournament";
 interface ICardsProps {
   id: number;
   size?: "small" | "medium" | "large";
+  myCard?: boolean;
   winRateMod?: number;
 }
 
-export const Card = ({ id, size = "medium", winRateMod = 1 }: ICardsProps) => {
+export const Card = ({
+  id,
+  size = "medium",
+  winRateMod = 1,
+  myCard = true,
+}: ICardsProps) => {
   const state = useGameState();
   const card = allCards.find((card) => card.id === id);
 
@@ -36,8 +42,10 @@ export const Card = ({ id, size = "medium", winRateMod = 1 }: ICardsProps) => {
             <div className=" border-t-2 md:border-t-4 border-[#faefdc] p-1  ">
               <div className={`${meta}`}>{metaTypes[id % 3]}</div>
               <span className={winRateColor}>
-                {Math.floor(generateWinRatio(id, state) * winRateMod)}%
-                {size !== "small" && <> power</>}
+                {Math.floor(
+                  generateWinRatio(id, myCard ? state : undefined) * winRateMod
+                )}
+                %{size !== "small" && <> power</>}
               </span>
             </div>
           </>

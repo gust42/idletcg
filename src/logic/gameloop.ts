@@ -171,6 +171,7 @@ export default class GameLoop {
 
         if (!fail) {
           state.counters.uniquecards.amount++;
+          state.binder.cards.push(data.id as number);
           state.entities.badcards.amount = Math.floor(
             state.entities.badcards.amount - costBadCards
           );

@@ -1,7 +1,6 @@
 export type AbilityNames = "adept" | "antiweakness" | "overkill";
 export type PathNames = "Control" | "Aggro" | "Combo";
 interface AbilityLevel {
-  requirement: number;
   effect: number;
 }
 
@@ -27,23 +26,18 @@ export const cardMasteryTree: Path[] = [
         description: "Increase strength of cards",
         levels: [
           {
-            requirement: 1010,
             effect: 2,
           },
           {
-            requirement: 1100,
             effect: 3,
           },
           {
-            requirement: 1200,
             effect: 5,
           },
           {
-            requirement: 1400,
             effect: 8,
           },
           {
-            requirement: 1800,
             effect: 12,
           },
         ],
@@ -60,23 +54,18 @@ export const cardMasteryTree: Path[] = [
           "Increase strength of your cards against their bad matchup",
         levels: [
           {
-            requirement: 1070,
             effect: 1,
           },
           {
-            requirement: 1140,
             effect: 2,
           },
           {
-            requirement: 1280,
             effect: 3,
           },
           {
-            requirement: 1560,
             effect: 4,
           },
           {
-            requirement: 2120,
             effect: 5,
           },
         ],
@@ -88,23 +77,18 @@ export const cardMasteryTree: Path[] = [
           "Increase strength of your cards against their good matchup",
         levels: [
           {
-            requirement: 1070,
             effect: 1,
           },
           {
-            requirement: 1140,
             effect: 2,
           },
           {
-            requirement: 1280,
             effect: 3,
           },
           {
-            requirement: 1560,
             effect: 4,
           },
           {
-            requirement: 2120,
             effect: 5,
           },
         ],

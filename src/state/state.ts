@@ -2,8 +2,12 @@ import { GameState } from "../interfaces/logic";
 import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
+  binder: {
+    cards: [],
+  },
   cardmastery: {
     path: undefined,
+    usedPoints: 0,
     skills: {
       path1: {
         id: undefined,
