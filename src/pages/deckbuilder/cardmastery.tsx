@@ -4,6 +4,7 @@ import useGameState from "../../hooks/usegamestate";
 import MessageHandler from "../../logic/messagehandler";
 import { Ability, cardMasteryTree } from "../../rules/cardmastery";
 import { CardMasteryMessage } from "../../logic/cardmastery";
+import { calculateCardMasteryPoints } from "../../logic/helpers";
 
 const Button = ({
   children,
@@ -15,7 +16,7 @@ const Button = ({
       onClick={() => !disabled && onClick()}
       className={`${
         disabled && "opacity-60"
-      } flex p-2 grow flex-col border-slate-300 cursor-pointer border bg-gradient-to-b from-slate-300 to-slate-200`}
+      } flex p-2 grow flex-col border-slate-300 select-none cursor-pointer border bg-gradient-to-b from-slate-300 to-slate-200`}
     >
       {children}
     </div>
@@ -49,23 +50,25 @@ export const AbilityButton = (ability: Ability & { disabled: boolean }) => {
           Increases by: {ability.levels[skill.level - 1].effect}% (addictive)
         </div>
       )}
-      {skill && skill.level < 5 && (
-        <div className="">
-          Next level requires{" "}
-          {ability.levels[skill ? skill.level : 0].requirement} rating
-        </div>
-      )}
     </Button>
   );
 };
 
 export const CardMastery = () => {
   const gameState = useGameState();
+  const availablePoints =
+    calculateCardMasteryPoints() - gameState.cardmastery.usedPoints;
 
   const path1 = cardMasteryTree
     .find((tree) => tree.level === 1)
     ?.skills.map((skill) => {
-      return <AbilityButton key={skill.id} disabled={false} {...skill} />;
+      return (
+        <AbilityButton
+          key={skill.id}
+          disabled={availablePoints === 0}
+          {...skill}
+        />
+      );
     });
 
   const path2 = cardMasteryTree
@@ -77,7 +80,8 @@ export const CardMastery = () => {
           disabled={
             !gameState.cardmastery.skills.path1.id ||
             (skill.id !== gameState.cardmastery.skills.path2.id &&
-              gameState.cardmastery.skills.path2.id !== undefined)
+              gameState.cardmastery.skills.path2.id !== undefined) ||
+            availablePoints === 0
           }
           {...skill}
         />
@@ -87,6 +91,8 @@ export const CardMastery = () => {
     return (
       <>
         <Title>Path of {gameState.cardmastery.path}</Title>
+        Remaining points: {availablePoints}
+        <HelpText>You get 1 points for every 100 rating</HelpText>
         <div className="mb-1">{path1}</div>
         <div className="flex flex-row gap-1">{path2}</div>
         <div className="mt-8">

@@ -1,5 +1,6 @@
 import { GameState } from "../interfaces/logic";
 import { AbilityNames, PathNames, cardMasteryTree } from "../rules/cardmastery";
+import { calculateCardMasteryPoints } from "./helpers";
 import { Message } from "./messagehandler";
 
 export type CardMasteryMessages = "buycardmastery" | "resetcardmastery";
@@ -27,14 +28,13 @@ export const handleCardMasteryMessage = (
         const pathLevel = path?.level === 1 ? "path1" : "path2";
         const skillState = state.cardmastery.skills[pathLevel];
 
-        if (
-          skill &&
-          pathLevel &&
-          skill?.levels[skillState.level].requirement <=
-            state.entities.rating.amount
-        ) {
+        const availablePoints =
+          calculateCardMasteryPoints() - state.cardmastery.usedPoints;
+
+        if (skill && pathLevel && availablePoints > 0) {
           skillState.id = data.skill;
           skillState.level++;
+          state.cardmastery.usedPoints++;
         }
       }
     }
@@ -46,6 +46,7 @@ export const handleCardMasteryMessage = (
     state.cardmastery.skills.path1.level = 0;
     state.cardmastery.skills.path2.id = undefined;
     state.cardmastery.skills.path2.level = 0;
+    state.cardmastery.usedPoints = 0;
   }
   return state;
 };

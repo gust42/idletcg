@@ -154,3 +154,11 @@ export function getTournamentPrizeMoney(
 export function calculatePackUpgradeCost(level: number) {
   return roundToNearestX(5 ** ((level + 1) / 2), 10);
 }
+
+export function calculateCardMasteryPoints() {
+  const gameState = GameLoop.getInstance().stateHandler.getState();
+
+  const points = Math.floor(gameState.entities.rating.amount / 100 - 10) + 1;
+
+  return points;
+}

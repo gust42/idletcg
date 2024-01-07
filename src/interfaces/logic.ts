@@ -53,6 +53,7 @@ export interface TeamMember {
 export interface GameState {
   cardmastery: {
     path: PathNames | undefined;
+    usedPoints: number;
     skills: {
       path1: {
         id: AbilityNames | undefined;
