@@ -122,7 +122,6 @@ export const state: GameState = {
       slot1: undefined,
       slot2: undefined,
       slot3: undefined,
-      slot4: undefined,
     },
   },
   routes: {
