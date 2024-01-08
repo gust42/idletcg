@@ -18,7 +18,7 @@ export const PackPoints = () => {
   const xAllCost = useGameRule("XAllCost");
   return (
     <div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 max-w-fit">
         <PackUpgrade
           skill="amount"
           text={`Cards in pack (${

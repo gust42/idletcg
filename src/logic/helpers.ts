@@ -29,11 +29,11 @@ export function calculateUniqueCardCost(id: number) {
 
   const row = Math.floor(id / 3);
 
-  const increase = cost.increase ** (1 + row / 10);
+  const increase = cost.increase ** (1 + row / 5);
 
-  const costBadCards = Math.floor((cost.badcards * (id + 1)) ** increase);
-  const costGoodCards = Math.floor((cost.goodcards * (id + 1)) ** increase);
-  const costMetaCards = Math.floor((cost.metacards * (id + 1)) ** increase);
+  const costBadCards = Math.floor(cost.badcards ** increase);
+  const costGoodCards = Math.floor(cost.goodcards ** increase);
+  const costMetaCards = Math.floor(cost.metacards ** increase);
 
   return [costBadCards, costGoodCards, costMetaCards] as const;
 }

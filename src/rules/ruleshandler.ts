@@ -35,7 +35,7 @@ export default class RulesHandler {
 
     if (
       !state.routes.packpoints.acquired &&
-      state.entities.packbonuspoints.amount > 5
+      state.entities.packbonuspoints.amount >= 10
     ) {
       state.routes.packpoints.acquired = true;
       state.routes.packstab.notify = true;
@@ -70,7 +70,7 @@ export default class RulesHandler {
 
     if (
       !state.routes.deckbuilder.acquired &&
-      state.counters.uniquecards.amount >= 3
+      state.counters.uniquecards.amount >= 2
     ) {
       state.routes.deckbuildertab.acquired = true;
       state.routes.deckbuilder.acquired = true;
