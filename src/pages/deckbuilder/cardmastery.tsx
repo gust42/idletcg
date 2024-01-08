@@ -10,13 +10,18 @@ const Button = ({
   children,
   onClick,
   disabled,
-}: PropsWithChildren<{ onClick: () => void; disabled?: boolean }>) => {
+  aquired,
+}: PropsWithChildren<{
+  onClick: () => void;
+  disabled?: boolean;
+  aquired?: boolean;
+}>) => {
   return (
     <div
       onClick={() => !disabled && onClick()}
-      className={`${
-        disabled && "opacity-60"
-      } flex p-2 grow flex-col border-slate-300 select-none cursor-pointer border bg-gradient-to-b from-slate-300 to-slate-200`}
+      className={`${disabled && !aquired && "opacity-40"} ${
+        aquired && disabled && "opacity-80"
+      } flex p-2 grow flex-col border-slate-300 md:w-[250px] select-none cursor-pointer border bg-gradient-to-b from-slate-300 to-slate-200`}
     >
       {children}
     </div>
@@ -32,6 +37,7 @@ export const AbilityButton = (ability: Ability & { disabled: boolean }) => {
   return (
     <Button
       disabled={ability.disabled}
+      aquired={(skill?.level && skill.level > 0) || false}
       onClick={() => {
         if (skill?.level === 5) return;
         MessageHandler.recieveMessage<CardMasteryMessage>("buycardmastery", {
@@ -89,7 +95,7 @@ export const CardMastery = () => {
     });
   if (gameState.cardmastery.path) {
     return (
-      <>
+      <div className="md:max-w-fit">
         <Title>Path of {gameState.cardmastery.path}</Title>
         Remaining points: {availablePoints}
         <HelpText>You get 1 points for every 100 rating</HelpText>
@@ -104,7 +110,7 @@ export const CardMastery = () => {
             Choose another path
           </Button>
         </div>
-      </>
+      </div>
     );
   }
 

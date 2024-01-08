@@ -83,14 +83,16 @@ export default function ResourceView() {
           );
         })}
       </div>
-      <div
-        className="mt-4 underline cursor-pointer"
-        onClick={() => {
-          navigate("settings");
-        }}
-      >
-        Settings
-      </div>
+      {gameState.routes.skillstab.acquired && (
+        <div
+          className="mt-4 underline cursor-pointer"
+          onClick={() => {
+            navigate("settings");
+          }}
+        >
+          Settings
+        </div>
+      )}
     </div>
   );
 }

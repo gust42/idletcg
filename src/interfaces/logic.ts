@@ -31,7 +31,6 @@ export interface Deck {
   slot1: number | undefined;
   slot2: number | undefined;
   slot3: number | undefined;
-  slot4: number | undefined;
 }
 
 export interface TrophyCase {

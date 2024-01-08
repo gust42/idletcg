@@ -51,7 +51,7 @@ export default function Tab({ item, tab }: ITabProps) {
 
   return (
     <div
-      className={`p-2 rounded cursor-pointer grow relative ${activeStyle}`}
+      className={`p-2 md:min-w-[80px] rounded cursor-pointer grow md:grow-0 text-center relative flex items-center justify-center ${activeStyle}`}
       onClick={onClick}
     >
       {tab.friendlyName}

@@ -34,7 +34,7 @@ const TabComponent = ({ name, active, route, notify }: ITabProps) => {
   return (
     <div
       onClick={onClick}
-      className={`p-2 min-w-[100px] text-center relative  ${bg}`}
+      className={`p-2 min-w-[100px] text-center relative cursor-pointer ${bg}`}
     >
       {name}
       {notify && <Notifier />}
@@ -62,7 +62,7 @@ export const InlineTabs = ({
   return (
     visibleTabs.length > 1 && (
       <>
-        <div className="flex flex-row -mt-2 p-1 -ml-2 -mr-2 mb-2 bg-slate-400 shadow text-white  ">
+        <div className="flex flex-row -mt-2 p-1 md:p-2 -ml-2 -mr-2 md:-ml-4 md:-mr-4 md:-mt-4 mb-2 bg-slate-400 shadow text-white  ">
           {visibleTabs.map((key, i) => {
             const tab = parentRoute.routes?.[key as AllSubroutes];
             const active =

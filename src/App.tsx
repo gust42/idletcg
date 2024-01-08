@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div className="flex flex-col h-full text-xs md:text-base items-stretch">
-      <nav className="flex flex-row gap-3 flex-shrink-0 overflow-x-auto p-1">
+      <nav className="flex flex-row gap-3 flex-shrink-0 overflow-x-auto p-1 md:p-4 md:h-16 fixed z-10 w-screen h-10">
         {visibleTabs.length > 1 &&
           visibleTabs.map((tab) => {
             return (
@@ -45,11 +45,11 @@ function App() {
             );
           })}
       </nav>
-      <div className="flex flex-row items-stretch flex-grow">
-        <aside className="p-2 bg-slate-300 border-r-2 min-w-[120px] md:min-w-[180px]">
+      <div className="flex flex-row items-stretch flex-grow pt-10 md:pt-16">
+        <aside className="p-2 bg-slate-300 border-r-2 w-[120px] md:min-w-[180px] fixed z-10 min-h-screen">
           <ResourceView />
         </aside>
-        <article className="bg-gradient-to-b from-slate-200 to-slate-300 p-2 md:p-4 flex-grow overflow-auto">
+        <article className="bg-gradient-to-b from-slate-200 to-slate-300 pl-[126px] md:pl-[196px] p-2 md:p-4 flex-grow overflow-auto">
           <Navigation />
         </article>
       </div>

@@ -170,8 +170,6 @@ export class PackManager {
 
       if (!state.entities.packbonuspoints.acquired) {
         state.entities.packbonuspoints.acquired = true;
-        state.routes.packstab.notify = true;
-        state.routes.packpoints.notify = true;
       }
 
       state.entities.packbonuspoints.amount += 1 * amount;
