@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "../../components/button";
-import BulkButton from "./bulkbutton";
 import useGameState from "../../hooks/usegamestate";
+import BulkButton from "./bulkbutton";
 
 interface IButtonProps {
   resource: {
@@ -79,7 +79,7 @@ export default function BuyButton({ disabled, ...props }: IButtonProps) {
   }
 
   return (
-    <div className="min-h-[120px] w-full md:w-[320px] flex flex-col">
+    <div className=" w-full md:w-[320px] flex flex-col">
       <div className="flex flex-row">
         <Button
           width={gameState.pack.xAll.amount === 1 ? "95%" : "100%"}

@@ -46,7 +46,7 @@ export const Button = ({
       )}
       <button
         style={{ backgroundColor: isDisabled || color }}
-        className={`uppercase p-1 text-white  flex-grow rounded-none ${reset} border-slate-800  bg-slate-700 text-center ${cursor} flex flex-row`}
+        className={`uppercase p-1 text-white flex-grow rounded-none ${reset} border-slate-800  bg-slate-700 text-center ${cursor} flex flex-row`}
       >
         <div className="flex-grow ">{children}</div>
       </button>

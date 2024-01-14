@@ -9,3 +9,19 @@ export const Container = ({ children }: PropsWithChildren) => {
     </div>
   );
 };
+
+export const DataContainer = ({
+  children,
+  title,
+}: PropsWithChildren<{ title: string }>) => {
+  return (
+    <div className="flex flex-row justify-between gap-2">
+      <div className="font-bold shrink-0">{title}</div>
+      <div className="">{children}</div>
+    </div>
+  );
+};
+
+export const ActionContainer = ({ children }: PropsWithChildren) => {
+  return <div className="-ml-2 -mb-2 -mr-2">{children}</div>;
+};

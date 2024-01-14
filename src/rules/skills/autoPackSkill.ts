@@ -1,4 +1,6 @@
+import GameLoop from "../../logic/gameloop";
 import { roundToNearestThousand } from "../../logic/helpers";
+import { AllSkills } from "../ruleshandler";
 import { Skill, SkillRule } from "./skill";
 
 export class AutoPackSkill implements Skill {
@@ -24,7 +26,16 @@ export class AutoPackSkill implements Skill {
   }
 
   friendyEffect(level: number) {
-    return `Opens ${this.effect(level)} packs / tick`;
+    const state = GameLoop.getInstance().stateHandler.getState();
+    const shopKeeper = AllSkills.shopkeeperFriendSkill.effect(
+      state.skills.shopkeeperFriendSkill.level
+    );
+    const packCost =
+      GameLoop.getInstance().rulesHandler.getRuleValue("PackCost");
+    const cost = this.effect(level) * packCost * shopKeeper;
+    return `Opens ${this.effect(level)} packs for ${Math.floor(
+      cost
+    )} money / tick`;
   }
 
   visible() {

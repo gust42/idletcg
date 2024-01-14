@@ -1,4 +1,5 @@
 import { Button } from "../../components/button";
+import { ActionContainer } from "../../components/container";
 import useGameState from "../../hooks/usegamestate";
 import { AllTournaments } from "../../rules/ruleshandler";
 import { Tournaments } from "../../rules/tournaments/tournament";
@@ -19,12 +20,14 @@ export const TournamentJoinButton = ({
     gameState.entities.rating.amount < tournament.ratingRequirement;
 
   return (
-    <Button
-      disabled={disabled}
-      action="SIGNUP"
-      onClick={() => onClick(id, false)}
-    >
-      Enter ({tournament.entryFee})
-    </Button>
+    <ActionContainer>
+      <Button
+        disabled={disabled}
+        action="SIGNUP"
+        onClick={() => onClick(id, false)}
+      >
+        Enter ({tournament.entryFee})
+      </Button>
+    </ActionContainer>
   );
 };

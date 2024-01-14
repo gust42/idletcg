@@ -1,4 +1,4 @@
-import { Container } from "../../components/container";
+import { Container, DataContainer } from "../../components/container";
 import { Title } from "../../components/typography";
 import { format } from "../../helpers/number";
 import useGameRule from "../../hooks/usegamerule";
@@ -38,27 +38,44 @@ export default function PacksTab() {
       {gameState.entities.badcards.acquired && (
         <Container>
           <Title>Cards</Title>
-          <BuyButton
-            text={`Bad card (${format(gameState.entities.badcards.amount)})`}
-            type="sell"
-            click={sellBadCards}
-            resource={gameState.entities.badcards}
-            cost={badSellValueRule.value}
-          ></BuyButton>
-          <BuyButton
-            text={`Good card (${format(gameState.entities.goodcards.amount)})`}
-            type="sell"
-            click={sellGoodCards}
-            resource={gameState.entities.goodcards}
-            cost={goodSellValueRule.value}
-          ></BuyButton>
-          <BuyButton
-            text={`Meta card (${format(gameState.entities.metacards.amount)})`}
-            type="sell"
-            click={sellMetaCards}
-            resource={gameState.entities.metacards}
-            cost={metaSellValueRule.value}
-          ></BuyButton>
+          <div className="mb-4">
+            <DataContainer title="Bad cards">
+              {format(gameState.entities.badcards.amount)}
+            </DataContainer>
+            <DataContainer title="Good cards">
+              {format(gameState.entities.goodcards.amount)}
+            </DataContainer>
+            <DataContainer title="Meta cards">
+              {format(gameState.entities.metacards.amount)}
+            </DataContainer>
+          </div>
+          <div className="mb-4">
+            <BuyButton
+              text={`Bad card`}
+              type="sell"
+              click={sellBadCards}
+              resource={gameState.entities.badcards}
+              cost={badSellValueRule.value}
+            ></BuyButton>
+          </div>
+          <div className="mb-4">
+            <BuyButton
+              text={`Good card`}
+              type="sell"
+              click={sellGoodCards}
+              resource={gameState.entities.goodcards}
+              cost={goodSellValueRule.value}
+            ></BuyButton>
+          </div>
+          <div className="mb-4">
+            <BuyButton
+              text={`Meta card`}
+              type="sell"
+              click={sellMetaCards}
+              resource={gameState.entities.metacards}
+              cost={metaSellValueRule.value}
+            ></BuyButton>
+          </div>
         </Container>
       )}
     </article>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "../../components/button";
-import { Container } from "../../components/container";
+import { ActionContainer, Container } from "../../components/container";
 import { Modal } from "../../components/modal";
 import useGameRule from "../../hooks/usegamerule";
 import { TeamMember } from "../../interfaces/logic";
@@ -66,19 +66,21 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
 
       {member.lastTournament && <LastTournament log={member.lastTournament} />}
 
-      <Button
-        action="PLAYING"
-        disabled={!fullDeck}
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        {currentTournament ? (
-          currentTournament.name
-        ) : (
-          <span className="text-xxl">+</span>
-        )}
-      </Button>
+      <ActionContainer>
+        <Button
+          action="PLAYING"
+          disabled={!fullDeck}
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          {currentTournament ? (
+            currentTournament.name
+          ) : (
+            <span className="text-xxl">+</span>
+          )}
+        </Button>
+      </ActionContainer>
 
       <Modal
         onClose={() => {

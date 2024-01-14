@@ -1,10 +1,10 @@
-import { Container } from "../../components/container";
+import { ActionContainer, Container } from "../../components/container";
 import { HelpText, Title } from "../../components/typography";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 import MessageHandler from "../../logic/messagehandler";
-import BuyButton from "./button";
 import { format } from "./../../helpers/number";
+import BuyButton from "./button";
 
 export const Pack = () => {
   const gameState = useGameState();
@@ -28,18 +28,23 @@ export const Pack = () => {
         <Title>
           Packs - {format(gameState.entities.packsupply.amount)} available
         </Title>
-        <HelpText>
-          Buy packs to earn cards to sell for money to buy more packs, maybe you
-          will unlock something more. Packs is resupplied every tick
-        </HelpText>
-        <BuyButton
-          text={`Open pack`}
-          type="buy"
-          click={openPack}
-          resource={gameState.entities.money}
-          cost={packCostRule.value}
-          disabled={gameState.entities.money.amount < packCostRule.value}
-        />
+
+        <div className="mb-4">
+          <HelpText>
+            Buy packs to earn cards to sell for money to buy more packs, maybe
+            you will unlock something more. Packs is resupplied every tick
+          </HelpText>
+        </div>
+        <ActionContainer>
+          <BuyButton
+            text={`Open pack`}
+            type="buy"
+            click={openPack}
+            resource={gameState.entities.money}
+            cost={packCostRule.value}
+            disabled={gameState.entities.money.amount < packCostRule.value}
+          />
+        </ActionContainer>
         {/* {gameState.pack.express.amount === 1 && (
           <BuyButton
             text="Express pack"
