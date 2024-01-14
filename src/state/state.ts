@@ -204,8 +204,8 @@ export const state: GameState = {
   },
   team: [],
   trophycase: {
-    slot1: undefined,
-    slot2: undefined,
-    slot3: undefined,
+    casualwednesday: false,
+    funfriday: false,
+    competativesaturday: false,
   },
 };

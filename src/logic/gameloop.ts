@@ -3,11 +3,11 @@ import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
 import { handleCardMasteryMessage } from "./cardmastery";
 import MessageHandler, {
-  TrophyMessage,
   DeckMessage,
+  NotifierMessage,
   SkillMessage,
   TournamentMessage,
-  NotifierMessage,
+  TrophyMessage,
 } from "./messagehandler";
 import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
@@ -171,8 +171,8 @@ export default class GameLoop {
       if (m.message === "addtrophy") {
         const data = m.data as TrophyMessage;
         const state = this.stateHandler.getState();
-        const index = `slot${data.slot}` as keyof typeof state.trophycase;
-        state.trophycase[index] = data.trophy;
+        state.trophycase[data.trophy] = true;
+
         this.stateHandler.updateState(state);
       }
 

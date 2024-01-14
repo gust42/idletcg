@@ -1,8 +1,8 @@
 import { Skills } from "../rules/skills/skill";
 import { Tournaments } from "../rules/tournaments/tournament";
-import { PackMessages } from "./packmanager";
-import { AllRouteNames } from "./navigation";
 import { CardMasteryMessages } from "./cardmastery";
+import { AllRouteNames } from "./navigation";
+import { PackMessages } from "./packmanager";
 import { UniqueCardMessageData, UniqueCardMessages } from "./uniquecardhandler";
 
 type MessageList =
@@ -41,7 +41,6 @@ export type SkillMessage = {
 };
 export type TrophyMessage = {
   trophy: keyof Tournaments;
-  slot: number;
 };
 export type DeckMessage = {
   id: number;
