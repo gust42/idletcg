@@ -1,5 +1,6 @@
 import { Container } from "../../components/container";
 import { Title } from "../../components/typography";
+import { format } from "../../helpers/number";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 import MessageHandler from "../../logic/messagehandler";
@@ -38,21 +39,21 @@ export default function PacksTab() {
         <Container>
           <Title>Cards</Title>
           <BuyButton
-            text={`Bad card (${gameState.entities.badcards.amount})`}
+            text={`Bad card (${format(gameState.entities.badcards.amount)})`}
             type="sell"
             click={sellBadCards}
             resource={gameState.entities.badcards}
             cost={badSellValueRule.value}
           ></BuyButton>
           <BuyButton
-            text={`Good card (${gameState.entities.goodcards.amount})`}
+            text={`Good card (${format(gameState.entities.goodcards.amount)})`}
             type="sell"
             click={sellGoodCards}
             resource={gameState.entities.goodcards}
             cost={goodSellValueRule.value}
           ></BuyButton>
           <BuyButton
-            text={`Meta card (${gameState.entities.metacards.amount})`}
+            text={`Meta card (${format(gameState.entities.metacards.amount)})`}
             type="sell"
             click={sellMetaCards}
             resource={gameState.entities.metacards}

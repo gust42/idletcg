@@ -1,3 +1,4 @@
+import { format } from "./../helpers/number";
 interface IResourceItemProps {
   resource: {
     acquired: boolean;
@@ -41,7 +42,7 @@ export default function ResourceItem({
         {name} {change}
       </div>
       <span className="font-semibold">
-        {fixDecimal ? resource.amount.toFixed(2) : resource.amount}
+        {fixDecimal ? format(resource.amount, 2) : format(resource.amount, 0)}
       </span>
     </div>
   );

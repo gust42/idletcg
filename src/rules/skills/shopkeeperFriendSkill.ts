@@ -27,7 +27,7 @@ export class ShopkeeperFriendSkill implements Skill {
   }
 
   friendyEffect(level: number) {
-    return `${this.effect(level) * 100}% cost of packs`;
+    return `${Math.floor(this.effect(level) * 100)}% cost of packs`;
   }
 
   visible() {

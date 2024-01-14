@@ -3,6 +3,7 @@ import { CostForUniqueCards } from "../interfaces/rules";
 import { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
 import GameLoop from "./gameloop";
+import { getIdsForRow } from "./uniquecardhandler";
 
 export function roundToNearestX(num: number, x: number): number {
   if (num < x) return Math.floor(num);
@@ -21,19 +22,28 @@ export const allCards = Array.from({ length: 256 }, (_v, k) => ({
   code: (k + 9728).toString(16),
 }));
 
-export function calculateUniqueCardCost(id: number) {
+export function calculateUniqueCardCost(id: number, state: GameState) {
   const cost =
     GameLoop.getInstance().rulesHandler.getRule<CostForUniqueCards>(
       "CostForUniqueCards"
     );
+  const metaDrop =
+    GameLoop.getInstance().rulesHandler.getRuleValue("MetaCardDroprate");
+  const goodDrop =
+    GameLoop.getInstance().rulesHandler.getRuleValue("GoodCardDroprate");
 
   const row = Math.floor(id / 3);
 
-  const increase = cost.increase ** (1 + row / 5);
+  const cardIdsInRow = getIdsForRow(row);
+  const unlockedInRow = cardIdsInRow.filter((id) =>
+    state.binder.cards.includes(id)
+  ).length;
+
+  const increase = cost.increase ** ((1 + row / 6) * (1 + unlockedInRow / 15));
 
   const costBadCards = Math.floor(cost.badcards ** increase);
-  const costGoodCards = Math.floor(cost.goodcards ** increase);
-  const costMetaCards = Math.floor(cost.metacards ** increase);
+  const costGoodCards = Math.floor(costBadCards * goodDrop);
+  const costMetaCards = Math.floor(costBadCards * metaDrop);
 
   return [costBadCards, costGoodCards, costMetaCards] as const;
 }
@@ -127,11 +137,11 @@ export function formatSeconds(d: number) {
 export const getCardSize = (size: "small" | "medium" | "large") => {
   switch (size) {
     case "small":
-      return ["w-[60px] h-[90px] md:w-[100px] md:h-[150px]", "text-[2em]"];
+      return ["w-[60px]  md:w-[100px] ", "text-[2em]"];
     case "medium":
-      return ["w-[84px] h-[124px] md:w-[140px] md:h-[210px]", "text-[4em]"];
+      return ["min-w-[60px] w-full md:w-[140px] ", "text-[3.5em]"];
     case "large":
-      return ["w-[120px] h-[180px] md:w-[200px] md:h-[300px]", "text-[6em]"];
+      return ["w-[120px] md:w-[200px] ", "text-[6em]"];
   }
 };
 

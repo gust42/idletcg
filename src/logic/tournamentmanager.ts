@@ -109,8 +109,17 @@ export class TournamentManager {
 
   private handleTeamMemberTick() {
     const state = this.stateHandler.getState();
+    const deckSize = this.rulesHandler.getRuleValue("DeckSize");
 
     state.team.forEach((t) => {
+      const fullDeck =
+        Object.values(t.deck).every((card) => card !== undefined) &&
+        Object.keys(t.deck).length === deckSize;
+      if (!fullDeck) {
+        t.currentTournament = undefined;
+        t.tournamentTicks = 0;
+        return;
+      }
       if (t.currentTournament) {
         const ticks = t.tournamentTicks as number;
         const totalTicks = calculateTotalTournamentTime(

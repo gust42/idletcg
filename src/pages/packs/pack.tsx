@@ -4,6 +4,7 @@ import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 import MessageHandler from "../../logic/messagehandler";
 import BuyButton from "./button";
+import { format } from "./../../helpers/number";
 
 export const Pack = () => {
   const gameState = useGameState();
@@ -24,7 +25,9 @@ export const Pack = () => {
   return (
     <Container>
       <div className="md:w-[320px]">
-        <Title>Packs - {gameState.entities.packsupply.amount} available</Title>
+        <Title>
+          Packs - {format(gameState.entities.packsupply.amount)} available
+        </Title>
         <HelpText>
           Buy packs to earn cards to sell for money to buy more packs, maybe you
           will unlock something more. Packs is resupplied every tick

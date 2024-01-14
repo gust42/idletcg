@@ -26,7 +26,7 @@ export const Card = ({
 
   return (
     <div
-      className={`${pxs} bg-[#faefdc]  rounded-3xl text-center  p-1 select-none`}
+      className={`${pxs} aspect-[2/3] bg-[#faefdc] grow  rounded-3xl text-center  p-1 select-none`}
     >
       <div className=" bg-[#F2E8D7] h-full rounded-3xl  flex flex-col ">
         {!card ? (
@@ -40,13 +40,16 @@ export const Card = ({
             </div>
 
             <div className=" border-t-2 md:border-t-4 border-[#faefdc] p-1  ">
-              <div className={`${meta}`}>{metaTypes[id % 3]}</div>
               <span className={winRateColor}>
-                {Math.floor(
-                  generateWinRatio(id, myCard ? state : undefined) * winRateMod
-                )}
-                %{size !== "small" && <> power</>}
+                <span className="text-md">
+                  {Math.floor(
+                    generateWinRatio(id, myCard ? state : undefined) *
+                      winRateMod
+                  )}
+                </span>
+                <span className="text-xs">%{size !== "small" && <> WR</>}</span>
               </span>
+              <div className={`${meta}`}>{metaTypes[id % 3]}</div>
             </div>
           </>
         )}

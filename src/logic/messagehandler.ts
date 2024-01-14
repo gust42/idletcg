@@ -3,10 +3,12 @@ import { Tournaments } from "../rules/tournaments/tournament";
 import { PackMessages } from "./packmanager";
 import { AllRouteNames } from "./navigation";
 import { CardMasteryMessages } from "./cardmastery";
+import { UniqueCardMessageData, UniqueCardMessages } from "./uniquecardhandler";
 
 type MessageList =
   | CardMasteryMessages
   | PackMessages
+  | UniqueCardMessages
   | "unlockskill"
   | "levelupskill"
   | "toggleskill"
@@ -14,7 +16,6 @@ type MessageList =
   | "entertournament"
   | "assigntournament"
   | "clearmessages"
-  | "tradecard"
   | "clearnotifier"
   | "addtrophy";
 
@@ -28,6 +29,7 @@ export type MessageData =
   | SkillMessage
   | DeckMessage
   | AssignTournamentMessage
+  | UniqueCardMessageData
   | TournamentMessage;
 
 export type GenericMessage = {

@@ -29,6 +29,12 @@ export default function ResourceView() {
         />
 
         <ResourceItem
+          name="Pack supply"
+          resource={gameState.entities.packsupply}
+          oldValue={oldState.entities.packsupply.amount}
+        />
+
+        <ResourceItem
           name="Pack points"
           resource={gameState.entities.packbonuspoints}
           fixDecimal={true}

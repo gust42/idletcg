@@ -36,7 +36,9 @@ export const TrophySlot = ({
           else setTrophyPickerOpen(true);
         }}
       >
-        <div className={`${border} ${pxs} text-center  cursor-pointer`}>
+        <div
+          className={`${border} ${pxs} aspect-[2/3] text-center  cursor-pointer`}
+        >
           {trophy !== undefined ? (
             <Trophy trophy={trophy} size={size} />
           ) : (
