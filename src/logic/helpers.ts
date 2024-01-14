@@ -27,10 +27,6 @@ export function calculateUniqueCardCost(id: number, state: GameState) {
     GameLoop.getInstance().rulesHandler.getRule<CostForUniqueCards>(
       "CostForUniqueCards"
     );
-  const metaDrop =
-    GameLoop.getInstance().rulesHandler.getRuleValue("MetaCardDroprate");
-  const goodDrop =
-    GameLoop.getInstance().rulesHandler.getRuleValue("GoodCardDroprate");
 
   const row = Math.floor(id / 3);
 
@@ -42,8 +38,8 @@ export function calculateUniqueCardCost(id: number, state: GameState) {
   const increase = cost.increase ** ((1 + row / 6) * (1 + unlockedInRow / 15));
 
   const costBadCards = Math.floor(cost.badcards ** increase);
-  const costGoodCards = Math.floor(costBadCards * goodDrop);
-  const costMetaCards = Math.floor(costBadCards * metaDrop);
+  const costGoodCards = Math.floor(cost.goodcards ** increase);
+  const costMetaCards = Math.floor(cost.metacards ** increase);
 
   return [costBadCards, costGoodCards, costMetaCards] as const;
 }

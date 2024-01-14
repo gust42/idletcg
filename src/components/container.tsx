@@ -13,9 +13,12 @@ export const Container = ({ children }: PropsWithChildren) => {
 export const DataContainer = ({
   children,
   title,
-}: PropsWithChildren<{ title: string }>) => {
+  col = true,
+}: PropsWithChildren<{ title: string; col?: boolean }>) => {
   return (
-    <div className="flex flex-row justify-between gap-2">
+    <div
+      className={`flex ${col ? "flex-col" : "flex-row"} justify-between gap-2`}
+    >
       <div className="font-bold shrink-0">{title}</div>
       <div className="">{children}</div>
     </div>

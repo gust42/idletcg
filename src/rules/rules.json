@@ -30,15 +30,15 @@
     "value": 1000
   },
   "CardsForTradebinder": {
-    "value": 15000
+    "value": 10000
   },
   "MoneyForSkills": {
     "value": 5
   },
   "CostForUniqueCards": {
     "badcards": 500,
-    "goodcards": 60,
-    "metacards": 5,
+    "goodcards": 80,
+    "metacards": 30,
     "increase": 1.6
   },
   "TournamentRoundTicks": {

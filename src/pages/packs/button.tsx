@@ -15,7 +15,7 @@ interface IButtonProps {
   disabled?: boolean;
 }
 
-export default function BuyButton({ disabled, ...props }: IButtonProps) {
+export default function BuyButton({ disabled, type, ...props }: IButtonProps) {
   const gameState = useGameState();
   const isDisabled = props.resource.amount === 0 || disabled ? true : false;
   function clickEvent(_e: React.MouseEvent<HTMLDivElement>, amount: number) {
@@ -30,60 +30,26 @@ export default function BuyButton({ disabled, ...props }: IButtonProps) {
   let x100 = null;
   let x1000 = null;
   let xAll = null;
-  // let x10000 = null;
 
-  if (props.type === "sell") {
-    if (props.resource.amount >= 10)
-      x10 = <BulkButton amount={10} click={(e) => clickEvent(e, 10)} />;
+  const amount =
+    type === "sell"
+      ? props.resource.amount
+      : props.resource.amount / props.cost;
 
-    if (props.resource.amount >= 100)
-      x100 = <BulkButton amount={100} click={(e) => clickEvent(e, 100)} />;
-
-    if (props.resource.amount >= 1000)
-      x1000 = <BulkButton amount={1000} click={(e) => clickEvent(e, 1000)} />;
-
-    xAll = (
-      <BulkButton action="" amount={-1} click={(e) => clickEvent(e, -1)} />
-    );
-    // if (props.resource.amount >= 10000)
-    //   x10000 = (
-    //     <BulkButton amount={10000} click={(e) => clickEvent(e, 10000)} />
-    //   );
-  } else if (props.type === "buy") {
-    if (props.resource.amount / props.cost >= 10)
-      x10 = (
-        <BulkButton action="buy" amount={10} click={(e) => clickEvent(e, 10)} />
-      );
-
-    if (props.resource.amount / props.cost >= 100)
-      x100 = (
-        <BulkButton
-          action="buy"
-          amount={100}
-          click={(e) => clickEvent(e, 100)}
-        />
-      );
-
-    if (props.resource.amount / props.cost >= 1000)
-      x1000 = (
-        <BulkButton
-          action="buy"
-          amount={1000}
-          click={(e) => clickEvent(e, 1000)}
-        />
-      );
-
-    xAll = (
-      <BulkButton action="" amount={-1} click={(e) => clickEvent(e, -1)} />
-    );
-  }
+  if (amount >= 10)
+    x10 = <BulkButton amount={10} click={(e) => clickEvent(e, 10)} />;
+  if (amount >= 100)
+    x100 = <BulkButton amount={100} click={(e) => clickEvent(e, 100)} />;
+  if (amount >= 1000)
+    x1000 = <BulkButton amount={1000} click={(e) => clickEvent(e, 1000)} />;
+  xAll = <BulkButton amount={-1} click={(e) => clickEvent(e, -1)} />;
 
   return (
     <div className=" w-full md:w-[320px] flex flex-col">
       <div className="flex flex-row">
         <Button
           width={gameState.pack.xAll.amount === 1 ? "95%" : "100%"}
-          action={props.type}
+          action={type}
           disabled={isDisabled}
           onClick={(e) => clickEvent(e, 1)}
         >
