@@ -1,5 +1,6 @@
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
+import { format } from "../../helpers/number";
 import useGameState from "../../hooks/usegamestate";
 import { SkillState } from "../../interfaces/logic";
 import MessageHandler from "../../logic/messagehandler";
@@ -73,7 +74,7 @@ export const SkillInfo = ({
                   <span>
                     Cost{" "}
                     <span className="font-semibold">
-                      {skill.cost(state.level)} money
+                      {format(skill.cost(state.level))} money
                     </span>
                   </span>
                 </div>

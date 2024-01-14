@@ -3,7 +3,7 @@ import RulesHandler, { AllSkills } from "./../rules/ruleshandler";
 import StateHandler from "./../state/statehandler";
 import { calculatePackUpgradeCost } from "./helpers";
 import MessageHandler from "./messagehandler";
-import Pack from "./pack";
+import { openPack } from "./pack";
 
 export type PackType = "normal" | "express";
 
@@ -51,6 +51,7 @@ export class PackManager {
 
     const amount = this.rulesHandler.getRuleValue("PackSupplyTick");
     state.entities.packsupply.amount += amount + state.pack.supply.amount * 2;
+    state.entities.packsupply.amount += state.binder.packsupplysetbonus;
   }
 
   public handleMessages(
@@ -145,7 +146,7 @@ export class PackManager {
       const cardsInPack = this.rulesHandler.getRuleValue("CardsInPack");
 
       for (let i = 0; i < amount; i++) {
-        const pack = new Pack(
+        const pack = openPack(
           metaCardDropRate,
           goodCardDropRate,
           goodCardPackMax,

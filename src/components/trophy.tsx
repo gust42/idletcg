@@ -11,7 +11,7 @@ export const Trophy = ({ trophy: id, size = "medium" }: ITrophyProps) => {
   const [pxs] = getCardSize(size);
   return (
     <div
-      className={`${pxs} bg-stone-300  rounded text-center  p-1 select-none`}
+      className={`${pxs} aspect-[2/3] bg-stone-300  rounded text-center  p-1 select-none`}
     >
       <div className=" bg-stone-200 h-full rounded  flex flex-col ">
         {!trophy ? (

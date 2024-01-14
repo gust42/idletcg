@@ -25,23 +25,24 @@ export const Slot = ({ slot, card, onSelect, size = "medium" }: ISlotProps) => {
 
   return (
     <div
+      className="grow md:grow-0"
       onClick={() => {
         if (card !== undefined) onSelect(undefined, slot);
         else setCardPickerOpen(!cardPickerOpen);
       }}
     >
-      <div
-        className={`${border} ${pxs} text-center rounded-3xl cursor-pointer`}
-      >
-        {card !== undefined ? (
-          <Card size={size} id={card} />
-        ) : (
+      {card !== undefined ? (
+        <Card size={size} id={card} />
+      ) : (
+        <div
+          className={`${border} ${pxs} aspect-[2/3] text-center rounded-3xl cursor-pointer grow`}
+        >
           <div className="flex flex-col justify-center h-full gap-4 -mt-4">
             {size !== "small" && <>Empty slot</>}
             <div className={pic}>+</div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
       {cardPickerOpen && <CardPicker onSelect={onPicked} />}
     </div>
   );

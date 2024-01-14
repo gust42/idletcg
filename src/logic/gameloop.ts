@@ -2,11 +2,9 @@ import { GameState } from "../interfaces/logic";
 import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
 import { handleCardMasteryMessage } from "./cardmastery";
-import { calculateUniqueCardCost } from "./helpers";
 import MessageHandler, {
   TrophyMessage,
   DeckMessage,
-  GenericMessage,
   SkillMessage,
   TournamentMessage,
   NotifierMessage,
@@ -15,6 +13,7 @@ import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
 import { TimerHandler } from "./timerhandler";
 import { TournamentManager, TournamentMessages } from "./tournamentmanager";
+import { handleUniqueCardMessage } from "./uniquecardhandler";
 
 export const offlineHandler = new OfflineHandler();
 export default class GameLoop {
@@ -154,37 +153,6 @@ export default class GameLoop {
         this.stateHandler.updateState(state);
       }
 
-      if (m.message === "tradecard") {
-        const data = m.data as GenericMessage;
-        const state = this.stateHandler.getState();
-        let fail = "";
-
-        const [costBadCards, costGoodCards, costMetaCards] =
-          calculateUniqueCardCost(data.id as number);
-
-        if (state.entities.badcards.amount <= costBadCards)
-          fail += "Not enough bad cards \n";
-        if (state.entities.goodcards.amount <= costGoodCards)
-          fail += "Not enough good cards \n";
-        if (state.entities.metacards.amount <= costMetaCards)
-          fail += "Not enough meta cards";
-
-        if (!fail) {
-          state.counters.uniquecards.amount++;
-          state.binder.cards.push(data.id as number);
-          state.entities.badcards.amount = Math.floor(
-            state.entities.badcards.amount - costBadCards
-          );
-          state.entities.goodcards.amount = Math.floor(
-            state.entities.goodcards.amount - costGoodCards
-          );
-          state.entities.metacards.amount = Math.floor(
-            state.entities.metacards.amount - costMetaCards
-          );
-          this.stateHandler.updateState({});
-        }
-      }
-
       if (m.message === "addcardtodeck") {
         const data = m.data as DeckMessage;
         const state = this.stateHandler.getState();
@@ -219,8 +187,16 @@ export default class GameLoop {
         MessageHandler.sendClientMessage("", { clear: true });
       }
 
-      const state = handleCardMasteryMessage(m, this.stateHandler.getState());
-      if (state) this.stateHandler.updateState(state);
+      {
+        const state = handleCardMasteryMessage(m, this.stateHandler.getState());
+
+        if (state) this.stateHandler.updateState(state);
+      }
+      {
+        const state = handleUniqueCardMessage(m, this.stateHandler.getState());
+
+        if (state) this.stateHandler.updateState(state);
+      }
     }
 
     let state = this.stateHandler.getState();

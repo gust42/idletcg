@@ -3,6 +3,7 @@ import useGameState from "../../hooks/usegamestate";
 import { calculateUniqueCardCost } from "../../logic/helpers";
 import { HelpText } from "../../components/typography";
 import { GameState } from "../../interfaces/logic";
+import { format } from "../../helpers/number";
 
 const NotEnough = ({ children }: PropsWithChildren) => {
   return <div className="text-red-600">{children}</div>;
@@ -23,9 +24,9 @@ const CardCostElement = ({
     <div>
       <div className="font-bold">{name} cards</div>
       {state.entities[type].amount < cost ? (
-        <NotEnough>{cost}</NotEnough>
+        <NotEnough>{format(cost)}</NotEnough>
       ) : (
-        cost
+        format(cost)
       )}
     </div>
   );
@@ -35,7 +36,8 @@ export const CardCost = ({ id }: { id: number }) => {
   const state = useGameState();
 
   const [costBadCards, costGoodCards, costMetaCards] = calculateUniqueCardCost(
-    id + 1
+    id + 1,
+    state
   );
 
   const badCardsElement = (

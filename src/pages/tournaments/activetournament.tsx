@@ -15,7 +15,9 @@ function calculateRoundTime(state: GameState) {
     AllSkills.tournamentGrinder.effect(state.skills.tournamentGrinder.level);
   const tickLength = gameLoop.rulesHandler.getRuleValue("TickLength");
   return (
-    ((totalTicks - gameLoop.tournamentManager.tickCounter) * tickLength) / 1000
+    ((totalTicks - gameLoop.tournamentManager.tickCounter) * tickLength) /
+      1000 +
+    1
   );
 }
 

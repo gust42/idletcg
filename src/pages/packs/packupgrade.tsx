@@ -1,4 +1,5 @@
 import { Button } from "../../components/button";
+import { format } from "../../helpers/number";
 import { GameState } from "../../interfaces/logic";
 import MessageHandler from "../../logic/messagehandler";
 import { PackUpgradeData } from "../../logic/packmanager";
@@ -29,7 +30,7 @@ export const PackUpgrade = ({
         action="upgrade"
       >
         {text}
-        <div className="button-cost">{cost} points</div>
+        <div className="button-cost">{format(cost)} points</div>
       </Button>
     )
   );

@@ -4,6 +4,7 @@ import { TournamentEntry } from "../rules/tournaments/tournament";
 export const state: GameState = {
   binder: {
     cards: [],
+    packsupplysetbonus: 0,
   },
   cardmastery: {
     path: undefined,

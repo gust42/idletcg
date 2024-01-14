@@ -52,6 +52,7 @@ export interface TeamMember {
 export interface GameState {
   binder: {
     cards: number[];
+    packsupplysetbonus: number;
   };
   cardmastery: {
     path: PathNames | undefined;
