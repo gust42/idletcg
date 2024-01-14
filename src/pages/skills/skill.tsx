@@ -1,5 +1,10 @@
 import { Button } from "../../components/button";
-import { Container } from "../../components/container";
+import {
+  ActionContainer,
+  Container,
+  DataContainer,
+} from "../../components/container";
+import { HelpText, SmallTitle } from "../../components/typography";
 import { format } from "../../helpers/number";
 import useGameState from "../../hooks/usegamestate";
 import { SkillState } from "../../interfaces/logic";
@@ -36,7 +41,7 @@ export const SkillInfo = ({
 
   if (!skill.visible(gameState)) return null;
 
-  const skillIsToggleable = state.on !== undefined;
+  const skillIsToggleable = state.on !== undefined && state.acquired;
 
   const isMaxLevel =
     !!skill.rule.maxLevel && state.level >= skill.rule.maxLevel;
@@ -44,41 +49,37 @@ export const SkillInfo = ({
   return (
     <Container>
       <div className={" flex justify-between gap-2 flex-col"}>
-        <div className="text flex flex-row justify-between h-10">
-          {title}{" "}
+        <div className="text flex flex-row justify-between">
+          <SmallTitle>{title}</SmallTitle>
+          <SmallTitle>{state.level}</SmallTitle>
+        </div>
+        <HelpText>{description}</HelpText>
+        <DataContainer title="Current effect">
+          {skill.friendyEffect(state.level)}
+        </DataContainer>
+        <div className="flex flex-row justify-between">
           {skillIsToggleable && (
-            <Button
-              action="toggle"
-              color={state.on ? "#8BC34A" : "#FF6347"}
-              width="40%"
-              onClick={toggleSkill}
-            >
-              {state.on ? "On" : "Off"}
-            </Button>
+            <div>
+              <Button
+                action="toggle"
+                color={state.on ? "#8BC34A" : "#FF6347"}
+                onClick={toggleSkill}
+              >
+                {state.on ? "On" : "Off"}
+              </Button>
+            </div>
           )}
         </div>
-        <div className="text-sm italic h-12">{description}</div>
-        <div className="font-semibold">
-          Current effect on level {state.level}
-        </div>
-        <div>{skill.friendyEffect(state.level)}</div>
         {!isMaxLevel && (
           <>
             {state.acquired ? (
               <>
-                <div className="font-semibold pt-1">Next level</div>
-                <div className=" pb-1 flex flex-row justify-between">
-                  <span>
-                    <span>{skill.friendyEffect(state.level + 1)}</span>
-                  </span>
-                  <span>
-                    Cost{" "}
-                    <span className="font-semibold">
-                      {format(skill.cost(state.level))} money
-                    </span>
-                  </span>
+                <div className=" pb-1">
+                  <DataContainer title="Next level">
+                    {skill.friendyEffect(state.level + 1)}
+                  </DataContainer>
                 </div>
-                <div className="flex ">
+                <ActionContainer>
                   <Button
                     action="Levelup"
                     onClick={levelUp}
@@ -86,24 +87,26 @@ export const SkillInfo = ({
                       gameState.entities.money.amount < skill.cost(state.level)
                     }
                   >
-                    +1 ({state.level})
+                    +1 ({format(skill.cost(state.level))} money)
                   </Button>
-                </div>
+                </ActionContainer>
               </>
             ) : (
               <>
                 <div className="border-t border-b pb-1 pt-1 border-t-slate-800 border-b-slate-800">
                   Requires {skill.rule.requirement} money
                 </div>
-                <Button
-                  action="buy"
-                  onClick={unlockSkill}
-                  disabled={
-                    gameState.entities.money.amount < skill.rule.requirement
-                  }
-                >
-                  Unlock
-                </Button>
+                <ActionContainer>
+                  <Button
+                    action="buy"
+                    onClick={unlockSkill}
+                    disabled={
+                      gameState.entities.money.amount < skill.rule.requirement
+                    }
+                  >
+                    Unlock
+                  </Button>
+                </ActionContainer>
               </>
             )}
           </>

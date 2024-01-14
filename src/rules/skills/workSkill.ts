@@ -9,7 +9,7 @@ export class WorkSkill implements Skill {
     increaseEffect: 1.15,
   };
 
-  title = "Start content creation on social media";
+  title = "Content creator";
 
   description = "Earns money over time";
 

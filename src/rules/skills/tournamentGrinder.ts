@@ -11,9 +11,9 @@ export class TournamentGrinder implements Skill {
     maxLevel: 5,
   };
 
-  title = "Join the tournament grind";
+  title = "Tournament grinder";
 
-  description = "Makes you play tournaments faster";
+  description = "Reduces thinking time between card plays";
 
   cost(level: number) {
     return roundToNearestThousand(
