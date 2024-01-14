@@ -34,7 +34,6 @@ export const TournamentTab = () => {
 
   return (
     <div>
-      <h1 className="mb-4">Tournaments</h1>
       <div className="flex flex-row flex-wrap gap-4">{tournaments}</div>
     </div>
   );

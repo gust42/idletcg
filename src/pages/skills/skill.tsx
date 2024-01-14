@@ -51,7 +51,7 @@ export const SkillInfo = ({
       <div className={" flex justify-between gap-2 flex-col"}>
         <div className="text flex flex-row justify-between">
           <SmallTitle>{title}</SmallTitle>
-          <SmallTitle>{state.level}</SmallTitle>
+          {state.acquired && <SmallTitle>{state.level}</SmallTitle>}
         </div>
         <HelpText>{description}</HelpText>
         <DataContainer title="Current effect">
@@ -87,7 +87,7 @@ export const SkillInfo = ({
                       gameState.entities.money.amount < skill.cost(state.level)
                     }
                   >
-                    +1 ({format(skill.cost(state.level))} money)
+                    {format(skill.cost(state.level))} money
                   </Button>
                 </ActionContainer>
               </>

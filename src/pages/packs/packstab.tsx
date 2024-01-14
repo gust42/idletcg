@@ -38,16 +38,22 @@ export default function PacksTab() {
       {gameState.entities.badcards.acquired && (
         <Container>
           <Title>Cards</Title>
-          <div className="mb-4">
-            <DataContainer title="Bad cards">
-              {format(gameState.entities.badcards.amount)}
-            </DataContainer>
-            <DataContainer title="Good cards">
-              {format(gameState.entities.goodcards.amount)}
-            </DataContainer>
-            <DataContainer title="Meta cards">
-              {format(gameState.entities.metacards.amount)}
-            </DataContainer>
+          <div className="mb-4 flex flex-row justify-between">
+            {gameState.entities.badcards.acquired && (
+              <DataContainer title="Bad cards" col>
+                {format(gameState.entities.badcards.amount)}
+              </DataContainer>
+            )}
+            {gameState.entities.goodcards.acquired && (
+              <DataContainer title="Good cards" col>
+                {format(gameState.entities.goodcards.amount)}
+              </DataContainer>
+            )}
+            {gameState.entities.metacards.acquired && (
+              <DataContainer title="Meta cards" col>
+                {format(gameState.entities.metacards.amount)}
+              </DataContainer>
+            )}
           </div>
           <div className="mb-4">
             <BuyButton
