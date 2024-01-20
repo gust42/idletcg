@@ -124,6 +124,17 @@ export const state: GameState = {
       slot2: undefined,
       slot3: undefined,
     },
+    championDeck: {
+      slot1: undefined,
+      slot2: undefined,
+      slot3: undefined,
+      slot4: undefined,
+      slot5: undefined,
+      slot6: undefined,
+      slot7: undefined,
+      slot8: undefined,
+      slot9: undefined,
+    },
   },
   routes: {
     packpoints: {

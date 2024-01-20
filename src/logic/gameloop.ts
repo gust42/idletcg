@@ -168,6 +168,17 @@ export default class GameLoop {
         }
         this.stateHandler.updateState(state);
       }
+
+      if (m.message === "addcardtochampiondeck") {
+        const data = m.data as DeckMessage;
+        const state = this.stateHandler.getState();
+
+        const index =
+          `slot${data.slot}` as keyof typeof state.deck.championDeck;
+        state.deck.championDeck[index] = data.id;
+        this.stateHandler.updateState(state);
+      }
+
       if (m.message === "addtrophy") {
         const data = m.data as TrophyMessage;
         const state = this.stateHandler.getState();

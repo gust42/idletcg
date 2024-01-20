@@ -13,6 +13,7 @@ type MessageList =
   | "levelupskill"
   | "toggleskill"
   | "addcardtodeck"
+  | "addcardtochampiondeck"
   | "entertournament"
   | "assigntournament"
   | "clearmessages"

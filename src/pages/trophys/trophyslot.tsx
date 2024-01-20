@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
 import { Trophy } from "../../components/trophy";
-import { SmallTitle, Title } from "../../components/typography";
+import { HelpText, SmallTitle, Title } from "../../components/typography";
+import useGameState from "../../hooks/usegamestate";
 import { getCardSize } from "../../logic/helpers";
 import MessageHandler, { TrophyMessage } from "../../logic/messagehandler";
+import { AllChampions } from "../../rules/champions";
 import { Tournament, Tournaments } from "../../rules/tournaments/tournament";
 import { TrophyPicker } from "./trophypicker";
 
@@ -15,6 +17,7 @@ interface ITrophySlotProps {
 
 export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
   const [trophyPickerOpen, setTrophyPickerOpen] = useState(false);
+  const gameState = useGameState();
 
   const onPicked = (trophy: keyof Tournaments | undefined) => {
     setTrophyPickerOpen(false);
@@ -26,6 +29,15 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
   const border = trophy === undefined ? "border-2 border-black" : "";
 
   const [pxs, pic] = getCardSize("medium");
+
+  const champion = AllChampions.find((c) => c.id === tournament.champion);
+
+  const fullDeck = Object.keys(gameState.deck.championDeck).every(
+    (key) =>
+      gameState.deck.championDeck[
+        key as keyof typeof gameState.deck.championDeck
+      ]
+  );
 
   return (
     <Container>
@@ -52,9 +64,18 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
         </div>
         <div className="grow flex flex-col justify-between">
           <SmallTitle>Champion</SmallTitle>
-          <div className="font-semibold">{trophy ? "LSQ" : "???"}</div>
-          <Button onClick={() => {}} action="" disabled={trophy === false}>
-            Battle
+          <div className="font-semibold">{trophy ? champion?.name : "???"}</div>
+          {trophy && <HelpText>{champion?.reward}</HelpText>}
+          <Button
+            onClick={() => {}}
+            action="BATTLE"
+            disabled={
+              trophy === false ||
+              !fullDeck ||
+              gameState.trophys[tournament.id] < 10
+            }
+          >
+            10 trophys
           </Button>
         </div>
       </div>

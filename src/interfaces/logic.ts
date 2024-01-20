@@ -1,5 +1,6 @@
 import { AllRouteNames } from "../logic/navigation";
 import { AbilityNames, PathNames } from "../rules/cardmastery";
+import { ChampionBattleDeck } from "../rules/champions";
 import { Skills } from "../rules/skills/skill";
 import {
   TournamentEntry,
@@ -90,6 +91,7 @@ export interface GameState {
   };
   deck: {
     cards: Deck;
+    championDeck: ChampionBattleDeck;
   };
   routes: Record<AllRouteNames, Route>;
   activities: {
