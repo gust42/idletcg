@@ -59,7 +59,7 @@ export const calculateTotalTournamentTime = (
 
   const totalTicks = tournament.opponents.length * deckSize * ruleRoundTick;
 
-  return (totalTicks * tickLength * modifier) / 1000;
+  return Math.round((totalTicks * tickLength * modifier) / 1000);
 };
 
 export function calculateTournamentTime(id?: keyof Tournaments) {
