@@ -1,56 +1,67 @@
 import { useState } from "react";
+import { Button } from "../../components/button";
+import { Container } from "../../components/container";
 import { Trophy } from "../../components/trophy";
-import { TrophyPicker } from "./trophypicker";
+import { SmallTitle, Title } from "../../components/typography";
 import { getCardSize } from "../../logic/helpers";
-import { Tournaments } from "../../rules/tournaments/tournament";
+import MessageHandler, { TrophyMessage } from "../../logic/messagehandler";
+import { Tournament, Tournaments } from "../../rules/tournaments/tournament";
+import { TrophyPicker } from "./trophypicker";
 
 interface ITrophySlotProps {
-  slot: number;
-  trophy?: keyof Tournaments;
-  size?: "small" | "medium";
-  onSelect: (trophy: string | undefined, slot: number) => void;
+  tournament: Tournament;
+  trophy?: boolean;
 }
 
-export const TrophySlot = ({
-  slot,
-  trophy,
-  onSelect,
-  size = "medium",
-}: ITrophySlotProps) => {
+export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
   const [trophyPickerOpen, setTrophyPickerOpen] = useState(false);
 
-  const onPicked = (trophy: string | undefined) => {
+  const onPicked = (trophy: keyof Tournaments | undefined) => {
     setTrophyPickerOpen(false);
-    onSelect(trophy, slot);
+
+    if (trophy === undefined) return;
+    MessageHandler.recieveMessage<TrophyMessage>("addtrophy", { trophy });
   };
 
   const border = trophy === undefined ? "border-2 border-black" : "";
 
-  const [pxs, pic] = getCardSize(size);
+  const [pxs, pic] = getCardSize("medium");
 
   return (
-    <>
-      <div
-        onClick={() => {
-          if (trophy !== undefined) onSelect(undefined, slot);
-          else setTrophyPickerOpen(true);
-        }}
-      >
+    <Container>
+      <Title>{tournament.name}</Title>
+      <div className="flex flex-row gap-2">
         <div
-          className={`${border} ${pxs} aspect-[2/3] text-center  cursor-pointer`}
+          className="w-1/3"
+          onClick={() => {
+            if (!trophy) setTrophyPickerOpen(true);
+          }}
         >
-          {trophy !== undefined ? (
-            <Trophy trophy={trophy} size={size} />
-          ) : (
-            <div className="flex flex-col justify-center rounded h-full gap-4 -mt-4">
-              {size !== "small" && <>Empty slot</>}
-              <div className={pic}>+</div>
-            </div>
-          )}
+          <div
+            className={`${border} ${pxs} aspect-[2/3] text-center  cursor-pointer`}
+          >
+            {trophy !== false ? (
+              <Trophy trophy={tournament.id} size={"medium"} />
+            ) : (
+              <div className="border border-black flex flex-col justify-center rounded h-full gap-4">
+                Empty slot
+                <div className={pic}>+</div>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="grow flex flex-col justify-between">
+          <SmallTitle>Champion</SmallTitle>
+          <div className="font-semibold">{trophy ? "LSQ" : "???"}</div>
+          <Button onClick={() => {}} action="" disabled={trophy === false}>
+            Battle
+          </Button>
         </div>
       </div>
 
-      {trophyPickerOpen && <TrophyPicker onSelect={onPicked} />}
-    </>
+      {trophyPickerOpen && (
+        <TrophyPicker id={tournament.id} onSelect={onPicked} />
+      )}
+    </Container>
   );
 };

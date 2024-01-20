@@ -21,7 +21,8 @@ export class WorkSkill implements Skill {
 
   effect(level: number) {
     return Math.floor(
-      (this.rule.value + (level - 1)) ** this.rule.increaseEffect
+      (this.rule.value + (level - 1)) **
+        (this.rule.increaseEffect * (1 + level / 100))
     );
   }
 

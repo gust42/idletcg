@@ -1,26 +1,22 @@
 import { Modal } from "../../components/modal";
 import { Trophy } from "../../components/trophy";
+import { Title } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
 import { Tournaments } from "../../rules/tournaments/tournament";
 
 interface ITrophyPickerProps {
   onSelect: (trophy: keyof Tournaments | undefined) => void;
+  id: keyof Tournaments;
 }
 
-export const TrophyPicker = ({ onSelect }: ITrophyPickerProps) => {
+export const TrophyPicker = ({ id, onSelect }: ITrophyPickerProps) => {
   const gameState = useGameState();
-  let tournamentNames = Object.keys(gameState.trophys).filter(
-    (name) => gameState.trophys[name as keyof Tournaments] > 0
+  const tournamentNames = Object.keys(gameState.trophys).filter(
+    (name) => gameState.trophys[name as keyof Tournaments] > 0 && name === id
   );
-
-  tournamentNames = tournamentNames.filter((name) => {
-    return !Object.values(gameState.trophycase).includes(
-      name as keyof Tournaments
-    );
-  });
   return (
     <Modal onClose={() => onSelect(undefined)} open={true}>
-      <h2 className="text-xl mb-6">Choose a trophy for this slot</h2>
+      <Title>Choose a trophy for this slot</Title>
       <div className="flex flex-row flex-wrap gap-2">
         {tournamentNames.map((tournament) => (
           <div
@@ -35,6 +31,10 @@ export const TrophyPicker = ({ onSelect }: ITrophyPickerProps) => {
           </div>
         ))}
       </div>
+
+      {tournamentNames.length === 0 && (
+        <div>No trophies available for this tournament</div>
+      )}
     </Modal>
   );
 };

@@ -15,7 +15,7 @@ export const Change = ({ change }: { change: number }) => {
   return (
     <span className={`${color}`}>
       <span dangerouslySetInnerHTML={{ __html: arrow }} />
-      {Math.abs(Math.round(change * 100) / 100)}
+      {format(Math.abs(Math.round(change * 100) / 100))}
     </span>
   );
 };
