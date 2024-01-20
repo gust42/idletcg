@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useGameRule from "../../hooks/usegamerule";
 import { AllTournaments } from "../../rules/ruleshandler";
 import { TournamentLog as TLog } from "../../rules/tournaments/tournament";
 import { TournamentPlay } from "./tournamentplay";
@@ -10,6 +11,7 @@ interface ITournamentLogProps {
 
 export const TournamentLog = ({ log }: ITournamentLogProps) => {
   const tournament = AllTournaments[log.id];
+  const deckSize = useGameRule("DeckSize").value;
 
   const [opponent, setOpponent] = useState(0);
 
@@ -39,7 +41,7 @@ export const TournamentLog = ({ log }: ITournamentLogProps) => {
       Round: <div className="flex flex-row gap-4 mt-2">{opponentButtons}</div>
       <TournamentPlay
         tournament={tournament}
-        gameRound={4}
+        gameRound={deckSize}
         opponent={opponent}
         log={log}
       />
