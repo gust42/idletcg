@@ -1,7 +1,8 @@
 import { AllRouteNames } from "../logic/navigation";
 import { AbilityNames, PathNames } from "../rules/cardmastery";
-import { ChampionBattleDeck } from "../rules/champions";
+import { ChampionBattleDeck, Champions } from "../rules/champions";
 import { Skills } from "../rules/skills/skill";
+
 import {
   TournamentEntry,
   TournamentLog,
@@ -43,7 +44,12 @@ export interface TeamMember {
   lastTournament?: TournamentLog;
 }
 
+export interface Champion {
+  lastTournament: TournamentLog | undefined;
+}
+
 export interface GameState {
+  champions: Record<Champions, Champion>;
   binder: {
     cards: number[];
     packsupplysetbonus: number;

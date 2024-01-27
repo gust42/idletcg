@@ -12,7 +12,7 @@ export type ChampionBattleDeck = {
   slot9: number | undefined;
 };
 
-interface Champion {
+export interface Champion {
   id: Champions;
   name: string;
   deck: ChampionBattleDeck;

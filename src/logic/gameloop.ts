@@ -2,8 +2,11 @@ import { GameState } from "../interfaces/logic";
 import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
 import { handleCardMasteryMessage } from "./cardmastery";
+import { handleChampionBattleMessage } from "./championbattle";
 import MessageHandler, {
+  ChampionBattleMessage,
   DeckMessage,
+  Message,
   NotifierMessage,
   SkillMessage,
   TournamentMessage,
@@ -196,6 +199,14 @@ export default class GameLoop {
 
       if (m.message === "clearmessages") {
         MessageHandler.sendClientMessage("", { clear: true });
+      }
+      {
+        const state = handleChampionBattleMessage(
+          m as Message<ChampionBattleMessage>,
+          this.stateHandler.getState()
+        );
+
+        if (state) this.stateHandler.updateState(state);
       }
 
       {

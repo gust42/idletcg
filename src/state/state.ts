@@ -2,6 +2,11 @@ import { GameState } from "../interfaces/logic";
 import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
+  champions: {
+    lsq: { lastTournament: undefined },
+    "mai-pudde": { lastTournament: undefined },
+    "ron-dinkel": { lastTournament: undefined },
+  },
   binder: {
     cards: [],
     packsupplysetbonus: 0,

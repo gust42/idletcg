@@ -5,8 +5,11 @@ import { Trophy } from "../../components/trophy";
 import { HelpText, SmallTitle, Title } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
 import { getCardSize } from "../../logic/helpers";
-import MessageHandler, { TrophyMessage } from "../../logic/messagehandler";
-import { AllChampions } from "../../rules/champions";
+import MessageHandler, {
+  ChampionBattleMessage,
+  TrophyMessage,
+} from "../../logic/messagehandler";
+import { AllChampions, Champion } from "../../rules/champions";
 import { Tournament, Tournaments } from "../../rules/tournaments/tournament";
 import { TrophyPicker } from "./trophypicker";
 
@@ -30,7 +33,9 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
 
   const [pxs, pic] = getCardSize("medium");
 
-  const champion = AllChampions.find((c) => c.id === tournament.champion);
+  const champion = AllChampions.find(
+    (c) => c.id === tournament.champion
+  ) as Champion;
 
   const fullDeck = Object.keys(gameState.deck.championDeck).every(
     (key) =>
@@ -66,8 +71,23 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
           <SmallTitle>Champion</SmallTitle>
           <div className="font-semibold">{trophy ? champion?.name : "???"}</div>
           {trophy && <HelpText>{champion?.reward}</HelpText>}
+          {gameState.champions[champion.id].lastTournament && (
+            <HelpText>
+              {/* <LastTournament
+                log={
+                  gameState.champions[champion.id]
+                    .lastTournament as TournamentLog
+                }
+              /> */}
+            </HelpText>
+          )}
           <Button
-            onClick={() => {}}
+            onClick={() => {
+              MessageHandler.recieveMessage<ChampionBattleMessage>(
+                "championbattle",
+                { id: tournament.champion }
+              );
+            }}
             action="BATTLE"
             disabled={
               trophy === false ||

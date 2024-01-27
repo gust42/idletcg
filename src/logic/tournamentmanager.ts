@@ -1,13 +1,9 @@
 import { Deck } from "../interfaces/logic";
 import { AllSkills, AllTournaments } from "../rules/ruleshandler";
-import {
-  TournamentLog,
-  Tournaments,
-  calculateWinner,
-} from "../rules/tournaments/tournament";
+import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
-import GameLoop from "./gameloop";
+import { battle } from "./battle";
 import {
   calculateTotalTournamentTime,
   getTournamentPrizeMoney,
@@ -159,41 +155,7 @@ export class TournamentManager {
 
     for (let i = 0; i < tournament.opponents.length; i++) {
       const currentOpponent = tournament.opponents[i];
-
-      let wins = 0;
-      for (let j = 0; j < deckSize; j++) {
-        const myCard = currentDeck[
-          `slot${j + 1}` as keyof typeof currentDeck
-        ] as number;
-        const opponentCard = currentOpponent.deck[
-          `slot${j + 1}` as keyof typeof currentDeck
-        ] as number;
-
-        const result = calculateWinner(
-          myCard,
-          opponentCard,
-          GameLoop.getInstance().stateHandler.getState()
-        );
-        if (result === "win") {
-          wins++;
-        } else if (result === "loss") {
-          wins--;
-        }
-      }
-
-      const result = wins > 0 ? "win" : wins < 0 ? "loss" : "draw";
-
-      if (result === "win") {
-        log.points += 3;
-      } else if (result === "draw") {
-        log.points += 1;
-      }
-
-      log.rounds.push({
-        result: result,
-        points: log.points,
-        opponentDeck: currentOpponent.deck,
-      });
+      battle(currentDeck, currentOpponent.deck, log, deckSize);
     }
 
     return log;
