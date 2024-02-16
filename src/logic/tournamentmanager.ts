@@ -110,7 +110,7 @@ export class TournamentManager {
     state.team.forEach((t) => {
       const fullDeck =
         Object.values(t.deck).every((card) => card !== undefined) &&
-        Object.keys(t.deck).length === deckSize;
+        Object.keys(t.deck).length >= deckSize;
       if (!fullDeck) {
         t.currentTournament = undefined;
         t.tournamentTicks = 0;

@@ -49,7 +49,6 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
       <Title>{tournament.name}</Title>
       <div className="flex flex-row gap-2">
         <div
-          className="w-1/3"
           onClick={() => {
             if (!trophy) setTrophyPickerOpen(true);
           }}

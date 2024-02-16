@@ -39,7 +39,7 @@ export const TournamentLog = ({ log }: ITournamentLogProps) => {
   });
 
   return (
-    <>
+    <div className="flex flex-col gap-2 w-full md:w-[400px]">
       <TournamentResult tournament={tournament} log={log} />
       Round: <div className="flex flex-row gap-4 mt-2">{opponentButtons}</div>
       <TournamentPlay
@@ -48,6 +48,6 @@ export const TournamentLog = ({ log }: ITournamentLogProps) => {
         opponent={opponent}
         log={log}
       />
-    </>
+    </div>
   );
 };

@@ -133,11 +133,20 @@ export function formatSeconds(d: number) {
 export const getCardSize = (size: "small" | "medium" | "large") => {
   switch (size) {
     case "small":
-      return ["w-[60px]  md:w-[100px] ", "text-[2em]"];
+      return [
+        "w-[80px] max-w-[80px]  md:w-[100px] md:max-w-[100px]",
+        "text-[2em]",
+      ];
     case "medium":
-      return ["min-w-[60px] w-full md:w-[140px] ", "text-[3.5em]"];
+      return [
+        "w-[80px] max-w-[80px] md:w-[140px] md:max-w-[140px]",
+        "text-[3.5em]",
+      ];
     case "large":
-      return ["w-[120px] md:w-[200px] ", "text-[6em]"];
+      return [
+        "w-[120px] max-w-[120px] md:w-[200px] md:max-w-[200px] ",
+        "text-[6em]",
+      ];
   }
 };
 
