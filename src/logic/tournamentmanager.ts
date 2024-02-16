@@ -70,8 +70,8 @@ export class TournamentManager {
         } else {
           state.activities.tournament.gameRound++;
         }
-        this.stateHandler.updateState(state);
-      } else {
+      }
+      if (currentRound >= tournament.opponents.length) {
         // End tournament
 
         const prizeMoney = getTournamentPrizeMoney(
@@ -94,12 +94,11 @@ export class TournamentManager {
 
         state.activities.tournament = undefined;
 
-        this.stateHandler.updateState(state);
-
         this._tickCounter = this.rulesHandler.getRuleValue(
           "TournamentRoundTicks"
         );
       }
+      this.stateHandler.updateState(state);
     }
   }
 

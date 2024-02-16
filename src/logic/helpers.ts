@@ -179,3 +179,10 @@ export function calculateCardMasteryPoints() {
 
   return points;
 }
+
+export function inBattle(gameState: GameState) {
+  return (
+    gameState.activities.tournament !== undefined ||
+    gameState.activities.champion !== undefined
+  );
+}

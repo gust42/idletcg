@@ -4,13 +4,19 @@ import { Container } from "../../components/container";
 import { Trophy } from "../../components/trophy";
 import { HelpText, SmallTitle, Title } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
-import { getCardSize } from "../../logic/helpers";
+import { getCardSize, inBattle } from "../../logic/helpers";
 import MessageHandler, {
   ChampionBattleMessage,
   TrophyMessage,
 } from "../../logic/messagehandler";
+import { navigate } from "../../logic/navigation";
 import { AllChampions, Champion } from "../../rules/champions";
-import { Tournament, Tournaments } from "../../rules/tournaments/tournament";
+import {
+  Tournament,
+  TournamentLog,
+  Tournaments,
+} from "../../rules/tournaments/tournament";
+import { LastTournament } from "../tournaments/tournament";
 import { TrophyPicker } from "./trophypicker";
 
 interface ITrophySlotProps {
@@ -72,12 +78,13 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
           {trophy && <HelpText>{champion?.reward}</HelpText>}
           {gameState.champions[champion.id].lastTournament && (
             <HelpText>
-              {/* <LastTournament
+              <LastTournament
                 log={
                   gameState.champions[champion.id]
                     .lastTournament as TournamentLog
                 }
-              /> */}
+                route="championlog"
+              />
             </HelpText>
           )}
           <Button
@@ -86,12 +93,14 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
                 "championbattle",
                 { id: tournament.champion }
               );
+              navigate("activechampionbattle");
             }}
             action="BATTLE"
             disabled={
               trophy === false ||
               !fullDeck ||
-              gameState.trophys[tournament.id] < 10
+              gameState.trophys[tournament.id] < 10 ||
+              inBattle(gameState)
             }
           >
             10 trophys

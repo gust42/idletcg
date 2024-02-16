@@ -46,6 +46,7 @@ export interface TeamMember {
 
 export interface Champion {
   lastTournament: TournamentLog | undefined;
+  defeated: boolean;
 }
 
 export interface GameState {
@@ -107,6 +108,11 @@ export interface GameState {
       currentOpponent: number;
       gameRound: number;
       tournamentRound: number;
+    };
+    champion?: {
+      id: Champions;
+      deck: Deck;
+      gameRound: number;
     };
   };
   logs: {

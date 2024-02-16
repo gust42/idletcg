@@ -3,9 +3,9 @@ import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
   champions: {
-    lsq: { lastTournament: undefined },
-    "mai-pudde": { lastTournament: undefined },
-    "ron-dinkel": { lastTournament: undefined },
+    lsq: { lastTournament: undefined, defeated: false },
+    "mai-pudde": { lastTournament: undefined, defeated: false },
+    "ron-dinkel": { lastTournament: undefined, defeated: false },
   },
   binder: {
     cards: [],
@@ -162,6 +162,10 @@ export const state: GameState = {
       acquired: true,
       notify: false,
     },
+    activechampionbattle: {
+      acquired: true,
+      notify: false,
+    },
     tournaments: {
       acquired: false,
       notify: false,
@@ -204,6 +208,10 @@ export const state: GameState = {
     },
     cardmastery: {
       acquired: false,
+      notify: false,
+    },
+    championlog: {
+      acquired: true,
       notify: false,
     },
   },

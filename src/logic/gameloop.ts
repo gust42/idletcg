@@ -2,7 +2,10 @@ import { GameState } from "../interfaces/logic";
 import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
 import { handleCardMasteryMessage } from "./cardmastery";
-import { handleChampionBattleMessage } from "./championbattle";
+import {
+  handleChampionBattleMessage,
+  handleChampionBattleTick,
+} from "./championbattle";
 import MessageHandler, {
   ChampionBattleMessage,
   DeckMessage,
@@ -68,9 +71,12 @@ export default class GameLoop {
   }
 
   tick() {
-    const state = this.stateHandler.getState();
     this.packManager.handleTick();
     this.tournamentManager.handleTick();
+
+    handleChampionBattleTick();
+
+    const state = this.stateHandler.getState();
     if (state.skills.workSkill.acquired) {
       const skill = AllSkills.workSkill;
 

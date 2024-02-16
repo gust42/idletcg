@@ -1,52 +1,30 @@
-import { useEffect, useState } from "react";
+import { useRef } from "react";
+import { Thinking } from "../../components/Thinking";
 import useGameState from "../../hooks/usegamestate";
-import { GameState } from "../../interfaces/logic";
-import GameLoop from "../../logic/gameloop";
-import { AllSkills, AllTournaments } from "../../rules/ruleshandler";
-import { TournamentLog } from "../../rules/tournaments/tournament";
+import { AllTournaments } from "../../rules/ruleshandler";
+import { TournamentLog, Tournaments } from "../../rules/tournaments/tournament";
 import { TournamentPlay } from "./tournamentplay";
 import { TournamentResult } from "./tournamentresult";
-import { TimerHandler } from "../../logic/timerhandler";
-
-function calculateRoundTime(state: GameState) {
-  const gameLoop = GameLoop.getInstance();
-  const totalTicks =
-    gameLoop.rulesHandler.getRuleValue("TournamentRoundTicks") -
-    AllSkills.tournamentGrinder.effect(state.skills.tournamentGrinder.level);
-  const tickLength = gameLoop.rulesHandler.getRuleValue("TickLength");
-  return (
-    ((totalTicks - gameLoop.tournamentManager.tickCounter) * tickLength) /
-      1000 +
-    1
-  );
-}
 
 export const ActiveTournament = () => {
   const gameState = useGameState();
 
-  const totalTicks =
-    GameLoop.getInstance().rulesHandler.getRuleValue("TournamentRoundTicks") -
-    AllSkills.tournamentGrinder.effect(
-      gameState.skills.tournamentGrinder.level
-    );
+  const currentTournament = useRef<keyof Tournaments | undefined>(undefined);
 
-  const [roundTime, setRoundTime] = useState(totalTicks);
+  if (!currentTournament.current) {
+    currentTournament.current = gameState.activities.tournament?.id;
+  }
 
   const tournamentState = gameState.activities.tournament;
 
-  useEffect(() => {
-    if (!tournamentState) return;
-    const timer = TimerHandler.getInstance().setTimer(() => {
-      setRoundTime(calculateRoundTime(gameState));
-    });
-
-    return () => {
-      TimerHandler.getInstance().removeTimer(timer);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!tournamentState) return <div>no tournament</div>;
+  if (!tournamentState) {
+    if (currentTournament.current) {
+      const tournament = AllTournaments[currentTournament.current];
+      const log = gameState.logs.tournament[tournament.id] as TournamentLog;
+      return <TournamentResult tournament={tournament} log={log} />;
+    }
+    return <div>Cant find last tournament</div>;
+  }
 
   const tournament = AllTournaments[tournamentState.id];
   const log = gameState.logs.tournament[tournamentState.id] as TournamentLog;
@@ -71,16 +49,14 @@ export const ActiveTournament = () => {
         </div>
       </div>
       <TournamentPlay
-        tournament={tournament}
+        nameOfOpponent={
+          tournament.opponents[tournamentState.currentOpponent].name
+        }
         gameRound={tournamentState.gameRound}
         opponent={tournamentState.currentOpponent}
         log={log}
       />
-      {tournamentState.gameRound < 4 && (
-        <div className="mt-4 text-lg">
-          Thinking about the next play... {roundTime}s
-        </div>
-      )}
+      {tournamentState.gameRound < 4 && <Thinking />}
     </div>
   );
 };
