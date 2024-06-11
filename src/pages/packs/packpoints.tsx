@@ -31,7 +31,7 @@ export const PackPoints = () => {
         <PackUpgrade
           skill="supply"
           text={`Pack supply (${
-            gameState.pack.supply.amount * 2 + packSupplyRule.value
+            gameState.pack.supply.amount * 4 + packSupplyRule.value
           })`}
           cost={packSupplyCost}
           acquired={gameState.pack.supply.acquired}

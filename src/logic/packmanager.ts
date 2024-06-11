@@ -50,8 +50,13 @@ export class PackManager {
       this.autoOpenPack(state.skills.autoPackSkill.level);
 
     const amount = this.rulesHandler.getRuleValue("PackSupplyTick");
-    state.entities.packsupply.amount += amount + state.pack.supply.amount * 2;
-    state.entities.packsupply.amount += state.binder.packsupplysetbonus;
+    let packSupply =
+      amount + state.pack.supply.amount * 4 + state.binder.packsupplysetbonus;
+    if (state.champions.lsq.defeated) packSupply *= 2;
+    if (state.champions["mai-pudde"].defeated) packSupply *= 3;
+    if (state.champions["ron-dinkel"].defeated) packSupply *= 4;
+
+    state.entities.packsupply.amount += packSupply;
   }
 
   public handleMessages(

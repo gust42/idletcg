@@ -50,6 +50,12 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
       ]
   );
 
+  let reward = gameState.champions[champion.id].defeated ? (
+    <div className="text-green-600">{champion.reward}</div>
+  ) : (
+    champion.reward
+  );
+
   return (
     <Container>
       <Title>{tournament.name}</Title>
@@ -73,38 +79,45 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
           </div>
         </div>
         <div className="grow flex flex-col justify-between">
-          <SmallTitle>Champion</SmallTitle>
-          <div className="font-semibold">{trophy ? champion?.name : "???"}</div>
-          {trophy && <HelpText>{champion?.reward}</HelpText>}
-          {gameState.champions[champion.id].lastTournament && (
-            <HelpText>
-              <LastTournament
-                log={
-                  gameState.champions[champion.id]
-                    .lastTournament as TournamentLog
+          <SmallTitle>
+            {trophy ? champion?.name : "Unknown champion"}
+          </SmallTitle>
+          <HelpText>Reward: {trophy ? reward : "???"}</HelpText>
+          {gameState.champions[champion.id].defeated ? (
+            <Title>Defeated</Title>
+          ) : (
+            <>
+              {gameState.champions[champion.id].lastTournament && (
+                <HelpText>
+                  <LastTournament
+                    log={
+                      gameState.champions[champion.id]
+                        .lastTournament as TournamentLog
+                    }
+                    route="championlog"
+                  />
+                </HelpText>
+              )}
+              <Button
+                onClick={() => {
+                  MessageHandler.recieveMessage<ChampionBattleMessage>(
+                    "championbattle",
+                    { id: tournament.champion }
+                  );
+                  navigate("activechampionbattle");
+                }}
+                action="BATTLE"
+                disabled={
+                  trophy === false ||
+                  !fullDeck ||
+                  gameState.trophys[tournament.id] < 10 ||
+                  inBattle(gameState)
                 }
-                route="championlog"
-              />
-            </HelpText>
+              >
+                10 trophys
+              </Button>
+            </>
           )}
-          <Button
-            onClick={() => {
-              MessageHandler.recieveMessage<ChampionBattleMessage>(
-                "championbattle",
-                { id: tournament.champion }
-              );
-              navigate("activechampionbattle");
-            }}
-            action="BATTLE"
-            disabled={
-              trophy === false ||
-              !fullDeck ||
-              gameState.trophys[tournament.id] < 10 ||
-              inBattle(gameState)
-            }
-          >
-            10 trophys
-          </Button>
         </div>
       </div>
 

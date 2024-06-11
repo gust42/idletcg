@@ -62,7 +62,7 @@ export const handleUniqueCardMessage = (m: Message, state: GameState) => {
       }
 
       if (!rowCompleted && isRowCompleted(cardSet, state)) {
-        state.binder.packsupplysetbonus += (cardSet + 1) * 2;
+        state.binder.packsupplysetbonus += (cardSet + 1) * 5;
       }
     }
   }
