@@ -1,12 +1,12 @@
+import { Button } from "../../components/button";
 import { Container } from "../../components/container";
+import { Title } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
 import { allCards, calculateUniqueCardCost } from "../../logic/helpers";
-import { CardCost } from "./cardcost";
-import UniqueCard from "./uniquecard";
-import { Title } from "../../components/typography";
-import { Button } from "../../components/button";
 import MessageHandler from "../../logic/messagehandler";
 import { isRowCompleted, isRowUnlocked } from "../../logic/uniquecardhandler";
+import { CardCost } from "./cardcost";
+import UniqueCard from "./uniquecard";
 
 const cardsPerRow = 3;
 
@@ -82,7 +82,7 @@ export default function TradebinderTab() {
                   pack supply
                 </div>
                 <div className={`flex flex-row justify-between ${completed} `}>
-                  <div className="font-semibold">Complete</div> +{(i + 1) * 2}{" "}
+                  <div className="font-semibold">Complete</div> +{(i + 1) * 5}{" "}
                   pack supply / tick{" "}
                 </div>
               </div>

@@ -35,7 +35,7 @@ export function calculateUniqueCardCost(id: number, state: GameState) {
     state.binder.cards.includes(id)
   ).length;
 
-  const increase = cost.increase ** ((1 + row / 6) * (1 + unlockedInRow / 15));
+  const increase = cost.increase ** ((1 + row / 6) * (1 + unlockedInRow / 50));
 
   const costBadCards = Math.floor(cost.badcards ** increase);
   const costGoodCards = Math.floor(cost.goodcards ** increase);
@@ -169,7 +169,7 @@ export function getTournamentPrizeMoney(
 }
 
 export function calculatePackUpgradeCost(level: number) {
-  return roundToNearestX(5 ** ((level + 1) / 2), 10);
+  return roundToNearestX(4 ** ((level + 1) / 2), 10);
 }
 
 export function calculateCardMasteryPoints() {

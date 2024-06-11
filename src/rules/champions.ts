@@ -33,7 +33,7 @@ const LSQ = {
     slot8: 33,
     slot9: 47,
   },
-  reward: "Increases pack gain from skill by ^1.15",
+  reward: "Doubles pack supply gain",
 } as Champion;
 
 const RonDinkel = {
@@ -50,7 +50,7 @@ const RonDinkel = {
     slot8: 73,
     slot9: 87,
   },
-  reward: "Increases pack gain from skill by ^1.15",
+  reward: "Tripples pack supply gain",
 } as Champion;
 
 const MaiPudde = {
@@ -67,7 +67,7 @@ const MaiPudde = {
     slot8: 90,
     slot9: 94,
   },
-  reward: "Increases pack gain from skill by ^1.15",
+  reward: "Quadruples pack supply gain",
 } as Champion;
 
 export const AllChampions = [LSQ, RonDinkel, MaiPudde];
