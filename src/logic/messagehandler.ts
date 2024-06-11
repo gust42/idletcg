@@ -1,3 +1,4 @@
+import { Champions } from "../rules/champions";
 import { Skills } from "../rules/skills/skill";
 import { Tournaments } from "../rules/tournaments/tournament";
 import { CardMasteryMessages } from "./cardmastery";
@@ -9,19 +10,21 @@ type MessageList =
   | CardMasteryMessages
   | PackMessages
   | UniqueCardMessages
+  | "championbattle"
   | "unlockskill"
   | "levelupskill"
   | "toggleskill"
   | "addcardtodeck"
+  | "addcardtochampiondeck"
   | "entertournament"
   | "assigntournament"
   | "clearmessages"
   | "clearnotifier"
   | "addtrophy";
 
-export type Message = {
+export type Message<T = MessageData> = {
   message: MessageList;
-  data: MessageData;
+  data: T;
 };
 
 export type MessageData =
@@ -53,6 +56,10 @@ export type NotifierMessage = {
 
 export type TournamentMessage = {
   id: keyof Tournaments;
+};
+
+export type ChampionBattleMessage = {
+  id: Champions;
 };
 
 export type AssignTournamentMessage = {

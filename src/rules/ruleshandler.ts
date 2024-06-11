@@ -1,9 +1,11 @@
 import { GameState } from "../interfaces/logic";
 import { Rule, Rules } from "../interfaces/rules";
+import { calculateRating } from "../logic/helpers";
 import rules from "./rules.json";
 import { AutoPackSkill } from "./skills/autoPackSkill";
 import { ShopkeeperFriendSkill } from "./skills/shopkeeperFriendSkill";
 import { Skill, Skills } from "./skills/skill";
+import { TeamPractice } from "./skills/teamPractice";
 import { TournamentGrinder } from "./skills/tournamentGrinder";
 import { WorkSkill } from "./skills/workSkill";
 import { CasualWednesday } from "./tournaments/casualwednesday";
@@ -16,6 +18,7 @@ export const AllSkills: Record<keyof Skills, Skill> = {
   autoPackSkill: new AutoPackSkill(),
   shopkeeperFriendSkill: new ShopkeeperFriendSkill(),
   tournamentGrinder: new TournamentGrinder(),
+  teamPractice: new TeamPractice(),
 };
 
 export const AllTournaments: Record<keyof Tournaments, Tournament> = {
@@ -143,7 +146,7 @@ export default class RulesHandler {
 
     if (
       !state.routes.cardmastery.acquired &&
-      state.entities.rating.amount > 1000
+      calculateRating(state.entities.rating).amount > 1000
     ) {
       state.routes.cardmastery.acquired = true;
       state.routes.deckbuildertab.notify = true;

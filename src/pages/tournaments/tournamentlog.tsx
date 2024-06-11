@@ -1,7 +1,10 @@
 import { useState } from "react";
 import useGameRule from "../../hooks/usegamerule";
 import { AllTournaments } from "../../rules/ruleshandler";
-import { TournamentLog as TLog } from "../../rules/tournaments/tournament";
+import {
+  TournamentLog as TLog,
+  Tournaments,
+} from "../../rules/tournaments/tournament";
 import { TournamentPlay } from "./tournamentplay";
 import { TournamentResult } from "./tournamentresult";
 
@@ -10,7 +13,7 @@ interface ITournamentLogProps {
 }
 
 export const TournamentLog = ({ log }: ITournamentLogProps) => {
-  const tournament = AllTournaments[log.id];
+  const tournament = AllTournaments[log.id as keyof Tournaments];
   const deckSize = useGameRule("DeckSize").value;
 
   const [opponent, setOpponent] = useState(0);
@@ -36,15 +39,15 @@ export const TournamentLog = ({ log }: ITournamentLogProps) => {
   });
 
   return (
-    <>
+    <div className="flex flex-col gap-2 w-full md:w-[400px]">
       <TournamentResult tournament={tournament} log={log} />
       Round: <div className="flex flex-row gap-4 mt-2">{opponentButtons}</div>
       <TournamentPlay
-        tournament={tournament}
+        nameOfOpponent={tournament.opponents[opponent].name}
         gameRound={deckSize}
         opponent={opponent}
         log={log}
       />
-    </>
+    </div>
   );
 };

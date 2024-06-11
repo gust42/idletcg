@@ -2,8 +2,14 @@ import { GameState } from "../interfaces/logic";
 import RulesHandler, { AllSkills } from "../rules/ruleshandler";
 import StateHandler from "../state/statehandler";
 import { handleCardMasteryMessage } from "./cardmastery";
+import {
+  handleChampionBattleMessage,
+  handleChampionBattleTick,
+} from "./championbattle";
 import MessageHandler, {
+  ChampionBattleMessage,
   DeckMessage,
+  Message,
   NotifierMessage,
   SkillMessage,
   TournamentMessage,
@@ -65,9 +71,12 @@ export default class GameLoop {
   }
 
   tick() {
-    const state = this.stateHandler.getState();
     this.packManager.handleTick();
     this.tournamentManager.handleTick();
+
+    handleChampionBattleTick();
+
+    const state = this.stateHandler.getState();
     if (state.skills.workSkill.acquired) {
       const skill = AllSkills.workSkill;
 
@@ -168,6 +177,17 @@ export default class GameLoop {
         }
         this.stateHandler.updateState(state);
       }
+
+      if (m.message === "addcardtochampiondeck") {
+        const data = m.data as DeckMessage;
+        const state = this.stateHandler.getState();
+
+        const index =
+          `slot${data.slot}` as keyof typeof state.deck.championDeck;
+        state.deck.championDeck[index] = data.id;
+        this.stateHandler.updateState(state);
+      }
+
       if (m.message === "addtrophy") {
         const data = m.data as TrophyMessage;
         const state = this.stateHandler.getState();
@@ -185,6 +205,14 @@ export default class GameLoop {
 
       if (m.message === "clearmessages") {
         MessageHandler.sendClientMessage("", { clear: true });
+      }
+      {
+        const state = handleChampionBattleMessage(
+          m as Message<ChampionBattleMessage>,
+          this.stateHandler.getState()
+        );
+
+        if (state) this.stateHandler.updateState(state);
       }
 
       {

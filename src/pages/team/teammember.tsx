@@ -35,20 +35,17 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
   const numberOfCards = Object.keys(member.deck);
   const fullDeck =
     Object.values(member.deck).every((card) => card !== undefined) &&
-    numberOfCards.length === rule.value;
+    numberOfCards.length >= rule.value;
 
   return (
     <Container>
       <div className="text-xl">{member.name}</div>
       <div className="flex flex-row justify-between mt-8">
-        <div>Rating: {member.rating}</div>
+        <div>Rating: {Math.floor(member.rating)}</div>
         <div>Tournament play speed: {member.speed * 100}%</div>
       </div>
-
       <div className="flex flex-row justify-between mt-8"></div>
-
       <div className="text-lg">Deck</div>
-
       <div className="flex flex-row flex-wrap gap-2 mt-4 mb-4">
         {Array.from({ length: rule.value }).map((_, i) => {
           const index = `slot${i + 1}` as keyof typeof member.deck;
@@ -63,9 +60,7 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
           );
         })}
       </div>
-
       {member.lastTournament && <LastTournament log={member.lastTournament} />}
-
       <ActionContainer>
         <Button
           action="PLAYING"
@@ -81,7 +76,6 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
           )}
         </Button>
       </ActionContainer>
-
       <Modal
         onClose={() => {
           setOpen(false);

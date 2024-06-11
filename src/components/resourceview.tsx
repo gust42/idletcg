@@ -1,6 +1,9 @@
 import useGameState from "../hooks/usegamestate";
 import GameLoop from "../logic/gameloop";
-import { calculateTotalTournamentTime } from "../logic/helpers";
+import {
+  calculateRating,
+  calculateTotalTournamentTime,
+} from "../logic/helpers";
 import { navigate } from "../logic/navigation";
 import { AllTournaments } from "../rules/ruleshandler";
 import ResourceItem from "./resourceitem";
@@ -58,8 +61,8 @@ export default function ResourceView() {
 
         <ResourceItem
           name="Rating"
-          resource={gameState.entities.rating}
-          oldValue={oldState.entities.rating.amount}
+          resource={calculateRating(gameState.entities.rating)}
+          oldValue={calculateRating(oldState.entities.rating).amount}
         />
       </div>
 

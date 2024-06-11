@@ -1,16 +1,18 @@
 import { proxy } from "valtio";
+import { CardMastery } from "../pages/deckbuilder/cardmastery";
 import { DeckbuilderTab } from "../pages/deckbuilder/deckbuildertab";
+import { PackPoints } from "../pages/packs/packpoints";
 import PacksTab from "../pages/packs/packstab";
+import { Settings } from "../pages/settings/settings";
 import SkillsTab from "../pages/skills/skillstab";
 import { TeamTab } from "../pages/team/teamtab";
+import { ActiveChampionBattle } from "../pages/tournaments/activechampionbattle";
 import { ActiveTournament } from "../pages/tournaments/activetournament";
+import { ChampionLog } from "../pages/tournaments/championlog";
 import { TournamentLog } from "../pages/tournaments/tournamentlog";
 import { TournamentTab } from "../pages/tournaments/tournamenttab";
 import TradebinderTab from "../pages/tradebinder/tradebindertab";
-import { Settings } from "../pages/settings/settings";
 import TrophysTab from "../pages/trophys/trophystab";
-import { PackPoints } from "../pages/packs/packpoints";
-import { CardMastery } from "../pages/deckbuilder/cardmastery";
 
 export type RouteNames =
   | "packstab"
@@ -19,7 +21,9 @@ export type RouteNames =
   | "tournamentstab"
   | "deckbuildertab"
   | "activetournament"
+  | "activechampionbattle"
   | "tournamentlog"
+  | "championlog"
   | "settings";
 
 export type AllSubroutes =
@@ -86,9 +90,17 @@ export const routeConfig: RouteConfig = {
     friendlyName: "Active tournament",
     component: ActiveTournament,
   },
+  activechampionbattle: {
+    friendlyName: "Active champion battle",
+    component: ActiveChampionBattle,
+  },
   tournamentlog: {
     friendlyName: "Tournament log",
     component: TournamentLog,
+  },
+  championlog: {
+    friendlyName: "Champion log",
+    component: ChampionLog,
   },
   settings: {
     friendlyName: "Settings",

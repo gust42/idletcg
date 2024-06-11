@@ -1,4 +1,4 @@
-import { GameState } from "../interfaces/logic";
+import { Entity, GameState } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
 import { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
@@ -133,11 +133,20 @@ export function formatSeconds(d: number) {
 export const getCardSize = (size: "small" | "medium" | "large") => {
   switch (size) {
     case "small":
-      return ["w-[60px]  md:w-[100px] ", "text-[2em]"];
+      return [
+        "w-[80px] max-w-[80px]  md:w-[100px] md:max-w-[100px]",
+        "text-[2em]",
+      ];
     case "medium":
-      return ["min-w-[60px] w-full md:w-[140px] ", "text-[3.5em]"];
+      return [
+        "w-[80px] max-w-[80px] md:w-[140px] md:max-w-[140px]",
+        "text-[3.5em]",
+      ];
     case "large":
-      return ["w-[120px] md:w-[200px] ", "text-[6em]"];
+      return [
+        "w-[120px] max-w-[120px] md:w-[200px] md:max-w-[200px] ",
+        "text-[6em]",
+      ];
   }
 };
 
@@ -166,7 +175,33 @@ export function calculatePackUpgradeCost(level: number) {
 export function calculateCardMasteryPoints() {
   const gameState = GameLoop.getInstance().stateHandler.getState();
 
-  const points = Math.floor(gameState.entities.rating.amount / 100 - 10) + 1;
+  const points =
+    Math.floor(calculateRating(gameState.entities.rating).amount / 100 - 10) +
+    1;
 
   return points;
+}
+
+export function inBattle(gameState: GameState) {
+  return (
+    gameState.activities.tournament !== undefined ||
+    gameState.activities.champion !== undefined
+  );
+}
+
+export function calculateRating(entity: Entity) {
+  const gameState = GameLoop.getInstance().stateHandler.getState();
+  const skill = AllSkills.teamPractice;
+  const level = gameState.skills.teamPractice.level;
+  const teamRating = gameState.team.reduce((acc, member) => {
+    return acc + member.rating;
+  }, 0);
+  if (level <= 1) return entity;
+
+  return {
+    acquired: entity.acquired,
+    amount: Math.floor(
+      entity.amount + teamRating * (skill.effect(level) / 100)
+    ),
+  };
 }

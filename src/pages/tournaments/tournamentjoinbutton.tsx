@@ -1,6 +1,7 @@
 import { Button } from "../../components/button";
 import { ActionContainer } from "../../components/container";
 import useGameState from "../../hooks/usegamestate";
+import { calculateRating, inBattle } from "../../logic/helpers";
 import { AllTournaments } from "../../rules/ruleshandler";
 import { Tournaments } from "../../rules/tournaments/tournament";
 
@@ -17,7 +18,8 @@ export const TournamentJoinButton = ({
   const tournament = AllTournaments[id];
 
   const disabled =
-    gameState.entities.rating.amount < tournament.ratingRequirement;
+    calculateRating(gameState.entities.rating).amount <
+      tournament.ratingRequirement || inBattle(gameState);
 
   return (
     <ActionContainer>

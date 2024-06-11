@@ -1,15 +1,17 @@
+import { Champions } from "../champions";
 import { Tournament, Tournaments } from "./tournament";
 
 export class FunFriday implements Tournament {
   id = "funfriday" as keyof Tournaments;
   name = "Fun Friday";
   description = "An enjoyable tournament for the casual players.";
+  champion = "ron-dinkel" as Champions;
   entryFee = 20000;
   reward = 600000;
   ratingRequirement = 1200;
   teammember = {
     name: "Charlie",
-    speed: 0.4,
+    speed: 0.2,
     rating: 1000,
     deck: {
       slot1: undefined,

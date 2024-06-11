@@ -1,6 +1,8 @@
 import { AllRouteNames } from "../logic/navigation";
 import { AbilityNames, PathNames } from "../rules/cardmastery";
+import { ChampionBattleDeck, Champions } from "../rules/champions";
 import { Skills } from "../rules/skills/skill";
+
 import {
   TournamentEntry,
   TournamentLog,
@@ -42,7 +44,13 @@ export interface TeamMember {
   lastTournament?: TournamentLog;
 }
 
+export interface Champion {
+  lastTournament: TournamentLog | undefined;
+  defeated: boolean;
+}
+
 export interface GameState {
+  champions: Record<Champions, Champion>;
   binder: {
     cards: number[];
     packsupplysetbonus: number;
@@ -90,6 +98,7 @@ export interface GameState {
   };
   deck: {
     cards: Deck;
+    championDeck: ChampionBattleDeck;
   };
   routes: Record<AllRouteNames, Route>;
   activities: {
@@ -99,6 +108,11 @@ export interface GameState {
       currentOpponent: number;
       gameRound: number;
       tournamentRound: number;
+    };
+    champion?: {
+      id: Champions;
+      deck: Deck;
+      gameRound: number;
     };
   };
   logs: {

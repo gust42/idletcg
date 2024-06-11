@@ -1,24 +1,23 @@
 import { Card } from "../../components/card";
 import useGameState from "../../hooks/usegamestate";
 import {
-  Tournament,
   TournamentLog,
   calculateWinRateModFromMeta,
   calculateWinner,
 } from "../../rules/tournaments/tournament";
 
 interface ITournamentPlayProps {
-  tournament: Tournament;
   log: TournamentLog;
   gameRound: number;
   opponent: number;
+  nameOfOpponent: string;
 }
 
 export const TournamentPlay = ({
-  tournament,
   log,
   gameRound,
   opponent,
+  nameOfOpponent,
 }: ITournamentPlayProps) => {
   const gameState = useGameState();
   const play = [];
@@ -64,7 +63,7 @@ export const TournamentPlay = ({
   return (
     <>
       <div className="font-semibold flex flex-row justify-evenly">
-        <div>My cards</div> <div>{tournament.opponents[opponent].name}</div>
+        <div>My cards</div> <div>{nameOfOpponent}</div>
       </div>
       <div className="flex flex-col gap-4">{play}</div>
     </>

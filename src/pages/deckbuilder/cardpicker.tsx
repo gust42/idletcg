@@ -32,6 +32,14 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
     }
   });
 
+  Object.keys(gameState.deck.championDeck).forEach((key) => {
+    const index = key as keyof typeof gameState.deck.championDeck;
+    const cardId = gameState.deck.championDeck[index];
+    if (cardId !== undefined) {
+      cardsToRemove.push(cardId);
+    }
+  });
+
   const myCards = gameState.binder.cards
     .filter((card) => !cardsToRemove.includes(card))
     .reverse();

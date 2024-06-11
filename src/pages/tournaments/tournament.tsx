@@ -1,7 +1,8 @@
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
 import useGameState from "../../hooks/usegamestate";
-import { navigate } from "../../logic/navigation";
+import { calculateRating } from "../../logic/helpers";
+import { AllRouteNames, navigate } from "../../logic/navigation";
 import {
   Tournament,
   TournamentLog,
@@ -11,9 +12,13 @@ import { TournamentJoinButton } from "./tournamentjoinbutton";
 
 interface ILastTournamentProps {
   log: TournamentLog;
+  route?: AllRouteNames;
 }
 
-export const LastTournament = ({ log }: ILastTournamentProps) => {
+export const LastTournament = ({
+  log,
+  route = "tournamentlog",
+}: ILastTournamentProps) => {
   if (log) {
     return (
       <div className="flex flex-row justify-between mb-4 items-center">
@@ -25,7 +30,7 @@ export const LastTournament = ({ log }: ILastTournamentProps) => {
           width="100px"
           action=""
           onClick={() => {
-            navigate("tournamentlog", { log });
+            navigate(route, { log });
           }}
         >
           Show log
@@ -51,7 +56,8 @@ export const TournamentInfo = ({
   const gameState = useGameState();
 
   const ratingColor =
-    gameState.entities.rating.amount >= tournament.ratingRequirement
+    calculateRating(gameState.entities.rating).amount >=
+    tournament.ratingRequirement
       ? "text-green-800"
       : "text-red-800";
 
@@ -81,9 +87,7 @@ export const TournamentInfo = ({
         {tournament.opponents.length * 3 - 6} points - {tournament.reward / 4}{" "}
         money
       </p>
-      <p className="font-semibold mb-4">
-        Trophys: {gameState.trophys[id]}
-      </p>
+      <p className="font-semibold mb-4">Trophys: {gameState.trophys[id]}</p>
       <LastTournament log={gameState.logs.tournament[id]} />
       <TournamentJoinButton id={id} onClick={onClick} />
     </Container>

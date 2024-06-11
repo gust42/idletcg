@@ -1,15 +1,17 @@
+import { Champions } from "../champions";
 import { Tournament, Tournaments } from "./tournament";
 
 export class CompetitiveSaturday implements Tournament {
   id = "competativesaturday" as keyof Tournaments;
   name = "Competitive Saturday";
   description = "A serious tournament for skilled players.";
+  champion = "mai-pudde" as Champions;
   entryFee = 100000;
   reward = 7500000;
   ratingRequirement = 2000;
   teammember = {
     name: "Terry",
-    speed: 0.7,
+    speed: 0.3,
     rating: 1000,
     deck: {
       slot1: undefined,

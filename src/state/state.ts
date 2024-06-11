@@ -2,6 +2,11 @@ import { GameState } from "../interfaces/logic";
 import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
+  champions: {
+    lsq: { lastTournament: undefined, defeated: false },
+    "mai-pudde": { lastTournament: undefined, defeated: false },
+    "ron-dinkel": { lastTournament: undefined, defeated: false },
+  },
   binder: {
     cards: [],
     packsupplysetbonus: 0,
@@ -84,6 +89,11 @@ export const state: GameState = {
       level: 1,
       on: undefined,
     },
+    teamPractice: {
+      acquired: false,
+      level: 1,
+      on: undefined,
+    },
   },
   activities: {
     tournament: undefined,
@@ -124,6 +134,17 @@ export const state: GameState = {
       slot2: undefined,
       slot3: undefined,
     },
+    championDeck: {
+      slot1: undefined,
+      slot2: undefined,
+      slot3: undefined,
+      slot4: undefined,
+      slot5: undefined,
+      slot6: undefined,
+      slot7: undefined,
+      slot8: undefined,
+      slot9: undefined,
+    },
   },
   routes: {
     packpoints: {
@@ -143,6 +164,10 @@ export const state: GameState = {
       notify: false,
     },
     activetournament: {
+      acquired: true,
+      notify: false,
+    },
+    activechampionbattle: {
       acquired: true,
       notify: false,
     },
@@ -188,6 +213,10 @@ export const state: GameState = {
     },
     cardmastery: {
       acquired: false,
+      notify: false,
+    },
+    championlog: {
+      acquired: true,
       notify: false,
     },
   },

@@ -4,6 +4,7 @@ import {
   applyAntiWeaknessEffect,
   applyOverKillEffect,
 } from "../../logic/cardmastery";
+import { Champions } from "../champions";
 
 export interface Tournaments {
   casualwednesday: Tournament;
@@ -25,7 +26,7 @@ export type TournamentLogRound = {
 export type TournamentEntry = Record<keyof Tournaments, TournamentLog>;
 
 export type TournamentLog = {
-  id: keyof Tournaments;
+  id: keyof Tournaments | Champions;
   rounds: TournamentLogRound[];
   points: number;
   myDeck: Deck;
@@ -40,6 +41,7 @@ export interface Tournament {
   reward: number;
   ratingRequirement: number;
   teammember: TeamMember;
+  champion: Champions;
 }
 
 export const metaTypes = ["Aggro", "Control", "Combo"];
