@@ -89,6 +89,11 @@ export const state: GameState = {
       level: 1,
       on: undefined,
     },
+    teamPractice: {
+      acquired: false,
+      level: 1,
+      on: undefined,
+    },
   },
   activities: {
     tournament: undefined,

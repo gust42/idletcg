@@ -1,4 +1,5 @@
 import useGameState from "../../hooks/usegamestate";
+import { calculateRating } from "../../logic/helpers";
 import MessageHandler from "../../logic/messagehandler";
 import { navigate } from "../../logic/navigation";
 import { AllTournaments } from "../../rules/ruleshandler";
@@ -15,7 +16,7 @@ export const TournamentTab = () => {
   const tournaments = Object.keys(AllTournaments)
     .filter(
       (t) =>
-        gameState.entities.rating.amount + 100 >=
+        calculateRating(gameState.entities.rating).amount + 100 >=
         AllTournaments[t as keyof Tournaments].ratingRequirement
     )
     .map((key) => {

@@ -11,7 +11,7 @@ export class CompetitiveSaturday implements Tournament {
   ratingRequirement = 2000;
   teammember = {
     name: "Terry",
-    speed: 0.7,
+    speed: 0.3,
     rating: 1000,
     deck: {
       slot1: undefined,

@@ -11,7 +11,7 @@ export class FunFriday implements Tournament {
   ratingRequirement = 1200;
   teammember = {
     name: "Charlie",
-    speed: 0.4,
+    speed: 0.2,
     rating: 1000,
     deck: {
       slot1: undefined,

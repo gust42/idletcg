@@ -41,7 +41,7 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
     <Container>
       <div className="text-xl">{member.name}</div>
       <div className="flex flex-row justify-between mt-8">
-        <div>Rating: {member.rating}</div>
+        <div>Rating: {Math.floor(member.rating)}</div>
         <div>Tournament play speed: {member.speed * 100}%</div>
       </div>
       <div className="flex flex-row justify-between mt-8"></div>

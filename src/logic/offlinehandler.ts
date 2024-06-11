@@ -63,9 +63,13 @@ export class OfflineHandler {
 
     const timeDiff = now - lastTime;
 
-    const ticks = Math.floor(timeDiff / tickLength);
+    const offlineTimeLimit = 36 * 60 * 60 * 1000;
 
-    return ticks;
+    if (timeDiff > offlineTimeLimit) {
+      return Math.floor(offlineTimeLimit / tickLength);
+    }
+
+    return Math.floor(timeDiff / tickLength);
   }
 
   run(ticks: number, gameLoop: GameLoop, onDone: () => void) {

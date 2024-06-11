@@ -128,7 +128,7 @@ export class TournamentManager {
           const prizeMoney = getTournamentPrizeMoney(t.currentTournament, log);
           state.entities.money.amount += prizeMoney;
 
-          t.rating += log.points;
+          t.rating += log.points * 0.2;
           t.tournamentTicks = 0;
           t.lastTournament = log;
         } else {

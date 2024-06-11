@@ -11,7 +11,7 @@ export class CasualWednesday implements Tournament {
   ratingRequirement = 1000;
   teammember = {
     name: "Timmy",
-    speed: 0.2,
+    speed: 0.1,
     rating: 1000,
     deck: {
       slot1: undefined,

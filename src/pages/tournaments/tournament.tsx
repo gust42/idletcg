@@ -1,6 +1,7 @@
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
 import useGameState from "../../hooks/usegamestate";
+import { calculateRating } from "../../logic/helpers";
 import { AllRouteNames, navigate } from "../../logic/navigation";
 import {
   Tournament,
@@ -55,7 +56,8 @@ export const TournamentInfo = ({
   const gameState = useGameState();
 
   const ratingColor =
-    gameState.entities.rating.amount >= tournament.ratingRequirement
+    calculateRating(gameState.entities.rating).amount >=
+    tournament.ratingRequirement
       ? "text-green-800"
       : "text-red-800";
 
