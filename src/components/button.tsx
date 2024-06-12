@@ -56,7 +56,7 @@ export const Button = ({
     onPress(e);
     mouseDownRef.current = setInterval(() => {
       onPress(e);
-    }, 500);
+    }, 300);
   };
 
   const onMouseUp = () => {

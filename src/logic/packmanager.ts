@@ -51,7 +51,7 @@ export class PackManager {
 
     const amount = this.rulesHandler.getRuleValue("PackSupplyTick");
     let packSupply =
-      amount + state.pack.supply.amount * 4 + state.binder.packsupplysetbonus;
+      amount + state.pack.supply.amount * 2 + state.binder.packsupplysetbonus;
     if (state.champions.lsq.defeated) packSupply *= 2;
     if (state.champions["mai-pudde"].defeated) packSupply *= 3;
     if (state.champions["ron-dinkel"].defeated) packSupply *= 4;
