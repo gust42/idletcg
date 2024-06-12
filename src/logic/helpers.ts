@@ -44,6 +44,19 @@ export function calculateUniqueCardCost(id: number, state: GameState) {
   return [costBadCards, costGoodCards, costMetaCards] as const;
 }
 
+export function calculateRoundTime(state: GameState) {
+  const gameLoop = GameLoop.getInstance();
+  const totalTicks =
+    gameLoop.rulesHandler.getRuleValue("TournamentRoundTicks") -
+    AllSkills.tournamentGrinder.effect(state.skills.tournamentGrinder.level);
+  const tickLength = gameLoop.rulesHandler.getRuleValue("TickLength");
+  return (
+    ((totalTicks - gameLoop.tournamentManager.tickCounter) * tickLength) /
+      1000 +
+    1
+  );
+}
+
 export const calculateTotalTournamentTime = (
   id: keyof Tournaments,
   modifier = 1
@@ -57,22 +70,24 @@ export const calculateTotalTournamentTime = (
 
   const deckSize = GameLoop.getInstance().rulesHandler.getRuleValue("DeckSize");
 
-  const totalTicks = tournament.opponents.length * deckSize * ruleRoundTick;
+  const roundWaitingTicks = ruleRoundTick * tournament.opponents.length;
+
+  const totalTicks =
+    tournament.opponents.length * deckSize * ruleRoundTick + roundWaitingTicks;
 
   return Math.round((totalTicks * tickLength * modifier) / 1000);
 };
 
-export function calculateTournamentTime(id?: keyof Tournaments) {
-  const gameState = GameLoop.getInstance().stateHandler.getState();
-  if (!id) return [0, 0] as const;
-  const tournament = AllTournaments[id];
+export function calculateRemainingTournamentTime(id?: keyof Tournaments) {
+  const gameLoop = GameLoop.getInstance();
+  const gameState = gameLoop.stateHandler.getState();
+  if (!id || !gameState.activities.tournament) return 0;
 
-  const deckSize = GameLoop.getInstance().rulesHandler.getRuleValue("DeckSize");
-  const ruleRoundTick = GameLoop.getInstance().rulesHandler.getRuleValue(
+  const deckSize = gameLoop.rulesHandler.getRuleValue("DeckSize");
+  const ruleRoundTick = gameLoop.rulesHandler.getRuleValue(
     "TournamentRoundTicks"
   );
-  const tickLength =
-    GameLoop.getInstance().rulesHandler.getRuleValue("TickLength");
+  const tickLength = gameLoop.rulesHandler.getRuleValue("TickLength");
 
   const roundTicks = Math.max(
     ruleRoundTick -
@@ -84,21 +99,22 @@ export function calculateTournamentTime(id?: keyof Tournaments) {
 
   const oneRound = deckSize * roundTicks;
 
-  const totalTicks =
-    tournament.opponents.length * oneRound +
-    tournament.opponents.length * roundTicks;
+  const currentOpponentTicks =
+    gameState.activities.tournament.currentOpponent * oneRound;
+  const currentRoundTicks =
+    gameState.activities.tournament.gameRound * roundTicks;
+  const roundWaitingTicks =
+    gameState.activities.tournament.currentOpponent * roundTicks;
 
-  const passedTicks = gameState.activities.tournament
-    ? gameState.activities.tournament.currentOpponent * oneRound +
-      gameState.activities.tournament.gameRound * roundTicks
-    : 0;
+  const passedTicks =
+    currentOpponentTicks +
+    currentRoundTicks +
+    roundWaitingTicks +
+    gameLoop.tournamentManager.tickCounter;
 
-  const remainingTicks = totalTicks - passedTicks;
+  const totalTicks = calculateTotalTournamentTime(id);
 
-  return [
-    (totalTicks * tickLength) / 1000,
-    (remainingTicks * tickLength) / 1000,
-  ] as const;
+  return ((totalTicks - passedTicks) * tickLength) / 1000;
 }
 
 export function calculateOfflineDiff(
@@ -134,12 +150,12 @@ export const getCardSize = (size: "small" | "medium" | "large") => {
   switch (size) {
     case "small":
       return [
-        "w-[80px] max-w-[80px]  md:w-[100px] md:max-w-[100px]",
+        "min-w-[60px] max-w-[75px]  md:w-[100px] md:max-w-[100px]",
         "text-[2em]",
       ];
     case "medium":
       return [
-        "w-[80px] max-w-[80px] md:w-[140px] md:max-w-[140px]",
+        "min-w-[60px] max-w-[75px] md:w-[140px] md:max-w-[140px]",
         "text-[3.5em]",
       ];
     case "large":

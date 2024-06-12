@@ -22,7 +22,7 @@ export default function ResourceView() {
       className=" sticky top-0 overflow-hidden flex flex-col h-full
   "
     >
-      <h4 className="text-lg mb-4">Resources</h4>
+      <h4 className="text-lg mb-1 md:mb-4">Resources</h4>
       <div className=" flex flex-col gap-2">
         <ResourceItem
           name="Money"
@@ -68,30 +68,32 @@ export default function ResourceView() {
 
       {gameState.routes.tournamentstab.acquired && (
         <>
-          <h4 className="text-lg mt-4 mb-4">Activities</h4>
+          <h4 className="text-lg mt-1 mb-1 md:mt-4 md:mb-4">Activities</h4>
           <TournamentProgress />
+          <div className="mt-1 md:mt-4">
+            {teamMemberTournament.map((member) => {
+              const id =
+                member.currentTournament as keyof typeof AllTournaments;
+              const tournament = AllTournaments[id];
+              return (
+                <div key={member.name} className="flex flex-col gap-1 mb-4">
+                  <div className="">{member.name} is playing</div>
+                  <div className="font-semibold">{tournament.name}</div>
+                  <div className="flex flex-row gap-4">
+                    Time
+                    <div className="font-semibold">
+                      {calculateTotalTournamentTime(id, 1 + member.speed) -
+                        (member.tournamentTicks ?? 0)}
+                      s
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </>
       )}
-      <div className="mt-4">
-        {teamMemberTournament.map((member) => {
-          const id = member.currentTournament as keyof typeof AllTournaments;
-          const tournament = AllTournaments[id];
-          return (
-            <div key={member.name} className="flex flex-col gap-1 mb-4">
-              <div className="">{member.name} is playing</div>
-              <div className="font-semibold">{tournament.name}</div>
-              <div className="flex flex-row gap-4">
-                Time
-                <div className="font-semibold">
-                  {calculateTotalTournamentTime(id, 1 + member.speed) -
-                    (member.tournamentTicks ?? 0)}
-                  s
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+
       {gameState.routes.skillstab.acquired && (
         <div
           className="mt-4 underline cursor-pointer"

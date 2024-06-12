@@ -16,7 +16,6 @@ import {
   TournamentLog,
   Tournaments,
 } from "../../rules/tournaments/tournament";
-import { LastTournament } from "../tournaments/tournament";
 import { TrophyPicker } from "./trophypicker";
 
 interface ITrophySlotProps {
@@ -50,7 +49,7 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
       ]
   );
 
-  let reward = gameState.champions[champion.id].defeated ? (
+  const reward = gameState.champions[champion.id].defeated ? (
     <div className="text-green-600">{champion.reward}</div>
   ) : (
     champion.reward
@@ -69,7 +68,7 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
             className={`${border} ${pxs} aspect-[2/3] text-center  cursor-pointer`}
           >
             {trophy !== false ? (
-              <Trophy trophy={tournament.id} size={"medium"} />
+              <Trophy trophy={tournament.id} size="medium" />
             ) : (
               <div className="border border-black flex flex-col justify-center rounded h-full gap-4">
                 Empty slot
@@ -88,15 +87,20 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
           ) : (
             <>
               {gameState.champions[champion.id].lastTournament && (
-                <HelpText>
-                  <LastTournament
-                    log={
-                      gameState.champions[champion.id]
-                        .lastTournament as TournamentLog
-                    }
-                    route="championlog"
-                  />
-                </HelpText>
+                <>
+                  <Button
+                    action=""
+                    onClick={() => {
+                      navigate("championlog", {
+                        log: gameState.champions[champion.id]
+                          .lastTournament as TournamentLog,
+                      });
+                    }}
+                  >
+                    Show last battle
+                  </Button>
+                  <div className="mb-1" />
+                </>
               )}
               <Button
                 onClick={() => {

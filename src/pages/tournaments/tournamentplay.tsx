@@ -42,11 +42,11 @@ export const TournamentPlay = ({
 
         <div>
           {result === "win" ? (
-            <div className="text-green-600 text-lg">You win!</div>
+            <div className="text-green-600 text-base md:text-lg">You win!</div>
           ) : result === "loss" ? (
-            <div className="text-red-600 text-lg">You lose!</div>
+            <div className="text-red-600 text-base md:text-lg">You lose!</div>
           ) : (
-            <div className="text-yellow-600 text-lg">Draw!</div>
+            <div className="text-yellow-600 text-base  md:text-lg">Draw!</div>
           )}
         </div>
 
