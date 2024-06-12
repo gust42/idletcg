@@ -154,15 +154,7 @@ export default class RulesHandler {
       changed = true;
     }
 
-    const nrOfTrophies = () => {
-      const trophys = state.trophys;
-      let totalTrophys: number = 0;
-      for (const trophy in trophys) {
-        totalTrophys += trophys[trophy as keyof Tournaments];
-      }
-      return totalTrophys;
-    };
-    if (!state.routes.trophys.acquired && nrOfTrophies() > 0) {
+    if (!state.routes.trophys.acquired && state.trophys.funfriday > 0) {
       state.routes.trophys.acquired = true;
       state.routes.skillstab.notify = true;
       state.routes.trophys.notify = true;
