@@ -1,4 +1,5 @@
 import { GameState } from "../../interfaces/logic";
+import GameLoop from "../../logic/gameloop";
 import { roundToNearestThousand } from "../../logic/helpers";
 import { Skill } from "./skill";
 
@@ -26,7 +27,10 @@ export class TournamentGrinder implements Skill {
   }
 
   friendyEffect(level: number) {
-    return `${this.effect(level)}s faster / game round`;
+    const roundTime = GameLoop.getInstance().rulesHandler.getRuleValue(
+      "TournamentRoundTicks"
+    );
+    return `${roundTime - this.effect(level)}s per round`;
   }
 
   visible(gameState: GameState) {

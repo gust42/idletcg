@@ -67,6 +67,7 @@ export default function BuyButton({ disabled, type, ...props }: IButtonProps) {
           action={type}
           disabled={isDisabled}
           onClick={(e) => clickEvent(e, 1)}
+          repeatable
         >
           {props.text}
           <div className="button-cost"> {props.cost} money</div>

@@ -51,9 +51,7 @@ export function calculateRoundTime(state: GameState) {
     AllSkills.tournamentGrinder.effect(state.skills.tournamentGrinder.level);
   const tickLength = gameLoop.rulesHandler.getRuleValue("TickLength");
   return (
-    ((totalTicks - gameLoop.tournamentManager.tickCounter) * tickLength) /
-      1000 +
-    1
+    ((totalTicks - gameLoop.tournamentManager.tickCounter) * tickLength) / 1000
   );
 }
 
@@ -68,12 +66,19 @@ export const calculateTotalTournamentTime = (
   const tickLength =
     GameLoop.getInstance().rulesHandler.getRuleValue("TickLength");
 
+  const state = GameLoop.getInstance().stateHandler.getState();
+
+  const calculatedRoundTicks =
+    ruleRoundTick -
+    AllSkills.tournamentGrinder.effect(state.skills.tournamentGrinder.level);
+
   const deckSize = GameLoop.getInstance().rulesHandler.getRuleValue("DeckSize");
 
-  const roundWaitingTicks = ruleRoundTick * tournament.opponents.length;
+  const roundWaitingTicks = calculatedRoundTicks * tournament.opponents.length;
 
   const totalTicks =
-    tournament.opponents.length * deckSize * ruleRoundTick + roundWaitingTicks;
+    tournament.opponents.length * deckSize * calculatedRoundTicks +
+    roundWaitingTicks;
 
   return Math.round((totalTicks * tickLength * modifier) / 1000);
 };

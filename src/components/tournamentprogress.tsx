@@ -42,7 +42,7 @@ export const TournamentProgress = memo(() => {
         </div>
         <div className="flex flex-row gap-4">
           Time
-          <div className="font-semibold">{totalTime}s</div>
+          <div className="font-semibold">{totalTime > 0 ? totalTime : 0}s</div>
         </div>
       </div>
     )

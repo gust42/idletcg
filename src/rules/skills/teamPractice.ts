@@ -4,7 +4,7 @@ import { Skill } from "./skill";
 
 export class TeamPractice implements Skill {
   rule = {
-    requirement: 400000,
+    requirement: 1000000,
     increase: 1.05,
     value: 2,
     increaseEffect: 2,
