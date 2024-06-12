@@ -22,14 +22,13 @@ export const DeckbuilderTab = () => {
   };
 
   const championUnlocked = Object.keys(gameState.trophycase).some(
-    (t) =>
-      gameState.trophycase[t as keyof typeof gameState.trophycase] !== undefined
+    (t) => gameState.trophycase[t as keyof typeof gameState.trophycase]
   );
 
   return (
     <div className="flex flex-col gap-2">
       <Container>
-        <SmallTitle>Tournaments</SmallTitle>
+        <SmallTitle>Tournament deck</SmallTitle>
         <div className="flex flex-row flex-wrap gap-2">
           {Array.from({ length: rule.value }).map((_, i) => {
             const index = `slot${i + 1}` as keyof typeof gameState.deck.cards;

@@ -1,5 +1,5 @@
 import { ActionContainer, Container } from "../../components/container";
-import { HelpText, Title } from "../../components/typography";
+import { HelpText, SmallTitle, Title } from "../../components/typography";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 import MessageHandler from "../../logic/messagehandler";
@@ -24,16 +24,23 @@ export const Pack = () => {
 
   return (
     <Container>
-      <div className="md:w-[320px]">
-        <Title>
-          Packs - {format(gameState.entities.packsupply.amount)} available
-        </Title>
+      <div className="md:w-[320px] h-[220px] md:h-auto flex flex-col justify-between">
+        <div>
+          <Title>
+            <div className="flex justify-between">
+              Packs{" "}
+              <SmallTitle>
+                {format(gameState.entities.packsupply.amount)} available
+              </SmallTitle>
+            </div>
+          </Title>
 
-        <div className="mb-4">
-          <HelpText>
-            Buy packs to earn cards to sell for money to buy more packs, maybe
-            you will unlock something more. Packs is resupplied every tick
-          </HelpText>
+          <div className="mb-4">
+            <HelpText>
+              Buy packs to earn cards to sell for money to buy more packs, maybe
+              you will unlock something more. Packs is resupplied every tick
+            </HelpText>
+          </div>
         </div>
         <ActionContainer>
           <BuyButton
