@@ -27,9 +27,11 @@ export const Button = ({
 
   useEffect(() => {
     window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener("touchend", onMouseUp);
     return () => {
       window.removeEventListener("mouseup", onMouseUp);
-      clearInterval(mouseDownRef.current);
+      window.removeEventListener("touchend", onMouseUp);
+      onMouseUp();
     };
   }, []);
 
@@ -43,6 +45,8 @@ export const Button = ({
   };
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (mouseDownRef.current !== 0) return;
+
     onPress(e);
     mouseDownRef.current = setInterval(() => {
       onPress(e);
@@ -51,16 +55,18 @@ export const Button = ({
 
   const onMouseUp = () => {
     clearInterval(mouseDownRef.current);
+    mouseDownRef.current = 0;
   };
 
   return (
     <div
       style={{ width }}
-      className="p-[2px] bg-slate-600 uppercase rounded select-none  hover:bg-slate-800 w-full flex flex-row items-stretch"
+      className="p-[2px] bg-slate-600 uppercase rounded select-none hover:bg-slate-800 w-full flex flex-row items-stretch"
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onTouchStart={onTouchStart}
       onTouchEnd={onMouseUp}
+      onTouchCancel={onMouseUp}
     >
       {disabled || !action ? (
         ""

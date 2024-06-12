@@ -34,13 +34,14 @@ export const handleUniqueCardMessage = (m: Message, state: GameState) => {
     const [costBadCards, costGoodCards, costMetaCards] =
       calculateUniqueCardCost(data.id as number, state);
 
-    if (state.entities.badcards.amount <= costBadCards)
+    if (state.entities.badcards.amount < costBadCards)
       fail += "Not enough bad cards \n";
-    if (state.entities.goodcards.amount <= costGoodCards)
+    if (state.entities.goodcards.amount < costGoodCards)
       fail += "Not enough good cards \n";
-    if (state.entities.metacards.amount <= costMetaCards)
+    if (state.entities.metacards.amount < costMetaCards)
       fail += "Not enough meta cards";
 
+    console.log(fail, costMetaCards, state.entities.metacards.amount);
     if (!fail) {
       const cardSet = Math.floor(data.id / cardsPerSet);
       const rowUnlocked = isRowUnlocked(cardSet, state);

@@ -4,11 +4,16 @@ interface BulkButtonProps {
   click: (e: React.MouseEvent<HTMLDivElement>) => void;
   amount: number;
   action?: string;
+  disabled?: boolean;
 }
 
-export default function BulkButton({ click, amount }: BulkButtonProps) {
+export default function BulkButton({
+  click,
+  amount,
+  disabled = false,
+}: BulkButtonProps) {
   return (
-    <Button width={"33%"} action="" onClick={click}>
+    <Button disabled={disabled} width={"33%"} action="" onClick={click}>
       {amount === -1 ? "All" : `x${amount}`}
     </Button>
   );

@@ -36,12 +36,27 @@ export default function BuyButton({ disabled, type, ...props }: IButtonProps) {
       ? props.resource.amount
       : props.resource.amount / props.cost;
 
-  if (amount >= 10)
-    x10 = <BulkButton amount={10} click={(e) => clickEvent(e, 10)} />;
-  if (amount >= 100)
-    x100 = <BulkButton amount={100} click={(e) => clickEvent(e, 100)} />;
-  if (amount >= 1000)
-    x1000 = <BulkButton amount={1000} click={(e) => clickEvent(e, 1000)} />;
+  x10 = (
+    <BulkButton
+      disabled={amount < 10}
+      amount={10}
+      click={(e) => clickEvent(e, 10)}
+    />
+  );
+  x100 = (
+    <BulkButton
+      disabled={amount < 100}
+      amount={100}
+      click={(e) => clickEvent(e, 100)}
+    />
+  );
+  x1000 = (
+    <BulkButton
+      disabled={amount < 1000}
+      amount={1000}
+      click={(e) => clickEvent(e, 1000)}
+    />
+  );
   xAll = <BulkButton amount={-1} click={(e) => clickEvent(e, -1)} />;
 
   return (
