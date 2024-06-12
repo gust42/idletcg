@@ -13,7 +13,13 @@ export default function BulkButton({
   disabled = false,
 }: BulkButtonProps) {
   return (
-    <Button disabled={disabled} width={"33%"} action="" onClick={click}>
+    <Button
+      disabled={disabled}
+      width={"33%"}
+      action=""
+      onClick={click}
+      repeatable
+    >
       {amount === -1 ? "All" : `x${amount}`}
     </Button>
   );

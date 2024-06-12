@@ -81,6 +81,7 @@ export const SkillInfo = ({
                 </div>
                 <ActionContainer>
                   <Button
+                    repeatable
                     action="Levelup"
                     onClick={levelUp}
                     disabled={

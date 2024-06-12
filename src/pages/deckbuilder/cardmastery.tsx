@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
-import { HelpText, Title } from "../../components/typography";
+import { HelpText, SmallTitle, Title } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
-import MessageHandler from "../../logic/messagehandler";
-import { Ability, cardMasteryTree } from "../../rules/cardmastery";
 import { CardMasteryMessage } from "../../logic/cardmastery";
 import { calculateCardMasteryPoints } from "../../logic/helpers";
+import MessageHandler from "../../logic/messagehandler";
+import { Ability, cardMasteryTree } from "../../rules/cardmastery";
 
 const Button = ({
   children,
@@ -125,7 +125,7 @@ export const CardMastery = () => {
         {["Aggro", "Control", "Combo"].map((tree) => {
           return (
             <Button key={tree} onClick={() => choosePath(tree)}>
-              <Title>{tree}</Title>
+              <SmallTitle>{tree}</SmallTitle>
             </Button>
           );
         })}

@@ -7,6 +7,7 @@ interface IButtonProps {
   disabled?: boolean;
   action: string;
   value?: string;
+  repeatable?: boolean;
 }
 
 export const Button = ({
@@ -16,8 +17,10 @@ export const Button = ({
   disabled,
   children,
   action = "Buy",
+  repeatable = false,
 }: PropsWithChildren<IButtonProps>) => {
   const mouseDownRef = useRef(0);
+  const touchDownRef = useRef(0);
   const isDisabled = disabled ? "#bbb" : "";
 
   const cursor = disabled ? "cursor-not-allowed" : "cursor-pointer";
@@ -28,6 +31,7 @@ export const Button = ({
   useEffect(() => {
     window.addEventListener("mouseup", onMouseUp);
     window.addEventListener("touchend", onMouseUp);
+
     return () => {
       window.removeEventListener("mouseup", onMouseUp);
       window.removeEventListener("touchend", onMouseUp);
@@ -41,7 +45,9 @@ export const Button = ({
   };
 
   const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    onMouseDown(e as unknown as React.MouseEvent<HTMLDivElement>);
+    touchDownRef.current = setTimeout(() => {
+      onMouseDown(e as unknown as React.MouseEvent<HTMLDivElement>);
+    }, 200);
   };
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -58,15 +64,36 @@ export const Button = ({
     mouseDownRef.current = 0;
   };
 
+  const onTouchMove = () => {
+    clearTimeout(touchDownRef.current);
+    onMouseUp();
+  };
+
+  const onTouchEnd = () => {
+    clearTimeout(touchDownRef.current);
+    onMouseUp();
+  };
+
+  if (disabled) {
+    onMouseUp();
+  }
+
   return (
     <div
       style={{ width }}
       className="p-[2px] bg-slate-600 uppercase rounded select-none hover:bg-slate-800 w-full flex flex-row items-stretch"
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onMouseUp}
-      onTouchCancel={onMouseUp}
+      {...(repeatable
+        ? {
+            onMouseDown,
+            onMouseUp,
+            onTouchStart,
+            onTouchEnd,
+            onTouchCancel: onMouseUp,
+            onTouchMove,
+          }
+        : {
+            onClick: onPress,
+          })}
     >
       {disabled || !action ? (
         ""
