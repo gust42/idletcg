@@ -1,7 +1,8 @@
 export class TimerHandler {
   private static instance: TimerHandler;
 
-  private timers: (() => void)[] = [];
+  private timers: Map<number, () => void> = new Map();
+  private nextId: number = 0;
 
   static getInstance() {
     if (!this.instance) this.instance = new TimerHandler();
@@ -9,11 +10,13 @@ export class TimerHandler {
   }
 
   setTimer(callback: () => void) {
-    return this.timers.push(callback) - 1;
+    const id = this.nextId++;
+    this.timers.set(id, callback);
+    return id;
   }
 
   removeTimer(id: number) {
-    this.timers.splice(id, 1);
+    this.timers.delete(id);
   }
 
   run() {

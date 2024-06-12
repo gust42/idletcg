@@ -74,11 +74,11 @@ export const TournamentInfo = ({
         </p>
       )}
 
-      <p className="font-bold mb-4">Rewards</p>
-      <p className="font-semibold mb-4">
+      <p className="font-bold mb-2 md:mb-4">Rewards</p>
+      <p className="font-semibold mb-0 md:mb-4">
         {tournament.opponents.length * 3} points - {tournament.reward} money
       </p>
-      <p className="font-semibold mb-4">
+      <p className="font-semibold mb-0 md:mb-4">
         {tournament.opponents.length * 3 - 3} points - {tournament.reward / 2}{" "}
         money
       </p>
@@ -87,7 +87,7 @@ export const TournamentInfo = ({
         {tournament.opponents.length * 3 - 6} points - {tournament.reward / 4}{" "}
         money
       </p>
-      <p className="font-semibold mb-4">Trophys: {gameState.trophys[id]}</p>
+      <p className="font-bold mb-4">Trophys: {gameState.trophys[id]}</p>
       <LastTournament log={gameState.logs.tournament[id]} />
       <TournamentJoinButton id={id} onClick={onClick} />
     </Container>

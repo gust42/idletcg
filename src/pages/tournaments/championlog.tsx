@@ -1,3 +1,5 @@
+import { Button } from "../../components/button";
+import { navigate } from "../../logic/navigation";
 import { AllChampions } from "../../rules/champions";
 import { TournamentLog as TLog } from "../../rules/tournaments/tournament";
 import { TournamentPlay } from "./tournamentplay";
@@ -17,6 +19,16 @@ export const ChampionLog = ({ log }: IChampionLogProps) => {
 
   return (
     <div className="flex flex-col gap-2 w-full md:w-[400px]">
+      <div className="">
+        <Button
+          action=""
+          onClick={() => {
+            navigate("trophys");
+          }}
+        >
+          Return
+        </Button>
+      </div>
       <TournamentPlay
         nameOfOpponent={champion.name}
         gameRound={deckSize}

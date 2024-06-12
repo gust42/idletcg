@@ -48,6 +48,12 @@ function App() {
       <div className="flex flex-row items-stretch flex-grow pt-10 md:pt-16">
         <aside className="p-2 bg-slate-300 border-r-2 w-[120px] md:min-w-[180px] fixed z-10 min-h-screen">
           <ResourceView />
+          <div className="text-xs md:text-base mt-2">
+            If you like this game,{" "}
+            <a href="https://buymeacoffee.com/gust42" target="_blank">
+              buy me a coffee!
+            </a>
+          </div>
         </aside>
         <article className="bg-gradient-to-b from-slate-200 to-slate-300 pl-[126px] md:pl-[196px] p-2 md:p-4 flex-grow overflow-auto">
           <Navigation />

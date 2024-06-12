@@ -47,6 +47,19 @@ export const Settings = () => {
           Clear data
         </Button>
       </div>
+      <div className="text-lg mt-4">
+        Check out my other games (desktop):
+        <div>
+          <a href="https://www.dragonhunt.net" target="_blank">
+            Dragonhunt
+          </a>
+        </div>
+        <div>
+          <a href="https://landofblood.firebaseapp.com" target="_blank">
+            Land of blood
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

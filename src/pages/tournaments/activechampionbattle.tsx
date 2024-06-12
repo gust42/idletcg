@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 import { Thinking } from "../../components/Thinking";
+import { Button } from "../../components/button";
 import { SmallTitle } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
+import { navigate } from "../../logic/navigation";
 import { AllChampions, Champions } from "../../rules/champions";
 import { TournamentLog } from "../../rules/tournaments/tournament";
 import { TournamentPlay } from "./tournamentplay";
@@ -57,6 +59,21 @@ export const ActiveChampionBattle = () => {
         <div className="pt-4 text-2xl text-green-600">
           You have defeated {champion.name}
         </div>
+      )}
+      {gameRound >= deckSize && log.points < 3 && (
+        <>
+          <div className="pt-4 text-xl text-red-600">
+            You have been defeated by {champion.name}
+          </div>
+          <Button
+            action=""
+            onClick={() => {
+              navigate("trophys");
+            }}
+          >
+            Return
+          </Button>
+        </>
       )}
     </div>
   );
