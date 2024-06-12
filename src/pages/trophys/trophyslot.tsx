@@ -49,7 +49,7 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
       ]
   );
 
-  let reward = gameState.champions[champion.id].defeated ? (
+  const reward = gameState.champions[champion.id].defeated ? (
     <div className="text-green-600">{champion.reward}</div>
   ) : (
     champion.reward
