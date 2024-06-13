@@ -24,14 +24,16 @@ export const Pack = () => {
 
   return (
     <Container>
-      <div className="md:w-[320px] h-[220px] md:h-auto flex flex-col justify-between">
+      <div className="h-auto flex flex-col justify-between">
         <div>
           <Title>
             <div className="flex justify-between">
               Packs{" "}
-              <SmallTitle>
-                {format(gameState.entities.packsupply.amount)} available
-              </SmallTitle>
+              {gameState.entities.packsupply.acquired && (
+                <SmallTitle>
+                  {format(gameState.entities.packsupply.amount)} available
+                </SmallTitle>
+              )}
             </div>
           </Title>
 

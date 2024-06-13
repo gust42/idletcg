@@ -60,7 +60,7 @@ export default function BuyButton({ disabled, type, ...props }: IButtonProps) {
   xAll = <BulkButton amount={-1} click={(e) => clickEvent(e, -1)} />;
 
   return (
-    <div className=" w-full md:w-[320px] flex flex-col">
+    <div className=" w-full flex flex-col">
       <div className="flex flex-row">
         <Button
           width={gameState.pack.xAll.amount === 1 ? "95%" : "100%"}

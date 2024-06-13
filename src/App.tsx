@@ -6,6 +6,7 @@ import ResourceView from "./components/resourceview";
 import Tab from "./components/tab";
 import useGameState from "./hooks/usegamestate";
 import GameLoop, { offlineHandler } from "./logic/gameloop";
+import { navigate } from "./logic/navigation";
 import { Tabs, tabs } from "./rules/tabs";
 
 function App() {
@@ -46,13 +47,23 @@ function App() {
           })}
       </nav>
       <div className="flex flex-row items-stretch flex-grow pt-10 md:pt-16">
-        <aside className="p-2 bg-slate-300 border-r-2 w-[120px] md:min-w-[180px] fixed z-10 min-h-screen">
+        <aside className="p-2 bg-slate-300 border-r-2 w-[120px] md:min-w-[180px] fixed z-10 min-h-[calc(100vh-40px)] md:min-h-[calc(100vh-64px)] flex justify-between flex-col">
           <ResourceView />
-          <div className="text-xs md:text-base mt-2">
+          <div className="text-xs md:text-base">
             If you like this game,{" "}
             <a href="https://buymeacoffee.com/gust42" target="_blank">
               buy me a coffee!
             </a>
+            {gameState.routes.skillstab.acquired && (
+              <div
+                className="mt-4 underline cursor-pointer"
+                onClick={() => {
+                  navigate("settings");
+                }}
+              >
+                Settings
+              </div>
+            )}
           </div>
         </aside>
         <article className="bg-gradient-to-b from-slate-200 to-slate-300 pl-[126px] md:pl-[196px] p-2 md:p-4 flex-grow overflow-auto">
