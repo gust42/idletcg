@@ -39,8 +39,7 @@ export const Pack = () => {
 
           <div className="mb-4">
             <HelpText>
-              Buy packs to earn cards to sell for money to buy more packs, maybe
-              you will unlock something more. Packs is resupplied every tick
+              Buy packs to earn cards to sell for money to buy more packs.
             </HelpText>
           </div>
         </div>

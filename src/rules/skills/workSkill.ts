@@ -3,10 +3,10 @@ import { Skill, SkillRule } from "./skill";
 
 export class WorkSkill implements Skill {
   rule: SkillRule = {
-    requirement: 20,
-    increase: 1.5,
+    requirement: 5,
+    increase: 1.8,
     value: 1,
-    increaseEffect: 1.15,
+    increaseEffect: 1.1,
   };
 
   title = "Content creator";
