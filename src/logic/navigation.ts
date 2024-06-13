@@ -123,9 +123,15 @@ export const routeState = proxy<RouteState>({
 });
 
 export const navigate = (route: AllRouteNames, props = {}) => {
+  localStorage.setItem("lastRoute", JSON.stringify(routeState));
   routeState.route = route;
   routeState.props = props;
   localStorage.setItem("routeState", JSON.stringify({ route, props }));
+};
+
+export const goBack = () => {
+  const lastRoute = JSON.parse(localStorage.getItem("lastRoute") ?? "{}");
+  navigate(lastRoute.route, lastRoute.props);
 };
 
 export const findParentRoute = (route: AllSubroutes) => {
