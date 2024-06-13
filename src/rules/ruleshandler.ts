@@ -36,16 +36,6 @@ export default class RulesHandler {
   checkActiveRules(state: GameState) {
     let changed = false;
 
-    if (
-      !state.routes.packpoints.acquired &&
-      state.entities.packbonuspoints.amount >= 10
-    ) {
-      state.routes.packpoints.acquired = true;
-      state.routes.packstab.notify = true;
-      state.routes.packpoints.notify = true;
-      changed = true;
-    }
-
     const totalcards =
       state.entities.badcards.amount +
       state.entities.goodcards.amount +
@@ -66,7 +56,7 @@ export default class RulesHandler {
     ) {
       state.routes.skillstab.acquired = true;
       state.routes.skills.acquired = true;
-      state.routes.skills.notify = true;
+      state.routes.skillstab.notify = true;
 
       changed = true;
     }
@@ -104,6 +94,17 @@ export default class RulesHandler {
     }
 
     if (
+      !state.entities.packbonuspoints.acquired &&
+      state.entities.packbonuspoints.amount > 40
+    ) {
+      state.entities.packbonuspoints.acquired = true;
+      state.routes.packpoints.acquired = true;
+      state.routes.packstab.notify = true;
+      state.routes.packpoints.notify = true;
+      changed = true;
+    }
+
+    if (
       !state.pack.amount.acquired &&
       state.entities.packbonuspoints.amount >= 10
     ) {
@@ -134,10 +135,10 @@ export default class RulesHandler {
     }
 
     if (
-      !state.pack.supply.acquired &&
+      !state.entities.packsupply.acquired &&
       state.entities.packbonuspoints.amount >= 1000
     ) {
-      state.pack.supply.acquired = true;
+      state.entities.packsupply.acquired = true;
 
       state.routes.packstab.notify = true;
       state.routes.packpoints.notify = true;

@@ -29,9 +29,11 @@ export const Pack = () => {
           <Title>
             <div className="flex justify-between">
               Packs{" "}
-              <SmallTitle>
-                {format(gameState.entities.packsupply.amount)} available
-              </SmallTitle>
+              {gameState.entities.packsupply.acquired && (
+                <SmallTitle>
+                  {format(gameState.entities.packsupply.amount)} available
+                </SmallTitle>
+              )}
             </div>
           </Title>
 

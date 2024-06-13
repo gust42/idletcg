@@ -4,7 +4,6 @@ import {
   calculateRating,
   calculateTotalTournamentTime,
 } from "../logic/helpers";
-import { navigate } from "../logic/navigation";
 import { AllTournaments } from "../rules/ruleshandler";
 import ResourceItem from "./resourceitem";
 import { TournamentProgress } from "./tournamentprogress";
@@ -92,17 +91,6 @@ export default function ResourceView() {
             })}
           </div>
         </>
-      )}
-
-      {gameState.routes.skillstab.acquired && (
-        <div
-          className="mt-4 underline cursor-pointer"
-          onClick={() => {
-            navigate("settings");
-          }}
-        >
-          Settings
-        </div>
       )}
     </div>
   );

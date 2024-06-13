@@ -50,6 +50,9 @@ export interface Champion {
 }
 
 export interface GameState {
+  stats: {
+    startedPlaying: number;
+  };
   champions: Record<Champions, Champion>;
   binder: {
     cards: number[];

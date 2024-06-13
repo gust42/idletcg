@@ -174,10 +174,6 @@ export class PackManager {
 
       if (badcards > 0) state.entities.badcards.acquired = true;
 
-      if (!state.entities.packbonuspoints.acquired) {
-        state.entities.packbonuspoints.acquired = true;
-      }
-
       state.entities.packbonuspoints.amount += 1 * amount;
 
       if (type !== "express") state.entities.packsupply.amount -= amount;

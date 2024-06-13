@@ -2,6 +2,9 @@ import { GameState } from "../interfaces/logic";
 import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
+  stats: {
+    startedPlaying: Date.now(),
+  },
   champions: {
     lsq: { lastTournament: undefined, defeated: false },
     "mai-pudde": { lastTournament: undefined, defeated: false },
@@ -125,7 +128,7 @@ export const state: GameState = {
     },
     packsupply: {
       amount: 10000,
-      acquired: true,
+      acquired: false,
     },
   },
   deck: {
