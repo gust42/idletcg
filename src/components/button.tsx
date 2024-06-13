@@ -3,7 +3,7 @@ import { PropsWithChildren, useEffect, useRef } from "react";
 interface IButtonProps {
   onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
   width?: string;
-  color?: `#${string}`;
+  color?: `#${string}` | string;
   disabled?: boolean;
   action: string;
   value?: string;

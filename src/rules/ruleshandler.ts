@@ -105,18 +105,8 @@ export default class RulesHandler {
     }
 
     if (
-      !state.pack.amount.acquired &&
-      state.entities.packbonuspoints.amount >= 10
-    ) {
-      state.pack.amount.acquired = true;
-      state.routes.packstab.notify = true;
-      state.routes.packpoints.notify = true;
-      changed = true;
-    }
-
-    if (
       !state.pack.good.acquired &&
-      state.entities.packbonuspoints.amount >= 10
+      state.entities.packbonuspoints.amount >= 80
     ) {
       state.pack.good.acquired = true;
       state.routes.packstab.notify = true;
@@ -126,7 +116,7 @@ export default class RulesHandler {
 
     if (
       !state.pack.meta.acquired &&
-      state.entities.packbonuspoints.amount >= 50
+      state.entities.packbonuspoints.amount >= 600
     ) {
       state.pack.meta.acquired = true;
       state.routes.packstab.notify = true;
@@ -136,10 +126,10 @@ export default class RulesHandler {
 
     if (
       !state.entities.packsupply.acquired &&
-      state.entities.packbonuspoints.amount >= 1000
+      (state.entities.packbonuspoints.amount >= 1000 ||
+        state.entities.packsupply.amount < 1000)
     ) {
       state.entities.packsupply.acquired = true;
-
       state.routes.packstab.notify = true;
       state.routes.packpoints.notify = true;
       changed = true;
@@ -155,7 +145,12 @@ export default class RulesHandler {
       changed = true;
     }
 
-    if (!state.routes.trophys.acquired && state.trophys.funfriday > 0) {
+    const totalTrophies = Object.values(state.trophys).reduce(
+      (acc, trophy) => acc + trophy,
+      0
+    );
+
+    if (!state.routes.trophys.acquired && totalTrophies >= 5) {
       state.routes.trophys.acquired = true;
       state.routes.skillstab.notify = true;
       state.routes.trophys.notify = true;

@@ -11,6 +11,7 @@ interface IPackUpgradeProps {
   acquired: boolean;
   packPoints: number;
   disabled?: boolean;
+  visible: boolean;
 }
 
 export const PackUpgrade = ({
@@ -19,15 +20,28 @@ export const PackUpgrade = ({
   cost,
   acquired,
   packPoints,
+  visible,
 }: IPackUpgradeProps) => {
+  let disabled = cost > packPoints;
+  let action = "upgrade";
+  let color: string | undefined = undefined;
+  if (acquired) {
+    disabled = false;
+    action = "";
+    color = "green";
+  }
   return (
-    acquired && (
+    visible && (
       <Button
+        color={color}
         onClick={() => {
-          MessageHandler.recieveMessage<PackUpgradeData>("upgrade", { skill });
+          if (!acquired)
+            MessageHandler.recieveMessage<PackUpgradeData>("upgrade", {
+              skill,
+            });
         }}
-        disabled={cost > packPoints}
-        action="upgrade"
+        disabled={disabled}
+        action={action}
       >
         {text}
         <div className="button-cost">{format(cost)} points</div>

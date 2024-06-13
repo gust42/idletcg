@@ -24,7 +24,7 @@ export const Pack = () => {
 
   return (
     <Container>
-      <div className="md:w-[320px] h-[220px] md:h-auto flex flex-col justify-between">
+      <div className="md:w-[320px] h-auto flex flex-col justify-between">
         <div>
           <Title>
             <div className="flex justify-between">
