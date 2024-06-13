@@ -69,8 +69,11 @@ export const calculateTotalTournamentTime = (
   const state = GameLoop.getInstance().stateHandler.getState();
 
   const calculatedRoundTicks =
-    ruleRoundTick -
-    AllSkills.tournamentGrinder.effect(state.skills.tournamentGrinder.level);
+    // if 1 it is player not team
+    modifier === 1
+      ? ruleRoundTick -
+        AllSkills.tournamentGrinder.effect(state.skills.tournamentGrinder.level)
+      : ruleRoundTick;
 
   const deckSize = GameLoop.getInstance().rulesHandler.getRuleValue("DeckSize");
 

@@ -1,6 +1,6 @@
 import { Button } from "../../components/button";
 import { getTournamentPrizeMoney } from "../../logic/helpers";
-import { navigate } from "../../logic/navigation";
+import { goBack } from "../../logic/navigation";
 import { Tournament, TournamentLog } from "../../rules/tournaments/tournament";
 
 export const TournamentResult = ({
@@ -22,7 +22,7 @@ export const TournamentResult = ({
         <Button
           action=""
           onClick={() => {
-            navigate("tournaments");
+            goBack();
           }}
         >
           Return
