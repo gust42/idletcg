@@ -76,14 +76,14 @@ export const routeConfig: RouteConfig = {
     friendlyName: "Tournaments",
     routes: {
       tournaments: { friendlyName: "Tournaments", component: TournamentTab },
+      trophys: { friendlyName: "Champions", component: TrophysTab },
       team: { friendlyName: "Team", component: TeamTab },
     },
   },
   skillstab: {
-    friendlyName: "Player",
+    friendlyName: "Skills",
     routes: {
       skills: { friendlyName: "Skills", component: SkillsTab },
-      trophys: { friendlyName: "Trophys", component: TrophysTab },
     },
   },
   activetournament: {

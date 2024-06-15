@@ -7,8 +7,8 @@ export class AutoPackSkill implements Skill {
   rule: SkillRule = {
     requirement: 20000,
     value: 1,
-    increase: 2.5,
-    increaseEffect: 3,
+    increase: 2,
+    increaseEffect: 4,
   };
 
   title = "Boyfriend / Girlfriend";
