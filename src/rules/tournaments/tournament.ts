@@ -54,9 +54,7 @@ export function generateWinRatio(id: number, state?: GameState) {
   let currentValue = 30; // Starting value
 
   // Predefined array of irregular increments
-  const irregularIncrements = [
-    5, 2, 8, 6, 10, 5, 7, 3, 3, 6, 8, 2, 6, 4, 7, 1, 6, 9, 4, 5,
-  ];
+  const irregularIncrements = [5, 2, 4, 6, 4, 5, 7, 5, 3, 6, 8];
 
   // Use predefined increments cyclically
   const increment = irregularIncrements[id % irregularIncrements.length];
@@ -124,9 +122,12 @@ export function calculateWinner(
   const myMod = calculateWinRateModFromMeta(myCard, opponentCard, state);
   const opponentMod = calculateWinRateModFromMeta(opponentCard, myCard, state);
 
-  if (myWinRate * myMod > opponentWinRate * opponentMod) {
+  const finalMyRate = Math.floor(myWinRate * myMod);
+  const finalOpponentRate = Math.floor(opponentWinRate * opponentMod);
+
+  if (finalMyRate > finalOpponentRate) {
     return "win";
-  } else if (myWinRate * myMod < opponentWinRate * opponentMod) {
+  } else if (finalMyRate < finalOpponentRate) {
     return "loss";
   } else {
     return "draw";

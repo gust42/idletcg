@@ -147,9 +147,14 @@ export default class GameLoop {
         const cost = skill.cost(state.skills[data.name].level);
 
         if (state.entities.money.amount >= cost) {
-          state.skills[data.name].level += 1;
-          state.entities.money.amount -= cost;
-          this.stateHandler.updateState(state);
+          if (
+            !skill.rule.maxLevel ||
+            state.skills[data.name].level + 1 <= skill.rule.maxLevel
+          ) {
+            state.skills[data.name].level += 1;
+            state.entities.money.amount -= cost;
+            this.stateHandler.updateState(state);
+          }
         } else {
           MessageHandler.sendClientMessage("Not enough money");
         }

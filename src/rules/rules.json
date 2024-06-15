@@ -9,7 +9,7 @@
     "value": 80
   },
   "MetaUnlock": {
-    "value": 600
+    "value": 8000
   },
   "MetaCardDroprate": {
     "value": 0.02
@@ -60,13 +60,13 @@
     "value": 1000
   },
   "X10Cost": {
-    "value": 50
+    "value": 100
   },
   "X100Cost": {
-    "value": 1000
+    "value": 2000
   },
   "X1000Cost": {
-    "value": 5000
+    "value": 10000
   },
   "XAllCost": {
     "value": 1000000

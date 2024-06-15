@@ -30,7 +30,7 @@ export const tabs: Record<Tabs, TabConfig> = {
     route: "tournamentstab",
   },
   skillstab: {
-    friendlyName: "Player",
+    friendlyName: "Skills",
     route: "skillstab",
   },
 };

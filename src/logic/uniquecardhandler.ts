@@ -41,7 +41,6 @@ export const handleUniqueCardMessage = (m: Message, state: GameState) => {
     if (state.entities.metacards.amount < costMetaCards)
       fail += "Not enough meta cards";
 
-    console.log(fail, costMetaCards, state.entities.metacards.amount);
     if (!fail) {
       const cardSet = Math.floor(data.id / cardsPerSet);
       const rowUnlocked = isRowUnlocked(cardSet, state);
