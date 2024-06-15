@@ -26,6 +26,14 @@ export const state: GameState = {
         id: undefined,
         level: 0,
       },
+      path3: {
+        id: undefined,
+        level: 0,
+      },
+      path4: {
+        id: undefined,
+        level: 0,
+      },
     },
   },
   trophys: {

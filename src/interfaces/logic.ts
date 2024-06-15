@@ -70,6 +70,14 @@ export interface GameState {
         id: AbilityNames | undefined;
         level: number;
       };
+      path3: {
+        id: AbilityNames | undefined;
+        level: number;
+      };
+      path4: {
+        id: AbilityNames | undefined;
+        level: number;
+      };
     };
   };
   skills: Record<keyof Skills, SkillState>;

@@ -8,7 +8,7 @@ export class AutoPackSkill implements Skill {
     requirement: 20000,
     value: 1,
     increase: 2,
-    increaseEffect: 4,
+    increaseEffect: 3,
   };
 
   title = "Boyfriend / Girlfriend";
@@ -22,7 +22,15 @@ export class AutoPackSkill implements Skill {
   }
 
   effect(level: number) {
-    return Math.max((level - 1) * this.rule.increaseEffect, this.rule.value);
+    if (level > 10)
+      return Math.floor(
+        Math.max(
+          (level - 1) * this.rule.increaseEffect ** (2 + level / 100),
+          this.rule.value
+        )
+      );
+    else
+      return Math.max((level - 1) * this.rule.increaseEffect, this.rule.value);
   }
 
   friendyEffect(level: number) {
