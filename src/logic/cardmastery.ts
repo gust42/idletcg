@@ -25,7 +25,7 @@ export const handleCardMasteryMessage = (
 
         const skill = path?.skills.find((s) => s.id === data.skill);
 
-        const pathLevel = path?.level === 1 ? "path1" : "path2";
+        const pathLevel = `path${path?.level}` as "path1";
         const skillState = state.cardmastery.skills[pathLevel];
 
         const availablePoints =
@@ -108,6 +108,52 @@ export function applyOverKillEffect(
         ?.skills.find((s) => s.id === path2Skill.id);
       if (skill) {
         winRate += skill.levels[path2Skill.level - 1].effect / 100;
+      }
+    }
+  }
+
+  return winRate;
+}
+
+export function applyCardOrderEffect(
+  winRate: number,
+  metaType: string,
+  state: GameState
+) {
+  if (metaType === state.cardmastery.path) {
+    const path3Skill = state.cardmastery.skills.path3;
+
+    const order = ["first", "second", "third"];
+
+    const gameRound = state.activities.tournament?.gameRound;
+
+    if (gameRound !== undefined && path3Skill.id === order[gameRound]) {
+      const skill = cardMasteryTree
+        .find((p) => p.level === 3)
+        ?.skills.find((s) => s.id === path3Skill.id);
+      if (skill) {
+        winRate *= 1 + skill.levels[path3Skill.level - 1].effect / 100;
+      }
+    }
+  }
+
+  return winRate;
+}
+
+export function applyCardMasterEffect(
+  winRate: number,
+  metaType: string,
+  state: GameState
+) {
+  if (metaType === state.cardmastery.path) {
+    const path4skill = state.cardmastery.skills.path4;
+
+    if (path4skill) {
+      const skill = cardMasteryTree
+        .find((p) => p.level === 4)
+        ?.skills.find((s) => s.id === path4skill.id);
+      if (skill) {
+        winRate *= 1 + skill.levels[path4skill.level - 1].effect / 100;
       }
     }
   }

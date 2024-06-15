@@ -2,9 +2,11 @@ import { Deck, GameState, TeamMember } from "../../interfaces/logic";
 import {
   applyAdeptEffect,
   applyAntiWeaknessEffect,
+  applyCardMasterEffect,
   applyOverKillEffect,
 } from "../../logic/cardmastery";
 import { Champions } from "../champions";
+import { applyCardOrderEffect } from "./../../logic/cardmastery";
 
 export interface Tournaments {
   casualwednesday: Tournament;
@@ -64,12 +66,23 @@ export function generateWinRatio(id: number, state?: GameState) {
   const linearIncrement = 1.5; // Adjust as needed
   currentValue += id * linearIncrement;
 
-  if (state)
+  if (state) {
     currentValue = applyAdeptEffect(
       currentValue,
       metaTypes[id % metaTypes.length],
       state
     );
+    currentValue = applyCardOrderEffect(
+      currentValue,
+      metaTypes[id % metaTypes.length],
+      state
+    );
+    currentValue = applyCardMasterEffect(
+      currentValue,
+      metaTypes[id % metaTypes.length],
+      state
+    );
+  }
 
   return Math.floor(currentValue);
 }

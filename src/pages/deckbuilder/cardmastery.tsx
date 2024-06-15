@@ -53,7 +53,8 @@ export const AbilityButton = (ability: Ability & { disabled: boolean }) => {
       <HelpText>{ability.description}</HelpText>
       {skill && (
         <div className="mt-1">
-          Increases by: {ability.levels[skill.level - 1].effect}% (addictive)
+          Increases by: {ability.levels[skill.level - 1].effect}% (
+          {ability.effectType})
         </div>
       )}
     </Button>
@@ -93,14 +94,50 @@ export const CardMastery = () => {
         />
       );
     });
+
+  const path3 = cardMasteryTree
+    .find((tree) => tree.level === 3)
+    ?.skills.map((skill) => {
+      return (
+        <AbilityButton
+          key={skill.id}
+          disabled={
+            !gameState.cardmastery.skills.path2.id ||
+            (skill.id !== gameState.cardmastery.skills.path3.id &&
+              gameState.cardmastery.skills.path3.id !== undefined) ||
+            availablePoints === 0
+          }
+          {...skill}
+        />
+      );
+    });
+  const path4 = cardMasteryTree
+    .find((tree) => tree.level === 4)
+    ?.skills.map((skill) => {
+      return (
+        <AbilityButton
+          key={skill.id}
+          disabled={
+            !gameState.cardmastery.skills.path3.id ||
+            (skill.id !== gameState.cardmastery.skills.path4.id &&
+              gameState.cardmastery.skills.path4.id !== undefined) ||
+            availablePoints === 0
+          }
+          {...skill}
+        />
+      );
+    });
+
   if (gameState.cardmastery.path) {
     return (
       <div className="md:max-w-fit">
         <Title>Path of {gameState.cardmastery.path}</Title>
         Remaining points: {availablePoints}
         <HelpText>You get 1 points for every 100 rating</HelpText>
-        <div className="mb-1">{path1}</div>
-        <div className="flex flex-row gap-1">{path2}</div>
+        <div className="flex justify-center mb-1">{path1}</div>
+        <div className="flex flex-row gap-1 mb-1">{path2}</div>
+        <div className="flex flex-row gap-1 mb-1">{path3}</div>
+        <div className="flex justify-center">{path4}</div>
         <div className="mt-8">
           <Button
             onClick={() => {
