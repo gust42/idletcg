@@ -1,6 +1,7 @@
 import { GameState } from "../interfaces/logic";
 import { Rule, Rules } from "../interfaces/rules";
 import { calculateRating } from "../logic/helpers";
+import { handleActivePackRules } from "./packrules";
 import rules from "./rules.json";
 import { AutoPackSkill } from "./skills/autoPackSkill";
 import { ShopkeeperFriendSkill } from "./skills/shopkeeperFriendSkill";
@@ -36,10 +37,7 @@ export default class RulesHandler {
   checkActiveRules(state: GameState) {
     let changed = false;
 
-    const totalcards =
-      state.entities.badcards.amount +
-      state.entities.goodcards.amount +
-      state.entities.metacards.amount;
+    const totalcards = state.entities.metacards.amount;
     if (
       !state.routes.tradebindertab.acquired &&
       totalcards >= this.rules["CardsForTradebinder"].value
@@ -94,48 +92,6 @@ export default class RulesHandler {
     }
 
     if (
-      !state.entities.packbonuspoints.acquired &&
-      state.entities.packbonuspoints.amount > 40
-    ) {
-      state.entities.packbonuspoints.acquired = true;
-      state.routes.packpoints.acquired = true;
-      state.routes.packstab.notify = true;
-      state.routes.packpoints.notify = true;
-      changed = true;
-    }
-
-    if (
-      !state.pack.good.acquired &&
-      state.entities.packbonuspoints.amount >= 80
-    ) {
-      state.pack.good.acquired = true;
-      state.routes.packstab.notify = true;
-      state.routes.packpoints.notify = true;
-      changed = true;
-    }
-
-    if (
-      !state.pack.meta.acquired &&
-      state.entities.packbonuspoints.amount >= 600
-    ) {
-      state.pack.meta.acquired = true;
-      state.routes.packstab.notify = true;
-      state.routes.packpoints.notify = true;
-      changed = true;
-    }
-
-    if (
-      !state.entities.packsupply.acquired &&
-      (state.entities.packbonuspoints.amount >= 1000 ||
-        state.entities.packsupply.amount < 1000)
-    ) {
-      state.entities.packsupply.acquired = true;
-      state.routes.packstab.notify = true;
-      state.routes.packpoints.notify = true;
-      changed = true;
-    }
-
-    if (
       !state.routes.cardmastery.acquired &&
       calculateRating(state.entities.rating).amount > 1000
     ) {
@@ -156,6 +112,9 @@ export default class RulesHandler {
       state.routes.trophys.notify = true;
       changed = true;
     }
+
+    const packChanged = handleActivePackRules(state);
+    if (packChanged) changed = true;
 
     return changed ? state : null;
   }

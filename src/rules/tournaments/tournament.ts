@@ -1,4 +1,4 @@
-import { Deck, GameState, TeamMember } from "../../interfaces/logic";
+import { Deck, GameState, TeamMemberNames } from "../../interfaces/logic";
 import {
   applyAdeptEffect,
   applyAntiWeaknessEffect,
@@ -42,7 +42,7 @@ export interface Tournament {
   entryFee: number;
   reward: number;
   ratingRequirement: number;
-  teammember: TeamMember;
+  teammember: TeamMemberNames;
   champion: Champions;
 }
 

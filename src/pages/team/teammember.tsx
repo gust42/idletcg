@@ -3,6 +3,7 @@ import { Button } from "../../components/button";
 import { ActionContainer, Container } from "../../components/container";
 import { Modal } from "../../components/modal";
 import useGameRule from "../../hooks/usegamerule";
+import useGameState from "../../hooks/usegamestate";
 import { TeamMember } from "../../interfaces/logic";
 import MessageHandler, {
   AssignTournamentMessage,
@@ -11,6 +12,7 @@ import { AllTournaments } from "../../rules/ruleshandler";
 import { Tournaments } from "../../rules/tournaments/tournament";
 import { Slot } from "../deckbuilder/slot";
 import { LastTournament } from "../tournaments/tournament";
+import { formatSeconds } from "./../../logic/helpers";
 
 interface ITeamMemberProps {
   member: TeamMember;
@@ -18,10 +20,13 @@ interface ITeamMemberProps {
 
 export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
   const rule = useGameRule("DeckSize");
+  const state = useGameState();
   const [open, setOpen] = useState(false);
 
-  const currentTournament = member.currentTournament
-    ? AllTournaments[member.currentTournament]
+  const stateMember = state.team.find((m) => m.name === member.name)!;
+
+  const currentTournament = stateMember.currentTournament
+    ? AllTournaments[stateMember.currentTournament]
     : undefined;
 
   const onSelect = (id: number | undefined, slot: number) => {
@@ -32,35 +37,39 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
     });
   };
 
-  const numberOfCards = Object.keys(member.deck);
+  const numberOfCards = Object.keys(stateMember.deck);
   const fullDeck =
-    Object.values(member.deck).every((card) => card !== undefined) &&
+    Object.values(stateMember.deck).every((card) => card !== undefined) &&
     numberOfCards.length >= rule.value;
 
   return (
     <Container>
       <div className="text-xl">{member.name}</div>
       <div className="flex flex-row justify-between mt-8">
-        <div>Rating: {Math.floor(member.rating)}</div>
-        <div>Tournament play speed: {member.speed * 100}%</div>
+        <div>Rating: {Math.floor(stateMember.rating)}</div>
+        <div>Tournament round time: {formatSeconds(member.speed)}</div>
       </div>
-      <div className="flex flex-row justify-between mt-8"></div>
-      <div className="text-lg">Deck</div>
+      <div className="flex flex-row justify-between mt-8">
+        <b>Trophies: {stateMember.trophies ?? 0}</b>
+      </div>
+      <div className="text-lg mt-8">Deck</div>
       <div className="flex flex-row flex-wrap gap-2 mt-4 mb-4">
         {Array.from({ length: rule.value }).map((_, i) => {
-          const index = `slot${i + 1}` as keyof typeof member.deck;
+          const index = `slot${i + 1}` as keyof typeof stateMember.deck;
           return (
             <Slot
               onSelect={onSelect}
               size="small"
               key={index}
-              card={member.deck[index]}
+              card={stateMember.deck[index]}
               slot={i + 1}
             />
           );
         })}
       </div>
-      {member.lastTournament && <LastTournament log={member.lastTournament} />}
+      {stateMember.lastTournament && (
+        <LastTournament log={stateMember.lastTournament} />
+      )}
       <ActionContainer>
         <Button
           action="PLAYING"
@@ -91,7 +100,7 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
               .filter(
                 (t) =>
                   AllTournaments[t as keyof Tournaments].ratingRequirement <=
-                  member.rating
+                  stateMember.rating
               )
               .map((t) => {
                 const tournament = AllTournaments[t as keyof Tournaments];

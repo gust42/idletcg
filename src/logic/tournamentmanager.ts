@@ -1,13 +1,12 @@
 import { Deck } from "../interfaces/logic";
 import { AllSkills, AllTournaments } from "../rules/ruleshandler";
+import { AllTeamMembers } from "../rules/teammembers";
 import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
 import { battle } from "./battle";
-import {
-  calculateTotalTournamentTime,
-  getTournamentPrizeMoney,
-} from "./helpers";
+import { getTournamentPrizeMoney } from "./helpers";
+import { calculateTotalTournamentTime } from "./helpers/tournamenttime";
 import { AssignTournamentMessage, TournamentMessage } from "./messagehandler";
 
 export type TournamentMessages = "entertournament" | "assigntournament";
@@ -84,9 +83,21 @@ export class TournamentManager {
         }
         if (
           log.points >= tournament.opponents.length * 3 &&
-          !state.team.find((t) => t.name === tournament.teammember.name)
+          !state.team.find((t) => t.name === tournament.teammember)
         )
-          state.team.push(tournament.teammember);
+          state.team.push({
+            name: tournament.teammember,
+            rating: 1000,
+            trophies: 0,
+            deck: {
+              slot1: undefined,
+              slot2: undefined,
+              slot3: undefined,
+            },
+            currentTournament: undefined,
+            lastTournament: undefined,
+            tournamentTicks: 0,
+          });
 
         state.entities.rating.amount += log.points;
         if (!state.entities.rating.acquired)
@@ -115,11 +126,12 @@ export class TournamentManager {
         t.tournamentTicks = 0;
         return;
       }
+      const member = AllTeamMembers.find((m) => m.name === t.name)!;
       if (t.currentTournament) {
         const ticks = t.tournamentTicks as number;
         const totalTicks = calculateTotalTournamentTime(
           t.currentTournament,
-          1 + t.speed
+          member.speed
         );
         if (totalTicks - ticks <= 0) {
           // Run tournament
@@ -128,7 +140,10 @@ export class TournamentManager {
           const prizeMoney = getTournamentPrizeMoney(t.currentTournament, log);
           state.entities.money.amount += prizeMoney;
 
-          t.rating += log.points * 0.2;
+          t.rating += log.points;
+          if (log.points >= 9) {
+            t.trophies++;
+          }
           t.tournamentTicks = 0;
           t.lastTournament = log;
         } else {

@@ -1,3 +1,4 @@
+import { TeamMemberNames } from "../../interfaces/logic";
 import { Champions } from "../champions";
 import { Tournament, Tournaments } from "./tournament";
 
@@ -6,19 +7,10 @@ export class FunFriday implements Tournament {
   name = "Fun Friday";
   description = "An enjoyable tournament for the casual players.";
   champion = "ron-dinkel" as Champions;
-  entryFee = 20000;
-  reward = 600000;
+  entryFee = 100000;
+  reward = 800000;
   ratingRequirement = 1200;
-  teammember = {
-    name: "Charlie",
-    speed: 0.2,
-    rating: 1000,
-    deck: {
-      slot1: undefined,
-      slot2: undefined,
-      slot3: undefined,
-    },
-  };
+  teammember = "Charlie" as TeamMemberNames;
   opponents = [
     {
       deck: {

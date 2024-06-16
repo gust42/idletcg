@@ -34,14 +34,21 @@ export interface Deck {
   slot2: number | undefined;
   slot3: number | undefined;
 }
-export interface TeamMember {
-  name: string;
+
+export type TeamMemberNames = "Terry" | "Timmy" | "Susan";
+
+export type JoinedTeamMember = {
+  name: TeamMemberNames;
+  trophies: number;
   rating: number;
-  speed: number;
   deck: Deck;
   currentTournament?: keyof Tournaments;
   tournamentTicks?: number;
   lastTournament?: TournamentLog;
+};
+export interface TeamMember {
+  name: TeamMemberNames;
+  speed: number;
 }
 
 export interface Champion {
@@ -129,5 +136,5 @@ export interface GameState {
   logs: {
     tournament: TournamentEntry;
   };
-  team: TeamMember[];
+  team: JoinedTeamMember[];
 }
