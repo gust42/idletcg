@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 import { useTimer } from "../hooks/useTimer";
 import useGameState from "../hooks/usegamestate";
-import { calculateRemainingTournamentTime } from "../logic/helpers";
+import { calculateRemainingTournamentTime } from "../logic/helpers/tournamenttime";
 import { AllTournaments } from "../rules/ruleshandler";
 
 export const TournamentProgress = memo(() => {

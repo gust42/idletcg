@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { GameState } from "../interfaces/logic";
-import { calculateRoundTime } from "../logic/helpers";
+import { calculateRoundTime } from "../logic/helpers/tournamenttime";
 import { TimerHandler } from "../logic/timerhandler";
 
 export const useBattleTimer = (

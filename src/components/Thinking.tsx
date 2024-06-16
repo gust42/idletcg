@@ -2,7 +2,7 @@ import { memo, useState } from "react";
 import { useBattleTimer } from "../hooks/useBattleTimer";
 import useGameState from "../hooks/usegamestate";
 import GameLoop from "../logic/gameloop";
-import { calculateRoundTime } from "../logic/helpers";
+import { calculateRoundTime } from "../logic/helpers/tournamenttime";
 
 export const Thinking = memo(() => {
   const gameState = useGameState();

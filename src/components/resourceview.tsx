@@ -1,10 +1,11 @@
 import useGameState from "../hooks/usegamestate";
+import { TeamMember } from "../interfaces/logic";
 import GameLoop from "../logic/gameloop";
-import {
-  calculateRating,
-  calculateTotalTournamentTime,
-} from "../logic/helpers";
+import { calculateRating } from "../logic/helpers";
+import { calculateTotalTournamentTime } from "../logic/helpers/tournamenttime";
 import { AllTournaments } from "../rules/ruleshandler";
+import { AllTeamMembers } from "../rules/teammembers";
+import { formatSeconds } from "./../logic/helpers";
 import ResourceItem from "./resourceitem";
 import { TournamentProgress } from "./tournamentprogress";
 
@@ -70,9 +71,12 @@ export default function ResourceView() {
           <h4 className="text-lg mt-1 mb-1 md:mt-4 md:mb-4">Activities</h4>
           <TournamentProgress />
           <div className="mt-1 md:mt-4">
-            {teamMemberTournament.map((member) => {
+            {teamMemberTournament.map((stateMember) => {
+              const member = AllTeamMembers.find(
+                (m) => m.name === stateMember.name
+              ) as TeamMember;
               const id =
-                member.currentTournament as keyof typeof AllTournaments;
+                stateMember.currentTournament as keyof typeof AllTournaments;
               const tournament = AllTournaments[id];
               return (
                 <div key={member.name} className="flex flex-col gap-1 mb-4">
@@ -81,9 +85,10 @@ export default function ResourceView() {
                   <div className="flex flex-row gap-4">
                     Time
                     <div className="font-semibold">
-                      {calculateTotalTournamentTime(id, 1 + member.speed) -
-                        (member.tournamentTicks ?? 0)}
-                      s
+                      {formatSeconds(
+                        calculateTotalTournamentTime(id, member.speed) -
+                          (stateMember.tournamentTicks ?? 0)
+                      )}
                     </div>
                   </div>
                 </div>

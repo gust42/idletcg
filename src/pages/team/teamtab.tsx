@@ -1,4 +1,5 @@
 import useGameState from "../../hooks/usegamestate";
+import { AllTeamMembers } from "../../rules/teammembers";
 import { TeamMemberComponent } from "./teammember";
 
 export const TeamTab = () => {
@@ -7,9 +8,10 @@ export const TeamTab = () => {
   return (
     <div>
       <div className="flex flex-row flex-wrap gap-4">
-        {state.team.map((member) => (
-          <TeamMemberComponent key={member.name} member={member} />
-        ))}
+        {state.team.map((member) => {
+          const m = AllTeamMembers.find((m) => m.name === member.name)!;
+          return <TeamMemberComponent key={member.name} member={m} />;
+        })}
       </div>
     </div>
   );
