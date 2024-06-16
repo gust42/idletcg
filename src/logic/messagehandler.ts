@@ -1,3 +1,4 @@
+import { TeamMemberNames } from "../interfaces/logic";
 import { Champions } from "../rules/champions";
 import { Skills } from "../rules/skills/skill";
 import { Tournaments } from "../rules/tournaments/tournament";
@@ -20,6 +21,7 @@ type MessageList =
   | "assigntournament"
   | "clearmessages"
   | "clearnotifier"
+  | "buytrophy"
   | "addtrophy";
 
 export type Message<T = MessageData> = {
@@ -33,6 +35,7 @@ export type MessageData =
   | DeckMessage
   | AssignTournamentMessage
   | UniqueCardMessageData
+  | BuyTrophyMessage
   | TournamentMessage;
 
 export type GenericMessage = {
@@ -65,6 +68,11 @@ export type ChampionBattleMessage = {
 export type AssignTournamentMessage = {
   id?: keyof Tournaments;
   person: string;
+};
+
+export type BuyTrophyMessage = {
+  teamMember: TeamMemberNames;
+  amount: number;
 };
 
 export type ClientMessageData = Record<string, unknown>;

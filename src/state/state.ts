@@ -138,6 +138,10 @@ export const state: GameState = {
       amount: 10000,
       acquired: false,
     },
+    trophies: {
+      amount: 0,
+      acquired: false,
+    },
   },
   deck: {
     cards: {

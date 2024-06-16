@@ -101,12 +101,11 @@ export default class RulesHandler {
       changed = true;
     }
 
-    const totalTrophies = Object.values(state.trophys).reduce(
-      (acc, trophy) => acc + trophy,
-      0
+    const atleastten = Object.values(state.trophys).some(
+      (count) => count >= 10
     );
 
-    if (!state.routes.trophys.acquired && totalTrophies >= 5) {
+    if (!state.routes.trophys.acquired && atleastten) {
       state.routes.trophys.acquired = true;
       state.routes.skillstab.notify = true;
       state.routes.trophys.notify = true;

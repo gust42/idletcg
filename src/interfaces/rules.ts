@@ -39,4 +39,5 @@ export type Rules = {
   X100Cost: Rule;
   X1000Cost: Rule;
   XAllCost: Rule;
+  TrophyCost: Rule;
 };

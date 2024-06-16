@@ -22,8 +22,8 @@ export default function ResourceView() {
       className=" sticky top-0 overflow-hidden flex flex-col h-full
   "
     >
-      <h4 className="text-lg mb-1 md:mb-4">Resources</h4>
-      <div className=" flex flex-col gap-2">
+      <h4 className="text-lg mb-1 md:mb-2">Resources</h4>
+      <div className=" flex flex-col gap-1">
         <ResourceItem
           name="Money"
           resource={gameState.entities.money}
@@ -58,19 +58,23 @@ export default function ResourceView() {
           resource={gameState.entities.metacards}
           oldValue={oldState.entities.metacards.amount}
         />
-
         <ResourceItem
           name="Rating"
           resource={calculateRating(gameState.entities.rating)}
           oldValue={calculateRating(oldState.entities.rating).amount}
         />
+        <ResourceItem
+          name="Trophies"
+          resource={gameState.entities.trophies}
+          oldValue={gameState.entities.trophies.amount}
+        />
       </div>
 
       {gameState.routes.tournamentstab.acquired && (
         <>
-          <h4 className="text-lg mt-1 mb-1 md:mt-4 md:mb-4">Activities</h4>
+          <h4 className="text-lg mt-1 mb-1 md:mt-2 md:mb-2">Activities</h4>
           <TournamentProgress />
-          <div className="mt-1 md:mt-4">
+          <div className="mt-1 md:mt-2">
             {teamMemberTournament.map((stateMember) => {
               const member = AllTeamMembers.find(
                 (m) => m.name === stateMember.name

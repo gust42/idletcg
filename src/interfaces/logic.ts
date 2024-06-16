@@ -109,6 +109,7 @@ export interface GameState {
     rating: Entity;
     packbonuspoints: Entity;
     packsupply: Entity;
+    trophies: Entity;
   };
   counters: {
     uniquecards: Counter;

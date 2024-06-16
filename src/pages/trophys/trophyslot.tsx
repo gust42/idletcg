@@ -1,22 +1,14 @@
-import { useState } from "react";
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
-import { Trophy } from "../../components/trophy";
 import { HelpText, SmallTitle, Title } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
-import { getCardSize, inBattle } from "../../logic/helpers";
+import { inBattle } from "../../logic/helpers";
 import MessageHandler, {
   ChampionBattleMessage,
-  TrophyMessage,
 } from "../../logic/messagehandler";
 import { navigate } from "../../logic/navigation";
 import { AllChampions, Champion } from "../../rules/champions";
-import {
-  Tournament,
-  TournamentLog,
-  Tournaments,
-} from "../../rules/tournaments/tournament";
-import { TrophyPicker } from "./trophypicker";
+import { Tournament, TournamentLog } from "../../rules/tournaments/tournament";
 
 interface ITrophySlotProps {
   tournament: Tournament;
@@ -24,29 +16,14 @@ interface ITrophySlotProps {
 }
 
 export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
-  const [trophyPickerOpen, setTrophyPickerOpen] = useState(false);
   const gameState = useGameState();
-
-  const onPicked = (trophy: keyof Tournaments | undefined) => {
-    setTrophyPickerOpen(false);
-
-    if (trophy === undefined) return;
-    MessageHandler.recieveMessage<TrophyMessage>("addtrophy", { trophy });
-  };
-
-  const border = trophy === undefined ? "border-2 border-black" : "";
-
-  const [pxs, pic] = getCardSize("medium");
 
   const champion = AllChampions.find(
     (c) => c.id === tournament.champion
   ) as Champion;
 
-  const fullDeck = Object.keys(gameState.deck.championDeck).every(
-    (key) =>
-      gameState.deck.championDeck[
-        key as keyof typeof gameState.deck.championDeck
-      ]
+  const fullDeck = Object.values(gameState.deck.championDeck).every(
+    (value) => value !== undefined
   );
 
   const reward = gameState.champions[champion.id].defeated ? (
@@ -59,24 +36,6 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
     <Container>
       <Title>{tournament.name}</Title>
       <div className="flex flex-row gap-2">
-        <div
-          onClick={() => {
-            if (!trophy) setTrophyPickerOpen(true);
-          }}
-        >
-          <div
-            className={`${border} ${pxs} aspect-[2/3] text-center  cursor-pointer`}
-          >
-            {trophy !== false ? (
-              <Trophy trophy={tournament.id} size="medium" />
-            ) : (
-              <div className="border border-black flex flex-col justify-center rounded h-full gap-4">
-                Empty slot
-                <div className={pic}>+</div>
-              </div>
-            )}
-          </div>
-        </div>
         <div className="grow flex flex-col justify-between">
           <SmallTitle>
             {trophy ? champion?.name : "Unknown champion"}
@@ -112,9 +71,8 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
                 }}
                 action="BATTLE"
                 disabled={
-                  trophy === false ||
                   !fullDeck ||
-                  gameState.trophys[tournament.id] < 10 ||
+                  gameState.entities.trophies.amount < 10 ||
                   inBattle(gameState)
                 }
               >
@@ -124,10 +82,6 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
           )}
         </div>
       </div>
-
-      {trophyPickerOpen && (
-        <TrophyPicker id={tournament.id} onSelect={onPicked} />
-      )}
     </Container>
   );
 };

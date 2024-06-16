@@ -9,12 +9,6 @@ export default function TrophysTab() {
     gameState.deck.championDeck
   ).every((c) => c !== undefined);
 
-  console.log(
-    "hasCompleteChamptionDeck",
-    hasCompleteChampionDeck,
-    gameState.deck.championDeck
-  );
-
   return (
     <div className="flex flex-row flex-wrap gap-2">
       {!hasCompleteChampionDeck && (
@@ -25,13 +19,15 @@ export default function TrophysTab() {
       )}
       {Object.values(AllTournaments).map((t, i) => {
         const index = `slot${i + 1}` as keyof typeof gameState.trophycase;
-        return (
-          <TrophySlot
-            key={index}
-            trophy={gameState.trophycase[t.id]}
-            tournament={t}
-          />
-        );
+        if (gameState.trophys[t.id] >= 10) {
+          return (
+            <TrophySlot
+              key={index}
+              trophy={gameState.trophycase[t.id]}
+              tournament={t}
+            />
+          );
+        }
       })}
     </div>
   );
