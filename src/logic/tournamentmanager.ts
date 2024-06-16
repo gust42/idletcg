@@ -80,6 +80,9 @@ export class TournamentManager {
         state.entities.money.amount += prizeMoney;
         if (log.points >= tournament.opponents.length * 3) {
           state.trophys[state.activities.tournament.id]++;
+          state.entities.trophies.amount++;
+          if (!state.entities.trophies.acquired)
+            state.entities.trophies.acquired = true;
         }
         if (
           log.points >= tournament.opponents.length * 3 &&
@@ -142,6 +145,7 @@ export class TournamentManager {
 
           t.rating += log.points;
           if (log.points >= 9) {
+            if (!t.trophies) t.trophies = 0;
             t.trophies++;
           }
           t.tournamentTicks = 0;

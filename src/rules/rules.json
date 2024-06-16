@@ -70,5 +70,8 @@
   },
   "XAllCost": {
     "value": 1000000
+  },
+  "TrophyCost": {
+    "value": 10000000
   }
 }

@@ -7,6 +7,7 @@ import {
   handleChampionBattleTick,
 } from "./championbattle";
 import MessageHandler, {
+  BuyTrophyMessage,
   ChampionBattleMessage,
   DeckMessage,
   Message,
@@ -165,6 +166,25 @@ export default class GameLoop {
         const state = this.stateHandler.getState();
         state.skills[data.name].on = !state.skills[data.name].on;
         this.stateHandler.updateState(state);
+      }
+
+      if (m.message === "buytrophy") {
+        const data = m.data as BuyTrophyMessage;
+        const state = this.stateHandler.getState();
+        const rule = this.rulesHandler.getRuleValue("TrophyCost");
+
+        const teammember = state.team.find((p) => p.name === data.teamMember)!;
+        if (
+          state.entities.money.amount >= rule * data.amount &&
+          teammember.trophies >= data.amount
+        ) {
+          state.entities.money.amount -= rule * data.amount;
+          teammember.trophies -= data.amount;
+          state.entities.trophies.amount += data.amount;
+          this.stateHandler.updateState(state);
+        } else {
+          MessageHandler.sendClientMessage("Not enough money");
+        }
       }
 
       if (m.message === "addcardtodeck") {

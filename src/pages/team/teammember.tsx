@@ -2,11 +2,14 @@ import { useState } from "react";
 import { Button } from "../../components/button";
 import { ActionContainer, Container } from "../../components/container";
 import { Modal } from "../../components/modal";
+import { HelpText, SmallTitle } from "../../components/typography";
+import { format } from "../../helpers/number";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 import { TeamMember } from "../../interfaces/logic";
 import MessageHandler, {
   AssignTournamentMessage,
+  BuyTrophyMessage,
 } from "../../logic/messagehandler";
 import { AllTournaments } from "../../rules/ruleshandler";
 import { Tournaments } from "../../rules/tournaments/tournament";
@@ -25,6 +28,8 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
 
   const stateMember = state.team.find((m) => m.name === member.name)!;
 
+  const trophyCost = useGameRule("TrophyCost").value;
+
   const currentTournament = stateMember.currentTournament
     ? AllTournaments[stateMember.currentTournament]
     : undefined;
@@ -42,15 +47,54 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
     Object.values(stateMember.deck).every((card) => card !== undefined) &&
     numberOfCards.length >= rule.value;
 
+  const buyTrophy = (amount: number) => {
+    MessageHandler.recieveMessage<BuyTrophyMessage>("buytrophy", {
+      teamMember: member.name,
+      amount,
+    });
+  };
+
   return (
     <Container>
-      <div className="text-xl">{member.name}</div>
-      <div className="flex flex-row justify-between mt-8">
+      <div className="text-xl flex flex-row justify-between">
+        {member.name}
         <div>Rating: {Math.floor(stateMember.rating)}</div>
+      </div>
+      <div className="flex flex-row justify-between mt-4 mb-4">
         <div>Tournament round time: {formatSeconds(member.speed)}</div>
       </div>
-      <div className="flex flex-row justify-between mt-8">
-        <b>Trophies: {stateMember.trophies ?? 0}</b>
+
+      <SmallTitle>Trophies: {stateMember.trophies ?? 0}</SmallTitle>
+
+      <HelpText>Buy trophies from {member.name}</HelpText>
+      <div className="flex flex-row justify-between font-bold">
+        <div className="flex flex-row flex-grow">
+          <Button
+            disabled={
+              state.entities.money.amount < trophyCost ||
+              stateMember.trophies === 0
+            }
+            onClick={() => {
+              buyTrophy(1);
+            }}
+            action="BUY"
+          >
+            1 thropy ({format(trophyCost)})
+          </Button>
+          <Button
+            disabled={
+              state.entities.money.amount < trophyCost * stateMember.trophies ||
+              stateMember.trophies === 0
+            }
+            onClick={() => {
+              buyTrophy(stateMember.trophies ?? 0);
+            }}
+            action="BUY"
+            width="300px"
+          >
+            All ({format(trophyCost * (stateMember.trophies ?? 0))})
+          </Button>
+        </div>
       </div>
       <div className="text-lg mt-8">Deck</div>
       <div className="flex flex-row flex-wrap gap-2 mt-4 mb-4">
