@@ -1,7 +1,6 @@
 import { Entity, GameState } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
-import { AllSkills, AllTournaments } from "../rules/ruleshandler";
-import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
+import { AllSkills } from "../rules/ruleshandler";
 import GameLoop from "./gameloop";
 import { getIdsForRow } from "./uniquecardhandler";
 
@@ -93,24 +92,6 @@ export const getCardSize = (size: "small" | "medium" | "large") => {
   }
 };
 
-export function getTournamentPrizeMoney(
-  id: keyof Tournaments,
-  log: TournamentLog
-) {
-  const tournament = AllTournaments[id];
-
-  const maxPoints = tournament.opponents.length * 3;
-
-  if (log.points >= maxPoints) {
-    return tournament.reward;
-  } else if (log.points >= maxPoints - 3) {
-    return tournament.reward / 2;
-  } else if (log.points >= maxPoints - 6) {
-    return tournament.reward / 4;
-  }
-  return 0;
-}
-
 export function calculatePackUpgradeCost(level: number) {
   return roundToNearestX(4 ** ((level + 1) / 2), 10);
 }
@@ -147,4 +128,14 @@ export function calculateRating(entity: Entity) {
       entity.amount + teamRating * (skill.effect(level) / 100)
     ),
   };
+}
+
+export function getRewardNameByPoints(
+  points: number,
+  rewardFriendlyName: string[]
+) {
+  if (points >= 3) return rewardFriendlyName[2];
+  if (points >= 6) return rewardFriendlyName[1];
+  if (points >= 9) return rewardFriendlyName[0];
+  return "";
 }

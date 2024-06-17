@@ -1,4 +1,4 @@
-import { TeamMemberNames } from "../../interfaces/logic";
+import { GameState, TeamMemberNames } from "../../interfaces/logic";
 import { Champions } from "../champions";
 import { Tournament, Tournaments } from "./tournament";
 
@@ -9,6 +9,7 @@ export class CasualWednesday implements Tournament {
   champion = "lsq" as Champions;
   entryFee = 10000;
   reward = 250000;
+  rewardFriendlyName = ["money", "money", "money"];
   ratingRequirement = 1000;
   teammember = "Timmy" as TeamMemberNames;
   opponents = [
@@ -37,4 +38,22 @@ export class CasualWednesday implements Tournament {
       name: "Timmy of Smarts",
     },
   ];
+
+  returnReward(points: number) {
+    const maxPoints = this.opponents.length * 3;
+
+    if (points >= maxPoints) {
+      return this.reward;
+    } else if (points >= maxPoints - 3) {
+      return this.reward / 2;
+    } else if (points >= maxPoints - 6) {
+      return this.reward / 4;
+    }
+
+    return 0;
+  }
+
+  giveReward(points: number, state: GameState) {
+    state.entities.money.amount += this.returnReward(points);
+  }
 }

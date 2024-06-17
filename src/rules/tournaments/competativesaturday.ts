@@ -1,4 +1,4 @@
-import { TeamMemberNames } from "../../interfaces/logic";
+import { GameState, TeamMemberNames } from "../../interfaces/logic";
 import { Champions } from "../champions";
 import { Tournament, Tournaments } from "./tournament";
 
@@ -8,8 +8,9 @@ export class CompetitiveSaturday implements Tournament {
   description = "A serious tournament for skilled players.";
   champion = "mai-pudde" as Champions;
   entryFee = 1000000;
-  reward = 7500000;
-  ratingRequirement = 2000;
+  reward = 1;
+  rewardFriendlyName = ["meta cards", "good cards", "bad cards"];
+  ratingRequirement = 1600;
   teammember = "Terry" as TeamMemberNames;
   opponents = [
     {
@@ -37,4 +38,29 @@ export class CompetitiveSaturday implements Tournament {
       name: "Tactical Terry",
     },
   ];
+
+  returnReward(points: number) {
+    const maxPoints = this.opponents.length * 3;
+
+    if (points >= maxPoints) {
+      return 1000;
+    } else if (points >= maxPoints - 3) {
+      return 100000;
+    } else if (points >= maxPoints - 6) {
+      return 1e7;
+    }
+
+    return 0;
+  }
+
+  giveReward(points: number, state: GameState) {
+    const maxPoints = this.opponents.length * 3;
+    if (points >= maxPoints) {
+      state.entities.metacards.amount += this.returnReward(points);
+    } else if (points >= maxPoints - 3) {
+      state.entities.goodcards.amount += this.returnReward(points);
+    } else if (points >= maxPoints - 6) {
+      state.entities.badcards.amount += this.returnReward(points);
+    }
+  }
 }

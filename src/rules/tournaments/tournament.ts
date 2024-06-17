@@ -41,6 +41,9 @@ export interface Tournament {
   description: string;
   entryFee: number;
   reward: number;
+  rewardFriendlyName: string[];
+  giveReward: (points: number, state: GameState) => void;
+  returnReward: (points: number) => number;
   ratingRequirement: number;
   teammember: TeamMemberNames;
   champion: Champions;

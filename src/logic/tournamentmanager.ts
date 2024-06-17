@@ -5,7 +5,6 @@ import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
 import { battle } from "./battle";
-import { getTournamentPrizeMoney } from "./helpers";
 import { calculateTotalTournamentTime } from "./helpers/tournamenttime";
 import { AssignTournamentMessage, TournamentMessage } from "./messagehandler";
 
@@ -73,11 +72,7 @@ export class TournamentManager {
       if (currentRound >= tournament.opponents.length) {
         // End tournament
 
-        const prizeMoney = getTournamentPrizeMoney(
-          state.activities.tournament.id,
-          log
-        );
-        state.entities.money.amount += prizeMoney;
+        tournament.giveReward(log.points, state);
         if (log.points >= tournament.opponents.length * 3) {
           state.trophys[state.activities.tournament.id]++;
           state.entities.trophies.amount++;
@@ -139,12 +134,12 @@ export class TournamentManager {
         if (totalTicks - ticks <= 0) {
           // Run tournament
           const log = this.runTournament(t.currentTournament, t.deck);
+          const tournament = AllTournaments[t.currentTournament];
 
-          const prizeMoney = getTournamentPrizeMoney(t.currentTournament, log);
-          state.entities.money.amount += prizeMoney;
+          tournament.giveReward(log.points, state);
 
           t.rating += log.points;
-          if (log.points >= 9) {
+          if (log.points >= tournament.opponents.length * deckSize) {
             if (!t.trophies) t.trophies = 0;
             t.trophies++;
           }

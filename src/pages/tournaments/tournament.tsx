@@ -78,16 +78,20 @@ export const TournamentInfo = ({
 
       <p className="font-bold mb-2 md:mb-4">Rewards</p>
       <p className="font-semibold mb-0 md:mb-4">
-        {tournament.opponents.length * 3} points - {tournament.reward} money
+        {tournament.opponents.length * 3} points -{" "}
+        {tournament.returnReward(tournament.opponents.length * 3)}{" "}
+        {tournament.rewardFriendlyName[0]}
       </p>
       <p className="font-semibold mb-0 md:mb-4">
-        {tournament.opponents.length * 3 - 3} points - {tournament.reward / 2}{" "}
-        money
+        {tournament.opponents.length * 3 - 3} points -{" "}
+        {tournament.returnReward(tournament.opponents.length * 3 - 3)}{" "}
+        {tournament.rewardFriendlyName[1]}
       </p>
 
       <p className="font-semibold mb-4">
-        {tournament.opponents.length * 3 - 6} points - {tournament.reward / 4}{" "}
-        money
+        {tournament.opponents.length * 3 - 6} points -{" "}
+        {tournament.returnReward(tournament.opponents.length * 3 - 6)}{" "}
+        {tournament.rewardFriendlyName[2]}
       </p>
       <p className="font-bold mb-4">Trophys: {gameState.trophys[id]}</p>
       {!hideLog && <LastTournament log={gameState.logs.tournament[id]} />}
