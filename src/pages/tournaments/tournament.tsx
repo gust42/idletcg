@@ -61,6 +61,8 @@ export const TournamentInfo = ({
       ? "text-green-800"
       : "text-red-800";
 
+  const hideLog = gameState.activities.tournament?.id === id;
+
   return (
     <Container>
       <h2 className="mb-4 text-lg">{tournament.name}</h2>
@@ -88,7 +90,7 @@ export const TournamentInfo = ({
         money
       </p>
       <p className="font-bold mb-4">Trophys: {gameState.trophys[id]}</p>
-      <LastTournament log={gameState.logs.tournament[id]} />
+      {!hideLog && <LastTournament log={gameState.logs.tournament[id]} />}
       <TournamentJoinButton id={id} onClick={onClick} />
     </Container>
   );
