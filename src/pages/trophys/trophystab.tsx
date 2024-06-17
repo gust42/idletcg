@@ -13,13 +13,7 @@ export default function TrophysTab() {
     .map((t, i) => {
       const index = `slot${i + 1}` as keyof typeof gameState.trophycase;
       if (gameState.trophys[t.id] >= 10) {
-        return (
-          <TrophySlot
-            key={index}
-            trophy={gameState.trophycase[t.id]}
-            tournament={t}
-          />
-        );
+        return <TrophySlot key={index} tournament={t} />;
       }
     })
     .filter((c) => c !== undefined);

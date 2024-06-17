@@ -12,10 +12,9 @@ import { Tournament, TournamentLog } from "../../rules/tournaments/tournament";
 
 interface ITrophySlotProps {
   tournament: Tournament;
-  trophy?: boolean;
 }
 
-export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
+export const TrophySlot = ({ tournament }: ITrophySlotProps) => {
   const gameState = useGameState();
 
   const champion = AllChampions.find(
@@ -37,10 +36,8 @@ export const TrophySlot = ({ tournament, trophy }: ITrophySlotProps) => {
       <Title>{tournament.name}</Title>
       <div className="flex flex-row gap-2">
         <div className="grow flex flex-col justify-between">
-          <SmallTitle>
-            {trophy ? champion?.name : "Unknown champion"}
-          </SmallTitle>
-          <HelpText>Reward: {trophy ? reward : "???"}</HelpText>
+          <SmallTitle>{champion.name}</SmallTitle>
+          <HelpText>Reward: {reward}</HelpText>
           {gameState.champions[champion.id].defeated ? (
             <Title>Defeated</Title>
           ) : (
