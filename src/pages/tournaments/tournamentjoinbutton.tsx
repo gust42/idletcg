@@ -23,20 +23,25 @@ export const TournamentJoinButton = ({
     Object.values(gameState.deck.cards).every((card) => card !== undefined) &&
     Object.keys(gameState.deck.cards).length >= deckSize;
 
-  const disabled =
+  let disabledReason = "";
+  if (
     calculateRating(gameState.entities.rating).amount <
-      tournament.ratingRequirement ||
-    inBattle(gameState) ||
-    !fullDeck;
+    tournament.ratingRequirement
+  )
+    disabledReason = "Rating too low";
+  else if (inBattle(gameState)) disabledReason = "In battle";
+  else if (!fullDeck) disabledReason = "Deck not complete";
+  else if (gameState.entities.money.amount < tournament.entryFee)
+    disabledReason = "Not enough money";
 
   return (
     <ActionContainer>
       <Button
-        disabled={disabled}
+        disabled={disabledReason !== ""}
         action="SIGNUP"
         onClick={() => onClick(id, false)}
       >
-        Enter ({tournament.entryFee})
+        {disabledReason || <>Enter ({tournament.entryFee})</>}
       </Button>
     </ActionContainer>
   );

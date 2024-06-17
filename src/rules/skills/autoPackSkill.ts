@@ -22,25 +22,27 @@ export class AutoPackSkill implements Skill {
   }
 
   effect(level: number) {
-    if (level > 10)
+    if (level > 5)
       return Math.floor(
         Math.max(
           (level - 1) * this.rule.increaseEffect ** (2 + level / 100),
           this.rule.value
         )
       );
-    else
-      return Math.max((level - 1) * this.rule.increaseEffect, this.rule.value);
+    else return level;
   }
 
   friendyEffect(level: number) {
     const state = GameLoop.getInstance().stateHandler.getState();
-    const shopKeeper = AllSkills.shopkeeperFriendSkill.effect(
-      state.skills.shopkeeperFriendSkill.level
-    );
+
+    let shopKeeperSkill = 1;
+    if (state.skills.shopkeeperFriendSkill.acquired)
+      shopKeeperSkill = AllSkills.shopkeeperFriendSkill.effect(
+        state.skills.shopkeeperFriendSkill.level
+      );
     const packCost =
       GameLoop.getInstance().rulesHandler.getRuleValue("PackCost");
-    const cost = this.effect(level) * packCost * shopKeeper;
+    const cost = this.effect(level) * packCost * shopKeeperSkill;
     return `Opens ${this.effect(level)} packs for ${Math.floor(
       cost
     )} money / tick`;

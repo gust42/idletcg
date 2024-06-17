@@ -21,9 +21,7 @@ export const DeckbuilderTab = () => {
     });
   };
 
-  const championUnlocked = Object.keys(gameState.trophycase).some(
-    (t) => gameState.trophycase[t as keyof typeof gameState.trophycase]
-  );
+  const championUnlocked = gameState.routes.trophys.acquired;
 
   return (
     <div className="flex flex-col gap-2">

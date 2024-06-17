@@ -9,7 +9,9 @@ export const TeamTab = () => {
     <div>
       <div className="flex flex-row flex-wrap gap-4">
         {state.team.map((member) => {
-          const m = AllTeamMembers.find((m) => m.name === member.name)!;
+          const m = AllTeamMembers.find((m) => m.name === member.name);
+          if (!m) return null;
+
           return <TeamMemberComponent key={member.name} member={m} />;
         })}
       </div>

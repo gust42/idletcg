@@ -10,29 +10,29 @@ export class FunFriday implements Tournament {
   entryFee = 100000;
   reward = 800000;
   ratingRequirement = 1200;
-  teammember = "Charlie" as TeamMemberNames;
+  teammember = "Susan" as TeamMemberNames;
   opponents = [
     {
       deck: {
-        slot1: 18,
-        slot2: 21,
-        slot3: 12,
+        slot1: 21,
+        slot2: 24,
+        slot3: 15,
       },
       name: "Friendly Frank",
     },
     {
       deck: {
-        slot1: 14,
-        slot2: 20,
-        slot3: 16,
+        slot1: 17,
+        slot2: 23,
+        slot3: 19,
       },
       name: "Joyful Jenny",
     },
     {
       deck: {
-        slot1: 15,
-        slot2: 24,
-        slot3: 10,
+        slot1: 18,
+        slot2: 27,
+        slot3: 13,
       },
       name: "Cheerful Charlie",
     },
