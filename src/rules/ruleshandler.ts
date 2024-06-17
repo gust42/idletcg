@@ -101,13 +101,9 @@ export default class RulesHandler {
       changed = true;
     }
 
-    const atleastten = Object.values(state.trophys).some(
-      (count) => count >= 10
-    );
-
-    if (!state.routes.trophys.acquired && atleastten) {
+    if (!state.routes.trophys.acquired && state.entities.trophies.amount > 20) {
       state.routes.trophys.acquired = true;
-      state.routes.skillstab.notify = true;
+      state.routes.tournamentstab.notify = true;
       state.routes.trophys.notify = true;
       changed = true;
     }

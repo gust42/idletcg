@@ -22,7 +22,7 @@ export class AutoPackSkill implements Skill {
   }
 
   effect(level: number) {
-    if (level > 5)
+    if (level > 10)
       return Math.floor(
         Math.max(
           (level - 1) * this.rule.increaseEffect ** (2 + level / 100),

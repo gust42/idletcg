@@ -85,6 +85,11 @@ export class PackManager {
     if (skill === "good") return this.rulesHandler.getRuleValue("GoodUnlock");
     if (skill === "meta") return this.rulesHandler.getRuleValue("MetaUnlock");
 
+    if (skill === "x10") return this.rulesHandler.getRuleValue("X10Cost");
+    if (skill === "x100") return this.rulesHandler.getRuleValue("X100Cost");
+    if (skill === "x1000") return this.rulesHandler.getRuleValue("X1000Cost");
+    if (skill === "xAll") return this.rulesHandler.getRuleValue("XAllCost");
+
     return 0;
   }
 
