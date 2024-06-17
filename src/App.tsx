@@ -33,7 +33,7 @@ function App() {
   );
 
   return (
-    <div className="flex flex-col h-full text-xs md:text-base items-stretch">
+    <div className="flex flex-col h-[100dvh] text-xs md:text-base items-stretch">
       <nav className="flex flex-row gap-3 flex-shrink-0 overflow-x-auto p-1 md:p-4 md:h-16 fixed z-10 w-screen h-10">
         {visibleTabs.length > 1 &&
           visibleTabs.map((tab) => {

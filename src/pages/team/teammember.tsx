@@ -67,34 +67,31 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
       <SmallTitle>Trophies: {stateMember.trophies ?? 0}</SmallTitle>
 
       <HelpText>Buy trophies from {member.name}</HelpText>
-      <div className="flex flex-row justify-between font-bold">
-        <div className="flex flex-row flex-grow">
-          <Button
-            disabled={
-              state.entities.money.amount < trophyCost ||
-              stateMember.trophies === 0
-            }
-            onClick={() => {
-              buyTrophy(1);
-            }}
-            action="BUY"
-          >
-            1 thropy ({format(trophyCost)})
-          </Button>
-          <Button
-            disabled={
-              state.entities.money.amount < trophyCost * stateMember.trophies ||
-              stateMember.trophies === 0
-            }
-            onClick={() => {
-              buyTrophy(stateMember.trophies ?? 0);
-            }}
-            action="BUY"
-            width="300px"
-          >
-            All ({format(trophyCost * (stateMember.trophies ?? 0))})
-          </Button>
-        </div>
+      <div className="flex flex-col md:flex-row">
+        <Button
+          disabled={
+            state.entities.money.amount < trophyCost ||
+            stateMember.trophies === 0
+          }
+          onClick={() => {
+            buyTrophy(1);
+          }}
+          action="BUY"
+        >
+          1 thropy ({format(trophyCost)})
+        </Button>
+        <Button
+          disabled={
+            state.entities.money.amount < trophyCost * stateMember.trophies ||
+            stateMember.trophies === 0
+          }
+          onClick={() => {
+            buyTrophy(stateMember.trophies ?? 0);
+          }}
+          action="BUY"
+        >
+          All ({format(trophyCost * (stateMember.trophies ?? 0))})
+        </Button>
       </div>
       <div className="text-lg mt-8">Deck</div>
       <div className="flex flex-row flex-wrap gap-2 mt-4 mb-4">
