@@ -9,26 +9,43 @@ export default function TrophysTab() {
     gameState.deck.championDeck
   ).every((c) => c !== undefined);
 
+  let visibleChampions = Object.values(AllTournaments)
+    .map((t, i) => {
+      const index = `slot${i + 1}` as keyof typeof gameState.trophycase;
+      if (gameState.trophys[t.id] >= 10) {
+        return (
+          <TrophySlot
+            key={index}
+            trophy={gameState.trophycase[t.id]}
+            tournament={t}
+          />
+        );
+      }
+    })
+    .filter((c) => c !== undefined);
+
+  let hasVisibleChampions = true;
+
+  if (visibleChampions.length === 0) {
+    hasVisibleChampions = false;
+
+    visibleChampions = [
+      <div key="empty" className="p-2 w-full">
+        You need to win more trophies in a tournament to unlock its champion
+      </div>,
+    ];
+  }
+  console.log(visibleChampions, hasVisibleChampions);
+
   return (
     <div className="flex flex-row flex-wrap gap-2">
-      {!hasCompleteChampionDeck && (
+      {!hasCompleteChampionDeck && hasVisibleChampions && (
         <div className="p-2 w-full font-bold bg-red-200">
           You need to complete your Champion Deck to fight champions, see deck
           builder
         </div>
       )}
-      {Object.values(AllTournaments).map((t, i) => {
-        const index = `slot${i + 1}` as keyof typeof gameState.trophycase;
-        if (gameState.trophys[t.id] >= 10) {
-          return (
-            <TrophySlot
-              key={index}
-              trophy={gameState.trophycase[t.id]}
-              tournament={t}
-            />
-          );
-        }
-      })}
+      {visibleChampions}
     </div>
   );
 }

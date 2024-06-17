@@ -1,3 +1,4 @@
+import { HelpText } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
 import { calculateRating } from "../../logic/helpers";
 import MessageHandler from "../../logic/messagehandler";
@@ -32,6 +33,11 @@ export const TournamentTab = () => {
 
   return (
     <div>
+      <HelpText>
+        Build your deck to play in tournaments. Your opponents always plays
+        cards in the same order so you have to figure out which order to play
+        your cards to win.
+      </HelpText>
       <div className="flex flex-row flex-wrap gap-4">{tournaments}</div>
     </div>
   );

@@ -131,8 +131,6 @@ export default class GameLoop {
 
         if (state.entities.money.amount >= rule.requirement) {
           state.skills[data.name].acquired = true;
-          state.routes.skillstab.notify = true;
-          state.routes.skills.notify = true;
           state.entities.money.amount -= rule.requirement;
           this.stateHandler.updateState(state);
         } else {
