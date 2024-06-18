@@ -1,5 +1,6 @@
 import { Button } from "../../components/button";
 import { ActionContainer } from "../../components/container";
+import { format } from "../../helpers/number";
 import useGameState from "../../hooks/usegamestate";
 import GameLoop from "../../logic/gameloop";
 import { calculateRating, inBattle } from "../../logic/helpers";
@@ -41,7 +42,7 @@ export const TournamentJoinButton = ({
         action="SIGNUP"
         onClick={() => onClick(id, false)}
       >
-        {disabledReason || <>Enter ({tournament.entryFee})</>}
+        {disabledReason || <>Enter ({format(tournament.entryFee)})</>}
       </Button>
     </ActionContainer>
   );

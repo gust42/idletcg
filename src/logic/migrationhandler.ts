@@ -47,9 +47,12 @@ export class MigrationHandler {
 
   private v2Migration(state: { team: JoinedTeamMember[] }): GameState {
     if (state.team.length > 0) {
-      state.team = state.team.forEach((member) => {
+      state.team = state.team.map((member) => {
         return {
-          name: member.name,
+          name:
+            (member.name as unknown as string) === "Charlie"
+              ? "Susan"
+              : member.name,
           deck: {
             slot1: undefined,
             slot2: undefined,
