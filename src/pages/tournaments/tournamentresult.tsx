@@ -44,6 +44,7 @@ export const TournamentResult = ({
               MessageHandler.recieveMessage("entertournament", {
                 id: tournament.id,
               });
+              navigate("activetournament");
             }}
           >
             Restart ({format(tournament.entryFee)})

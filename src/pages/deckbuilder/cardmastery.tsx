@@ -46,7 +46,7 @@ export const AbilityButton = (ability: Ability & { disabled: boolean }) => {
         });
       }}
     >
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row gap-8">
         <div className="text-lg">{ability.friendlyName}</div>
         <div className="text-lg">{skill?.level ?? 0}/5</div>
       </div>
@@ -134,10 +134,12 @@ export const CardMastery = () => {
         <Title>Path of {gameState.cardmastery.path}</Title>
         Remaining points: {availablePoints}
         <HelpText>You get 1 points for every 100 rating</HelpText>
-        <div className="flex justify-center mb-1">{path1}</div>
-        <div className="flex flex-row gap-1 mb-1">{path2}</div>
-        <div className="flex flex-row gap-1 mb-1">{path3}</div>
-        <div className="flex justify-center">{path4}</div>
+        <div className="overflow-x-scroll md:overflow-x-hidden w-[380px] ">
+          <div className="flex justify-center mb-1">{path1}</div>
+          <div className="flex flex-row gap-1 mb-1">{path2}</div>
+          <div className="flex flex-row gap-1 mb-1">{path3}</div>
+          <div className="flex justify-center">{path4}</div>
+        </div>
         <div className="mt-8">
           <Button
             onClick={() => {

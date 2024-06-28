@@ -21,13 +21,13 @@
     "value": 2
   },
   "GoodCardSellValue": {
-    "value": 20
+    "value": 10
   },
   "BadCardSellValue": {
     "value": 1
   },
   "MetaCardSellValue": {
-    "value": 500
+    "value": 100
   },
   "CardsForTradebinder": {
     "value": 1
@@ -36,10 +36,10 @@
     "value": 5
   },
   "CostForUniqueCards": {
-    "badcards": 80,
-    "goodcards": 20,
-    "metacards": 5,
-    "increase": 1.8
+    "badcards": 60,
+    "goodcards": 0.015,
+    "metacards": 0.001,
+    "increase": 1.55
   },
   "TournamentRoundTicks": {
     "value": 5
@@ -66,7 +66,7 @@
     "value": 2000
   },
   "X1000Cost": {
-    "value": 10000
+    "value": 20000
   },
   "XAllCost": {
     "value": 1000000

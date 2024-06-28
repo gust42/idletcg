@@ -35,19 +35,19 @@ export const cardMasteryTree: Path[] = [
         effectType: "additive",
         levels: [
           {
+            effect: 1,
+          },
+          {
             effect: 2,
           },
           {
             effect: 3,
           },
           {
+            effect: 4,
+          },
+          {
             effect: 5,
-          },
-          {
-            effect: 8,
-          },
-          {
-            effect: 12,
           },
         ],
       },
@@ -116,19 +116,19 @@ export const cardMasteryTree: Path[] = [
         effectType: "multiplicative",
         levels: [
           {
+            effect: 1,
+          },
+          {
+            effect: 2,
+          },
+          {
+            effect: 3,
+          },
+          {
+            effect: 4,
+          },
+          {
             effect: 5,
-          },
-          {
-            effect: 10,
-          },
-          {
-            effect: 15,
-          },
-          {
-            effect: 20,
-          },
-          {
-            effect: 25,
           },
         ],
       },
@@ -139,19 +139,19 @@ export const cardMasteryTree: Path[] = [
         effectType: "multiplicative",
         levels: [
           {
+            effect: 1,
+          },
+          {
+            effect: 2,
+          },
+          {
+            effect: 3,
+          },
+          {
+            effect: 4,
+          },
+          {
             effect: 5,
-          },
-          {
-            effect: 10,
-          },
-          {
-            effect: 15,
-          },
-          {
-            effect: 20,
-          },
-          {
-            effect: 25,
           },
         ],
       },
@@ -162,19 +162,19 @@ export const cardMasteryTree: Path[] = [
         effectType: "multiplicative",
         levels: [
           {
+            effect: 1,
+          },
+          {
+            effect: 2,
+          },
+          {
+            effect: 3,
+          },
+          {
+            effect: 4,
+          },
+          {
             effect: 5,
-          },
-          {
-            effect: 10,
-          },
-          {
-            effect: 15,
-          },
-          {
-            effect: 20,
-          },
-          {
-            effect: 25,
           },
         ],
       },
@@ -190,19 +190,19 @@ export const cardMasteryTree: Path[] = [
         effectType: "multiplicative",
         levels: [
           {
-            effect: 5,
+            effect: 2,
+          },
+          {
+            effect: 4,
+          },
+          {
+            effect: 6,
+          },
+          {
+            effect: 8,
           },
           {
             effect: 10,
-          },
-          {
-            effect: 15,
-          },
-          {
-            effect: 20,
-          },
-          {
-            effect: 25,
           },
         ],
       },

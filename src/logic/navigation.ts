@@ -69,7 +69,6 @@ export const routeConfig: RouteConfig = {
     friendlyName: "Deck Builder",
     routes: {
       deckbuilder: { friendlyName: "Deck Builder", component: DeckbuilderTab },
-      cardmastery: { friendlyName: "Card Mastery", component: CardMastery },
     },
   },
   tournamentstab: {
@@ -84,6 +83,7 @@ export const routeConfig: RouteConfig = {
     friendlyName: "Skills",
     routes: {
       skills: { friendlyName: "Skills", component: SkillsTab },
+      cardmastery: { friendlyName: "Card Mastery", component: CardMastery },
     },
   },
   activetournament: {

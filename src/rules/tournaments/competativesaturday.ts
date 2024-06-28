@@ -9,7 +9,11 @@ export class CompetitiveSaturday implements Tournament {
   champion = "mai-pudde" as Champions;
   entryFee = 1000000;
   reward = 1;
-  rewardFriendlyName = ["meta cards", "good cards", "bad cards"];
+  rewardFriendlyName = [
+    "% of your current cards",
+    "% of your current cards",
+    "% of your current cards",
+  ];
   ratingRequirement = 1600;
   teammember = "Terry" as TeamMemberNames;
   opponents = [
@@ -43,24 +47,17 @@ export class CompetitiveSaturday implements Tournament {
     const maxPoints = this.opponents.length * 3;
 
     if (points >= maxPoints) {
-      return 1000;
+      return 10;
     } else if (points >= maxPoints - 3) {
-      return 100000;
+      return 5;
     } else if (points >= maxPoints - 6) {
-      return 1e7;
+      return 2;
     }
 
     return 0;
   }
 
   giveReward(points: number, state: GameState) {
-    const maxPoints = this.opponents.length * 3;
-    if (points >= maxPoints) {
-      state.entities.metacards.amount += this.returnReward(points);
-    } else if (points >= maxPoints - 3) {
-      state.entities.goodcards.amount += this.returnReward(points);
-    } else if (points >= maxPoints - 6) {
-      state.entities.badcards.amount += this.returnReward(points);
-    }
+    state.entities.badcards.amount *= 1 + this.returnReward(points) / 100;
   }
 }

@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Button } from "../../components/button";
 import { Title } from "../../components/typography";
 import GameLoop from "../../logic/gameloop";
+import { openPack, openPacks } from "../../logic/pack";
 
 export const Settings = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <div>
       <Title>Settings</Title>
@@ -60,6 +63,53 @@ export const Settings = () => {
           </a>
         </div>
       </div>
+      <Button
+        onClick={() => {
+          const metaDropRate =
+            GameLoop.getInstance().rulesHandler.getRuleValue(
+              "MetaCardDroprate"
+            );
+          const goodDropRate =
+            GameLoop.getInstance().rulesHandler.getRuleValue(
+              "GoodCardDroprate"
+            );
+          const goodCardMax =
+            GameLoop.getInstance().rulesHandler.getRuleValue("GoodCardPackMax");
+
+          console.time("new");
+          console.table(
+            openPacks(100000, metaDropRate, goodDropRate, goodCardMax, 20)
+          );
+          console.timeEnd("new");
+
+          console.time("old");
+          let badcards = 0;
+          let goodcards = 0;
+          let metacards = 0;
+
+          for (let i = 0; i < 100000; i++) {
+            const pack = openPack(metaDropRate, goodDropRate, goodCardMax, 20);
+
+            badcards += pack.badcards;
+            goodcards += pack.goodcards;
+            metacards += pack.metacards;
+          }
+          console.timeEnd("old");
+
+          console.table({ metacards, goodcards, badcards });
+        }}
+        action=""
+      >
+        Open pack test
+      </Button>
+      <Button
+        action=""
+        onClick={() => {
+          setModalOpen(!modalOpen);
+        }}
+      >
+        Open Victory
+      </Button>
     </div>
   );
 };

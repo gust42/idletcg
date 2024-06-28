@@ -42,7 +42,7 @@ export const PackPoints = () => {
               gameState.pack.supply.amount * 2 + packSupplyRule.value
             })`}
             cost={packSupplyCost}
-            acquired={gameState.pack.supply.acquired}
+            acquired={false}
             visible={gameState.entities.packsupply.acquired}
             packPoints={gameState.entities.packbonuspoints.amount}
           />
@@ -92,15 +92,23 @@ export const PackPoints = () => {
             visible
             packPoints={gameState.entities.packbonuspoints.amount}
           />
-          <PackUpgrade
-            skill="xAll"
-            text={`Buy as many packs as you can`}
-            cost={xAllCost.value}
-            acquired={gameState.pack.xAll.amount === 1}
-            visible
-            packPoints={gameState.entities.packbonuspoints.amount}
-          />
         </Container>
+        {gameState.pack.x1000.amount === 1 && (
+          <Container>
+            <SmallTitle>Transform</SmallTitle>
+            <HelpText>
+              This upgrade transform the effect of some old skills
+            </HelpText>
+            <PackUpgrade
+              skill="xAll"
+              text={`Buy as many packs as you can`}
+              cost={xAllCost.value}
+              acquired={gameState.pack.xAll.amount === 1}
+              visible
+              packPoints={gameState.entities.packbonuspoints.amount}
+            />
+          </Container>
+        )}
       </div>
     </div>
   );

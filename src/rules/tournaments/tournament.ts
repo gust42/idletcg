@@ -55,7 +55,12 @@ export const metaTypes = ["Aggro", "Control", "Combo"];
  * @param id The id of the card
  * @param state The current state of the game, only pass when calculating the win ratio of the player
  */
-export function generateWinRatio(id: number, state?: GameState) {
+export function generateWinRatio(
+  id: number,
+  state?: GameState,
+  gameRound: number = -1,
+  original = false
+) {
   let currentValue = 30; // Starting value
 
   // Predefined array of irregular increments
@@ -69,7 +74,7 @@ export function generateWinRatio(id: number, state?: GameState) {
   const linearIncrement = 1.5; // Adjust as needed
   currentValue += id * linearIncrement;
 
-  if (state) {
+  if (state && !original) {
     currentValue = applyAdeptEffect(
       currentValue,
       metaTypes[id % metaTypes.length],
@@ -78,6 +83,7 @@ export function generateWinRatio(id: number, state?: GameState) {
     currentValue = applyCardOrderEffect(
       currentValue,
       metaTypes[id % metaTypes.length],
+      gameRound,
       state
     );
     currentValue = applyCardMasterEffect(
@@ -130,9 +136,10 @@ export function calculateWinRateModFromMeta(
 export function calculateWinner(
   myCard: number,
   opponentCard: number,
+  gameRound: number,
   state: GameState
 ) {
-  const myWinRate = generateWinRatio(myCard, state);
+  const myWinRate = generateWinRatio(myCard, state, gameRound);
   const opponentWinRate = generateWinRatio(opponentCard);
 
   const myMod = calculateWinRateModFromMeta(myCard, opponentCard, state);

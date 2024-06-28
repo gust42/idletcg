@@ -34,11 +34,12 @@ export function calculateUniqueCardCost(id: number, state: GameState) {
     state.binder.cards.includes(id)
   ).length;
 
-  const increase = cost.increase ** ((1 + row / 6) * (1 + unlockedInRow / 50));
+  const increase = cost.increase ** ((1 + row / 5) * (1 + unlockedInRow / 20));
+  const base = cost.badcards ** increase * 20;
 
-  const costBadCards = Math.floor(cost.badcards ** increase);
-  const costGoodCards = Math.floor(cost.goodcards ** increase);
-  const costMetaCards = Math.floor(cost.metacards ** increase);
+  const costBadCards = Math.floor(base);
+  const costGoodCards = Math.floor(base * cost.goodcards);
+  const costMetaCards = Math.floor(base * cost.metacards);
 
   return [costBadCards, costGoodCards, costMetaCards] as const;
 }
@@ -62,14 +63,16 @@ export function calculateOfflineDiff(
 
 export function formatSeconds(d: number) {
   d = Number(d);
-  const h = Math.floor(d / 3600);
+  const days = Math.floor(d / (3600 * 24));
+  const h = Math.floor((d % (3600 * 24)) / 3600); // Corrected
   const m = Math.floor((d % 3600) / 60);
-  const s = Math.floor((d % 3600) % 60);
+  const s = Math.floor(d % 60); // Simplified
 
-  const hDisplay = h > 0 ? h + "h" : "";
-  const mDisplay = m > 0 ? m + "m" : "";
+  const dDisplay = days > 0 ? days + "d " : ""; // Added space for readability
+  const hDisplay = h > 0 ? h + "h " : ""; // Added space for readability
+  const mDisplay = m > 0 ? m + "m " : ""; // Added space for readability
   const sDisplay = s > 0 ? s + "s" : "";
-  return hDisplay + mDisplay + sDisplay;
+  return dDisplay + hDisplay + mDisplay + sDisplay;
 }
 
 export const getCardSize = (size: "small" | "medium" | "large") => {

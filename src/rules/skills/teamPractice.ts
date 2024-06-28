@@ -7,7 +7,7 @@ export class TeamPractice implements Skill {
     requirement: 1000000,
     increase: 1.05,
     value: 2,
-    increaseEffect: 2,
+    increaseEffect: 1,
     maxLevel: 10,
   };
 
