@@ -94,7 +94,19 @@ export const TournamentInfo = ({
         {tournament.rewardFriendlyName[2]}
       </p>
       <p className="font-bold mb-4">Trophys: {gameState.trophys[id]}</p>
-      {!hideLog && <LastTournament log={gameState.logs.tournament[id]} />}
+      {hideLog ? (
+        <div className="mb-4 flex justify-end">
+          <Button
+            action=""
+            width="120px"
+            onClick={() => navigate("activetournament")}
+          >
+            Show battle
+          </Button>
+        </div>
+      ) : (
+        <LastTournament log={gameState.logs.tournament[id]} />
+      )}
       <TournamentJoinButton id={id} onClick={onClick} />
     </Container>
   );

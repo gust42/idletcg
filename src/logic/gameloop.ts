@@ -78,7 +78,7 @@ export default class GameLoop {
     handleChampionBattleTick();
 
     const state = this.stateHandler.getState();
-    if (state.skills.workSkill.acquired) {
+    if (state.skills.workSkill.acquired && state.pack.xAll.amount === 0) {
       const skill = AllSkills.workSkill;
 
       state.entities.money.amount += skill.effect(state.skills.workSkill.level);

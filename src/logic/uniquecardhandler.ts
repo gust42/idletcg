@@ -58,7 +58,7 @@ export const handleUniqueCardMessage = (m: Message, state: GameState) => {
       );
 
       if (!rowUnlocked && isRowUnlocked(cardSet, state)) {
-        state.entities.packsupply.amount += (cardSet + 1) * 10000;
+        state.entities.packsupply.amount += 2 ** (cardSet + 1) * 30000;
       }
 
       if (!rowCompleted && isRowCompleted(cardSet, state)) {

@@ -1,6 +1,9 @@
 import { Button } from "../../components/button";
+import { ActionContainer, Container } from "../../components/container";
+import { format } from "../../helpers/number";
 import { getRewardNameByPoints } from "../../logic/helpers";
-import { goBack } from "../../logic/navigation";
+import MessageHandler from "../../logic/messagehandler";
+import { navigate } from "../../logic/navigation";
 import { Tournament, TournamentLog } from "../../rules/tournaments/tournament";
 
 export const TournamentResult = ({
@@ -11,7 +14,7 @@ export const TournamentResult = ({
   log: TournamentLog;
 }) => {
   return (
-    <div>
+    <Container>
       <div className="text-2xl font-bold">Tournament finished!</div>
       <div className="text-lg">
         You got {log.points} points{" "}
@@ -23,16 +26,31 @@ export const TournamentResult = ({
           </>
         )}
       </div>
-      <div className="pt-4">
-        <Button
-          action=""
-          onClick={() => {
-            goBack();
-          }}
-        >
-          Return
-        </Button>
-      </div>
-    </div>
+      <ActionContainer>
+        <div className="pt-4 flex flex-row">
+          <Button
+            width="50%"
+            action=""
+            onClick={() => {
+              navigate("tournaments");
+            }}
+          >
+            Return
+          </Button>
+          <Button
+            width="50%"
+            action=""
+            onClick={() => {
+              MessageHandler.recieveMessage("entertournament", {
+                id: tournament.id,
+              });
+              navigate("activetournament");
+            }}
+          >
+            Restart ({format(tournament.entryFee)})
+          </Button>
+        </div>
+      </ActionContainer>
+    </Container>
   );
 };

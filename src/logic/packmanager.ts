@@ -3,7 +3,7 @@ import RulesHandler, { AllSkills } from "./../rules/ruleshandler";
 import StateHandler from "./../state/statehandler";
 import { calculatePackUpgradeCost } from "./helpers";
 import MessageHandler from "./messagehandler";
-import { openPack } from "./pack";
+import { openPack, openPacks } from "./pack";
 
 export type PackType = "normal" | "express";
 
@@ -106,8 +106,11 @@ export class PackManager {
   private autoOpenPack(level: number) {
     const state = this.stateHandler.getState();
     const skill = AllSkills.autoPackSkill;
-    if (state.skills.autoPackSkill.on)
-      this.openPack(skill.effect(level), "normal", false);
+    if (state.skills.autoPackSkill.on) {
+      if (state.pack.xAll.amount > 0)
+        state.entities.packsupply.amount += skill.effect(level);
+      else this.openPack(skill.effect(level), "normal", false);
+    }
   }
 
   private calculatePackCost(type: PackType = "normal") {
@@ -155,23 +158,44 @@ export class PackManager {
       const goodCardPackMax = this.rulesHandler.getRuleValue("GoodCardPackMax");
       const cardsInPack = this.rulesHandler.getRuleValue("CardsInPack");
 
-      for (let i = 0; i < amount; i++) {
-        const pack = openPack(
+      const workSkillEffect = AllSkills.workSkill.effect(
+        state.skills.workSkill.level
+      );
+
+      const realPacks = amount;
+      amount = Math.floor(amount * workSkillEffect) + 1;
+
+      if (amount > 1e6) {
+        ({
+          badCards: badcards,
+          goodCards: goodcards,
+          metaCards: metacards,
+        } = openPacks(
+          amount,
           metaCardDropRate,
           goodCardDropRate,
           goodCardPackMax,
           cardsInPack
-        );
+        ));
+      } else {
+        for (let i = 0; i < amount; i++) {
+          const pack = openPack(
+            metaCardDropRate,
+            goodCardDropRate,
+            goodCardPackMax,
+            cardsInPack
+          );
 
-        badcards += pack.badcards;
-        goodcards += pack.goodcards;
-        metacards += pack.metacards;
+          badcards += pack.badcards;
+          goodcards += pack.goodcards;
+          metacards += pack.metacards;
+        }
       }
 
       state.entities.metacards.amount += metacards;
       state.entities.goodcards.amount += goodcards;
       state.entities.badcards.amount += badcards;
-      state.entities.money.amount -= cost * amount;
+      state.entities.money.amount -= cost * realPacks;
 
       if (metacards > 0) state.entities.metacards.acquired = true;
 
@@ -181,7 +205,7 @@ export class PackManager {
 
       state.entities.packbonuspoints.amount += 1 * amount;
 
-      if (type !== "express") state.entities.packsupply.amount -= amount;
+      if (type !== "express") state.entities.packsupply.amount -= realPacks;
 
       if (log)
         MessageHandler.sendClientMessage(

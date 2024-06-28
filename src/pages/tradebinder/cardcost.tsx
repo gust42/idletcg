@@ -1,9 +1,9 @@
 import { PropsWithChildren } from "react";
-import useGameState from "../../hooks/usegamestate";
-import { calculateUniqueCardCost } from "../../logic/helpers";
 import { HelpText } from "../../components/typography";
-import { GameState } from "../../interfaces/logic";
 import { format } from "../../helpers/number";
+import useGameState from "../../hooks/usegamestate";
+import { GameState } from "../../interfaces/logic";
+import { calculateUniqueCardCost } from "../../logic/helpers";
 
 const NotEnough = ({ children }: PropsWithChildren) => {
   return <div className="text-red-600">{children}</div>;
@@ -70,18 +70,11 @@ export const CardCost = ({ id }: { id: number }) => {
   return (
     <>
       <HelpText>Trade cards for a unique card in this set</HelpText>
-      <div className="flex flex-row gap-2 justify-between">
+      <div className="flex flex-row gap-4">
         <div>{badCardsElement}</div>
         <div>{goodCardsElement}</div>
         <div>{metaCardsElement}</div>
       </div>
-      {/* <Button
-          action=""
-          disabled={notEnoughCards}
-          onClick={() => tradeCard(id)}
-        >
-          Trade
-        </Button> */}
     </>
   );
 };

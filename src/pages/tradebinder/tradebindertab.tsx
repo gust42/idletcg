@@ -1,8 +1,13 @@
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
 import { Title } from "../../components/typography";
+import { format } from "../../helpers/number";
 import useGameState from "../../hooks/usegamestate";
-import { allCards, calculateUniqueCardCost } from "../../logic/helpers";
+import {
+  allCards,
+  calculateUniqueCardCost,
+  roundToNearestThousand,
+} from "../../logic/helpers";
 import MessageHandler from "../../logic/messagehandler";
 import { isRowCompleted, isRowUnlocked } from "../../logic/uniquecardhandler";
 import { CardCost } from "./cardcost";
@@ -78,8 +83,9 @@ export default function TradebinderTab() {
               <div className="font-bold mt-4">Set bonuses</div>
               <div className={`flex flex-col `}>
                 <div className={`flex flex-row justify-between ${unlocked}`}>
-                  <div className="font-semibold">Unlock</div> +{(i + 1) * 10000}{" "}
-                  pack supply
+                  <div className="font-semibold">Unlock</div> +
+                  {format(roundToNearestThousand(2 ** (i + 1) * 30000))} pack
+                  supply
                 </div>
                 <div className={`flex flex-row justify-between ${completed} `}>
                   <div className="font-semibold">Complete</div> +{(i + 1) * 5}{" "}

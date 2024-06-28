@@ -32,13 +32,13 @@ export const TournamentPlay = ({
       myCard,
       gameState
     );
-    const result = calculateWinner(myCard, opponentCard, gameState);
+    const result = calculateWinner(myCard, opponentCard, i - 1, gameState);
     play.push(
       <div
         key={i}
         className="flex flex-row gap-2 items-center  justify-between"
       >
-        <Card winRateMod={myMod} size="small" id={myCard} />
+        <Card showOrignal winRateMod={myMod} size="small" id={myCard} />
 
         <div>
           {result === "win" ? (

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { Modal } from "./components/modal";
 import { Navigation } from "./components/navigation";
 import { OfflineModal, Paused } from "./components/paused";
 import ResourceView from "./components/resourceview";
 import Tab from "./components/tab";
+import { Victory } from "./components/victory";
 import useGameState from "./hooks/usegamestate";
 import GameLoop, { offlineHandler } from "./logic/gameloop";
 import { navigate } from "./logic/navigation";
@@ -12,6 +14,7 @@ import { Tabs, tabs } from "./rules/tabs";
 function App() {
   const [offlineModalOpen, setOfflineModalOpen] = useState(false);
   const gameState = useGameState();
+  let modalOpen = false;
 
   useEffect(() => {
     const gameLoop = GameLoop.getInstance();
@@ -31,6 +34,14 @@ function App() {
   const visibleTabs = Object.keys(tabs).filter(
     (key) => gameState.routes[key as Tabs].acquired
   );
+
+  if (
+    gameState.champions.lsq.defeated &&
+    gameState.champions["mai-pudde"].defeated &&
+    gameState.champions["ron-dinkel"].defeated
+  ) {
+    modalOpen = true;
+  }
 
   return (
     <div className="flex flex-col h-[100dvh] text-xs md:text-base items-stretch">
@@ -80,6 +91,9 @@ function App() {
           open={offlineModalOpen}
         />
       )}
+      <Modal open={modalOpen} onClose={() => {}}>
+        <Victory />
+      </Modal>
     </div>
   );
 }

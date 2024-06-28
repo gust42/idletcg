@@ -42,7 +42,9 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
 
   const myCards = gameState.binder.cards
     .filter((card) => !cardsToRemove.includes(card))
+    .sort((a, b) => a - b)
     .reverse();
+
   return (
     <Modal onClose={() => onSelect(undefined)} open={true}>
       <h2 className="text-xl mb-6">Choose a card for this slot</h2>

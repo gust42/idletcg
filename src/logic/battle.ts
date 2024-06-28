@@ -20,6 +20,7 @@ export function battle(
     const result = calculateWinner(
       myCard,
       opponentCard,
+      j,
       GameLoop.getInstance().stateHandler.getState()
     );
     if (result === "win") {

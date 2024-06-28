@@ -42,10 +42,10 @@ export const handleCardMasteryMessage = (
 
   if (message.message === "resetcardmastery") {
     state.cardmastery.path = undefined;
-    state.cardmastery.skills.path1.id = undefined;
-    state.cardmastery.skills.path1.level = 0;
-    state.cardmastery.skills.path2.id = undefined;
-    state.cardmastery.skills.path2.level = 0;
+    Object.keys(state.cardmastery.skills).forEach((key) => {
+      state.cardmastery.skills[key as "path1"].id = undefined;
+      state.cardmastery.skills[key as "path1"].level = 0;
+    });
     state.cardmastery.usedPoints = 0;
   }
   return state;
@@ -118,14 +118,13 @@ export function applyOverKillEffect(
 export function applyCardOrderEffect(
   winRate: number,
   metaType: string,
+  gameRound: number,
   state: GameState
 ) {
   if (metaType === state.cardmastery.path) {
     const path3Skill = state.cardmastery.skills.path3;
 
     const order = ["first", "second", "third"];
-
-    const gameRound = state.activities.tournament?.gameRound;
 
     if (gameRound !== undefined && path3Skill.id === order[gameRound]) {
       const skill = cardMasteryTree
