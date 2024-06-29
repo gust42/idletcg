@@ -29,7 +29,6 @@ export default function TrophysTab() {
       </div>,
     ];
   }
-  console.log(visibleChampions, hasVisibleChampions);
 
   return (
     <div className="flex flex-row flex-wrap gap-2">

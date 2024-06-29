@@ -163,7 +163,8 @@ export class PackManager {
       );
 
       const realPacks = amount;
-      amount = Math.floor(amount * workSkillEffect) + 1;
+      if (state.pack.xAll.amount > 0)
+        amount = Math.floor(amount * workSkillEffect) + amount;
 
       if (amount > 1e6) {
         ({
