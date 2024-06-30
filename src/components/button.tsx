@@ -1,4 +1,10 @@
-import { PropsWithChildren, useEffect, useRef } from "react";
+import {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 interface IButtonProps {
   onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -19,6 +25,7 @@ export const Button = ({
   action = "Buy",
   repeatable = false,
 }: PropsWithChildren<IButtonProps>) => {
+  const [isDown, setIsDown] = useState(false);
   const mouseDownRef = useRef(0);
   const touchDownRef = useRef(0);
   const isDisabled = disabled ? "#bbb" : "";
@@ -27,6 +34,12 @@ export const Button = ({
 
   const reset =
     "outline-none hover:border-slate-800 active:border-border-slate-800 active:outline-none active:bg-none focus:outline-none rounded-none";
+
+  const onMouseUp = useCallback(() => {
+    clearInterval(mouseDownRef.current);
+    mouseDownRef.current = 0;
+    if (!disabled) setIsDown(false);
+  }, [disabled]);
 
   useEffect(() => {
     window.addEventListener("mouseup", onMouseUp);
@@ -37,7 +50,7 @@ export const Button = ({
       window.removeEventListener("touchend", onMouseUp);
       onMouseUp();
     };
-  }, []);
+  }, [onMouseUp]);
 
   const onPress = (e: React.MouseEvent<HTMLDivElement>) => {
     if (disabled) return;
@@ -53,15 +66,12 @@ export const Button = ({
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (mouseDownRef.current !== 0) return;
 
+    setIsDown(true);
+
     onPress(e);
     mouseDownRef.current = setInterval(() => {
       onPress(e);
-    }, 300);
-  };
-
-  const onMouseUp = () => {
-    clearInterval(mouseDownRef.current);
-    mouseDownRef.current = 0;
+    }, 200);
   };
 
   const onTouchMove = () => {
@@ -77,6 +87,8 @@ export const Button = ({
   if (disabled) {
     onMouseUp();
   }
+
+  const backgroundColor = isDown ? "bg-slate-900" : "bg-slate-700";
 
   return (
     <div
@@ -106,7 +118,7 @@ export const Button = ({
       )}
       <button
         style={{ backgroundColor: isDisabled || color }}
-        className={`uppercase p-1 text-white flex-grow rounded-none ${reset} border-slate-800  bg-slate-700 text-center ${cursor} flex flex-row`}
+        className={`uppercase p-1 text-white flex-grow rounded-none ${reset} border-slate-800  ${backgroundColor} text-center ${cursor} flex flex-row`}
       >
         <div className="flex-grow ">{children}</div>
       </button>

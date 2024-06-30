@@ -5,7 +5,7 @@ import { calculatePackUpgradeCost } from "./helpers";
 import MessageHandler from "./messagehandler";
 import { openPack, openPacks } from "./pack";
 
-export type PackType = "normal" | "express";
+export type PackType = "normal" | "free" | "express";
 
 export type PackData = { amount: number; type: PackType };
 
@@ -109,7 +109,7 @@ export class PackManager {
     if (state.skills.autoPackSkill.on) {
       if (state.pack.xAll.amount > 0)
         state.entities.packsupply.amount += skill.effect(level);
-      else this.openPack(skill.effect(level), "normal", false);
+      else this.openPack(skill.effect(level), "free", false);
     }
   }
 
@@ -145,7 +145,9 @@ export class PackManager {
 
     if (
       state.entities.money.amount >= cost * amount &&
-      (amount <= state.entities.packsupply.amount || type === "express")
+      (amount <= state.entities.packsupply.amount ||
+        type === "express" ||
+        type === "free")
     ) {
       let badcards = 0,
         goodcards = 0,
@@ -196,7 +198,8 @@ export class PackManager {
       state.entities.metacards.amount += metacards;
       state.entities.goodcards.amount += goodcards;
       state.entities.badcards.amount += badcards;
-      state.entities.money.amount -= cost * realPacks;
+
+      if (type !== "free") state.entities.money.amount -= cost * realPacks;
 
       if (metacards > 0) state.entities.metacards.acquired = true;
 
@@ -206,7 +209,8 @@ export class PackManager {
 
       state.entities.packbonuspoints.amount += 1 * amount;
 
-      if (type !== "express") state.entities.packsupply.amount -= realPacks;
+      if (type !== "express" && type !== "free")
+        state.entities.packsupply.amount -= realPacks;
 
       if (log)
         MessageHandler.sendClientMessage(

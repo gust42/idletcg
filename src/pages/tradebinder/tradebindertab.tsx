@@ -64,15 +64,16 @@ export default function TradebinderTab() {
                       <UniqueCard key={"emj" + card.id} id={card.id} />
                       {!gameState.binder.cards.includes(card.id) && (
                         <>
-                          <div className="absolute rounded-3xl w-full h-full opacity-40 bg-black top-0" />
-                          <div className="absolute top-6 w-full h-12">
-                            <Button
-                              action=""
-                              disabled={notEnoughCards}
-                              onClick={() => tradeCard(card.id)}
-                            >
-                              Trade
-                            </Button>
+                          <div className="absolute rounded-3xl w-full md:max-w-[140px] aspect-[2/3] bg-[#00000060] top-0">
+                            <div className="relative top-6 w-full">
+                              <Button
+                                action=""
+                                disabled={notEnoughCards}
+                                onClick={() => tradeCard(card.id)}
+                              >
+                                Trade
+                              </Button>
+                            </div>
                           </div>
                         </>
                       )}

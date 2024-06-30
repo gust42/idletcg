@@ -44,15 +44,19 @@ export default function PacksTab() {
                 {format(gameState.entities.badcards.amount)}
               </DataContainer>
             )}
-            {gameState.entities.goodcards.acquired && (
+            {gameState.entities.goodcards.acquired ? (
               <DataContainer title="Good cards" col>
                 {format(gameState.entities.goodcards.amount)}
               </DataContainer>
+            ) : (
+              <DataContainer title="???" col></DataContainer>
             )}
-            {gameState.entities.metacards.acquired && (
+            {gameState.entities.metacards.acquired ? (
               <DataContainer title="Meta cards" col>
                 {format(gameState.entities.metacards.amount)}
               </DataContainer>
+            ) : (
+              <DataContainer title="???" col></DataContainer>
             )}
           </div>
           <div className="mb-4">

@@ -41,7 +41,8 @@ export const SkillInfo = ({
 
   if (!skill.visible(gameState)) return null;
 
-  const skillIsToggleable = state.on !== undefined && state.acquired;
+  // const skillIsToggleable = state.on !== undefined && state.acquired;
+  const skillIsToggleable = false;
 
   const isMaxLevel =
     !!skill.rule.maxLevel && state.level >= skill.rule.maxLevel;

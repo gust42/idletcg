@@ -96,7 +96,7 @@ export default class RulesHandler {
       calculateRating(state.entities.rating).amount > 1000
     ) {
       state.routes.cardmastery.acquired = true;
-      state.routes.deckbuildertab.notify = true;
+      state.routes.skillstab.notify = true;
       state.routes.cardmastery.notify = true;
       changed = true;
     }
@@ -108,7 +108,7 @@ export default class RulesHandler {
       changed = true;
     }
 
-    const packChanged = handleActivePackRules(state);
+    const packChanged = handleActivePackRules(this, state);
     if (packChanged) changed = true;
 
     return changed ? state : null;
