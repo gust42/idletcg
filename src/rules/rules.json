@@ -39,7 +39,7 @@
     "badcards": 60,
     "goodcards": 0.015,
     "metacards": 0.001,
-    "increase": 1.55
+    "increase": 1.15
   },
   "TournamentRoundTicks": {
     "value": 5
