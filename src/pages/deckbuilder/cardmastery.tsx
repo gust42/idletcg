@@ -130,11 +130,11 @@ export const CardMastery = () => {
 
   if (gameState.cardmastery.path) {
     return (
-      <div className="md:max-w-fit">
+      <div className="md:max-w-[480px]">
         <Title>Path of {gameState.cardmastery.path}</Title>
         Remaining points: {availablePoints}
         <HelpText>You get 1 points for every 100 rating</HelpText>
-        <div className="overflow-x-scroll md:overflow-x-hidden w-[380px] ">
+        <div className="overflow-x-scroll md:overflow-x-hidden w-[380px] md:w-[480px] ">
           <div className="flex justify-center mb-1">{path1}</div>
           <div className="flex flex-row gap-1 mb-1">{path2}</div>
           <div className="flex flex-row gap-1 mb-1">{path3}</div>
