@@ -134,11 +134,17 @@ export const goBack = () => {
   navigate(lastRoute.route, lastRoute.props);
 };
 
-export const findParentRoute = (route: AllSubroutes) => {
+export const findParentRouteName = (route: AllSubroutes) => {
   const parentKey = Object.keys(routeConfig).find((key) => {
     const subroute = routeConfig[key as keyof typeof routeConfig].routes;
     return subroute ? Object.keys(subroute).includes(route) : false;
   });
+
+  return parentKey as RouteNames;
+};
+
+export const findParentRoute = (route: AllSubroutes) => {
+  const parentKey = findParentRouteName(route);
 
   return parentKey ? routeConfig[parentKey as keyof typeof routeConfig] : null;
 };

@@ -34,8 +34,8 @@ export function calculateUniqueCardCost(id: number, state: GameState) {
     state.binder.cards.includes(id)
   ).length;
 
-  const increase = cost.increase ** ((1 + row / 5) * (1 + unlockedInRow / 20));
-  const base = cost.badcards ** increase * 20;
+  const increase = cost.increase ** ((1 + row / 5) * (1 + unlockedInRow / 15));
+  const base = cost.badcards ** increase * 20 + 50000 * (row + 1);
 
   const costBadCards = Math.floor(base);
   const costGoodCards = Math.floor(base * cost.goodcards);

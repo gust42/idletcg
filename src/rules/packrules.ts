@@ -1,7 +1,13 @@
 import { GameState } from "../interfaces/logic";
+import RulesHandler from "./ruleshandler";
 
-export function handleActivePackRules(state: GameState) {
+export function handleActivePackRules(
+  rulesHandler: RulesHandler,
+  state: GameState
+) {
   let changed = false;
+
+  // First
   if (
     !state.entities.packbonuspoints.acquired &&
     state.entities.packbonuspoints.amount > 40
@@ -15,7 +21,8 @@ export function handleActivePackRules(state: GameState) {
 
   if (
     !state.pack.good.acquired &&
-    state.entities.packbonuspoints.amount >= 80
+    state.entities.packbonuspoints.amount >=
+      rulesHandler.getRuleValue("GoodUnlock")
   ) {
     state.pack.good.acquired = true;
     state.routes.packstab.notify = true;
@@ -25,7 +32,8 @@ export function handleActivePackRules(state: GameState) {
 
   if (
     !state.pack.meta.acquired &&
-    state.entities.packbonuspoints.amount >= 600
+    state.entities.packbonuspoints.amount >=
+      rulesHandler.getRuleValue("MetaUnlock")
   ) {
     state.pack.meta.acquired = true;
     state.routes.packstab.notify = true;

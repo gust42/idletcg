@@ -16,6 +16,12 @@ import MessageHandler, {
   TournamentMessage,
   TrophyMessage,
 } from "./messagehandler";
+import {
+  AllSubroutes,
+  RouteNames,
+  findParentRouteName,
+  routeConfig,
+} from "./navigation";
 import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
 import { TimerHandler } from "./timerhandler";
@@ -221,7 +227,16 @@ export default class GameLoop {
 
       if (m.message === "clearnotifier") {
         const data = m.data as NotifierMessage;
+        const isSubRoute =
+          routeConfig[data.route as RouteNames]?.routes === undefined;
+
         const state = this.stateHandler.getState();
+        if (isSubRoute) {
+          const parentRoute = findParentRouteName(data.route as AllSubroutes);
+          if (parentRoute) {
+            state.routes[parentRoute].notify = false;
+          }
+        }
         state.routes[data.route].notify = false;
         this.stateHandler.updateState(state);
       }
