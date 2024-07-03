@@ -59,5 +59,7 @@ export class CompetitiveSaturday implements Tournament {
 
   giveReward(points: number, state: GameState) {
     state.entities.badcards.amount *= 1 + this.returnReward(points) / 100;
+    state.entities.goodcards.amount *= 1 + this.returnReward(points) / 100;
+    state.entities.metacards.amount *= 1 + this.returnReward(points) / 100;
   }
 }
