@@ -1,7 +1,11 @@
-import { Deck } from "../interfaces/logic";
+import { Deck, GameState } from "../interfaces/logic";
 import { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import { AllTeamMembers } from "../rules/teammembers";
-import { TournamentLog, Tournaments } from "../rules/tournaments/tournament";
+import {
+  Tournament,
+  TournamentLog,
+  Tournaments,
+} from "../rules/tournaments/tournament";
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
 import { battle } from "./battle";
@@ -38,10 +42,14 @@ export class TournamentManager {
 
     const state = this.stateHandler.getState();
     const skill = AllSkills.tournamentGrinder;
+
+    const skillValue = state.skills.tournamentGrinder.acquired
+      ? skill.effect(state.skills.tournamentGrinder.level)
+      : 0;
+
     if (
       this.tickCounter <
-      this.rulesHandler.getRuleValue("TournamentRoundTicks") -
-        skill.effect(state.skills.tournamentGrinder.level)
+      this.rulesHandler.getRuleValue("TournamentRoundTicks") - skillValue
     ) {
       this._tickCounter++;
       return;
@@ -65,50 +73,57 @@ export class TournamentManager {
           state.activities.tournament.gameRound = 0;
           state.activities.tournament.currentOpponent++;
           state.activities.tournament.tournamentRound++;
+
+          if (
+            state.activities.tournament.currentOpponent >=
+            tournament.opponents.length
+          ) {
+            this.endTournament(tournament, log, state);
+          }
         } else {
           state.activities.tournament.gameRound++;
         }
       }
-      if (currentRound >= tournament.opponents.length) {
-        // End tournament
-
-        tournament.giveReward(log.points, state);
-        if (log.points >= tournament.opponents.length * 3) {
-          state.trophys[state.activities.tournament.id]++;
-          state.entities.trophies.amount++;
-          if (!state.entities.trophies.acquired)
-            state.entities.trophies.acquired = true;
-        }
-        if (
-          log.points >= tournament.opponents.length * 3 &&
-          !state.team.find((t) => t.name === tournament.teammember)
-        )
-          state.team.push({
-            name: tournament.teammember,
-            rating: 1000,
-            trophies: 0,
-            deck: {
-              slot1: undefined,
-              slot2: undefined,
-              slot3: undefined,
-            },
-            currentTournament: undefined,
-            lastTournament: undefined,
-            tournamentTicks: 0,
-          });
-
-        state.entities.rating.amount += log.points;
-        if (!state.entities.rating.acquired)
-          state.entities.rating.acquired = true;
-
-        state.activities.tournament = undefined;
-
-        this._tickCounter = this.rulesHandler.getRuleValue(
-          "TournamentRoundTicks"
-        );
-      }
       this.stateHandler.updateState(state);
     }
+  }
+
+  private endTournament(
+    tournament: Tournament,
+    log: TournamentLog,
+    state: GameState
+  ) {
+    tournament.giveReward(log.points, state);
+    if (log.points >= tournament.opponents.length * 3) {
+      state.trophys[state.activities.tournament!.id]++;
+      state.entities.trophies.amount++;
+      if (!state.entities.trophies.acquired)
+        state.entities.trophies.acquired = true;
+    }
+    if (
+      log.points >= tournament.opponents.length * 3 &&
+      !state.team.find((t) => t.name === tournament.teammember)
+    )
+      state.team.push({
+        name: tournament.teammember,
+        rating: 1000,
+        trophies: 0,
+        deck: {
+          slot1: undefined,
+          slot2: undefined,
+          slot3: undefined,
+        },
+        currentTournament: undefined,
+        lastTournament: undefined,
+        tournamentTicks: 0,
+      });
+
+    state.entities.rating.amount += log.points;
+    if (!state.entities.rating.acquired) state.entities.rating.acquired = true;
+
+    state.activities.tournament = undefined;
+
+    this._tickCounter = this.rulesHandler.getRuleValue("TournamentRoundTicks");
   }
 
   private handleTeamMemberTick() {

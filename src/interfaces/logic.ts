@@ -114,6 +114,7 @@ export interface GameState {
   counters: {
     uniquecards: Counter;
     time: Counter;
+    clock: Counter;
   };
   deck: {
     cards: Deck;

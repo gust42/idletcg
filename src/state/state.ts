@@ -242,6 +242,9 @@ export const state: GameState = {
     time: {
       amount: Date.now(),
     },
+    clock: {
+      amount: 0,
+    },
   },
   logs: {
     tournament: {} as TournamentEntry,

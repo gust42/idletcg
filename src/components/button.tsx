@@ -71,7 +71,7 @@ export const Button = ({
     onPress(e);
     mouseDownRef.current = setInterval(() => {
       onPress(e);
-    }, 200);
+    }, 300);
   };
 
   const onTouchMove = () => {
