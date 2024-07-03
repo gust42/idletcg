@@ -52,6 +52,13 @@ export class PackManager {
     const amount = this.rulesHandler.getRuleValue("PackSupplyTick");
     let packSupply =
       amount + state.pack.supply.amount * 2 + state.binder.packsupplysetbonus;
+
+    if (state.pack.xAll.amount > 0) {
+      packSupply += AllSkills.autoPackSkill.effect(
+        state.skills.autoPackSkill.level
+      );
+    }
+
     if (state.champions.lsq.defeated) packSupply *= 2;
     if (state.champions["mai-pudde"].defeated) packSupply *= 3;
     if (state.champions["ron-dinkel"].defeated) packSupply *= 4;
@@ -107,9 +114,8 @@ export class PackManager {
     const state = this.stateHandler.getState();
     const skill = AllSkills.autoPackSkill;
     if (state.skills.autoPackSkill.on) {
-      if (state.pack.xAll.amount > 0)
-        state.entities.packsupply.amount += skill.effect(level);
-      else this.openPack(skill.effect(level), "free", false);
+      if (state.pack.xAll.amount === 0)
+        this.openPack(skill.effect(level), "free", false);
     }
   }
 

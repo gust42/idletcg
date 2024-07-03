@@ -29,7 +29,10 @@ export class AutoPackSkill implements Skill {
   }
 
   effect(level: number) {
-    return Math.floor(this.cost(level) / 10000 + level);
+    if (GameLoop.getInstance().stateHandler.getState().pack.xAll.amount > 0) {
+      return Math.floor(level * 10);
+    }
+    return Math.floor(this.cost(level) / (100000 * level) + level);
   }
 
   friendyEffect(level: number) {
