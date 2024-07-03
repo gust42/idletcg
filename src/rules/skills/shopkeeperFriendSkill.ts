@@ -1,12 +1,11 @@
 import { format } from "../../helpers/number";
 import GameLoop from "../../logic/gameloop";
-import { roundToNearestThousand } from "../../logic/helpers";
 import { Skill, SkillRule } from "./skill";
 
 export class ShopkeeperFriendSkill implements Skill {
   rule: SkillRule = {
-    requirement: 500,
-    increase: 1.2,
+    requirement: 200,
+    increase: 2,
     value: 0.9,
     increaseEffect: 0.1,
     maxLevel: 20,
@@ -17,9 +16,8 @@ export class ShopkeeperFriendSkill implements Skill {
   description = "Makes packs cost less money";
 
   cost(level: number) {
-    return roundToNearestThousand(
-      this.rule.requirement ** this.rule.increase * level
-    );
+    const cost = this.rule.requirement * level ** this.rule.increase;
+    return cost;
   }
 
   effect(level: number) {

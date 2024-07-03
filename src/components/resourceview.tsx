@@ -101,6 +101,7 @@ export default function ResourceView() {
           </div>
         </>
       )}
+      <div className="hidden">{gameState.counters.clock.amount}</div>
     </div>
   );
 }

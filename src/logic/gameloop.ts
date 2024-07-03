@@ -90,6 +90,8 @@ export default class GameLoop {
       state.entities.money.amount += skill.effect(state.skills.workSkill.level);
     }
 
+    state.counters.clock.amount += 1;
+
     this.stateHandler.updateState(state);
   }
 
