@@ -97,7 +97,7 @@ export const PackPoints = () => {
           <Container>
             <SmallTitle>Transform</SmallTitle>
             <HelpText>
-              This upgrade transform the effect of some old skills
+              This upgrade transforms the effect of some of your skills
             </HelpText>
             <PackUpgrade
               skill="xAll"

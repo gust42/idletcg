@@ -22,7 +22,8 @@ export default function ResourceView() {
       className=" sticky top-0 overflow-hidden flex flex-col h-full
   "
     >
-      <h4 className="text-lg mb-1 md:mb-2">Resources</h4>
+      <div className="text-md italic mb-1 md:mb-2">Resources</div>
+      <hr className="mb-1" />
       <div className=" flex flex-col gap-1">
         <ResourceItem
           name="Money"
@@ -72,9 +73,10 @@ export default function ResourceView() {
 
       {gameState.routes.tournamentstab.acquired && (
         <>
-          <h4 className="text-lg mt-1 mb-1 md:mt-2 md:mb-2">Activities</h4>
+          <div className="text-md italic mt-4 mb-1 md:mb-2">Activities</div>
+          <hr className="mb-1" />
           <TournamentProgress />
-          <div className="mt-1 md:mt-2">
+          <div className="mt-2">
             {teamMemberTournament.map((stateMember) => {
               const member = AllTeamMembers.find(
                 (m) => m.name === stateMember.name
@@ -83,18 +85,17 @@ export default function ResourceView() {
                 stateMember.currentTournament as keyof typeof AllTournaments;
               const tournament = AllTournaments[id];
               return (
-                <div key={member.name} className="flex flex-col gap-1 mb-4">
-                  <div className="">{member.name} is playing</div>
-                  <div className="font-semibold">{tournament.name}</div>
-                  <div className="flex flex-row gap-4">
-                    Time
-                    <div className="font-semibold">
+                <div key={member.name} className="flex flex-col  mb-2">
+                  <div className="">
+                    {member.name}:{" "}
+                    <span className="font-semibold">
                       {formatSeconds(
                         calculateTotalTournamentTime(id, member.speed) -
                           (stateMember.tournamentTicks ?? 0)
                       )}
-                    </div>
+                    </span>
                   </div>
+                  <div className="font-semibold">{tournament.name}</div>
                 </div>
               );
             })}

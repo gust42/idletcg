@@ -33,41 +33,41 @@ const LSQ = {
     slot8: 23,
     slot9: 37,
   },
-  reward: "Doubles pack supply gain",
+  reward: "Increases pack supply gain by 10x",
 } as Champion;
 
 const RonDinkel = {
   id: "ron-dinkel",
   name: "Ron Dinkel",
   deck: {
-    slot1: 45,
-    slot2: 50,
-    slot3: 55,
-    slot4: 40,
-    slot5: 60,
-    slot6: 42,
-    slot7: 58,
-    slot8: 43,
-    slot9: 57,
+    slot1: 40,
+    slot2: 45,
+    slot3: 50,
+    slot4: 35,
+    slot5: 55,
+    slot6: 37,
+    slot7: 53,
+    slot8: 38,
+    slot9: 52,
   },
-  reward: "Tripples pack supply gain",
+  reward: "Increases pack supply gain by 100x",
 } as Champion;
 
 const MaiPudde = {
   id: "mai-pudde",
   name: "Mai Pudde",
   deck: {
-    slot1: 53,
-    slot2: 58,
-    slot3: 62,
-    slot4: 67,
-    slot5: 70,
-    slot6: 51,
-    slot7: 56,
-    slot8: 60,
-    slot9: 64,
+    slot1: 48,
+    slot2: 53,
+    slot3: 57,
+    slot4: 62,
+    slot5: 65,
+    slot6: 46,
+    slot7: 51,
+    slot8: 55,
+    slot9: 59,
   },
-  reward: "Quadruples pack supply gain",
+  reward: "Increases pack supply gain by 1000x",
 } as Champion;
 
 export const AllChampions = [LSQ, RonDinkel, MaiPudde];

@@ -24,6 +24,7 @@ import {
 } from "./navigation";
 import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
+import { StatTracker } from "./stattracker";
 import { TimerHandler } from "./timerhandler";
 import { TournamentManager, TournamentMessages } from "./tournamentmanager";
 import { handleUniqueCardMessage } from "./uniquecardhandler";
@@ -91,6 +92,8 @@ export default class GameLoop {
     }
 
     state.counters.clock.amount += 1;
+
+    StatTracker.tick(state);
 
     this.stateHandler.updateState(state);
   }

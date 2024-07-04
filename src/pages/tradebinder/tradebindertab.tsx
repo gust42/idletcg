@@ -5,8 +5,8 @@ import { format } from "../../helpers/number";
 import useGameState from "../../hooks/usegamestate";
 import {
   allCards,
+  calculatePackSupplySetBonus,
   calculateUniqueCardCost,
-  roundToNearestThousand,
 } from "../../logic/helpers";
 import MessageHandler from "../../logic/messagehandler";
 import { isRowCompleted, isRowUnlocked } from "../../logic/uniquecardhandler";
@@ -52,6 +52,8 @@ export default function TradebinderTab() {
 
         const unlocked = isRowUnlocked(i, gameState) && "text-green-600";
         const completed = isRowCompleted(i, gameState) && "text-green-600";
+
+        const { unlock, complete } = calculatePackSupplySetBonus(i);
         return (
           <Container key={i}>
             <Title>Set {i + 1}</Title>
@@ -64,7 +66,7 @@ export default function TradebinderTab() {
                       <UniqueCard key={"emj" + card.id} id={card.id} />
                       {!gameState.binder.cards.includes(card.id) && (
                         <>
-                          <div className="absolute rounded-3xl w-full md:max-w-[140px] aspect-[2/3] bg-[#00000060] top-0">
+                          <div className="absolute rounded-3xl w-full max-w-[75px] md:max-w-[140px] aspect-[2/3] bg-[#00000060] top-0">
                             <div className="relative top-6 w-full">
                               <Button
                                 action=""
@@ -84,13 +86,12 @@ export default function TradebinderTab() {
               <div className="font-bold mt-4">Set bonuses</div>
               <div className={`flex flex-col `}>
                 <div className={`flex flex-row justify-between ${unlocked}`}>
-                  <div className="font-semibold">Unlock</div> +
-                  {format(roundToNearestThousand(2 ** (i + 1) * 30000))} pack
-                  supply
+                  <div className="font-semibold">Unlock</div> +{format(unlock)}{" "}
+                  pack supply
                 </div>
                 <div className={`flex flex-row justify-between ${completed} `}>
-                  <div className="font-semibold">Complete</div> +{(i + 1) * 5}{" "}
-                  pack supply / tick{" "}
+                  <div className="font-semibold">Complete</div> +{complete} pack
+                  supply / tick{" "}
                 </div>
               </div>
             </div>

@@ -49,11 +49,10 @@ export default function ResourceItem({
 
   return (
     <div>
-      <div>
-        {name} {change}
-      </div>
+      <div>{name}</div>
       <span className="font-semibold">
-        {fixDecimal ? format(resource.amount, 2) : format(resource.amount, 0)}
+        {fixDecimal ? format(resource.amount, 2) : format(resource.amount, 0)}{" "}
+        {change}
       </span>
     </div>
   );

@@ -31,13 +31,21 @@ export const TrophySlot = ({ tournament }: ITrophySlotProps) => {
     champion.reward
   );
 
+  const unlocked = gameState.trophys[tournament.id] >= 10;
+
   return (
     <Container>
       <Title>{tournament.name}</Title>
       <div className="flex flex-row gap-2">
         <div className="grow flex flex-col justify-between">
-          <SmallTitle>{champion.name}</SmallTitle>
-          <HelpText>Reward: {reward}</HelpText>
+          <SmallTitle>{unlocked ? champion.name : `Name: ???`}</SmallTitle>
+          {!unlocked && (
+            <HelpText>
+              Missing {10 - gameState.trophys[tournament.id]} trophies in this
+              tournament
+            </HelpText>
+          )}
+          <HelpText>Reward: {unlocked ? reward : "???"}</HelpText>
           {gameState.champions[champion.id].defeated ? (
             <Title>Defeated</Title>
           ) : (
@@ -73,7 +81,7 @@ export const TrophySlot = ({ tournament }: ITrophySlotProps) => {
                   inBattle(gameState)
                 }
               >
-                10 trophys
+                {unlocked ? "10 trophys" : "-"}
               </Button>
             </>
           )}

@@ -36,10 +36,10 @@
     "value": 5
   },
   "CostForUniqueCards": {
-    "badcards": 60,
+    "badcards": 4e5,
     "goodcards": 0.015,
     "metacards": 0.001,
-    "increase": 1.14
+    "increase": 1.4
   },
   "TournamentRoundTicks": {
     "value": 5

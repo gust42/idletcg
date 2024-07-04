@@ -1,5 +1,8 @@
 import { GameState } from "../interfaces/logic";
-import { calculateUniqueCardCost } from "./helpers";
+import {
+  calculatePackSupplySetBonus,
+  calculateUniqueCardCost,
+} from "./helpers";
 import { Message } from "./messagehandler";
 
 export type UniqueCardMessages = "tradecard";
@@ -57,12 +60,14 @@ export const handleUniqueCardMessage = (m: Message, state: GameState) => {
         state.entities.metacards.amount - costMetaCards
       );
 
+      const { unlock, complete } = calculatePackSupplySetBonus(cardSet);
+
       if (!rowUnlocked && isRowUnlocked(cardSet, state)) {
-        state.entities.packsupply.amount += 2 ** (cardSet + 1) * 30000;
+        state.entities.packsupply.amount += unlock;
       }
 
       if (!rowCompleted && isRowCompleted(cardSet, state)) {
-        state.binder.packsupplysetbonus += (cardSet + 1) * 5;
+        state.binder.packsupplysetbonus += complete;
       }
     }
   }
