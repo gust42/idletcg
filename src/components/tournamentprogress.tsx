@@ -28,7 +28,13 @@ export const TournamentProgress = memo(() => {
 
   return (
     gameState.activities.tournament && (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
+        <div>
+          You:{" "}
+          <span className="font-semibold">
+            {totalTime > 0 ? totalTime : 0}s
+          </span>
+        </div>
         <div className="font-semibold">{tournament.name}</div>
         <div>
           <div>Current points</div>
@@ -39,10 +45,6 @@ export const TournamentProgress = memo(() => {
                   ?.points}
             points
           </div>
-        </div>
-        <div className="flex flex-row gap-4">
-          Time
-          <div className="font-semibold">{totalTime > 0 ? totalTime : 0}s</div>
         </div>
       </div>
     )

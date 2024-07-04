@@ -59,6 +59,9 @@ export interface Champion {
 export interface GameState {
   stats: {
     startedPlaying: number;
+    highestBadcards: number;
+    highestGoodcards: number;
+    highestMetacards: number;
   };
   champions: Record<Champions, Champion>;
   binder: {

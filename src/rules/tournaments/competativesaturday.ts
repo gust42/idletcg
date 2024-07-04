@@ -10,9 +10,9 @@ export class CompetitiveSaturday implements Tournament {
   entryFee = 1000000;
   reward = 1;
   rewardFriendlyName = [
-    "% of your current cards",
-    "% of your current cards",
-    "% of your current cards",
+    "% of your highest amount cards",
+    "% of your highest amount cards",
+    "% of your highest amount cards",
   ];
   ratingRequirement = 1600;
   teammember = "Terry" as TeamMemberNames;
@@ -58,8 +58,11 @@ export class CompetitiveSaturday implements Tournament {
   }
 
   giveReward(points: number, state: GameState) {
-    state.entities.badcards.amount *= 1 + this.returnReward(points) / 100;
-    state.entities.goodcards.amount *= 1 + this.returnReward(points) / 100;
-    state.entities.metacards.amount *= 1 + this.returnReward(points) / 100;
+    state.entities.badcards.amount +=
+      state.stats.highestBadcards * (this.returnReward(points) / 100);
+    state.entities.goodcards.amount +=
+      state.stats.highestGoodcards * (this.returnReward(points) / 100);
+    state.entities.metacards.amount +=
+      state.stats.highestMetacards * (this.returnReward(points) / 100);
   }
 }

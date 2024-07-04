@@ -34,8 +34,10 @@ export function calculateUniqueCardCost(id: number, state: GameState) {
     state.binder.cards.includes(id)
   ).length;
 
-  const increase = cost.increase ** ((1 + row) * (1 + unlockedInRow / 15));
-  const base = cost.badcards ** increase * 20 + 100000 * (row + 1);
+  const base =
+    cost.badcards *
+    (row + 1) ** (cost.increase * (1 + row / 10)) *
+    (unlockedInRow + 1);
 
   const costBadCards = Math.floor(base);
   const costGoodCards = Math.floor(base * cost.goodcards);
@@ -141,4 +143,31 @@ export function getRewardNameByPoints(
   if (points >= 6) return rewardFriendlyName[1];
   if (points >= 9) return rewardFriendlyName[0];
   return "";
+}
+
+export function calculatePackSupplyIncome(state: GameState) {
+  const amount =
+    GameLoop.getInstance().rulesHandler.getRuleValue("PackSupplyTick");
+  let packSupply =
+    amount + state.pack.supply.amount * 2 + state.binder.packsupplysetbonus;
+
+  if (state.pack.xAll.amount > 0) {
+    packSupply += AllSkills.autoPackSkill.effect(
+      state.skills.autoPackSkill.level
+    );
+  }
+
+  if (state.champions.lsq.defeated) packSupply *= 10;
+  if (state.champions["mai-pudde"].defeated) packSupply *= 100;
+  if (state.champions["ron-dinkel"].defeated) packSupply *= 1000;
+
+  return packSupply;
+}
+
+export function calculatePackSupplySetBonus(set: number) {
+  const supply = (set + 1) * 10;
+  return {
+    complete: supply,
+    unlock: supply * 60 * 60,
+  } as const;
 }

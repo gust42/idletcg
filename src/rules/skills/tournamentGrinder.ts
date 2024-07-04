@@ -5,7 +5,7 @@ import { Skill } from "./skill";
 
 export class TournamentGrinder implements Skill {
   rule = {
-    requirement: 200000,
+    requirement: 1e5,
     increase: 1.05,
     value: 1,
     increaseEffect: 1,
@@ -17,9 +17,7 @@ export class TournamentGrinder implements Skill {
   description = "Reduces thinking time between card plays";
 
   cost(level: number) {
-    return roundToNearestThousand(
-      this.rule.requirement ** this.rule.increase * level
-    );
+    return roundToNearestThousand(this.rule.requirement * 10 ** level);
   }
 
   effect(level: number) {

@@ -58,7 +58,7 @@ function App() {
           })}
       </nav>
       <div className="flex flex-row items-stretch flex-grow pt-10 md:pt-16">
-        <aside className="p-2 bg-slate-300 border-r-2 w-[120px] md:min-w-[180px] fixed z-10 min-h-[calc(100dvh-40px)] md:min-h-[calc(100dvh-64px)] flex justify-between flex-col">
+        <aside className="p-1 bg-slate-300 border-r-2 w-[120px] md:min-w-[180px] fixed z-10 min-h-[calc(100dvh-40px)] md:min-h-[calc(100dvh-64px)] flex justify-between flex-col">
           <ResourceView />
           <div className="text-xs md:text-base">
             If you like this game,{" "}

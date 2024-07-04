@@ -8,9 +8,33 @@ interface ICardPickerProps {
   onSelect: (id: number | undefined) => void;
 }
 
+const FilterButton = ({
+  selected,
+  setFilter,
+  name,
+}: {
+  selected: boolean;
+  setFilter: React.Dispatch<React.SetStateAction<string>>;
+  name: string;
+}) => {
+  return (
+    <Button
+      width="150px"
+      action="filter"
+      color={selected ? "green" : undefined}
+      onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+        setFilter(name);
+      }}
+    >
+      <span className="capitalize">{name}</span>
+    </Button>
+  );
+};
+
 export const CardPicker = ({ onSelect }: ICardPickerProps) => {
   const gameState = useGameState();
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string>("All");
 
   // let myCards = allCards.slice(0, gameState.counters.uniquecards.amount);
 
@@ -49,7 +73,6 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
     .reverse();
 
   myCards = myCards.filter((card) => {
-    console.log("filter", filter, card % 3);
     if (filter === "aggro") return card % 3 === 0;
     if (filter === "control") return card % 3 === 1;
     if (filter === "combo") return card % 3 === 2;
@@ -60,51 +83,27 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
   return (
     <Modal onClose={() => onSelect(undefined)} open={true}>
       <h2 className="text-xl mb-6">Choose a card for this slot</h2>
-      <div className="flex flex-row gap-4 mb-4">
-        <Button
-          width="200px"
-          action="filter"
-          color={filter === "" ? "green" : undefined}
-          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            e.stopPropagation();
-            setFilter("");
-          }}
-        >
-          None
-        </Button>
-        <Button
-          width="200px"
-          action="filter"
-          color={filter === "aggro" ? "green" : undefined}
-          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            e.stopPropagation();
-            setFilter("aggro");
-          }}
-        >
-          Aggro
-        </Button>
-        <Button
-          width="200px"
-          action="filter"
-          color={filter === "control" ? "green" : undefined}
-          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            e.stopPropagation();
-            setFilter("control");
-          }}
-        >
-          Control
-        </Button>
-        <Button
-          width="200px"
-          action="filter"
-          color={filter === "combo" ? "green" : undefined}
-          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            e.stopPropagation();
-            setFilter("combo");
-          }}
-        >
-          Combo
-        </Button>
+      <div className="flex flex-row gap-2 mb-4 flex-wrap w-full">
+        <FilterButton
+          selected={filter == "All"}
+          setFilter={setFilter}
+          name="All"
+        />
+        <FilterButton
+          selected={filter == "aggro"}
+          setFilter={setFilter}
+          name="aggro"
+        />
+        <FilterButton
+          selected={filter == "control"}
+          setFilter={setFilter}
+          name="control"
+        />
+        <FilterButton
+          selected={filter == "combo"}
+          setFilter={setFilter}
+          name="combo"
+        />
       </div>
       <div className="flex flex-row flex-wrap gap-2">
         {myCards.map((card) => (

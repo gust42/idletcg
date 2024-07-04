@@ -1,7 +1,7 @@
 import { GameState } from "../interfaces/logic";
 import RulesHandler, { AllSkills } from "./../rules/ruleshandler";
 import StateHandler from "./../state/statehandler";
-import { calculatePackUpgradeCost } from "./helpers";
+import { calculatePackSupplyIncome, calculatePackUpgradeCost } from "./helpers";
 import MessageHandler from "./messagehandler";
 import { openPack, openPacks } from "./pack";
 
@@ -49,19 +49,7 @@ export class PackManager {
     if (state.skills.autoPackSkill.acquired)
       this.autoOpenPack(state.skills.autoPackSkill.level);
 
-    const amount = this.rulesHandler.getRuleValue("PackSupplyTick");
-    let packSupply =
-      amount + state.pack.supply.amount * 2 + state.binder.packsupplysetbonus;
-
-    if (state.pack.xAll.amount > 0) {
-      packSupply += AllSkills.autoPackSkill.effect(
-        state.skills.autoPackSkill.level
-      );
-    }
-
-    if (state.champions.lsq.defeated) packSupply *= 2;
-    if (state.champions["mai-pudde"].defeated) packSupply *= 3;
-    if (state.champions["ron-dinkel"].defeated) packSupply *= 4;
+    const packSupply = calculatePackSupplyIncome(state);
 
     state.entities.packsupply.amount += packSupply;
   }
