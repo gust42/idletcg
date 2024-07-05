@@ -16,7 +16,7 @@ export class ShopkeeperFriendSkill implements Skill {
   description = "Makes packs cost less money";
 
   cost(level: number) {
-    const cost = this.rule.requirement * level ** this.rule.increase;
+    const cost = this.rule.requirement * (level + 1) ** this.rule.increase;
     return cost;
   }
 

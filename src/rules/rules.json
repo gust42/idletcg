@@ -6,10 +6,10 @@
     "value": 5
   },
   "GoodUnlock": {
-    "value": 80
+    "value": 1000
   },
   "MetaUnlock": {
-    "value": 8000
+    "value": 10000
   },
   "MetaCardDroprate": {
     "value": 0.02

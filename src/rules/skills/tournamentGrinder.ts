@@ -17,7 +17,7 @@ export class TournamentGrinder implements Skill {
   description = "Reduces thinking time between card plays";
 
   cost(level: number) {
-    return roundToNearestThousand(this.rule.requirement * 10 ** level);
+    return roundToNearestThousand(this.rule.requirement * 10 ** (level + 1));
   }
 
   effect(level: number) {
