@@ -22,7 +22,7 @@ export class AutoPackSkill implements Skill {
 
   cost(level: number) {
     return roundToNearestThousand(
-      this.rule.requirement * Math.pow(this.rule.increase, level) -
+      this.rule.requirement * Math.pow(this.rule.increase, level + 1) -
         this.rule.requirement / 2 +
         this.rule.requirement * (level - 1)
     );

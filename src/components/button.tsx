@@ -60,7 +60,7 @@ export const Button = ({
   const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchDownRef.current = setTimeout(() => {
       onMouseDown(e as unknown as React.MouseEvent<HTMLDivElement>);
-    }, 150);
+    }, 300);
   };
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
