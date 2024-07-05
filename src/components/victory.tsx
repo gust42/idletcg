@@ -8,7 +8,7 @@ export const Victory = () => {
     GameLoop.getInstance().stateHandler.getState().stats.startedPlaying;
 
   return (
-    <div className="flex justify-center flex-col text-center gap-16">
+    <div className="flex justify-center flex-col text-center gap-12">
       <h1>Victory</h1>
       <p>
         You have defeated the all champions and won the game! Congratulations!
@@ -16,8 +16,8 @@ export const Victory = () => {
       <SmallTitle>
         Time to complete: {formatSeconds(timePlayed / 1000)}
       </SmallTitle>
-      <div>
-        If you enjoyed the game, please support me by{" "}
+      <div className="text-lg">
+        To help me build more games, please show your support by{" "}
         <a href="https://buymeacoffee.com/gust42" target="_blank">
           buying me a coffee!
         </a>
