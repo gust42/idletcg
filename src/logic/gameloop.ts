@@ -142,6 +142,7 @@ export default class GameLoop {
 
         if (state.entities.money.amount >= rule.requirement) {
           state.skills[data.name].acquired = true;
+          state.skills[data.name].level = 1;
           state.entities.money.amount -= rule.requirement;
           this.stateHandler.updateState(state);
         } else {
