@@ -194,11 +194,6 @@ export class PackManager {
       state.entities.badcards.amount += badcards;
 
       if (type !== "free") state.entities.money.amount -= cost * realPacks;
-      console.log(
-        "openPack -> state.entities.money.amount",
-        state.entities.money.amount,
-        cost
-      );
 
       if (metacards > 0) state.entities.metacards.acquired = true;
 

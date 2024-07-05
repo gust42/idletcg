@@ -56,7 +56,7 @@ export const SkillInfo = ({
         </div>
         <HelpText>{description}</HelpText>
         <DataContainer title={state.acquired ? "Current effect" : "Effect"}>
-          {skill.friendyEffect(state.level)}
+          {skill.friendyEffect(state.acquired ? state.level : 1)}
         </DataContainer>
         <div className="flex flex-row justify-between">
           {skillIsToggleable && (

@@ -85,27 +85,27 @@ export const state: GameState = {
   skills: {
     autoPackSkill: {
       acquired: false,
-      level: 1,
+      level: 0,
       on: true,
     },
     workSkill: {
       acquired: false,
-      level: 1,
+      level: 0,
       on: undefined,
     },
     shopkeeperFriendSkill: {
       acquired: false,
-      level: 1,
+      level: 0,
       on: undefined,
     },
     tournamentGrinder: {
       acquired: false,
-      level: 1,
+      level: 0,
       on: undefined,
     },
     teamPractice: {
       acquired: false,
-      level: 1,
+      level: 0,
       on: undefined,
     },
   },
@@ -138,7 +138,7 @@ export const state: GameState = {
       acquired: false,
     },
     packsupply: {
-      amount: 10000,
+      amount: 1e6,
       acquired: false,
     },
     trophies: {

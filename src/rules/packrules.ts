@@ -43,8 +43,8 @@ export function handleActivePackRules(
 
   if (
     !state.entities.packsupply.acquired &&
-    (state.entities.packbonuspoints.amount >= 1000 ||
-      state.entities.packsupply.amount < 1000)
+    (state.counters.uniquecards.amount > 0 ||
+      state.entities.packsupply.amount < 10000)
   ) {
     state.entities.packsupply.acquired = true;
     state.routes.packstab.notify = true;

@@ -81,6 +81,7 @@ export default class RulesHandler {
       state.routes.tournamentstab.acquired = true;
       state.routes.tournaments.acquired = true;
       state.routes.tournamentstab.notify = true;
+      state.routes.skills.notify = true;
       changed = true;
     }
 
