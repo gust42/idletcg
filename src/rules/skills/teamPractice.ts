@@ -4,7 +4,7 @@ import { Skill } from "./skill";
 
 export class TeamPractice implements Skill {
   rule = {
-    requirement: 1e4,
+    requirement: 1e6,
     increase: 1.05,
     value: 2,
     increaseEffect: 1,
@@ -17,7 +17,7 @@ export class TeamPractice implements Skill {
     "Practicing with your team gives you a boost to your rating based on their rating.";
 
   cost(level: number) {
-    return roundToNearestThousand(this.rule.requirement * 10 ** level);
+    return roundToNearestThousand(this.rule.requirement * 10 ** (level / 2));
   }
 
   effect(level: number) {

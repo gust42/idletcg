@@ -24,8 +24,6 @@ export const TournamentProgress = memo(() => {
 
   const tournament = AllTournaments[gameState.activities.tournament.id];
 
-  const log = gameState.logs.tournament[gameState.activities.tournament.id];
-
   return (
     gameState.activities.tournament && (
       <div className="flex flex-col gap-1">
