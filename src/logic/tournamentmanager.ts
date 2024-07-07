@@ -1,5 +1,5 @@
 import { Deck, GameState } from "../interfaces/logic";
-import { AllSkills, AllTournaments } from "../rules/ruleshandler";
+import { AllTournaments } from "../rules/ruleshandler";
 import { AllTeamMembers } from "../rules/teammembers";
 import {
   Tournament,
@@ -9,7 +9,10 @@ import {
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
 import { battle } from "./battle";
-import { calculateTotalTournamentTime } from "./helpers/tournamenttime";
+import {
+  calculateTotalTournamentTime,
+  calculateTournamentRoundTime,
+} from "./helpers/tournamenttime";
 import { AssignTournamentMessage, TournamentMessage } from "./messagehandler";
 
 export type TournamentMessages = "entertournament" | "assigntournament";
@@ -33,24 +36,18 @@ export class TournamentManager {
   constructor(stateHandler: StateHandler, rulesHandler: RulesHandler) {
     this.stateHandler = stateHandler;
     this.rulesHandler = rulesHandler;
-
-    this._tickCounter = this.rulesHandler.getRuleValue("TournamentRoundTicks");
   }
 
   public handleTick() {
     this.handleTeamMemberTick();
 
     const state = this.stateHandler.getState();
-    const skill = AllSkills.tournamentGrinder;
 
-    const skillValue = state.skills.tournamentGrinder.acquired
-      ? skill.effect(state.skills.tournamentGrinder.level)
-      : 0;
+    const tournamentRoundTime = calculateTournamentRoundTime(state);
 
-    if (
-      this.tickCounter <
-      this.rulesHandler.getRuleValue("TournamentRoundTicks") - skillValue
-    ) {
+    if (!state.activities.tournament) return;
+
+    if (this.tickCounter < tournamentRoundTime - 1) {
       this._tickCounter++;
       return;
     }
@@ -58,16 +55,16 @@ export class TournamentManager {
 
     const deckSize = this.rulesHandler.getRuleValue("DeckSize");
 
-    if (
-      state.activities.tournament &&
-      state.logs.tournament[state.activities.tournament.id]
-    ) {
+    if (state.logs.tournament[state.activities.tournament.id]) {
       const tournament = AllTournaments[state.activities.tournament.id];
       const currentRound = state.activities.tournament.tournamentRound;
       const log = state.logs.tournament[state.activities.tournament.id];
 
       if (currentRound < tournament.opponents.length) {
         // Play game
+
+        state.activities.tournament.gameRoundStartTime =
+          state.counters.clock.amount;
 
         if (state.activities.tournament.gameRound >= deckSize) {
           state.activities.tournament.gameRound = 0;
@@ -80,9 +77,7 @@ export class TournamentManager {
           ) {
             this.endTournament(tournament, log, state);
           }
-        } else {
-          state.activities.tournament.gameRound++;
-        }
+        } else state.activities.tournament.gameRound++;
       }
       this.stateHandler.updateState(state);
     }
@@ -122,8 +117,6 @@ export class TournamentManager {
     if (!state.entities.rating.acquired) state.entities.rating.acquired = true;
 
     state.activities.tournament = undefined;
-
-    this._tickCounter = this.rulesHandler.getRuleValue("TournamentRoundTicks");
   }
 
   private handleTeamMemberTick() {
@@ -215,7 +208,10 @@ export class TournamentManager {
       currentOpponent: 0,
       gameRound: 0,
       tournamentRound: 0,
+      gameRoundStartTime: state.counters.clock.amount - 1,
     };
+
+    this._tickCounter = 0;
 
     state.logs.tournament[state.activities.tournament.id] = this.runTournament(
       data.id,

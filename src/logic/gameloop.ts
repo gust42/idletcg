@@ -25,7 +25,6 @@ import {
 import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
 import { StatTracker } from "./stattracker";
-import { TimerHandler } from "./timerhandler";
 import { TournamentManager, TournamentMessages } from "./tournamentmanager";
 import { handleUniqueCardMessage } from "./uniquecardhandler";
 
@@ -40,7 +39,6 @@ export default class GameLoop {
 
   private packManager: PackManager;
   private lastTime: number;
-  private lastTimerTick: number = 0;
   private tickCounter: number;
 
   private running: boolean = false;
@@ -278,23 +276,6 @@ export default class GameLoop {
     }
 
     state = this.stateHandler.getState();
-    // if (
-    //   state.entities.badcards.amount === 0 &&
-    //   state.entities.goodcards.amount === 0 &&
-    //   state.entities.metacards.amount === 0 &&
-    //   state.entities.money.amount < this.rulesHandler.getRuleValue("PackCost")
-    // ) {
-    //   MessageHandler.sendClientMessage(
-    //     "Your aunt visits and gives you 50 money"
-    //   );
-    //   state.entities.money.amount += 50;
-    //   state = this.stateHandler.updateState(state);
-    // }
-
-    if (now - this.lastTimerTick >= 1000) {
-      TimerHandler.getInstance().run();
-      this.lastTimerTick = now;
-    }
 
     this.stateHandler.pushState();
     // console.timeEnd("loop");
