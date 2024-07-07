@@ -32,7 +32,7 @@ export class AutoPackSkill implements Skill {
     if (GameLoop.getInstance().stateHandler.getState().pack.xAll.amount > 0) {
       return Math.floor(level * 10);
     }
-    return Math.floor(this.cost(level) / (100000 * level) + level);
+    return level * 2 - 1;
   }
 
   friendyEffect(level: number) {

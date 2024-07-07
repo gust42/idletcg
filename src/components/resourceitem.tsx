@@ -35,14 +35,14 @@ export default function ResourceItem({
   if (oldValue) {
     changeHistory.current.push(resource.amount - oldValue);
 
-    if (changeHistory.current.length > 3) changeHistory.current.shift();
+    if (changeHistory.current.length > 10) changeHistory.current.shift();
 
     // get average change the last 3 ticks that had a change
-    const changes = changeHistory.current.filter((change) => change !== 0);
     const changeAverage =
-      changes.length === 0
+      changeHistory.current.length === 0
         ? 0
-        : changes.reduce((acc, change) => acc + change, 0) / changes.length;
+        : changeHistory.current.reduce((acc, change) => acc + change, 0) /
+          changeHistory.current.length;
 
     if (changeAverage !== 0) change = <Change change={changeAverage} />;
   }

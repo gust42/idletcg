@@ -96,7 +96,7 @@ export const SkillInfo = ({
             ) : (
               <>
                 <div className="border-t border-b pb-1 pt-1 border-t-slate-800 border-b-slate-800">
-                  Requires {skill.rule.requirement} money
+                  Requires {format(skill.rule.requirement)} money
                 </div>
                 <ActionContainer>
                   <Button

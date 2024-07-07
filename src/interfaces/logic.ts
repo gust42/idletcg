@@ -131,6 +131,7 @@ export interface GameState {
       currentOpponent: number;
       gameRound: number;
       tournamentRound: number;
+      gameRoundStartTime: number;
     };
     champion?: {
       id: Champions;

@@ -35,8 +35,8 @@ export function calculateUniqueCardCost(id: number, state: GameState) {
   ).length;
 
   const base =
-    cost.badcards *
-    (row + 1) ** (cost.increase * (1 + row / 10)) *
+    (cost.badcards * (row + 1) ** (cost.increase ** row) +
+      cost.badcards * row) *
     (1 + 0.25 * unlockedInRow);
 
   const costBadCards = Math.floor(base);

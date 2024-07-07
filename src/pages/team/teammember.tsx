@@ -7,6 +7,7 @@ import { format } from "../../helpers/number";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 import { TeamMember } from "../../interfaces/logic";
+import { calculateTotalTournamentTime } from "../../logic/helpers/tournamenttime";
 import MessageHandler, {
   AssignTournamentMessage,
   BuyTrophyMessage,
@@ -61,7 +62,15 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
         <div>Rating: {Math.floor(stateMember.rating)}</div>
       </div>
       <div className="flex flex-row justify-between mt-4 mb-4">
-        <div>Tournament round time: {formatSeconds(member.speed)}</div>
+        <div>
+          Tournament time:{" "}
+          {formatSeconds(
+            calculateTotalTournamentTime(
+              AllTournaments.casualwednesday.id,
+              member.speed
+            )
+          )}
+        </div>
       </div>
 
       <SmallTitle>Trophies: {stateMember.trophies ?? 0}</SmallTitle>

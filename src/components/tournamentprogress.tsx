@@ -1,5 +1,4 @@
-import { memo, useState } from "react";
-import { useTimer } from "../hooks/useTimer";
+import { memo } from "react";
 import useGameState from "../hooks/usegamestate";
 import { calculateRemainingTournamentTime } from "../logic/helpers/tournamenttime";
 import { AllTournaments } from "../rules/ruleshandler";
@@ -7,18 +6,11 @@ import { AllTournaments } from "../rules/ruleshandler";
 export const TournamentProgress = memo(() => {
   const gameState = useGameState();
 
-  const [counter, setCounter] = useState(0);
-
   const totalTime = calculateRemainingTournamentTime(
     gameState.activities.tournament?.id
   );
 
-  useTimer(() => {
-    setCounter(counter + 1);
-  });
-
   if (!gameState.activities.tournament) {
-    if (counter > 0) setCounter(0);
     return null;
   }
 
@@ -34,6 +26,7 @@ export const TournamentProgress = memo(() => {
           </span>
         </div>
         <div className="font-semibold">{tournament.name}</div>
+        <div className="hidden">{gameState.counters.clock.amount}</div>
       </div>
     )
   );
