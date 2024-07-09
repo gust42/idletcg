@@ -63,7 +63,7 @@ export const PackPoints = () => {
             text={`Unlock meta cards`}
             cost={metaCost.value}
             acquired={gameState.pack.meta.amount === 1}
-            visible
+            visible={gameState.pack.good.amount === 1}
             packPoints={gameState.entities.packbonuspoints.amount}
           />
         </Container>
