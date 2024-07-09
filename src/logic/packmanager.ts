@@ -110,10 +110,8 @@ export class PackManager {
   private autoOpenPack(level: number) {
     const state = this.stateHandler.getState();
     const skill = AllSkills.autoPackSkill;
-    if (state.skills.autoPackSkill.on) {
-      if (!isTransformed(state))
-        this.openPack(skill.effect(level), "free", false);
-    }
+    if (!isTransformed(state))
+      this.openPack(skill.effect(level), "free", false);
   }
 
   private calculatePackCost(type: PackType = "normal") {

@@ -31,7 +31,7 @@ export class ShopkeeperFriendSkill implements Skill {
   cost(level: number) {
     if (isTransformed(this.stateHandler.getState()) && level > 19)
       return this.rule.requirement * this.rule.increase ** level;
-    return this.rule.requirement * (level + 1) ** this.rule.increase;
+    return this.rule.requirement * (level + 1);
   }
 
   effect(level: number) {
