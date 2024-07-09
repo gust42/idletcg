@@ -5,5 +5,5 @@ interface IUniqueCardProps {
 }
 
 export default function UniqueCard({ id }: IUniqueCardProps) {
-  return <Card id={id} />;
+  return <Card id={id} addBuffs={false} />;
 }

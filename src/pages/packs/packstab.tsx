@@ -1,8 +1,10 @@
 import { Container, DataContainer } from "../../components/container";
-import { Title } from "../../components/typography";
-import { format } from "../../helpers/number";
+import { HelpText, Title } from "../../components/typography";
+import { format, formatOnlyDecimal } from "../../helpers/number";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
+import { CostForUniqueCards } from "../../interfaces/rules";
+import { calculateCardValue, getCardValueLimit } from "../../logic/helpers";
 import MessageHandler from "../../logic/messagehandler";
 import BuyButton from "./button";
 import { Pack } from "./pack";
@@ -10,9 +12,8 @@ import { Pack } from "./pack";
 export default function PacksTab() {
   const gameState = useGameState();
 
-  const goodSellValueRule = useGameRule("GoodCardSellValue");
-  const badSellValueRule = useGameRule("BadCardSellValue");
-  const metaSellValueRule = useGameRule("MetaCardSellValue");
+  const cardSellValue = calculateCardValue(gameState);
+  const ratio = useGameRule<CostForUniqueCards>("CostForUniqueCards");
 
   function sellBadCards(amount: number) {
     MessageHandler.recieveMessage("sellbadcards", {
@@ -32,12 +33,29 @@ export default function PacksTab() {
     });
   }
 
+  const limit = getCardValueLimit(gameState);
+
+  const hasSoldTooManyCards =
+    gameState.stats.badcardsSold > limit ||
+    gameState.stats.goodcardsSold > limit * ratio.goodcards ||
+    gameState.stats.metacardsSold > limit * ratio.metacards;
+
   return (
     <article className="flex flex-col gap-5">
       <Pack />
       {gameState.entities.badcards.acquired && (
         <Container>
           <Title>Cards</Title>
+          {hasSoldTooManyCards && (
+            <div className="mb-4">
+              <HelpText>
+                <span className="text-red-600">
+                  You have sold so many cards that they start to lose their
+                  value.
+                </span>
+              </HelpText>
+            </div>
+          )}
           <div className="mb-4 flex flex-row justify-between">
             {gameState.entities.badcards.acquired && (
               <DataContainer title="Bad cards" col>
@@ -65,7 +83,7 @@ export default function PacksTab() {
               type="sell"
               click={sellBadCards}
               resource={gameState.entities.badcards}
-              cost={badSellValueRule.value}
+              cost={formatOnlyDecimal(cardSellValue.badcards, 3)}
             ></BuyButton>
           </div>
           <div className="mb-4">
@@ -74,7 +92,7 @@ export default function PacksTab() {
               type="sell"
               click={sellGoodCards}
               resource={gameState.entities.goodcards}
-              cost={goodSellValueRule.value}
+              cost={formatOnlyDecimal(cardSellValue.goodcards, 3)}
             ></BuyButton>
           </div>
           <div className="mb-4">
@@ -83,7 +101,7 @@ export default function PacksTab() {
               type="sell"
               click={sellMetaCards}
               resource={gameState.entities.metacards}
-              cost={metaSellValueRule.value}
+              cost={formatOnlyDecimal(cardSellValue.metacards, 3)}
             ></BuyButton>
           </div>
         </Container>

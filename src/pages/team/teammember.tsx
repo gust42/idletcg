@@ -118,7 +118,7 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
         })}
       </div>
       {stateMember.lastTournament && (
-        <LastTournament log={stateMember.lastTournament} />
+        <LastTournament log={stateMember.lastTournament} type="team" />
       )}
       <ActionContainer>
         <Button

@@ -5,15 +5,15 @@ import { Tournament, Tournaments } from "./tournament";
 
 export class FunFriday implements Tournament {
   id = "funfriday" as keyof Tournaments;
-  name = "Fun Friday";
+  name = "Friday Night Fun";
   description = "An enjoyable tournament for the casual players.";
   champion = "ron-dinkel" as Champions;
   entryFee = 100000;
   reward = 100000;
   rewardFriendlyName = [
-    "hours of pack supply",
-    "hours of pack supply",
-    "hours of pack supply",
+    "minutes of pack supply",
+    "minutes of pack supply",
+    "minutes of pack supply",
   ];
   ratingRequirement = 1200;
   teammember = "Susan" as TeamMemberNames;
@@ -48,11 +48,11 @@ export class FunFriday implements Tournament {
     const maxPoints = this.opponents.length * 3;
 
     if (points >= maxPoints) {
-      return 3;
+      return 60;
     } else if (points >= maxPoints - 3) {
-      return 2;
+      return 30;
     } else if (points >= maxPoints - 6) {
-      return 1;
+      return 15;
     }
 
     return 0;
@@ -60,6 +60,6 @@ export class FunFriday implements Tournament {
 
   giveReward(points: number, state: GameState) {
     state.entities.packsupply.amount +=
-      this.returnReward(points) * calculatePackSupplyIncome(state) * 60 * 60;
+      this.returnReward(points) * calculatePackSupplyIncome(state) * 60;
   }
 }

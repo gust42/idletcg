@@ -32,7 +32,7 @@ export const Slot = ({ slot, card, onSelect, size = "medium" }: ISlotProps) => {
       }}
     >
       {card !== undefined ? (
-        <Card size={size} id={card} />
+        <Card size={size} id={card} addBuffs={false} />
       ) : (
         <div
           className={`${border} ${pxs} aspect-[2/3] text-center rounded-3xl cursor-pointer grow`}

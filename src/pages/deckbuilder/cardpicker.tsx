@@ -115,7 +115,7 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
             }}
             className="cursor-pointer"
           >
-            <Card id={card} />
+            <Card id={card} addBuffs={false} />
           </div>
         ))}
       </div>

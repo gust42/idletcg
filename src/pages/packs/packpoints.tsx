@@ -18,6 +18,7 @@ export const PackPoints = () => {
   const x100Cost = useGameRule("X100Cost");
   const x1000Cost = useGameRule("X1000Cost");
   const xAllCost = useGameRule("XAllCost");
+  const elsaCost = useGameRule("ElsaCost");
   return (
     <div>
       <div className="flex flex-col gap-1 max-w-fit">
@@ -95,15 +96,23 @@ export const PackPoints = () => {
         </Container>
         {gameState.pack.x1000.amount === 1 && (
           <Container>
-            <SmallTitle>Transform</SmallTitle>
+            <SmallTitle>Other</SmallTitle>
             <HelpText>
-              This upgrade transforms the effect of some of your skills
+              Buying All upgrade will transform some of your skills
             </HelpText>
             <PackUpgrade
               skill="xAll"
               text={`Buy as many packs as you can`}
               cost={xAllCost.value}
               acquired={gameState.pack.xAll.amount === 1}
+              visible
+              packPoints={gameState.entities.packbonuspoints.amount}
+            />
+            <PackUpgrade
+              skill="elsa"
+              text={`Unlock Elsa`}
+              cost={elsaCost.value}
+              acquired={gameState.pack.elsa.amount === 1}
               visible
               packPoints={gameState.entities.packbonuspoints.amount}
             />

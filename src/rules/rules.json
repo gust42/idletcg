@@ -42,7 +42,7 @@
     "increase": 1.2
   },
   "TournamentRoundTicks": {
-    "value": 5
+    "value": 10
   },
   "TickLength": {
     "value": 1000
@@ -73,5 +73,11 @@
   },
   "TrophyCost": {
     "value": 10000000
+  },
+  "BadCardsValueLimit": {
+    "value": 1e7
+  },
+  "ElsaCost": {
+    "value": 1e8
   }
 }

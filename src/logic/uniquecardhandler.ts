@@ -1,5 +1,6 @@
 import { GameState } from "../interfaces/logic";
 import {
+  addTeamMember,
   calculatePackSupplySetBonus,
   calculateUniqueCardCost,
 } from "./helpers";
@@ -67,7 +68,11 @@ export const handleUniqueCardMessage = (m: Message, state: GameState) => {
       }
 
       if (!rowCompleted && isRowCompleted(cardSet, state)) {
-        state.binder.packsupplysetbonus += complete;
+        if (complete === "Daniel" || complete === "Mattias") {
+          addTeamMember(state, complete);
+        } else {
+          state.binder.packsupplysetbonus += complete as number;
+        }
       }
     }
   }

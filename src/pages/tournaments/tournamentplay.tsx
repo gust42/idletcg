@@ -54,7 +54,7 @@ export const TournamentPlay = ({
           winRateMod={opponentMod}
           size="small"
           id={opponentCard}
-          myCard={false}
+          addBuffs={false}
         />
       </div>
     );

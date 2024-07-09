@@ -46,7 +46,8 @@ export default class GameLoop {
   constructor() {
     MessageHandler.init();
     this.stateHandler = new StateHandler();
-    this.rulesHandler = new RulesHandler();
+    this.rulesHandler = new RulesHandler(this.stateHandler);
+
     this.packManager = new PackManager(this.stateHandler, this.rulesHandler);
     this.tournamentManager = new TournamentManager(
       this.stateHandler,
@@ -83,7 +84,7 @@ export default class GameLoop {
     handleChampionBattleTick();
 
     const state = this.stateHandler.getState();
-    if (state.skills.workSkill.acquired && state.pack.xAll.amount === 0) {
+    if (state.skills.workSkill.acquired) {
       const skill = AllSkills.workSkill;
 
       state.entities.money.amount += skill.effect(state.skills.workSkill.level);

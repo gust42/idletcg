@@ -3,14 +3,26 @@ import { TeamMember } from "../interfaces/logic";
 export const AllTeamMembers: TeamMember[] = [
   {
     name: "Timmy",
-    speed: 3 * 60,
+    speed: 10,
   },
   {
     name: "Susan",
-    speed: 2 * 60,
+    speed: 7,
   },
   {
     name: "Terry",
-    speed: 1 * 60,
+    speed: 5,
+  },
+  {
+    name: "Mattias",
+    speed: 4,
+  },
+  {
+    name: "Daniel",
+    speed: 8,
+  },
+  {
+    name: "Elsa",
+    speed: 5,
   },
 ];

@@ -1,9 +1,11 @@
 import { GameState } from "../interfaces/logic";
 import { Rule, Rules } from "../interfaces/rules";
 import { calculateRating } from "../logic/helpers";
+import StateHandler from "../state/statehandler";
 import { handleActivePackRules } from "./packrules";
 import rules from "./rules.json";
 import { AutoPackSkill } from "./skills/autoPackSkill";
+import { PersonalAssistantSkill } from "./skills/personalAssistantSkill";
 import { ShopkeeperFriendSkill } from "./skills/shopkeeperFriendSkill";
 import { Skill, Skills } from "./skills/skill";
 import { TeamPractice } from "./skills/teamPractice";
@@ -14,13 +16,10 @@ import { CompetitiveSaturday } from "./tournaments/competativesaturday";
 import { FunFriday } from "./tournaments/funfridays";
 import { Tournament, Tournaments } from "./tournaments/tournament";
 
-export const AllSkills: Record<keyof Skills, Skill> = {
-  workSkill: new WorkSkill(),
-  autoPackSkill: new AutoPackSkill(),
-  shopkeeperFriendSkill: new ShopkeeperFriendSkill(),
-  tournamentGrinder: new TournamentGrinder(),
-  teamPractice: new TeamPractice(),
-};
+export let AllSkills: Record<keyof Skills, Skill> = {} as Record<
+  keyof Skills,
+  Skill
+>;
 
 export const AllTournaments: Record<keyof Tournaments, Tournament> = {
   casualwednesday: new CasualWednesday(),
@@ -30,8 +29,16 @@ export const AllTournaments: Record<keyof Tournaments, Tournament> = {
 export default class RulesHandler {
   private rules: Rules;
 
-  constructor() {
+  constructor(stateHandler: StateHandler) {
     this.rules = rules as unknown as Rules;
+    AllSkills = {
+      workSkill: new WorkSkill(stateHandler),
+      autoPackSkill: new AutoPackSkill(stateHandler),
+      shopkeeperFriendSkill: new ShopkeeperFriendSkill(stateHandler),
+      tournamentGrinder: new TournamentGrinder(stateHandler, this),
+      teamPractice: new TeamPractice(),
+      personalAssistant: new PersonalAssistantSkill(),
+    };
   }
 
   checkActiveRules(state: GameState) {

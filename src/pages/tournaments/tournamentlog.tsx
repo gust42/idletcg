@@ -10,9 +10,10 @@ import { TournamentResult } from "./tournamentresult";
 
 interface ITournamentLogProps {
   log: TLog;
+  type: "team" | "player";
 }
 
-export const TournamentLog = ({ log }: ITournamentLogProps) => {
+export const TournamentLog = ({ log, type }: ITournamentLogProps) => {
   const tournament = AllTournaments[log.id as keyof Tournaments];
   const deckSize = useGameRule("DeckSize").value;
 
@@ -40,7 +41,7 @@ export const TournamentLog = ({ log }: ITournamentLogProps) => {
 
   return (
     <div className="flex flex-col gap-2 w-full md:w-[400px]">
-      <TournamentResult tournament={tournament} log={log} />
+      <TournamentResult tournament={tournament} log={log} type={type} />
       Round: <div className="flex flex-row gap-4 mt-2">{opponentButtons}</div>
       <TournamentPlay
         nameOfOpponent={tournament.opponents[opponent].name}

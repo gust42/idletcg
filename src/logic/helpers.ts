@@ -1,4 +1,5 @@
-import { Entity, GameState } from "../interfaces/logic";
+import { format } from "../helpers/number";
+import { Entity, GameState, TeamMemberNames } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
 import { AllSkills } from "../rules/ruleshandler";
 import GameLoop from "./gameloop";
@@ -151,7 +152,7 @@ export function calculatePackSupplyIncome(state: GameState) {
   let packSupply =
     amount + state.pack.supply.amount * 2 + state.binder.packsupplysetbonus;
 
-  if (state.pack.xAll.amount > 0) {
+  if (isTransformed(state)) {
     packSupply += AllSkills.autoPackSkill.effect(
       state.skills.autoPackSkill.level
     );
@@ -166,8 +167,103 @@ export function calculatePackSupplyIncome(state: GameState) {
 
 export function calculatePackSupplySetBonus(set: number) {
   const supply = (set + 1) * 10;
-  return {
+  const unlockAmount = supply * 60 * 60 * (set + 1);
+  const unlock = {
+    unlock: unlockAmount,
+    unlockFriendly: `+${format(unlockAmount)} pack supply`,
+  };
+  let complete: {
+    complete: number | TeamMemberNames;
+    completeFriendly: string;
+  } = {
     complete: supply,
-    unlock: supply * 60 * 60,
+    completeFriendly: `+${supply} pack supply / tick`,
+  };
+  if (set === 4) {
+    complete = {
+      complete: "Daniel",
+      completeFriendly: "Gain teammember Daniel",
+    };
+  }
+
+  if (set === 9) {
+    complete = {
+      complete: "Mattias",
+      completeFriendly: "Gain teammember Mattias",
+    };
+  }
+  return {
+    ...complete,
+    ...unlock,
   } as const;
+}
+
+export function addTeamMember(state: GameState, member: TeamMemberNames) {
+  if (state.team.find((t) => t.name === member)) return state;
+  state.team.push({
+    name: member,
+    rating: 1000,
+    trophies: 0,
+    deck: {
+      slot1: undefined,
+      slot2: undefined,
+      slot3: undefined,
+    },
+    currentTournament: undefined,
+    lastTournament: undefined,
+    tournamentTicks: 0,
+  });
+  state.routes.tournamentstab.notify = true;
+  state.routes.team.notify = true;
+  return state;
+}
+
+export function isTransformed(state: GameState) {
+  return state.pack.xAll.amount > 0;
+}
+
+function calcValueForCard(base: number, limit: number, sold: number) {
+  return base / (1 + 0.1 * ((sold - limit) / limit) ** 0.5);
+}
+
+export function getCardValueLimit(state: GameState) {
+  const rulesHandler = GameLoop.getInstance().rulesHandler;
+  const limit =
+    rulesHandler.getRuleValue("BadCardsValueLimit") +
+    state.counters.clock.amount * 100;
+  return limit;
+}
+
+export function calculateCardValue(state: GameState) {
+  const rulesHandler = GameLoop.getInstance().rulesHandler;
+
+  const badBase = rulesHandler.getRuleValue("BadCardSellValue");
+  const goodBase = rulesHandler.getRuleValue("GoodCardSellValue");
+  const metaBase = rulesHandler.getRuleValue("MetaCardSellValue");
+
+  const ratio = rulesHandler.getRule<CostForUniqueCards>("CostForUniqueCards");
+
+  const limit = getCardValueLimit(state);
+  return {
+    badcards:
+      state.stats.badcardsSold < limit
+        ? badBase
+        : calcValueForCard(badBase, limit, state.stats.badcardsSold),
+    goodcards:
+      state.stats.goodcardsSold < limit * ratio.goodcards
+        ? goodBase
+        : calcValueForCard(
+            goodBase,
+            limit * ratio.goodcards,
+            state.stats.goodcardsSold
+          ),
+    metacards:
+      state.stats.metacardsSold < limit * ratio.metacards
+        ? metaBase
+        : calcValueForCard(
+            metaBase,
+            limit * ratio.metacards,
+            state.stats.metacardsSold
+          ),
+  };
 }
