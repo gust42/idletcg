@@ -1,8 +1,9 @@
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
+import { SmallTitle } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
 import { calculateRating } from "../../logic/helpers";
-import { AllRouteNames, navigate } from "../../logic/navigation";
+import { navigate } from "../../logic/navigation";
 import {
   Tournament,
   TournamentLog,
@@ -12,12 +13,12 @@ import { TournamentJoinButton } from "./tournamentjoinbutton";
 
 interface ILastTournamentProps {
   log: TournamentLog;
-  route?: AllRouteNames;
+  type?: "team" | "player";
 }
 
 export const LastTournament = ({
   log,
-  route = "tournamentlog",
+  type = "player",
 }: ILastTournamentProps) => {
   if (log) {
     return (
@@ -30,7 +31,7 @@ export const LastTournament = ({
           width="100px"
           action=""
           onClick={() => {
-            navigate(route, { log });
+            navigate("tournamentlog", { log, type });
           }}
         >
           Show log
@@ -55,18 +56,17 @@ export const TournamentInfo = ({
 }: ITournamentProps) => {
   const gameState = useGameState();
 
-  const ratingColor =
-    calculateRating(gameState.entities.rating).amount >=
-    tournament.ratingRequirement
-      ? "text-green-800"
-      : "text-red-800";
+  const available =
+    calculateRating(gameState.entities.rating).amount + 100 >=
+    tournament.ratingRequirement;
+  const ratingColor = available ? "text-green-800" : "text-red-800";
 
   const hideLog = gameState.activities.tournament?.id === id;
 
   return (
     <Container>
-      <h2 className="mb-4 text-lg">{tournament.name}</h2>
-      <p className="italic mb-4">{tournament.description}</p>
+      <SmallTitle>{tournament.name}</SmallTitle>
+      {/* <p className="italic mb-4">{tournament.description}</p> */}
       {gameState.entities.rating.acquired && (
         <p className="font-bold mb-4">
           Rating requirement{" "}
@@ -77,23 +77,29 @@ export const TournamentInfo = ({
       )}
 
       <p className="font-bold mb-2 md:mb-4">Rewards</p>
-      <p className="font-semibold mb-0 md:mb-4">
-        {tournament.opponents.length * 3} points -{" "}
-        {tournament.returnReward(tournament.opponents.length * 3)}{" "}
-        {tournament.rewardFriendlyName[0]}
-      </p>
-      <p className="font-semibold mb-0 md:mb-4">
-        {tournament.opponents.length * 3 - 3} points -{" "}
-        {tournament.returnReward(tournament.opponents.length * 3 - 3)}{" "}
-        {tournament.rewardFriendlyName[1]}
-      </p>
+      {available ? (
+        <>
+          <p className="font-semibold mb-0 md:mb-4">
+            {tournament.opponents.length * 3} points -{" "}
+            {tournament.returnReward(tournament.opponents.length * 3)}{" "}
+            {tournament.rewardFriendlyName[0]}
+          </p>
+          <p className="font-semibold mb-0 md:mb-4">
+            {tournament.opponents.length * 3 - 3} points -{" "}
+            {tournament.returnReward(tournament.opponents.length * 3 - 3)}{" "}
+            {tournament.rewardFriendlyName[1]}
+          </p>
 
-      <p className="font-semibold mb-4">
-        {tournament.opponents.length * 3 - 6} points -{" "}
-        {tournament.returnReward(tournament.opponents.length * 3 - 6)}{" "}
-        {tournament.rewardFriendlyName[2]}
-      </p>
-      <p className="font-bold mb-4">Trophys: {gameState.trophys[id]}</p>
+          <p className="font-semibold mb-4">
+            {tournament.opponents.length * 3 - 6} points -{" "}
+            {tournament.returnReward(tournament.opponents.length * 3 - 6)}{" "}
+            {tournament.rewardFriendlyName[2]}
+          </p>
+          <p className="font-bold mb-4">Trophys: {gameState.trophys[id]}</p>
+        </>
+      ) : (
+        <p className="font-semibold mb-4">???</p>
+      )}
       {hideLog ? (
         <div className="mb-4 flex justify-end">
           <Button

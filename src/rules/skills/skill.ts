@@ -6,6 +6,7 @@ export type Skills = {
   shopkeeperFriendSkill: SkillRule;
   tournamentGrinder: SkillRule;
   teamPractice: SkillRule;
+  personalAssistant: SkillRule;
 };
 
 export type SkillRule = {

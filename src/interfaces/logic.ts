@@ -35,7 +35,13 @@ export interface Deck {
   slot3: number | undefined;
 }
 
-export type TeamMemberNames = "Terry" | "Timmy" | "Susan";
+export type TeamMemberNames =
+  | "Terry"
+  | "Timmy"
+  | "Susan"
+  | "Mattias"
+  | "Elsa"
+  | "Daniel";
 
 export type JoinedTeamMember = {
   name: TeamMemberNames;
@@ -62,6 +68,9 @@ export interface GameState {
     highestBadcards: number;
     highestGoodcards: number;
     highestMetacards: number;
+    badcardsSold: number;
+    goodcardsSold: number;
+    metacardsSold: number;
   };
   champions: Record<Champions, Champion>;
   binder: {
@@ -103,6 +112,7 @@ export interface GameState {
     x100: Entity;
     x1000: Entity;
     xAll: Entity;
+    elsa: Entity;
   };
   entities: {
     badcards: Entity;

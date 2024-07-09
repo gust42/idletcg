@@ -1,9 +1,16 @@
 import { GameState } from "../../interfaces/logic";
-import GameLoop from "../../logic/gameloop";
 import { roundToNearestThousand } from "../../logic/helpers";
+import StateHandler from "../../state/statehandler";
+import RulesHandler from "../ruleshandler";
 import { Skill } from "./skill";
 
 export class TournamentGrinder implements Skill {
+  private rulesHandler: RulesHandler;
+
+  constructor(_stateHandler: StateHandler, rulesHandler: RulesHandler) {
+    this.rulesHandler = rulesHandler;
+  }
+
   rule = {
     requirement: 1e5,
     increase: 1.05,
@@ -25,9 +32,7 @@ export class TournamentGrinder implements Skill {
   }
 
   friendyEffect(level: number) {
-    const roundTime = GameLoop.getInstance().rulesHandler.getRuleValue(
-      "TournamentRoundTicks"
-    );
+    const roundTime = this.rulesHandler.getRuleValue("TournamentRoundTicks");
     return `${roundTime - this.effect(level)}s per round`;
   }
 

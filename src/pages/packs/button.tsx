@@ -10,7 +10,7 @@ interface IButtonProps {
   };
   type: string;
   click: (amount: number) => void;
-  cost: number;
+  cost: number | string;
   text: string;
   disabled?: boolean;
 }
@@ -34,7 +34,7 @@ export default function BuyButton({ disabled, type, ...props }: IButtonProps) {
   const amount =
     type === "sell"
       ? props.resource.amount
-      : props.resource.amount / props.cost;
+      : props.resource.amount / (props.cost as number);
 
   x10 = (
     <BulkButton

@@ -1,5 +1,5 @@
 import { Deck, GameState } from "../interfaces/logic";
-import { AllTournaments } from "../rules/ruleshandler";
+import { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import { AllTeamMembers } from "../rules/teammembers";
 import {
   Tournament,
@@ -9,6 +9,7 @@ import {
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
 import { battle } from "./battle";
+import { addTeamMember } from "./helpers";
 import {
   calculateTotalTournamentTime,
   calculateTournamentRoundTime,
@@ -40,6 +41,7 @@ export class TournamentManager {
 
   public handleTick() {
     this.handleTeamMemberTick();
+    this.handlePersonalAssistant();
 
     const state = this.stateHandler.getState();
 
@@ -95,23 +97,8 @@ export class TournamentManager {
       if (!state.entities.trophies.acquired)
         state.entities.trophies.acquired = true;
     }
-    if (
-      log.points >= tournament.opponents.length * 3 &&
-      !state.team.find((t) => t.name === tournament.teammember)
-    )
-      state.team.push({
-        name: tournament.teammember,
-        rating: 1000,
-        trophies: 0,
-        deck: {
-          slot1: undefined,
-          slot2: undefined,
-          slot3: undefined,
-        },
-        currentTournament: undefined,
-        lastTournament: undefined,
-        tournamentTicks: 0,
-      });
+    if (log.points >= tournament.opponents.length * 3)
+      addTeamMember(state, tournament.teammember);
 
     state.entities.rating.amount += log.points;
     if (!state.entities.rating.acquired) state.entities.rating.acquired = true;
@@ -146,8 +133,10 @@ export class TournamentManager {
 
           tournament.giveReward(log.points, state);
 
-          t.rating += log.points;
-          if (log.points >= tournament.opponents.length * deckSize) {
+          const maxPoints = tournament.opponents.length * deckSize;
+
+          t.rating += log.points / (t.rating / 100);
+          if (log.points >= maxPoints) {
             if (!t.trophies) t.trophies = 0;
             t.trophies++;
           }
@@ -200,6 +189,8 @@ export class TournamentManager {
     const state = this.stateHandler.getState();
     const tournament = AllTournaments[data.id];
 
+    if (state.activities.tournament !== undefined) return;
+
     if (state.entities.money.amount < tournament.entryFee) return;
     state.entities.money.amount -= tournament.entryFee;
     state.activities.tournament = {
@@ -230,5 +221,18 @@ export class TournamentManager {
     }
 
     this.stateHandler.updateState(state);
+  }
+
+  private handlePersonalAssistant() {
+    const state = this.stateHandler.getState();
+    if (
+      state.skills.personalAssistant.on &&
+      state.skills.personalAssistant.acquired
+    ) {
+      const effect = AllSkills.personalAssistant.effect(
+        state.skills.personalAssistant.level
+      );
+      this.enterTournament({ id: effect as unknown as keyof Tournaments });
+    }
   }
 }

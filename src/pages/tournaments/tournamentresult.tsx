@@ -9,9 +9,11 @@ import { Tournament, TournamentLog } from "../../rules/tournaments/tournament";
 export const TournamentResult = ({
   tournament,
   log,
+  type = "player",
 }: {
   tournament: Tournament;
   log: TournamentLog;
+  type?: "player" | "team";
 }) => {
   return (
     <Container>
@@ -21,36 +23,38 @@ export const TournamentResult = ({
         {log.points > 0 && (
           <>
             and {tournament.returnReward(log.points)}{" "}
-            {getRewardNameByPoints(log.points, tournament.rewardFriendlyName)},
-            you also got {log.points} rating.
+            {getRewardNameByPoints(log.points, tournament.rewardFriendlyName)}
+            {type === "player" && <>, you also got {log.points} rating.</>}
           </>
         )}
       </div>
-      <ActionContainer>
-        <div className="pt-4 flex flex-row">
-          <Button
-            width="50%"
-            action=""
-            onClick={() => {
-              navigate("tournaments");
-            }}
-          >
-            Return
-          </Button>
-          <Button
-            width="50%"
-            action=""
-            onClick={() => {
-              MessageHandler.recieveMessage("entertournament", {
-                id: tournament.id,
-              });
-              navigate("activetournament");
-            }}
-          >
-            Restart ({format(tournament.entryFee)})
-          </Button>
-        </div>
-      </ActionContainer>
+      {type === "player" && (
+        <ActionContainer>
+          <div className="pt-4 flex flex-row">
+            <Button
+              width="50%"
+              action=""
+              onClick={() => {
+                navigate("tournaments");
+              }}
+            >
+              Return
+            </Button>
+            <Button
+              width="50%"
+              action=""
+              onClick={() => {
+                MessageHandler.recieveMessage("entertournament", {
+                  id: tournament.id,
+                });
+                navigate("activetournament");
+              }}
+            >
+              Restart ({format(tournament.entryFee)})
+            </Button>
+          </div>
+        </ActionContainer>
+      )}
     </Container>
   );
 };

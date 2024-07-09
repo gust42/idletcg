@@ -64,15 +64,15 @@ export function generateWinRatio(
   let currentValue = 30; // Starting value
 
   // Predefined array of irregular increments
-  const irregularIncrements = [5, 2, 4, 6, 4, 5, 7, 5, 3, 6, 8];
+  const irregularIncrements = [0, 0, 0, 2, 1, 1, 3, 2, 2, 1];
 
   // Use predefined increments cyclically
   const increment = irregularIncrements[id % irregularIncrements.length];
   currentValue += increment;
 
   // Linear trend
-  const linearIncrement = 1.5; // Adjust as needed
-  currentValue += id * linearIncrement;
+  const linearIncrement = 6; // Adjust as needed
+  currentValue += Math.floor(id / 3) * linearIncrement;
 
   if (state && !original) {
     currentValue = applyAdeptEffect(

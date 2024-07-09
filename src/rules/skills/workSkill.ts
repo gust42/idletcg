@@ -1,8 +1,14 @@
-import GameLoop from "../../logic/gameloop";
-import { roundToNearestThousand } from "../../logic/helpers";
+import { format } from "../../helpers/number";
+import { isTransformed, roundToNearestThousand } from "../../logic/helpers";
+import StateHandler from "../../state/statehandler";
 import { Skill, SkillRule } from "./skill";
 
 export class WorkSkill implements Skill {
+  private stateHandler: StateHandler;
+
+  constructor(stateHandler: StateHandler) {
+    this.stateHandler = stateHandler;
+  }
   rule: SkillRule = {
     requirement: 5,
     increase: 1.8,
@@ -13,8 +19,8 @@ export class WorkSkill implements Skill {
   title = "Content creator";
 
   get description() {
-    if (GameLoop.getInstance().stateHandler.getState().pack.xAll.amount > 0)
-      return "Become partner and gain bonus packs";
+    if (isTransformed(this.stateHandler.getState()))
+      return "Become partner and earn even more money";
     return "Earns money over time";
   }
 
@@ -25,15 +31,13 @@ export class WorkSkill implements Skill {
   }
 
   effect(level: number) {
-    if (GameLoop.getInstance().stateHandler.getState().pack.xAll.amount > 0)
-      return Math.max(level - 20, 1);
+    if (isTransformed(this.stateHandler.getState()))
+      return Math.floor(this.cost(level) / 100 + level);
     return Math.floor(this.cost(level) / 1000 + level);
   }
 
   friendyEffect(level: number) {
-    if (GameLoop.getInstance().stateHandler.getState().pack.xAll.amount > 0)
-      return `Gives you ${this.effect(level)} bonus packs / pack`;
-    return `${this.effect(level)} money / tick`;
+    return `${format(this.effect(level))} money / tick`;
   }
 
   visible() {

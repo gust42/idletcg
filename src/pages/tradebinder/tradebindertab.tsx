@@ -1,7 +1,6 @@
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
 import { Title } from "../../components/typography";
-import { format } from "../../helpers/number";
 import useGameState from "../../hooks/usegamestate";
 import {
   allCards,
@@ -53,7 +52,8 @@ export default function TradebinderTab() {
         const unlocked = isRowUnlocked(i, gameState) && "text-green-600";
         const completed = isRowCompleted(i, gameState) && "text-green-600";
 
-        const { unlock, complete } = calculatePackSupplySetBonus(i);
+        const { unlockFriendly, completeFriendly } =
+          calculatePackSupplySetBonus(i);
         return (
           <Container key={i}>
             <Title>Set {i + 1}</Title>
@@ -86,12 +86,11 @@ export default function TradebinderTab() {
               <div className="font-bold mt-4">Set bonuses</div>
               <div className={`flex flex-col `}>
                 <div className={`flex flex-row justify-between ${unlocked}`}>
-                  <div className="font-semibold">Unlock</div> +{format(unlock)}{" "}
-                  pack supply
+                  <div className="font-semibold">Unlock</div> {unlockFriendly}
                 </div>
                 <div className={`flex flex-row justify-between ${completed} `}>
-                  <div className="font-semibold">Complete</div> +{complete} pack
-                  supply / tick{" "}
+                  <div className="font-semibold">Complete</div>{" "}
+                  {completeFriendly}
                 </div>
               </div>
             </div>

@@ -5,7 +5,7 @@ import { generateWinRatio, metaTypes } from "../rules/tournaments/tournament";
 interface ICardsProps {
   id: number;
   size?: "small" | "medium" | "large";
-  myCard?: boolean;
+  addBuffs?: boolean;
   winRateMod?: number;
   showOrignal?: boolean;
 }
@@ -14,7 +14,7 @@ export const Card = ({
   id,
   size = "medium",
   winRateMod = 1,
-  myCard = true,
+  addBuffs = true,
   showOrignal = false,
 }: ICardsProps) => {
   const state = useGameState();
@@ -27,7 +27,7 @@ export const Card = ({
     winRateMod > 1 ? "text-green-600" : winRateMod < 1 ? "text-red-600" : "";
 
   const buffedWinratio = Math.floor(
-    generateWinRatio(id, myCard ? state : undefined) * winRateMod
+    generateWinRatio(id, addBuffs ? state : undefined) * winRateMod
   );
 
   const originalWinRatio = generateWinRatio(id, undefined, -1, true);

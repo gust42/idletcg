@@ -7,6 +7,9 @@ export const state: GameState = {
     highestBadcards: 0,
     highestGoodcards: 0,
     highestMetacards: 0,
+    badcardsSold: 0,
+    goodcardsSold: 0,
+    metacardsSold: 0,
   },
   champions: {
     lsq: { lastTournament: undefined, defeated: false },
@@ -81,12 +84,16 @@ export const state: GameState = {
       acquired: false,
       amount: 0,
     },
+    elsa: {
+      acquired: false,
+      amount: 0,
+    },
   },
   skills: {
     autoPackSkill: {
       acquired: false,
       level: 0,
-      on: true,
+      on: undefined,
     },
     workSkill: {
       acquired: false,
@@ -107,6 +114,11 @@ export const state: GameState = {
       acquired: false,
       level: 0,
       on: undefined,
+    },
+    personalAssistant: {
+      acquired: false,
+      level: 0,
+      on: true,
     },
   },
   activities: {

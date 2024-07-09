@@ -1,5 +1,6 @@
 import { GameState, TeamMemberNames } from "../../interfaces/logic";
 import { Champions } from "../champions";
+import { AllSkills } from "../ruleshandler";
 import { Tournament, Tournaments } from "./tournament";
 
 export class CompetitiveSaturday implements Tournament {
@@ -10,9 +11,9 @@ export class CompetitiveSaturday implements Tournament {
   entryFee = 1000000;
   reward = 1;
   rewardFriendlyName = [
-    "% of your highest amount cards",
-    "% of your highest amount cards",
-    "% of your highest amount cards",
+    "minutes of money",
+    "minutes of money",
+    "minutes of money",
   ];
   ratingRequirement = 1600;
   teammember = "Terry" as TeamMemberNames;
@@ -47,22 +48,19 @@ export class CompetitiveSaturday implements Tournament {
     const maxPoints = this.opponents.length * 3;
 
     if (points >= maxPoints) {
-      return 10;
+      return 60;
     } else if (points >= maxPoints - 3) {
-      return 5;
+      return 30;
     } else if (points >= maxPoints - 6) {
-      return 2;
+      return 15;
     }
 
     return 0;
   }
 
   giveReward(points: number, state: GameState) {
-    state.entities.badcards.amount +=
-      state.stats.highestBadcards * (this.returnReward(points) / 100);
-    state.entities.goodcards.amount +=
-      state.stats.highestGoodcards * (this.returnReward(points) / 100);
-    state.entities.metacards.amount +=
-      state.stats.highestMetacards * (this.returnReward(points) / 100);
+    const workSkill = AllSkills.workSkill.effect(state.skills.workSkill.level);
+    state.entities.packsupply.amount +=
+      this.returnReward(points) * workSkill * 60;
   }
 }

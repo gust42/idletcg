@@ -40,4 +40,6 @@ export type Rules = {
   X1000Cost: Rule;
   XAllCost: Rule;
   TrophyCost: Rule;
+  BadCardsValueLimit: Rule;
+  ElsaCost: Rule;
 };

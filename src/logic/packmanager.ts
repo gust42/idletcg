@@ -1,7 +1,13 @@
 import { GameState } from "../interfaces/logic";
 import RulesHandler, { AllSkills } from "./../rules/ruleshandler";
 import StateHandler from "./../state/statehandler";
-import { calculatePackSupplyIncome, calculatePackUpgradeCost } from "./helpers";
+import {
+  addTeamMember,
+  calculateCardValue,
+  calculatePackSupplyIncome,
+  calculatePackUpgradeCost,
+  isTransformed,
+} from "./helpers";
 import MessageHandler from "./messagehandler";
 import { openPack, openPacks } from "./pack";
 
@@ -94,6 +100,9 @@ export class PackManager {
     if (state.entities.packbonuspoints.amount >= cost) {
       state.pack[data.skill].amount += 1;
       state.entities.packbonuspoints.amount -= cost;
+      if (data.skill === "elsa") {
+        addTeamMember(state, "Elsa");
+      }
       this.stateHandler.updateState(state);
     }
   }
@@ -102,7 +111,7 @@ export class PackManager {
     const state = this.stateHandler.getState();
     const skill = AllSkills.autoPackSkill;
     if (state.skills.autoPackSkill.on) {
-      if (state.pack.xAll.amount === 0)
+      if (!isTransformed(state))
         this.openPack(skill.effect(level), "free", false);
     }
   }
@@ -117,7 +126,12 @@ export class PackManager {
 
     const costSkill = AllSkills.shopkeeperFriendSkill;
 
-    return cost * costSkill.effect(state.skills.shopkeeperFriendSkill.level);
+    return (
+      cost *
+      (isTransformed(state)
+        ? 1
+        : costSkill.effect(state.skills.shopkeeperFriendSkill.level))
+    );
   }
 
   private openPack(
@@ -154,13 +168,13 @@ export class PackManager {
       const goodCardPackMax = this.rulesHandler.getRuleValue("GoodCardPackMax");
       const cardsInPack = this.rulesHandler.getRuleValue("CardsInPack");
 
-      const workSkillEffect = AllSkills.workSkill.effect(
-        state.skills.workSkill.level
+      const shopkeeperFriendEffect = AllSkills.shopkeeperFriendSkill.effect(
+        state.skills.shopkeeperFriendSkill.level
       );
 
       const realPacks = amount;
-      if (state.pack.xAll.amount > 0)
-        amount = Math.floor(amount * workSkillEffect) + amount;
+      if (isTransformed(state))
+        amount = Math.floor(amount * shopkeeperFriendEffect) + amount;
 
       if (amount > 1e6) {
         ({
@@ -222,33 +236,38 @@ export class PackManager {
   private sellCards(message: string, data: number) {
     if (message === "sellbadcards") {
       const state = this.stateHandler.getState();
+      const cardValue = calculateCardValue(state);
       if (state.entities.badcards.amount >= data) {
         if (data === -1) data = state.entities.badcards.amount;
-        state.entities.money.amount +=
-          this.rulesHandler.getRuleValue("BadCardSellValue") * data;
+        state.entities.money.amount += cardValue.badcards * data;
         state.entities.badcards.amount -= data;
+        state.stats.badcardsSold += data;
         this.stateHandler.updateState(state);
       }
     }
 
     if (message === "sellgoodcards") {
       const state = this.stateHandler.getState();
+
+      const cardValue = calculateCardValue(state);
       if (state.entities.goodcards.amount >= data) {
         if (data === -1) data = state.entities.goodcards.amount;
-        state.entities.money.amount +=
-          this.rulesHandler.getRuleValue("GoodCardSellValue") * data;
+        state.entities.money.amount += cardValue.goodcards * data;
         state.entities.goodcards.amount -= data;
+        state.stats.goodcardsSold += data;
         this.stateHandler.updateState(state);
       }
     }
 
     if (message === "sellmetacards") {
       const state = this.stateHandler.getState();
+
+      const cardValue = calculateCardValue(state);
       if (state.entities.metacards.amount >= data) {
         if (data === -1) data = state.entities.metacards.amount;
-        state.entities.money.amount +=
-          this.rulesHandler.getRuleValue("MetaCardSellValue") * data;
-        state.entities.metacards.amount -= data as number;
+        state.entities.money.amount += cardValue.metacards * data;
+        state.entities.metacards.amount -= data;
+        state.stats.metacardsSold += data;
         this.stateHandler.updateState(state);
       }
     }
