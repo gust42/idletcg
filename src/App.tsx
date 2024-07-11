@@ -13,8 +13,8 @@ import { Tabs, tabs } from "./rules/tabs";
 
 function App() {
   const [offlineModalOpen, setOfflineModalOpen] = useState(false);
+  const [victoryModalOpen, setVictoryModalOpen] = useState(false);
   const gameState = useGameState();
-  let modalOpen = false;
 
   useEffect(() => {
     const gameLoop = GameLoop.getInstance();
@@ -38,9 +38,10 @@ function App() {
   if (
     gameState.champions.lsq.defeated &&
     gameState.champions["mai-pudde"].defeated &&
-    gameState.champions["ron-dinkel"].defeated
+    gameState.champions["ron-dinkel"].defeated &&
+    !victoryModalOpen
   ) {
-    modalOpen = true;
+    setVictoryModalOpen(true);
   }
 
   return (
@@ -91,8 +92,8 @@ function App() {
           open={offlineModalOpen}
         />
       )}
-      <Modal open={modalOpen} onClose={() => {}}>
-        <Victory />
+      <Modal open={victoryModalOpen} onClose={() => {}}>
+        <Victory onClose={() => setVictoryModalOpen(false)} />
       </Modal>
     </div>
   );

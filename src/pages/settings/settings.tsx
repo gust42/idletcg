@@ -127,7 +127,7 @@ export const Settings = () => {
               setModalOpen(false);
             }}
           >
-            <Victory />
+            <Victory onClose={() => setModalOpen(false)} />
           </Modal>
         </>
       )}

@@ -11,7 +11,7 @@ export class WorkSkill implements Skill {
   }
   rule: SkillRule = {
     requirement: 5,
-    increase: 1.8,
+    increase: 1.7,
     value: 1,
     increaseEffect: 1.1,
   };

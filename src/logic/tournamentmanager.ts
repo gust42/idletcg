@@ -9,7 +9,7 @@ import {
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
 import { battle } from "./battle";
-import { addTeamMember } from "./helpers";
+import { addTeamMember, calculateEloRating } from "./helpers";
 import {
   calculateTotalTournamentTime,
   calculateTournamentRoundTime,
@@ -100,10 +100,26 @@ export class TournamentManager {
     if (log.points >= tournament.opponents.length * 3)
       addTeamMember(state, tournament.teammember);
 
-    state.entities.rating.amount += log.points;
+    state.entities.rating.amount = this.updateRating(
+      log.points,
+      tournament.ratingRequirement,
+      state.entities.rating.amount
+    );
     if (!state.entities.rating.acquired) state.entities.rating.acquired = true;
 
     state.activities.tournament = undefined;
+  }
+
+  private updateRating(
+    points: number,
+    tournamentRating: number,
+    rating: number
+  ) {
+    let newRating = rating;
+    if (points > 0) {
+      newRating = calculateEloRating(rating, tournamentRating, points);
+    }
+    return newRating;
   }
 
   private handleTeamMemberTick() {
@@ -135,7 +151,11 @@ export class TournamentManager {
 
           const maxPoints = tournament.opponents.length * deckSize;
 
-          t.rating += log.points / (t.rating / 100);
+          t.rating = this.updateRating(
+            log.points,
+            tournament.ratingRequirement,
+            t.rating
+          );
           if (log.points >= maxPoints) {
             if (!t.trophies) t.trophies = 0;
             t.trophies++;
@@ -232,7 +252,42 @@ export class TournamentManager {
       const effect = AllSkills.personalAssistant.effect(
         state.skills.personalAssistant.level
       );
-      this.enterTournament({ id: effect as unknown as keyof Tournaments });
+      let ratingAllowed: keyof Tournaments = "casualwednesday";
+      const id = effect as unknown as keyof Tournaments;
+      if (
+        state.entities.rating.amount >=
+        AllTournaments.funfriday.ratingRequirement
+      ) {
+        ratingAllowed = "funfriday";
+      }
+      if (
+        state.entities.rating.amount >=
+        AllTournaments.competativesaturday.ratingRequirement
+      ) {
+        ratingAllowed = "competativesaturday";
+      }
+
+      if (id === "competativesaturday") {
+        if (ratingAllowed === "competativesaturday") {
+          this.enterTournament({ id });
+        } else if (ratingAllowed === "funfriday") {
+          this.enterTournament({ id: "funfriday" });
+        } else {
+          this.enterTournament({ id: "casualwednesday" });
+        }
+      }
+
+      if (id === "funfriday") {
+        if (ratingAllowed === "funfriday") {
+          this.enterTournament({ id });
+        } else {
+          this.enterTournament({ id: "casualwednesday" });
+        }
+      }
+
+      if (id === "casualwednesday") {
+        this.enterTournament({ id });
+      }
     }
   }
 }

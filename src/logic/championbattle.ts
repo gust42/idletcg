@@ -11,7 +11,9 @@ export function handleChampionBattleMessage(
 ) {
   if (m.message === "championbattle") {
     const champion = AllChampions.find((c) => c.id === m.data.id);
-    if (champion && state.entities.trophies.amount >= 10) {
+    const cost =
+      GameLoop.getInstance().rulesHandler.getRuleValue("ChampionBattleCost");
+    if (champion && state.entities.trophies.amount >= cost) {
       const log: TournamentLog = {
         id: champion.id,
         rounds: [],
@@ -25,7 +27,7 @@ export function handleChampionBattleMessage(
         Object.keys(state.deck.championDeck).length
       );
 
-      state.entities.trophies.amount -= 10;
+      state.entities.trophies.amount -= cost;
 
       state.champions[champion.id].lastTournament = log;
 

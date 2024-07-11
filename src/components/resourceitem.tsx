@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { format } from "./../helpers/number";
 interface IResourceItemProps {
   resource: {
@@ -27,24 +26,16 @@ export default function ResourceItem({
   fixDecimal,
   oldValue,
 }: IResourceItemProps) {
-  const changeHistory = useRef<number[]>([]);
   if (!resource.acquired) return null;
 
   let change = <></>;
 
   if (oldValue) {
-    changeHistory.current.push(resource.amount - oldValue);
-
-    if (changeHistory.current.length > 10) changeHistory.current.shift();
-
     // get average change the last 3 ticks that had a change
-    const changeAverage =
-      changeHistory.current.length === 0
-        ? 0
-        : changeHistory.current.reduce((acc, change) => acc + change, 0) /
-          changeHistory.current.length;
-
-    if (changeAverage !== 0) change = <Change change={changeAverage} />;
+    const changeValue = resource.amount - oldValue;
+    if (changeValue !== 0) {
+      change = <Change change={resource.amount - oldValue} />;
+    }
   }
 
   return (

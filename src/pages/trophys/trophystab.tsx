@@ -1,6 +1,6 @@
 import useGameState from "../../hooks/usegamestate";
 import { AllTournaments } from "../../rules/ruleshandler";
-import { TrophySlot } from "./trophyslot";
+import { ChampionCard } from "./trophyslot";
 
 export default function TrophysTab() {
   const gameState = useGameState();
@@ -12,7 +12,7 @@ export default function TrophysTab() {
   const visibleChampions = Object.values(AllTournaments)
     .map((t, i) => {
       const index = `slot${i + 1}` as keyof typeof gameState.trophycase;
-      return <TrophySlot key={index} tournament={t} />;
+      return <ChampionCard key={index} tournament={t} />;
     })
     .filter((c) => c !== undefined);
 

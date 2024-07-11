@@ -60,7 +60,6 @@ export class CompetitiveSaturday implements Tournament {
 
   giveReward(points: number, state: GameState) {
     const workSkill = AllSkills.workSkill.effect(state.skills.workSkill.level);
-    state.entities.packsupply.amount +=
-      this.returnReward(points) * workSkill * 60;
+    state.entities.money.amount += this.returnReward(points) * workSkill * 60;
   }
 }
