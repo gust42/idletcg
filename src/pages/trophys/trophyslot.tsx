@@ -1,6 +1,7 @@
 import { Button } from "../../components/button";
 import { Container } from "../../components/container";
 import { HelpText, SmallTitle, Title } from "../../components/typography";
+import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
 import { inBattle } from "../../logic/helpers";
 import MessageHandler, {
@@ -14,8 +15,10 @@ interface ITrophySlotProps {
   tournament: Tournament;
 }
 
-export const TrophySlot = ({ tournament }: ITrophySlotProps) => {
+export const ChampionCard = ({ tournament }: ITrophySlotProps) => {
   const gameState = useGameState();
+
+  const battleCost = useGameRule("ChampionBattleCost");
 
   const champion = AllChampions.find(
     (c) => c.id === tournament.champion
@@ -78,10 +81,11 @@ export const TrophySlot = ({ tournament }: ITrophySlotProps) => {
                 disabled={
                   !fullDeck ||
                   gameState.entities.trophies.amount < 10 ||
-                  inBattle(gameState)
+                  inBattle(gameState) ||
+                  !unlocked
                 }
               >
-                {unlocked ? "10 trophys" : "-"}
+                {unlocked ? `${battleCost} trophys` : "-"}
               </Button>
             </>
           )}

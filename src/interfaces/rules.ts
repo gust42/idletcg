@@ -42,4 +42,5 @@ export type Rules = {
   TrophyCost: Rule;
   BadCardsValueLimit: Rule;
   ElsaCost: Rule;
+  ChampionBattleCost: Rule;
 };

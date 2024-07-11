@@ -16,7 +16,7 @@ export class TournamentGrinder implements Skill {
     increase: 1.05,
     value: 1,
     increaseEffect: 1,
-    maxLevel: 4,
+    maxLevel: 5,
   };
 
   title = "Tournament grinder";

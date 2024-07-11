@@ -2,7 +2,7 @@ import GameLoop from "../logic/gameloop";
 import { formatSeconds } from "../logic/helpers";
 import { SmallTitle } from "./typography";
 
-export const Victory = () => {
+export const Victory = ({ onClose }: { onClose: () => void }) => {
   const timePlayed =
     Date.now() -
     GameLoop.getInstance().stateHandler.getState().stats.startedPlaying;
@@ -22,17 +22,27 @@ export const Victory = () => {
           buying me a coffee!
         </a>
       </div>
-      <div
-        className="text-blue-500 cursor-pointer italic self-end underline"
-        onClick={() => {
-          GameLoop.getInstance().stop();
-          setTimeout(() => {
-            localStorage.clear();
-            window.location.reload();
-          }, 100);
-        }}
-      >
-        Hard reset
+      <div className="flex flex-row justify-between">
+        <div
+          className="text-blue-500 cursor-pointer italic underline"
+          onClick={() => {
+            onClose();
+          }}
+        >
+          Continue
+        </div>
+        <div
+          className="text-blue-500 cursor-pointer italic underline"
+          onClick={() => {
+            GameLoop.getInstance().stop();
+            setTimeout(() => {
+              localStorage.clear();
+              window.location.reload();
+            }, 100);
+          }}
+        >
+          Hard reset
+        </div>
       </div>
     </div>
   );

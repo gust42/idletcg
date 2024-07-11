@@ -1,9 +1,8 @@
 import { Button } from "../../components/button";
 import { ActionContainer, Container } from "../../components/container";
-import { format } from "../../helpers/number";
+import useGameState from "../../hooks/usegamestate";
 import { getRewardNameByPoints } from "../../logic/helpers";
-import MessageHandler from "../../logic/messagehandler";
-import { navigate } from "../../logic/navigation";
+import { goBack } from "../../logic/navigation";
 import { Tournament, TournamentLog } from "../../rules/tournaments/tournament";
 
 export const TournamentResult = ({
@@ -15,6 +14,7 @@ export const TournamentResult = ({
   log: TournamentLog;
   type?: "player" | "team";
 }) => {
+  const gameState = useGameState();
   return (
     <Container>
       <div className="text-2xl font-bold">Tournament finished!</div>
@@ -24,22 +24,25 @@ export const TournamentResult = ({
           <>
             and {tournament.returnReward(log.points)}{" "}
             {getRewardNameByPoints(log.points, tournament.rewardFriendlyName)}
-            {type === "player" && <>, you also got {log.points} rating.</>}
+            {type === "player" && (
+              <>, your new rating is {gameState.entities.rating.amount}.</>
+            )}
           </>
         )}
       </div>
-      {type === "player" && (
-        <ActionContainer>
-          <div className="pt-4 flex flex-row">
-            <Button
-              width="50%"
-              action=""
-              onClick={() => {
-                navigate("tournaments");
-              }}
-            >
-              Return
-            </Button>
+      <ActionContainer>
+        <div className="pt-4 flex flex-row">
+          <Button
+            // width="50%"
+            action=""
+            onClick={() => {
+              goBack();
+            }}
+          >
+            Return
+          </Button>
+
+          {/* {type === "player" && (
             <Button
               width="50%"
               action=""
@@ -52,9 +55,9 @@ export const TournamentResult = ({
             >
               Restart ({format(tournament.entryFee)})
             </Button>
-          </div>
-        </ActionContainer>
-      )}
+          )} */}
+        </div>
+      </ActionContainer>
     </Container>
   );
 };

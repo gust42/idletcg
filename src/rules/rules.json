@@ -79,5 +79,8 @@
   },
   "ElsaCost": {
     "value": 1e8
+  },
+  "ChampionBattleCost": {
+    "value": 100
   }
 }

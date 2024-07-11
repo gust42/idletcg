@@ -76,7 +76,7 @@ export default function ResourceView() {
           <div className="text-md italic mt-4 mb-1 md:mb-2">Activities</div>
           <hr className="mb-1" />
           <TournamentProgress />
-          <div className="mt-2">
+          <div className="mt-2 whitespace-nowrap">
             {teamMemberTournament.map((stateMember) => {
               const member = AllTeamMembers.find(
                 (m) => m.name === stateMember.name

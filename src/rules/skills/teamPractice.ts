@@ -4,20 +4,20 @@ import { Skill } from "./skill";
 
 export class TeamPractice implements Skill {
   rule = {
-    requirement: 1e6,
+    requirement: 1e5,
     increase: 1.05,
     value: 2,
     increaseEffect: 1,
-    maxLevel: 10,
+    maxLevel: 6,
   };
 
   title = "Team Practice Sessions";
 
   description =
-    "Practicing with your team gives you a boost to your rating based on their rating.";
+    "Practicing with your team gives you a boost to your k-factor when gaining rating.";
 
   cost(level: number) {
-    return roundToNearestThousand(this.rule.requirement * 10 ** (level / 2));
+    return roundToNearestThousand(this.rule.requirement * 10 ** level);
   }
 
   effect(level: number) {
@@ -25,7 +25,7 @@ export class TeamPractice implements Skill {
   }
 
   friendyEffect(level: number) {
-    return `Gain ${this.effect(level)}% of your teammates rating`;
+    return `Gain +${this.effect(level)} to your k-factor when gaining rating.`;
   }
 
   visible(gameState: GameState) {

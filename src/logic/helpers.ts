@@ -119,21 +119,35 @@ export function inBattle(gameState: GameState) {
   );
 }
 
-export function calculateRating(entity: Entity) {
+export function calculateEloRating(
+  playerRating: number,
+  opponentRating: number,
+  actualScore: number,
+  kFactor: number = 16
+): number {
   const gameState = GameLoop.getInstance().stateHandler.getState();
   const skill = AllSkills.teamPractice;
   const level = gameState.skills.teamPractice.level;
-  const teamRating = gameState.team.reduce((acc, member) => {
-    return acc + member.rating;
-  }, 0);
-  if (level <= 1) return entity;
+  if (level >= 1) kFactor += skill.effect(level);
+  // Calculate the expected score
+  const expectedScore: number =
+    1 / (1 + Math.pow(10, (opponentRating - playerRating) / 400));
 
-  return {
-    acquired: entity.acquired,
-    amount: Math.floor(
-      entity.amount + teamRating * (skill.effect(level) / 100)
-    ),
-  };
+  // Calculate the new rating
+  const newRating: number = playerRating + kFactor * (1 - expectedScore);
+
+  const gainedRating = Math.round(
+    (newRating - playerRating) * (actualScore / 10)
+  );
+
+  console.log("Rating gained: ", playerRating, gainedRating);
+
+  // Round to the nearest integer
+  return Math.round(playerRating + gainedRating);
+}
+
+export function calculateRating(entity: Entity) {
+  return entity;
 }
 
 export function getRewardNameByPoints(
