@@ -116,6 +116,15 @@ export default class RulesHandler {
       changed = true;
     }
 
+    if (
+      state.champions.lsq.defeated &&
+      state.champions["mai-pudde"].defeated &&
+      state.champions["ron-dinkel"].defeated &&
+      !state.stats.allChampionsDefeated
+    ) {
+      state.stats.allChampionsDefeated = Date.now();
+    }
+
     const packChanged = handleActivePackRules(this, state);
     if (packChanged) changed = true;
 

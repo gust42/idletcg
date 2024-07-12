@@ -107,6 +107,7 @@ export class TournamentManager {
     );
     if (!state.entities.rating.acquired) state.entities.rating.acquired = true;
 
+    state.logs.tournamentHistory[state.activities.tournament!.id] = log;
     state.activities.tournament = undefined;
   }
 

@@ -1,4 +1,6 @@
 import { HelpText } from "../../components/typography";
+import useGameState from "../../hooks/usegamestate";
+import { inBattle } from "../../logic/helpers";
 import MessageHandler from "../../logic/messagehandler";
 import { navigate } from "../../logic/navigation";
 import { AllTournaments } from "../../rules/ruleshandler";
@@ -6,8 +8,10 @@ import { Tournaments } from "../../rules/tournaments/tournament";
 import { TournamentInfo } from "./tournament";
 
 export const TournamentTab = () => {
+  const gameState = useGameState();
   function enterTournament(id: keyof Tournaments) {
-    MessageHandler.recieveMessage("entertournament", { id });
+    if (!inBattle(gameState))
+      MessageHandler.recieveMessage("entertournament", { id });
     navigate("activetournament");
   }
 

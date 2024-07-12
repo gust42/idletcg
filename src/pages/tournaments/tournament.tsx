@@ -61,8 +61,6 @@ export const TournamentInfo = ({
     tournament.ratingRequirement;
   const ratingColor = available ? "text-green-800" : "text-red-800";
 
-  const hideLog = gameState.activities.tournament?.id === id;
-
   return (
     <Container>
       <SmallTitle>{tournament.name}</SmallTitle>
@@ -100,19 +98,8 @@ export const TournamentInfo = ({
       ) : (
         <p className="font-semibold mb-4">???</p>
       )}
-      {hideLog ? (
-        <div className="mb-4 flex justify-end">
-          <Button
-            action=""
-            width="120px"
-            onClick={() => navigate("activetournament")}
-          >
-            Show battle
-          </Button>
-        </div>
-      ) : (
-        <LastTournament log={gameState.logs.tournament[id]} />
-      )}
+
+      <LastTournament log={gameState.logs.tournamentHistory[id]} />
       <TournamentJoinButton id={id} onClick={onClick} />
     </Container>
   );

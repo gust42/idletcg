@@ -65,12 +65,14 @@ export interface Champion {
 export interface GameState {
   stats: {
     startedPlaying: number;
+    allChampionsDefeated: number;
     highestBadcards: number;
     highestGoodcards: number;
     highestMetacards: number;
     badcardsSold: number;
     goodcardsSold: number;
     metacardsSold: number;
+    continuePlaying: boolean;
   };
   champions: Record<Champions, Champion>;
   binder: {
@@ -151,6 +153,7 @@ export interface GameState {
   };
   logs: {
     tournament: TournamentEntry;
+    tournamentHistory: TournamentEntry;
   };
   team: JoinedTeamMember[];
 }
