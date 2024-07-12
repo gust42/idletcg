@@ -85,7 +85,7 @@ export const ChampionCard = ({ tournament }: ITrophySlotProps) => {
                   !unlocked
                 }
               >
-                {unlocked ? `${battleCost} trophys` : "-"}
+                {unlocked ? `${battleCost.value} trophys` : "-"}
               </Button>
             </>
           )}

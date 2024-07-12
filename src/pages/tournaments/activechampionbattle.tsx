@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Thinking } from "../../components/Thinking";
 import { Button } from "../../components/button";
-import { SmallTitle } from "../../components/typography";
+import { Modal } from "../../components/modal";
+import { SmallTitle, Title } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
 import { navigate } from "../../logic/navigation";
 import { AllChampions, Champions } from "../../rules/champions";
@@ -9,6 +10,8 @@ import { TournamentLog } from "../../rules/tournaments/tournament";
 import { TournamentPlay } from "./tournamentplay";
 
 export const ActiveChampionBattle = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalShown, setModalShown] = useState(false);
   const gameState = useGameState();
 
   const currentChampion = useRef<Champions | undefined>(undefined);
@@ -39,6 +42,10 @@ export const ActiveChampionBattle = () => {
 
   const gameRound = championBattleState?.gameRound ?? deckSize;
 
+  if (gameRound >= deckSize && log.points === 3 && !modalOpen && !modalShown) {
+    setModalOpen(true);
+  }
+
   return (
     <div>
       <SmallTitle>
@@ -55,11 +62,6 @@ export const ActiveChampionBattle = () => {
         {gameRound < deckSize && <Thinking />}
       </div>
 
-      {gameRound >= deckSize && log.points === 3 && (
-        <div className="pt-4 text-2xl text-green-600">
-          You have defeated {champion.name}
-        </div>
-      )}
       {gameRound >= deckSize && log.points < 3 && (
         <>
           <div className="pt-4 text-xl text-red-600">
@@ -75,6 +77,28 @@ export const ActiveChampionBattle = () => {
           </Button>
         </>
       )}
+      <Modal
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+          setModalShown(true);
+        }}
+      >
+        <div>
+          <Title>You have defeated {champion.name}</Title>
+          Reward
+          <SmallTitle>{champion.reward}</SmallTitle>
+          <Button
+            action=""
+            onClick={() => {
+              setModalOpen(false);
+              setModalShown(true);
+            }}
+          >
+            Close
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };
