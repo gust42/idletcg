@@ -1,11 +1,12 @@
 import GameLoop from "../logic/gameloop";
 import { formatSeconds } from "../logic/helpers";
+import useGameState from "./../hooks/usegamestate";
 import { SmallTitle } from "./typography";
 
 export const Victory = ({ onClose }: { onClose: () => void }) => {
+  const gameState = useGameState();
   const timePlayed =
-    Date.now() -
-    GameLoop.getInstance().stateHandler.getState().stats.startedPlaying;
+    gameState.stats.allChampionsDefeated - gameState.stats.startedPlaying;
 
   return (
     <div className="flex justify-center flex-col text-center gap-12">
@@ -26,6 +27,9 @@ export const Victory = ({ onClose }: { onClose: () => void }) => {
         <div
           className="text-blue-500 cursor-pointer italic underline"
           onClick={() => {
+            // Should really not update state directly
+            GameLoop.getInstance().stateHandler.getState().stats.continuePlaying =
+              true;
             onClose();
           }}
         >

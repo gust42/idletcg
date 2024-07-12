@@ -36,10 +36,9 @@ function App() {
   );
 
   if (
-    gameState.champions.lsq.defeated &&
-    gameState.champions["mai-pudde"].defeated &&
-    gameState.champions["ron-dinkel"].defeated &&
-    !victoryModalOpen
+    gameState.stats.allChampionsDefeated &&
+    !victoryModalOpen &&
+    !gameState.stats.continuePlaying
   ) {
     setVictoryModalOpen(true);
   }

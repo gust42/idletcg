@@ -4,12 +4,14 @@ import { TournamentEntry } from "../rules/tournaments/tournament";
 export const state: GameState = {
   stats: {
     startedPlaying: Date.now(),
+    allChampionsDefeated: 0,
     highestBadcards: 0,
     highestGoodcards: 0,
     highestMetacards: 0,
     badcardsSold: 0,
     goodcardsSold: 0,
     metacardsSold: 0,
+    continuePlaying: false,
   },
   champions: {
     lsq: { lastTournament: undefined, defeated: false },
@@ -263,6 +265,7 @@ export const state: GameState = {
   },
   logs: {
     tournament: {} as TournamentEntry,
+    tournamentHistory: {} as TournamentEntry,
   },
   team: [],
   trophycase: {

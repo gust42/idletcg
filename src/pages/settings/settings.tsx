@@ -69,6 +69,18 @@ export const Settings = () => {
         <>
           <Button
             onClick={() => {
+              const state = GameLoop.getInstance().stateHandler.getState();
+              state.entities.rating.amount = 2000;
+              state.entities.trophies.amount = 10000;
+              state.entities.packsupply.amount = 1e20;
+              state.champions.lsq.defeated = false;
+            }}
+            action=""
+          >
+            Cheat
+          </Button>
+          <Button
+            onClick={() => {
               const metaDropRate =
                 GameLoop.getInstance().rulesHandler.getRuleValue(
                   "MetaCardDroprate"
