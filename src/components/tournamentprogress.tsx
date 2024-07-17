@@ -1,5 +1,6 @@
 import { memo } from "react";
 import useGameState from "../hooks/usegamestate";
+import { formatSeconds } from "../logic/helpers";
 import { calculateRemainingTournamentTime } from "../logic/helpers/tournamenttime";
 import { AllTournaments } from "../rules/ruleshandler";
 
@@ -22,7 +23,7 @@ export const TournamentProgress = memo(() => {
         <div>
           Time :{" "}
           <span className="font-semibold">
-            {totalTime > 0 ? totalTime : 0}s
+            {totalTime > 0 ? formatSeconds(totalTime) : 0}
           </span>
         </div>
         <div className="font-semibold">{tournament.name}</div>

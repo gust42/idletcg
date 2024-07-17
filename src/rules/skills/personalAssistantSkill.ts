@@ -15,7 +15,8 @@ export class PersonalAssistantSkill implements Skill {
 
   title = "Personal Assistant";
 
-  description = "Enters tournaments for you so you can focus on other things";
+  description =
+    "Automatically enters tournaments for you so you can focus on other things";
 
   cost(level: number) {
     return roundToNearestThousand(this.rule.requirement * 10 ** level);
@@ -30,7 +31,7 @@ export class PersonalAssistantSkill implements Skill {
 
   friendyEffect(level: number) {
     const tournament = this.effect(level) as keyof Tournaments;
-    return `Enters ${AllTournaments[tournament].name} for you if your rating is high enough.`;
+    return `Can sign you up for ${AllTournaments[tournament].name} for you if your rating is high enough.`;
   }
 
   visible(gameState: GameState) {

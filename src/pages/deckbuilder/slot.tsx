@@ -8,9 +8,16 @@ interface ISlotProps {
   card?: number;
   size?: "small" | "medium";
   onSelect: (id: number | undefined, slot: number) => void;
+  champion?: boolean;
 }
 
-export const Slot = ({ slot, card, onSelect, size = "medium" }: ISlotProps) => {
+export const Slot = ({
+  slot,
+  card,
+  onSelect,
+  size = "medium",
+  champion,
+}: ISlotProps) => {
   const [cardPickerOpen, setCardPickerOpen] = useState(false);
 
   const onPicked = (id: number | undefined) => {
@@ -43,7 +50,7 @@ export const Slot = ({ slot, card, onSelect, size = "medium" }: ISlotProps) => {
           </div>
         </div>
       )}
-      {cardPickerOpen && <CardPicker onSelect={onPicked} />}
+      {cardPickerOpen && <CardPicker onSelect={onPicked} champion={champion} />}
     </div>
   );
 };

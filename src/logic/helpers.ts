@@ -1,8 +1,10 @@
 import { format } from "../helpers/number";
 import { Entity, GameState, TeamMemberNames } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
-import { AllSkills } from "../rules/ruleshandler";
+import { AllSkills, AllTournaments } from "../rules/ruleshandler";
+import { Tournaments } from "../rules/tournaments/tournament";
 import GameLoop from "./gameloop";
+import { PackType } from "./packmanager";
 import { getIdsForRow } from "./uniquecardhandler";
 
 export function roundToNearestX(num: number, x: number): number {
@@ -164,7 +166,7 @@ export function calculatePackSupplyIncome(state: GameState) {
   const amount =
     GameLoop.getInstance().rulesHandler.getRuleValue("PackSupplyTick");
   let packSupply =
-    amount + state.pack.supply.amount * 2 + state.binder.packsupplysetbonus;
+    amount + state.pack.supply.amount * 5 + state.binder.packsupplysetbonus;
 
   if (isTransformed(state)) {
     packSupply += AllSkills.autoPackSkill.effect(
@@ -280,4 +282,36 @@ export function calculateCardValue(state: GameState) {
             state.stats.metacardsSold
           ),
   };
+}
+
+export function calculatePackCost(state: GameState, type: PackType = "normal") {
+  const rulesHandler = GameLoop.getInstance().rulesHandler;
+  if (type === "express") return rulesHandler.getRuleValue("PackExpressCost");
+  const cost = rulesHandler.getRuleValue("PackCost");
+
+  if (!state.skills.shopkeeperFriendSkill.acquired) return cost;
+
+  const costSkill = AllSkills.shopkeeperFriendSkill;
+
+  return (
+    cost *
+    (isTransformed(state)
+      ? 0.5
+      : costSkill.effect(state.skills.shopkeeperFriendSkill.level))
+  );
+}
+
+export function isPersonalAssistantAllowedToRun(
+  state: GameState,
+  tournament: keyof Tournaments
+) {
+  const tournamentList = Object.keys(AllTournaments);
+  const index = tournamentList.indexOf(tournament);
+  const effect = AllSkills.personalAssistant.effect(
+    state.skills.personalAssistant.level
+  );
+  const id = effect as unknown as keyof Tournaments;
+  const skillIndex = tournamentList.indexOf(id);
+
+  return skillIndex >= index;
 }

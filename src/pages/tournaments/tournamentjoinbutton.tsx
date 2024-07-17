@@ -38,8 +38,9 @@ export const TournamentJoinButton = ({
 
   let enterText = `Enter (${format(tournament.entryFee)})`;
 
-  if (inBattle(gameState)) {
+  if (gameState.activities.tournament?.id === id) {
     enterText = "Show battle";
+    disabledReason = "";
   }
 
   return (

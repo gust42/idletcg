@@ -36,6 +36,12 @@ export const ChampionCard = ({ tournament }: ITrophySlotProps) => {
 
   const unlocked = gameState.trophys[tournament.id] >= 10;
 
+  let disabledReason = "";
+
+  if (!unlocked) disabledReason = "Not enough trophies won";
+  else if (!fullDeck) disabledReason = "Deck not complete";
+  else if (inBattle(gameState)) disabledReason = "Already in battle";
+
   return (
     <Container>
       <Title>{tournament.name}</Title>
@@ -79,13 +85,11 @@ export const ChampionCard = ({ tournament }: ITrophySlotProps) => {
                 }}
                 action="BATTLE"
                 disabled={
-                  !fullDeck ||
-                  gameState.entities.trophies.amount < 10 ||
-                  inBattle(gameState) ||
-                  !unlocked
+                  !!disabledReason ||
+                  gameState.entities.trophies.amount < battleCost.value
                 }
               >
-                {unlocked ? `${battleCost.value} trophys` : "-"}
+                {disabledReason || `${battleCost.value} trophys`}
               </Button>
             </>
           )}

@@ -6,6 +6,7 @@ import useGameState from "../../hooks/usegamestate";
 
 interface ICardPickerProps {
   onSelect: (id: number | undefined) => void;
+  champion?: boolean;
 }
 
 const FilterButton = ({
@@ -32,11 +33,12 @@ const FilterButton = ({
   );
 };
 
-export const CardPicker = ({ onSelect }: ICardPickerProps) => {
+export const CardPicker = ({
+  onSelect,
+  champion = false,
+}: ICardPickerProps) => {
   const gameState = useGameState();
   const [filter, setFilter] = useState<string>("All");
-
-  // let myCards = allCards.slice(0, gameState.counters.uniquecards.amount);
 
   const allUsedCardsInTeam = gameState.team.reduce<number[]>((acc, cur) => {
     Object.keys(cur.deck).forEach((key) => {
@@ -49,23 +51,27 @@ export const CardPicker = ({ onSelect }: ICardPickerProps) => {
     return acc;
   }, []);
 
-  const cardsToRemove: number[] = [...allUsedCardsInTeam];
+  let cardsToRemove: number[] = [...allUsedCardsInTeam];
 
-  Object.keys(gameState.deck.cards).forEach((key) => {
-    const index = key as keyof typeof gameState.deck.cards;
-    const cardId = gameState.deck.cards[index];
-    if (cardId !== undefined) {
-      cardsToRemove.push(cardId);
-    }
-  });
+  if (champion) {
+    cardsToRemove = [];
 
-  Object.keys(gameState.deck.championDeck).forEach((key) => {
-    const index = key as keyof typeof gameState.deck.championDeck;
-    const cardId = gameState.deck.championDeck[index];
-    if (cardId !== undefined) {
-      cardsToRemove.push(cardId);
-    }
-  });
+    Object.keys(gameState.deck.championDeck).forEach((key) => {
+      const index = key as keyof typeof gameState.deck.championDeck;
+      const cardId = gameState.deck.championDeck[index];
+      if (cardId !== undefined) {
+        cardsToRemove.push(cardId);
+      }
+    });
+  } else {
+    Object.keys(gameState.deck.cards).forEach((key) => {
+      const index = key as keyof typeof gameState.deck.cards;
+      const cardId = gameState.deck.cards[index];
+      if (cardId !== undefined) {
+        cardsToRemove.push(cardId);
+      }
+    });
+  }
 
   let myCards = gameState.binder.cards
     .filter((card) => !cardsToRemove.includes(card))

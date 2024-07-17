@@ -110,6 +110,7 @@ export const routeConfig: RouteConfig = {
 
 type RouteState = {
   route: AllRouteNames;
+  scrollPosition: number;
   props: Record<string, unknown>;
 };
 
@@ -119,11 +120,14 @@ const savedTab = JSON.parse(
 
 export const routeState = proxy<RouteState>({
   route: savedTab?.route ?? "packstab",
+  scrollPosition: 0,
   props: savedTab?.props ?? {},
 });
 
 export const navigate = (route: AllRouteNames, props = {}) => {
+  routeState.scrollPosition = window.scrollY;
   localStorage.setItem("lastRoute", JSON.stringify(routeState));
+  routeState.scrollPosition = 0;
   routeState.route = route;
   routeState.props = props;
   localStorage.setItem("routeState", JSON.stringify({ route, props }));
@@ -131,7 +135,9 @@ export const navigate = (route: AllRouteNames, props = {}) => {
 
 export const goBack = () => {
   const lastRoute = JSON.parse(localStorage.getItem("lastRoute") ?? "{}");
+  const scrollPosition = lastRoute.scrollPosition;
   navigate(lastRoute.route, lastRoute.props);
+  setTimeout(() => window.scrollTo({ top: scrollPosition }), 0);
 };
 
 export const findParentRouteName = (route: AllSubroutes) => {

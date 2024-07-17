@@ -8,7 +8,7 @@ export class CompetitiveSaturday implements Tournament {
   name = "Competitive Saturday";
   description = "A serious tournament for skilled players.";
   champion = "mai-pudde" as Champions;
-  entryFee = 1000000;
+  entryFee = 1e8;
   reward = 1;
   rewardFriendlyName = [
     "minutes of money",
@@ -48,11 +48,11 @@ export class CompetitiveSaturday implements Tournament {
     const maxPoints = this.opponents.length * 3;
 
     if (points >= maxPoints) {
-      return 60;
-    } else if (points >= maxPoints - 3) {
       return 30;
+    } else if (points >= maxPoints - 3) {
+      return 5;
     } else if (points >= maxPoints - 6) {
-      return 15;
+      return 1;
     }
 
     return 0;

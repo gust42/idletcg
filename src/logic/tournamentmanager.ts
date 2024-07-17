@@ -1,5 +1,5 @@
 import { Deck, GameState } from "../interfaces/logic";
-import { AllSkills, AllTournaments } from "../rules/ruleshandler";
+import { AllTournaments } from "../rules/ruleshandler";
 import { AllTeamMembers } from "../rules/teammembers";
 import {
   Tournament,
@@ -9,19 +9,27 @@ import {
 import StateHandler from "../state/statehandler";
 import RulesHandler from "./../rules/ruleshandler";
 import { battle } from "./battle";
-import { addTeamMember, calculateEloRating } from "./helpers";
+import {
+  addTeamMember,
+  calculateEloRating,
+  isPersonalAssistantAllowedToRun,
+} from "./helpers";
 import {
   calculateTotalTournamentTime,
   calculateTournamentRoundTime,
 } from "./helpers/tournamenttime";
 import { AssignTournamentMessage, TournamentMessage } from "./messagehandler";
 
-export type TournamentMessages = "entertournament" | "assigntournament";
+export type TournamentMessages =
+  | "entertournament"
+  | "assigntournament"
+  | "personalAssistantTournament";
 
 export class TournamentManager {
   static messageList: TournamentMessages[] = [
     "entertournament",
     "assigntournament",
+    "personalAssistantTournament",
   ];
 
   private stateHandler: StateHandler;
@@ -203,12 +211,29 @@ export class TournamentManager {
       case "assigntournament":
         this.assignTeamMemberToTournament(data as AssignTournamentMessage);
         break;
+      case "personalAssistantTournament":
+        this.setPersonalAssistantTournament(data as AssignTournamentMessage);
+        break;
     }
+  }
+
+  private setPersonalAssistantTournament(data: AssignTournamentMessage) {
+    const state = this.stateHandler.getState();
+    state.trackers.personalAssistantTournament = data.id;
+    this.stateHandler.updateState(state);
   }
 
   private enterTournament(data: TournamentMessage) {
     const state = this.stateHandler.getState();
+    const deckSize = this.rulesHandler.getRuleValue("DeckSize");
+    if (!data.id) return;
     const tournament = AllTournaments[data.id];
+
+    const fullDeck =
+      Object.values(state.deck.cards).every((card) => card !== undefined) &&
+      Object.keys(state.deck.cards).length >= deckSize;
+
+    if (!fullDeck) return;
 
     if (state.activities.tournament !== undefined) return;
 
@@ -247,47 +272,18 @@ export class TournamentManager {
   private handlePersonalAssistant() {
     const state = this.stateHandler.getState();
     if (
-      state.skills.personalAssistant.on &&
-      state.skills.personalAssistant.acquired
+      state.skills.personalAssistant.acquired &&
+      state.trackers.personalAssistantTournament
     ) {
-      const effect = AllSkills.personalAssistant.effect(
-        state.skills.personalAssistant.level
-      );
-      let ratingAllowed: keyof Tournaments = "casualwednesday";
-      const id = effect as unknown as keyof Tournaments;
       if (
-        state.entities.rating.amount >=
-        AllTournaments.funfriday.ratingRequirement
+        isPersonalAssistantAllowedToRun(
+          state,
+          state.trackers.personalAssistantTournament
+        )
       ) {
-        ratingAllowed = "funfriday";
-      }
-      if (
-        state.entities.rating.amount >=
-        AllTournaments.competativesaturday.ratingRequirement
-      ) {
-        ratingAllowed = "competativesaturday";
-      }
-
-      if (id === "competativesaturday") {
-        if (ratingAllowed === "competativesaturday") {
-          this.enterTournament({ id });
-        } else if (ratingAllowed === "funfriday") {
-          this.enterTournament({ id: "funfriday" });
-        } else {
-          this.enterTournament({ id: "casualwednesday" });
-        }
-      }
-
-      if (id === "funfriday") {
-        if (ratingAllowed === "funfriday") {
-          this.enterTournament({ id });
-        } else {
-          this.enterTournament({ id: "casualwednesday" });
-        }
-      }
-
-      if (id === "casualwednesday") {
-        this.enterTournament({ id });
+        this.enterTournament({
+          id: state.trackers.personalAssistantTournament,
+        });
       }
     }
   }
