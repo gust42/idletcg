@@ -16,7 +16,7 @@ export class ShopkeeperFriendSkill implements Skill {
       increase: 2,
       value: 0.9,
       increaseEffect: 0.1,
-      maxLevel: isTransformed(this.stateHandler.getState()) ? undefined : 20,
+      maxLevel: isTransformed(this.stateHandler.getState()) ? undefined : 10,
     };
   }
 
@@ -29,17 +29,15 @@ export class ShopkeeperFriendSkill implements Skill {
   }
 
   cost(level: number) {
-    if (isTransformed(this.stateHandler.getState()) && level > 19)
-      return this.rule.requirement * this.rule.increase ** level;
+    if (isTransformed(this.stateHandler.getState()) && level > 9)
+      return this.rule.requirement * this.rule.increase ** (level + 10);
     return this.rule.requirement * (level + 1);
   }
 
   effect(level: number) {
     if (isTransformed(this.stateHandler.getState()))
-      return Math.max(level - 19, 1);
-    return level === 1
-      ? this.rule.value
-      : parseFloat((this.rule.value * 2 ** (-0.05 * level)).toFixed(2));
+      return Math.max(level - 9, 1);
+    return (100 - level * 5) / 100;
   }
 
   friendyEffect(level: number) {

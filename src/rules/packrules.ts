@@ -10,9 +10,16 @@ export function handleActivePackRules(
   // First
   if (
     !state.entities.packbonuspoints.acquired &&
-    state.entities.packbonuspoints.amount > 40
+    state.entities.packbonuspoints.amount > 10
   ) {
     state.entities.packbonuspoints.acquired = true;
+    changed = true;
+  }
+
+  if (
+    !state.routes.packpoints.acquired &&
+    state.entities.packbonuspoints.amount > 30
+  ) {
     state.routes.packpoints.acquired = true;
     state.routes.packstab.notify = true;
     state.routes.packpoints.notify = true;

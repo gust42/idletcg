@@ -164,7 +164,7 @@ export function calculatePackSupplyIncome(state: GameState) {
   const amount =
     GameLoop.getInstance().rulesHandler.getRuleValue("PackSupplyTick");
   let packSupply =
-    amount + state.pack.supply.amount * 2 + state.binder.packsupplysetbonus;
+    amount + state.pack.supply.amount * 5 + state.binder.packsupplysetbonus;
 
   if (isTransformed(state)) {
     packSupply += AllSkills.autoPackSkill.effect(

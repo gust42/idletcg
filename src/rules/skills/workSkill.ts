@@ -25,6 +25,10 @@ export class WorkSkill implements Skill {
   }
 
   cost(level: number) {
+    if (isTransformed(this.stateHandler.getState()))
+      return roundToNearestThousand(
+        this.rule.requirement * Math.pow(1.7, level)
+      );
     return roundToNearestThousand(
       this.rule.requirement * Math.pow(this.rule.increase, level)
     );
@@ -32,7 +36,7 @@ export class WorkSkill implements Skill {
 
   effect(level: number) {
     if (isTransformed(this.stateHandler.getState()))
-      return Math.floor(this.cost(level) / 100 + level);
+      return Math.floor(this.cost(level) / (level * 100));
     return Math.floor(this.cost(level) / 1000 + level);
   }
 
