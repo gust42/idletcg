@@ -1,7 +1,7 @@
 import { ActionContainer, Container } from "../../components/container";
 import { HelpText, SmallTitle, Title } from "../../components/typography";
-import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
+import { calculatePackCost } from "../../logic/helpers";
 import MessageHandler from "../../logic/messagehandler";
 import { format } from "./../../helpers/number";
 import BuyButton from "./button";
@@ -9,7 +9,7 @@ import BuyButton from "./button";
 export const Pack = () => {
   const gameState = useGameState();
   // const packExpressCost = useGameRule("PackExpressCost");
-  const packCostRule = useGameRule("PackCost");
+  const packCost = calculatePackCost(gameState);
 
   function openPack(amount: number) {
     MessageHandler.recieveMessage("openpack", { amount: amount ? amount : 1 });
@@ -49,8 +49,8 @@ export const Pack = () => {
             type="buy"
             click={openPack}
             resource={gameState.entities.money}
-            cost={packCostRule.value}
-            disabled={gameState.entities.money.amount < packCostRule.value}
+            cost={packCost}
+            disabled={gameState.entities.money.amount < packCost}
           />
         </ActionContainer>
         {/* {gameState.pack.express.amount === 1 && (

@@ -35,13 +35,13 @@ export const SkillInfo = ({
     MessageHandler.recieveMessage("levelupskill", { name });
   }
 
-  function toggleSkill() {
-    MessageHandler.recieveMessage("toggleskill", { name });
-  }
+  // function toggleSkill() {
+  //   MessageHandler.recieveMessage("toggleskill", { name });
+  // }
 
   if (!skill.visible(gameState)) return null;
 
-  const skillIsToggleable = state.on !== undefined && state.acquired;
+  // const skillIsToggleable = state.on !== undefined && state.acquired;
 
   const isMaxLevel =
     !!skill.rule.maxLevel && state.level >= skill.rule.maxLevel;
@@ -57,7 +57,7 @@ export const SkillInfo = ({
         <DataContainer title={state.acquired ? "Current effect" : "Effect"}>
           {skill.friendyEffect(state.acquired ? state.level : 1)}
         </DataContainer>
-        <div className="flex flex-row justify-between">
+        {/* <div className="flex flex-row justify-between">
           {skillIsToggleable && (
             <div>
               <Button
@@ -69,7 +69,7 @@ export const SkillInfo = ({
               </Button>
             </div>
           )}
-        </div>
+        </div> */}
         {!isMaxLevel && (
           <>
             {state.acquired ? (

@@ -5,20 +5,20 @@ import { Tournaments } from "../rules/tournaments/tournament";
 import { CardMasteryMessages } from "./cardmastery";
 import { AllRouteNames } from "./navigation";
 import { PackMessages } from "./packmanager";
+import { TournamentMessages } from "./tournamentmanager";
 import { UniqueCardMessageData, UniqueCardMessages } from "./uniquecardhandler";
 
 type MessageList =
   | CardMasteryMessages
   | PackMessages
   | UniqueCardMessages
+  | TournamentMessages
   | "championbattle"
   | "unlockskill"
   | "levelupskill"
   | "toggleskill"
   | "addcardtodeck"
   | "addcardtochampiondeck"
-  | "entertournament"
-  | "assigntournament"
   | "clearmessages"
   | "clearnotifier"
   | "buytrophy"
@@ -58,7 +58,7 @@ export type NotifierMessage = {
 };
 
 export type TournamentMessage = {
-  id: keyof Tournaments;
+  id: keyof Tournaments | undefined;
 };
 
 export type ChampionBattleMessage = {

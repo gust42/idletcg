@@ -53,6 +53,7 @@ export const DeckbuilderTab = () => {
               }` as keyof typeof gameState.deck.championDeck;
               return (
                 <Slot
+                  champion
                   onSelect={onChampionSelect}
                   key={index}
                   card={gameState.deck.championDeck[index]}

@@ -4,6 +4,7 @@ import StateHandler from "./../state/statehandler";
 import {
   addTeamMember,
   calculateCardValue,
+  calculatePackCost,
   calculatePackSupplyIncome,
   calculatePackUpgradeCost,
   isTransformed,
@@ -114,24 +115,6 @@ export class PackManager {
       this.openPack(skill.effect(level), "free", false);
   }
 
-  private calculatePackCost(type: PackType = "normal") {
-    if (type === "express")
-      return this.rulesHandler.getRuleValue("PackExpressCost");
-    const state = this.stateHandler.getState();
-    const cost = this.rulesHandler.getRuleValue("PackCost");
-
-    if (!state.skills.shopkeeperFriendSkill.acquired) return cost;
-
-    const costSkill = AllSkills.shopkeeperFriendSkill;
-
-    return (
-      cost *
-      (isTransformed(state)
-        ? 1
-        : costSkill.effect(state.skills.shopkeeperFriendSkill.level))
-    );
-  }
-
   private openPack(
     amount: number,
     type: PackType = "normal",
@@ -140,7 +123,7 @@ export class PackManager {
     const state = this.stateHandler.getState();
     const log = logParam ?? true;
 
-    const cost = this.calculatePackCost(type);
+    const cost = calculatePackCost(state, type);
 
     // If amount is -1, buy as many packs as possible
     if (amount === -1) {

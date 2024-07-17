@@ -8,7 +8,7 @@ export class FunFriday implements Tournament {
   name = "Friday Night Fun";
   description = "An enjoyable tournament for the casual players.";
   champion = "ron-dinkel" as Champions;
-  entryFee = 100000;
+  entryFee = 1e6;
   reward = 100000;
   rewardFriendlyName = [
     "minutes of pack supply",
@@ -48,11 +48,11 @@ export class FunFriday implements Tournament {
     const maxPoints = this.opponents.length * 3;
 
     if (points >= maxPoints) {
-      return 60;
-    } else if (points >= maxPoints - 3) {
       return 30;
+    } else if (points >= maxPoints - 3) {
+      return 5;
     } else if (points >= maxPoints - 6) {
-      return 15;
+      return 1;
     }
 
     return 0;

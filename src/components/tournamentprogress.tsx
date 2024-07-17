@@ -23,7 +23,7 @@ export const TournamentProgress = memo(() => {
         <div>
           Time :{" "}
           <span className="font-semibold">
-            {totalTime > 0 ? formatSeconds(totalTime) : 0}s
+            {totalTime > 0 ? formatSeconds(totalTime) : 0}
           </span>
         </div>
         <div className="font-semibold">{tournament.name}</div>

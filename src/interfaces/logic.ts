@@ -63,6 +63,9 @@ export interface Champion {
 }
 
 export interface GameState {
+  trackers: {
+    personalAssistantTournament: undefined | keyof Tournaments;
+  };
   stats: {
     startedPlaying: number;
     allChampionsDefeated: number;

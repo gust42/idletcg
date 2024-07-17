@@ -2,7 +2,11 @@ import { Button } from "../../components/button";
 import { Container } from "../../components/container";
 import { SmallTitle } from "../../components/typography";
 import useGameState from "../../hooks/usegamestate";
-import { calculateRating } from "../../logic/helpers";
+import {
+  calculateRating,
+  isPersonalAssistantAllowedToRun,
+} from "../../logic/helpers";
+import MessageHandler, { TournamentMessage } from "../../logic/messagehandler";
 import { navigate } from "../../logic/navigation";
 import {
   Tournament,
@@ -43,6 +47,40 @@ export const LastTournament = ({
   return null;
 };
 
+const PersonalAssistant = ({ tournament }: { tournament: Tournament }) => {
+  const gameState = useGameState();
+
+  const personalAssistant = gameState.trackers.personalAssistantTournament;
+  const hasPersonalAssistant = gameState.skills.personalAssistant.acquired;
+
+  const personAssistantAllowed = isPersonalAssistantAllowedToRun(
+    gameState,
+    tournament.id
+  );
+
+  if (!hasPersonalAssistant) {
+    return null;
+  }
+
+  return (
+    <Button
+      action=""
+      disabled={!personAssistantAllowed}
+      color={personalAssistant === tournament.id ? "green" : undefined}
+      onClick={() => {
+        MessageHandler.recieveMessage<TournamentMessage>(
+          "personalAssistantTournament",
+          {
+            id: personalAssistant === tournament.id ? undefined : tournament.id,
+          }
+        );
+      }}
+    >
+      Auto signup
+    </Button>
+  );
+};
+
 interface ITournamentProps {
   id: keyof Tournaments;
   tournament: Tournament;
@@ -57,7 +95,7 @@ export const TournamentInfo = ({
   const gameState = useGameState();
 
   const available =
-    calculateRating(gameState.entities.rating).amount + 100 >=
+    calculateRating(gameState.entities.rating).amount >=
     tournament.ratingRequirement;
   const ratingColor = available ? "text-green-800" : "text-red-800";
 
@@ -100,6 +138,11 @@ export const TournamentInfo = ({
       )}
 
       <LastTournament log={gameState.logs.tournamentHistory[id]} />
+      {available && (
+        <div className="mb-2">
+          <PersonalAssistant tournament={tournament} />
+        </div>
+      )}
       <TournamentJoinButton id={id} onClick={onClick} />
     </Container>
   );

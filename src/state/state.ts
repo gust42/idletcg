@@ -2,6 +2,9 @@ import { GameState } from "../interfaces/logic";
 import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
+  trackers: {
+    personalAssistantTournament: undefined,
+  },
   stats: {
     startedPlaying: Date.now(),
     allChampionsDefeated: 0,
