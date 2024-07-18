@@ -19,14 +19,16 @@ export const TournamentProgress = memo(() => {
 
   return (
     gameState.activities.tournament && (
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col">
         <div>
           Time :{" "}
           <span className="font-semibold">
             {totalTime > 0 ? formatSeconds(totalTime) : 0}
           </span>
         </div>
-        <div className="font-semibold">{tournament.name}</div>
+        <div className="font-semibold text-xs md:text-sm whitespace-nowrap">
+          {tournament.name}
+        </div>
         <div className="hidden">{gameState.counters.clock.amount}</div>
       </div>
     )

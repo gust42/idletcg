@@ -13,7 +13,7 @@ export const PackPoints = () => {
   const cardsInPackRule = useGameRule("CardsInPack");
   const goodCost = useGameRule("GoodUnlock");
   const metaCost = useGameRule("MetaUnlock");
-  const packSupplyRule = useGameRule("PackSupplyTick");
+  const packSupplyRule = useGameRule("PackSupplyTickIncrease");
   const x10Cost = useGameRule("X10Cost");
   const x100Cost = useGameRule("X100Cost");
   const x1000Cost = useGameRule("X1000Cost");
@@ -39,9 +39,9 @@ export const PackPoints = () => {
           />
           <PackUpgrade
             skill="supply"
-            text={`Pack supply (${
-              gameState.pack.supply.amount * 2 + packSupplyRule.value
-            })`}
+            text={`Pack supply (+${
+              gameState.pack.supply.amount * packSupplyRule.value
+            } / tick)`}
             cost={packSupplyCost}
             acquired={false}
             visible={gameState.entities.packsupply.acquired}

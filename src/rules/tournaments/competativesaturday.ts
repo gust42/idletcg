@@ -13,8 +13,9 @@ export class CompetitiveSaturday implements Tournament {
   rewardFriendlyName = [
     "minutes of money",
     "minutes of money",
-    "minutes of money",
+    "minute of money",
   ];
+  rewardUnit = "money";
   ratingRequirement = 1600;
   teammember = "Terry" as TeamMemberNames;
   opponents = [
@@ -60,6 +61,8 @@ export class CompetitiveSaturday implements Tournament {
 
   giveReward(points: number, state: GameState) {
     const workSkill = AllSkills.workSkill.effect(state.skills.workSkill.level);
-    state.entities.money.amount += this.returnReward(points) * workSkill * 60;
+    const reward = this.returnReward(points) * workSkill * 60;
+    state.entities.money.amount += reward;
+    return reward;
   }
 }

@@ -13,8 +13,9 @@ export class FunFriday implements Tournament {
   rewardFriendlyName = [
     "minutes of pack supply",
     "minutes of pack supply",
-    "minutes of pack supply",
+    "minute of pack supply",
   ];
+  rewardUnit = "pack supply";
   ratingRequirement = 1200;
   teammember = "Susan" as TeamMemberNames;
   opponents = [
@@ -59,7 +60,9 @@ export class FunFriday implements Tournament {
   }
 
   giveReward(points: number, state: GameState) {
-    state.entities.packsupply.amount +=
+    const reward =
       this.returnReward(points) * calculatePackSupplyIncome(state) * 60;
+    state.entities.packsupply.amount += reward;
+    return reward;
   }
 }

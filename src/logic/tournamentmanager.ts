@@ -98,18 +98,18 @@ export class TournamentManager {
     log: TournamentLog,
     state: GameState
   ) {
-    tournament.giveReward(log.points, state);
+    log.reward = tournament.giveReward(log.points, state);
     if (log.points >= tournament.opponents.length * 3) {
       state.trophys[state.activities.tournament!.id]++;
       state.entities.trophies.amount++;
       if (!state.entities.trophies.acquired)
         state.entities.trophies.acquired = true;
-    }
-    if (log.points >= tournament.opponents.length * 3)
+
       addTeamMember(state, tournament.teammember);
+    }
 
     state.entities.rating.amount = this.updateRating(
-      log.points,
+      log,
       tournament.ratingRequirement,
       state.entities.rating.amount
     );
@@ -120,13 +120,14 @@ export class TournamentManager {
   }
 
   private updateRating(
-    points: number,
+    log: TournamentLog,
     tournamentRating: number,
     rating: number
   ) {
     let newRating = rating;
-    if (points > 0) {
-      newRating = calculateEloRating(rating, tournamentRating, points);
+    if (log.points > 0) {
+      newRating = calculateEloRating(rating, tournamentRating, log.points);
+      log.rating = newRating - rating;
     }
     return newRating;
   }
@@ -140,7 +141,6 @@ export class TournamentManager {
         Object.values(t.deck).every((card) => card !== undefined) &&
         Object.keys(t.deck).length >= deckSize;
       if (!fullDeck) {
-        t.currentTournament = undefined;
         t.tournamentTicks = 0;
         return;
       }
@@ -156,12 +156,12 @@ export class TournamentManager {
           const log = this.runTournament(t.currentTournament, t.deck);
           const tournament = AllTournaments[t.currentTournament];
 
-          tournament.giveReward(log.points, state);
+          log.reward = tournament.giveReward(log.points, state);
 
           const maxPoints = tournament.opponents.length * deckSize;
 
           t.rating = this.updateRating(
-            log.points,
+            log,
             tournament.ratingRequirement,
             t.rating
           );
@@ -190,6 +190,8 @@ export class TournamentManager {
       rounds: [],
       points: 0,
       myDeck: { ...currentDeck },
+      reward: 0,
+      rating: 0,
     };
 
     for (let i = 0; i < tournament.opponents.length; i++) {

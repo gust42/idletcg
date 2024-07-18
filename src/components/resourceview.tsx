@@ -18,13 +18,10 @@ export default function ResourceView() {
   );
 
   return (
-    <div
-      className=" sticky top-0 overflow-hidden flex flex-col h-full
-  "
-    >
-      <div className="text-md italic mb-1 md:mb-2">Resources</div>
+    <div className="sticky top-0 overflow-hidden flex flex-col h-full text-sm">
+      <div className="italic mb-1">Resources</div>
       <hr className="mb-1" />
-      <div className=" flex flex-col gap-1">
+      <div className=" flex flex-col">
         <ResourceItem
           name="Money"
           resource={gameState.entities.money}
@@ -73,10 +70,10 @@ export default function ResourceView() {
 
       {gameState.routes.tournamentstab.acquired && (
         <>
-          <div className="text-md italic mt-4 mb-1 md:mb-2">Activities</div>
+          <div className="text-md italic mt-1 mb-1">Activities</div>
           <hr className="mb-1" />
           <TournamentProgress />
-          <div className="mt-2 whitespace-nowrap">
+          <div className="mt-1 whitespace-nowrap">
             {teamMemberTournament.map((stateMember) => {
               const member = AllTeamMembers.find(
                 (m) => m.name === stateMember.name
@@ -85,7 +82,10 @@ export default function ResourceView() {
                 stateMember.currentTournament as keyof typeof AllTournaments;
               const tournament = AllTournaments[id];
               return (
-                <div key={member.name} className="flex flex-col  mb-2">
+                <div
+                  key={member.name}
+                  className="flex flex-col text-sm mb-0.5 xl:mb-2"
+                >
                   <div className="">
                     {member.name}:{" "}
                     <span className="font-semibold">
@@ -95,7 +95,9 @@ export default function ResourceView() {
                       )}
                     </span>
                   </div>
-                  <div className="font-semibold">{tournament.name}</div>
+                  <div className="font-semibold text-xs md:text-sm whitespace-nowrap">
+                    {tournament.name}
+                  </div>
                 </div>
               );
             })}
