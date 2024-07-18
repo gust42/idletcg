@@ -12,7 +12,7 @@ export class ShopkeeperFriendSkill implements Skill {
   }
   get rule(): SkillRule {
     return {
-      requirement: 200,
+      requirement: 50,
       increase: 2,
       value: 0.9,
       increaseEffect: 0.1,
@@ -30,7 +30,7 @@ export class ShopkeeperFriendSkill implements Skill {
 
   cost(level: number) {
     if (isTransformed(this.stateHandler.getState()) && level > 9)
-      return this.rule.requirement * this.rule.increase ** (level + 10);
+      return 200 * this.rule.increase ** (level + 10);
     return this.rule.requirement * (level + 1);
   }
 

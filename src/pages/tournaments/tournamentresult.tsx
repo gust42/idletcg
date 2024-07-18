@@ -1,6 +1,7 @@
 import { Button } from "../../components/button";
 import { ActionContainer, Container } from "../../components/container";
-import useGameState from "../../hooks/usegamestate";
+import { SmallTitle } from "../../components/typography";
+import { format } from "../../helpers/number";
 import { getRewardNameByPoints } from "../../logic/helpers";
 import { goBack } from "../../logic/navigation";
 import { Tournament, TournamentLog } from "../../rules/tournaments/tournament";
@@ -8,24 +9,33 @@ import { Tournament, TournamentLog } from "../../rules/tournaments/tournament";
 export const TournamentResult = ({
   tournament,
   log,
-  type = "player",
 }: {
   tournament: Tournament;
   log: TournamentLog;
   type?: "player" | "team";
 }) => {
-  const gameState = useGameState();
   return (
     <Container>
-      <div className="text-2xl font-bold">Tournament finished!</div>
+      <div className="text-2xl font-bold mb-2">Tournament finished!</div>
       <div className="text-lg">
-        You got {log.points} points{" "}
+        You got {log.points} points
         {log.points > 0 && (
           <>
+            {" "}
             and {tournament.returnReward(log.points)}{" "}
             {getRewardNameByPoints(log.points, tournament.rewardFriendlyName)}
-            {type === "player" && (
-              <>, your new rating is {gameState.entities.rating.amount}.</>
+            {(log.rating || log.reward) && (
+              <>
+                <SmallTitle>Rewards</SmallTitle>
+                {log.reward > 0 && (
+                  <div className="text-green-600">
+                    +{format(log.reward)} {tournament.rewardUnit}
+                  </div>
+                )}
+                {log.rating > 0 && (
+                  <div className="text-green-600">+{log.rating} rating</div>
+                )}
+              </>
             )}
           </>
         )}

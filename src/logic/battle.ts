@@ -40,7 +40,7 @@ export function battle(
 
   log.rounds.push({
     result: result,
-    points: log.points,
+    points: result === "win" ? 3 : result === "draw" ? 1 : 0,
     opponentDeck,
   });
 }

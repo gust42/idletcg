@@ -32,6 +32,8 @@ export type TournamentLog = {
   rounds: TournamentLogRound[];
   points: number;
   myDeck: Deck;
+  reward: number;
+  rating: number;
 };
 
 export interface Tournament {
@@ -42,7 +44,8 @@ export interface Tournament {
   entryFee: number;
   reward: number;
   rewardFriendlyName: string[];
-  giveReward: (points: number, state: GameState) => void;
+  rewardUnit: string;
+  giveReward: (points: number, state: GameState) => number;
   returnReward: (points: number) => number;
   ratingRequirement: number;
   teammember: TeamMemberNames;

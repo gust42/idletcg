@@ -11,6 +11,7 @@ export class CasualWednesday implements Tournament {
   reward = 250000;
   rewardFriendlyName = ["money", "money", "money"];
   ratingRequirement = 1000;
+  rewardUnit = "money";
   teammember = "Timmy" as TeamMemberNames;
   opponents = [
     {
@@ -54,6 +55,8 @@ export class CasualWednesday implements Tournament {
   }
 
   giveReward(points: number, state: GameState) {
-    state.entities.money.amount += this.returnReward(points);
+    const reward = this.returnReward(points);
+    state.entities.money.amount += reward;
+    return reward;
   }
 }
