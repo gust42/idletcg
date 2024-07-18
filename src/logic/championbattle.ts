@@ -19,6 +19,8 @@ export function handleChampionBattleMessage(
         rounds: [],
         points: 0,
         myDeck: { ...state.deck.championDeck },
+        rating: 0,
+        reward: 0,
       };
       battle(
         state.deck.championDeck,
