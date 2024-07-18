@@ -40,8 +40,6 @@ export const TournamentLog = ({ log, type }: ITournamentLogProps) => {
       ? "border-yellow-600"
       : "border-red-600";
 
-    console.log(log.rounds[i].points);
-
     return (
       <div
         key={i}
@@ -57,7 +55,7 @@ export const TournamentLog = ({ log, type }: ITournamentLogProps) => {
 
   return (
     <div className="flex flex-col gap-2 w-full md:w-[480px]">
-      {!sameDeck && (
+      {!sameDeck && type === "player" && (
         <div className="p-2 w-full font-bold bg-red-200">
           Your deck has changed since this tournament log was created
         </div>
