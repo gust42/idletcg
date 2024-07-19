@@ -8,7 +8,7 @@ export class CasualWednesday implements Tournament {
   description = "A casual tournament for the Timmys.";
   champion = "lsq" as Champions;
   entryFee = 10000;
-  reward = 250000;
+  reward = 400000;
   rewardFriendlyName = ["money", "money", "money"];
   ratingRequirement = 1000;
   rewardUnit = "money";
@@ -46,9 +46,9 @@ export class CasualWednesday implements Tournament {
     if (points >= maxPoints) {
       return this.reward;
     } else if (points >= maxPoints - 3) {
-      return this.reward / 2;
+      return 125000;
     } else if (points >= maxPoints - 6) {
-      return this.reward / 4;
+      return 62500;
     }
 
     return 0;
