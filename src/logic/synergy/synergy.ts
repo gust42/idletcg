@@ -79,6 +79,11 @@ export function unlockSynergy(state: GameState) {
     changed = true;
   }
 
+  if (changed) {
+    state.routes.synergy.notify = true;
+    state.routes.skillstab.notify = true;
+  }
+
   return changed;
 }
 
