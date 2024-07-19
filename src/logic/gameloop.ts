@@ -7,6 +7,7 @@ import {
   handleChampionBattleTick,
 } from "./championbattle";
 import MessageHandler, {
+  AddSynergyMessage,
   BuyTrophyMessage,
   ChampionBattleMessage,
   DeckMessage,
@@ -25,6 +26,7 @@ import {
 import { OfflineHandler } from "./offlinehandler";
 import { PackData, PackManager, PackMessages } from "./packmanager";
 import { StatTracker } from "./stattracker";
+import { handleSynergyMessage } from "./synergy/synergy";
 import { TournamentManager, TournamentMessages } from "./tournamentmanager";
 import { handleUniqueCardMessage } from "./uniquecardhandler";
 
@@ -265,6 +267,15 @@ export default class GameLoop {
       }
       {
         const state = handleUniqueCardMessage(m, this.stateHandler.getState());
+
+        if (state) this.stateHandler.updateState(state);
+      }
+
+      {
+        const state = handleSynergyMessage(
+          m.data as AddSynergyMessage,
+          this.stateHandler.getState()
+        );
 
         if (state) this.stateHandler.updateState(state);
       }

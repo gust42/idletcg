@@ -2,6 +2,7 @@ import { GameState } from "../interfaces/logic";
 import { TournamentEntry } from "../rules/tournaments/tournament";
 
 export const state: GameState = {
+  synergy: [],
   trackers: {
     personalAssistantTournament: undefined,
   },
@@ -252,6 +253,10 @@ export const state: GameState = {
     },
     championlog: {
       acquired: true,
+      notify: false,
+    },
+    synergy: {
+      acquired: false,
       notify: false,
     },
   },

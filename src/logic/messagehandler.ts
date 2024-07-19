@@ -5,6 +5,7 @@ import { Tournaments } from "../rules/tournaments/tournament";
 import { CardMasteryMessages } from "./cardmastery";
 import { AllRouteNames } from "./navigation";
 import { PackMessages } from "./packmanager";
+import { Postion } from "./synergy/synergy";
 import { TournamentMessages } from "./tournamentmanager";
 import { UniqueCardMessageData, UniqueCardMessages } from "./uniquecardhandler";
 
@@ -22,7 +23,8 @@ type MessageList =
   | "clearmessages"
   | "clearnotifier"
   | "buytrophy"
-  | "addtrophy";
+  | "addtrophy"
+  | "addsynergy";
 
 export type Message<T = MessageData> = {
   message: MessageList;
@@ -36,6 +38,7 @@ export type MessageData =
   | AssignTournamentMessage
   | UniqueCardMessageData
   | BuyTrophyMessage
+  | AddSynergyMessage
   | TournamentMessage;
 
 export type GenericMessage = {
@@ -73,6 +76,12 @@ export type AssignTournamentMessage = {
 export type BuyTrophyMessage = {
   teamMember: TeamMemberNames;
   amount: number;
+};
+
+export type AddSynergyMessage = {
+  id: number;
+  cardId: number | undefined;
+  position: Postion;
 };
 
 export type ClientMessageData = Record<string, unknown>;

@@ -64,6 +64,18 @@ export const CardPicker = ({
       }
     });
   } else {
+    gameState.synergy.forEach((synergy) => {
+      if (synergy.base !== undefined) {
+        cardsToRemove.push(synergy.base);
+      }
+      if (synergy.enabler !== undefined) {
+        cardsToRemove.push(synergy.enabler);
+      }
+      if (synergy.payoff !== undefined) {
+        cardsToRemove.push(synergy.payoff);
+      }
+    });
+
     Object.keys(gameState.deck.cards).forEach((key) => {
       const index = key as keyof typeof gameState.deck.cards;
       const cardId = gameState.deck.cards[index];

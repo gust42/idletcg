@@ -18,7 +18,7 @@ export default function ResourceView() {
   );
 
   return (
-    <div className="sticky top-0 overflow-hidden flex flex-col h-full text-sm">
+    <div className="sticky top-0 overflow-hidden flex flex-col h-full text-xs md:text-sm">
       <div className="italic mb-1">Resources</div>
       <hr className="mb-1" />
       <div className=" flex flex-col">
@@ -70,7 +70,7 @@ export default function ResourceView() {
 
       {gameState.routes.tournamentstab.acquired && (
         <>
-          <div className="text-md italic mt-1 mb-1">Activities</div>
+          <div className="text-md italic mt-3 mb-1">Activities</div>
           <hr className="mb-1" />
           <TournamentProgress />
           <div className="mt-1 whitespace-nowrap">

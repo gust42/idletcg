@@ -3,6 +3,7 @@ import {
   TournamentLog,
   calculateWinner,
 } from "../rules/tournaments/tournament";
+import { BattleCard } from "./battleCard";
 import GameLoop from "./gameloop";
 
 export function battle(
@@ -12,17 +13,13 @@ export function battle(
   deckSize: number
 ) {
   let wins = 0;
+  const state = GameLoop.getInstance().stateHandler.getState();
   for (let j = 0; j < deckSize; j++) {
     const key = `slot${j + 1}` as keyof typeof myDeck;
-    const myCard = myDeck[key] as number;
+    const myCard = new BattleCard(myDeck[key] as number, state);
     const opponentCard = opponentDeck[key] as number;
 
-    const result = calculateWinner(
-      myCard,
-      opponentCard,
-      j,
-      GameLoop.getInstance().stateHandler.getState()
-    );
+    const result = calculateWinner(myCard, opponentCard);
     if (result === "win") {
       wins++;
     } else if (result === "loss") {

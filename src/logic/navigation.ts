@@ -5,6 +5,7 @@ import { PackPoints } from "../pages/packs/packpoints";
 import PacksTab from "../pages/packs/packstab";
 import { Settings } from "../pages/settings/settings";
 import SkillsTab from "../pages/skills/skillstab";
+import { SynergyTab } from "../pages/synergy/synergytab";
 import { TeamTab } from "../pages/team/teamtab";
 import { ActiveChampionBattle } from "../pages/tournaments/activechampionbattle";
 import { ActiveTournament } from "../pages/tournaments/activetournament";
@@ -34,7 +35,7 @@ export type AllSubroutes =
 
 export type AllRouteNames = RouteNames | AllSubroutes;
 
-export type SkillsSubroutes = "skills" | "trophys";
+export type SkillsSubroutes = "skills" | "trophys" | "synergy";
 export type TournamentSubroutes = "tournaments" | "team";
 export type PackSubroutes = "pack" | "packpoints";
 export type DeckbuilderSubroutes = "deckbuilder" | "cardmastery";
@@ -84,6 +85,7 @@ export const routeConfig: RouteConfig = {
     routes: {
       skills: { friendlyName: "Skills", component: SkillsTab },
       cardmastery: { friendlyName: "Card Mastery", component: CardMastery },
+      synergy: { friendlyName: "Synergy", component: SynergyTab },
     },
   },
   activetournament: {

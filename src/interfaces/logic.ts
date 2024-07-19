@@ -62,7 +62,15 @@ export interface Champion {
   defeated: boolean;
 }
 
+export interface Synergy {
+  id: number;
+  base: number | undefined;
+  enabler: number | undefined;
+  payoff: number | undefined;
+}
+
 export interface GameState {
+  synergy: Synergy[];
   trackers: {
     personalAssistantTournament: undefined | keyof Tournaments;
   };
