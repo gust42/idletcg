@@ -1,6 +1,7 @@
 import { GameState } from "../interfaces/logic";
 import { Rule, Rules } from "../interfaces/rules";
 import { calculateRating } from "../logic/helpers";
+import { unlockSynergy } from "../logic/synergy/synergy";
 import StateHandler from "../state/statehandler";
 import { handleActivePackRules } from "./packrules";
 import rules from "./rules.json";
@@ -98,14 +99,13 @@ export default class RulesHandler {
       state.routes.team.notify = true;
       changed = true;
     }
-
     if (
-      !state.routes.cardmastery.acquired &&
+      !state.routes.synergy.acquired &&
       calculateRating(state.entities.rating).amount > 1000
     ) {
-      state.routes.cardmastery.acquired = true;
+      state.routes.synergy.acquired = true;
       state.routes.skillstab.notify = true;
-      state.routes.cardmastery.notify = true;
+      state.routes.synergy.notify = true;
       changed = true;
     }
 
@@ -127,6 +127,9 @@ export default class RulesHandler {
 
     const packChanged = handleActivePackRules(this, state);
     if (packChanged) changed = true;
+
+    const synergyChanged = unlockSynergy(state);
+    if (synergyChanged) changed = true;
 
     return changed ? state : null;
   }
