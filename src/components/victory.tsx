@@ -12,7 +12,7 @@ export const Victory = ({ onClose }: { onClose: () => void }) => {
     <div className="flex justify-center flex-col text-center gap-12">
       <h1>Victory</h1>
       <p>
-        You have defeated the all champions and won the game! Congratulations!
+        You have defeated the all champions and won the game. Congratulations!
       </p>
       <SmallTitle>
         Time to complete: {formatSeconds(timePlayed / 1000)}
@@ -20,7 +20,7 @@ export const Victory = ({ onClose }: { onClose: () => void }) => {
       <div className="text-lg">
         To help me build more games, please show your support by{" "}
         <a href="https://buymeacoffee.com/gust42" target="_blank">
-          buying me a coffee!
+          buying me a coffee
         </a>
       </div>
       <div className="flex flex-row justify-between">

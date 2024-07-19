@@ -180,8 +180,8 @@ export function calculatePackSupplyIncome(state: GameState) {
   }
 
   if (state.champions.lsq.defeated) packSupply *= 10;
-  if (state.champions["mai-pudde"].defeated) packSupply *= 100;
   if (state.champions["ron-dinkel"].defeated) packSupply *= 1000;
+  if (state.champions["mai-pudde"].defeated) packSupply *= 1e6;
 
   return packSupply;
 }

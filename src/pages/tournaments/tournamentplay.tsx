@@ -55,6 +55,7 @@ export const TournamentPlay = ({
           size="small"
           id={opponentCard}
           addBuffs={false}
+          showOrignal
         />
       </div>
     );

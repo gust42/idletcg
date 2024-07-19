@@ -63,7 +63,7 @@ function App() {
           <div className="text-xs">
             If you like this game,{" "}
             <a href="https://buymeacoffee.com/gust42" target="_blank">
-              buy me a coffee!
+              buy me a coffee
             </a>
             {gameState.routes.skillstab.acquired && (
               <div
