@@ -44,7 +44,7 @@ export const SynergyTab = () => {
                   ) : (
                     <div className="text-red-600 mt-2">
                       Effect disabled, missing base card type (
-                      {metaTypes[synergy.base % 3]}) in deck
+                      {metaTypes[synergy.base! % 3]}) in deck
                     </div>
                   )}
                 </>

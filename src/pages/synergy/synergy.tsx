@@ -20,6 +20,7 @@ export const SynergyComponent = ({ synergy, type }: SynergyProps) => {
     <div>
       <div className="capitalize mb-2">{type}</div>
       <Slot
+        size="small"
         onSelect={(id) => {
           onSlotClick(id);
         }}
