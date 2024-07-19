@@ -1,6 +1,11 @@
 import { GameState, Synergy } from "../../interfaces/logic";
 import { AddSynergyMessage } from "../messagehandler";
-import { BaseEffect, InvertEffect, OtherEffect } from "./effect";
+import {
+  BaseAddictiveEffect,
+  BaseMultiplicativeEffect,
+  InvertEffect,
+  OtherEffect,
+} from "./effect";
 
 export type Postion = "base" | "enabler" | "payoff";
 
@@ -78,25 +83,28 @@ export function unlockSynergy(state: GameState) {
 }
 
 const effects = [
-  BaseEffect,
-  BaseEffect,
-  BaseEffect,
-  BaseEffect,
-  BaseEffect,
+  BaseAddictiveEffect,
+  BaseAddictiveEffect,
+  InvertEffect,
+  BaseMultiplicativeEffect,
+  BaseMultiplicativeEffect,
   InvertEffect,
   OtherEffect,
-  BaseEffect,
-  BaseEffect,
-  BaseEffect,
+  BaseAddictiveEffect,
+  OtherEffect,
+  BaseAddictiveEffect,
 ];
 
 export function calculateEffect(synergy: Synergy) {
-  if (synergy.base && synergy.enabler && synergy.payoff) {
+  if (
+    synergy.base !== undefined &&
+    synergy.enabler !== undefined &&
+    synergy.payoff !== undefined
+  ) {
     const total = synergy.base + synergy.enabler + synergy.payoff;
-    // const increase = 1 + (synergy.enabler + synergy.payoff / 2) / 100;
     const effect = new effects[total % effects.length](synergy);
-    return effect.description + " " + effect.effect();
+    return effect;
   }
 
-  return "";
+  return undefined;
 }

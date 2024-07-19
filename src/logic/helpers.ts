@@ -142,7 +142,7 @@ export function calculateEloRating(
     (newRating - playerRating) * (actualScore / 10)
   );
 
-  console.log("Rating gained: ", playerRating, gainedRating);
+  // console.log("Rating gained: ", playerRating, gainedRating);
 
   // Round to the nearest integer
   return Math.round(playerRating + gainedRating);

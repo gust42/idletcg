@@ -1,5 +1,6 @@
 import { Card } from "../../components/card";
 import useGameState from "../../hooks/usegamestate";
+import { BattleCard } from "../../logic/battleCard";
 import {
   TournamentLog,
   calculateWinRateModFromMeta,
@@ -23,22 +24,18 @@ export const TournamentPlay = ({
   const play = [];
   for (let i = 1; i <= gameRound; i++) {
     const index = `slot${i}` as keyof typeof log.myDeck;
-    const myCard = log.myDeck[index] as number;
+    const myCard = new BattleCard(log.myDeck[index] as number, gameState);
     const opponentCard = log.rounds[opponent].opponentDeck[index] as number;
 
-    const myMod = calculateWinRateModFromMeta(myCard, opponentCard, gameState);
-    const opponentMod = calculateWinRateModFromMeta(
-      opponentCard,
-      myCard,
-      gameState
-    );
-    const result = calculateWinner(myCard, opponentCard, i - 1, gameState);
+    const myMod = calculateWinRateModFromMeta(myCard.id, opponentCard);
+    const opponentMod = calculateWinRateModFromMeta(opponentCard, myCard.id);
+    const result = calculateWinner(myCard, opponentCard);
     play.push(
       <div
         key={i}
         className="flex flex-row gap-2 items-center  justify-between"
       >
-        <Card showOrignal winRateMod={myMod} size="small" id={myCard} />
+        <Card showOrignal winRateMod={myMod} size="small" id={myCard.id} />
 
         <div>
           {result === "win" ? (
