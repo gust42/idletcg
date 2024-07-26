@@ -39,7 +39,9 @@ export const Pack = () => {
 
           <div className="mb-4">
             <HelpText>
-              Buy packs to earn cards to sell for money to buy more packs.
+              Buy packs to earn cards to sell for money to buy more packs. Maybe
+              someday you will be able to defeat the great champions in card
+              battles.
             </HelpText>
           </div>
         </div>

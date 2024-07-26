@@ -33,7 +33,7 @@ export const TournamentTab = () => {
         cards in the same order so you have to figure out which order to play
         your cards to win.
       </HelpText>
-      <div className="flex flex-row flex-wrap gap-4">{tournaments}</div>
+      <div className="flex flex-row flex-wrap gap-2">{tournaments}</div>
     </div>
   );
 };
