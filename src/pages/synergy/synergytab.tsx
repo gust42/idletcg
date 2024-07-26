@@ -15,7 +15,7 @@ export const SynergyTab = () => {
         the effect you need a card with the same base type in your deck.
         Depening on the cards you choose you get different effects.
       </HelpText>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-row flex-wrap gap-2">
         {gameState.synergy.map((synergy) => {
           const effect = calculateEffect(synergy);
           const hasBaseInDeck = Object.values(gameState.deck.cards).some(
