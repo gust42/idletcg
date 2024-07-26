@@ -12,7 +12,7 @@ export class ShopkeeperFriendSkill implements Skill {
   }
   get rule(): SkillRule {
     return {
-      requirement: 50,
+      requirement: 25,
       increase: 2,
       value: 0.9,
       increaseEffect: 0.1,

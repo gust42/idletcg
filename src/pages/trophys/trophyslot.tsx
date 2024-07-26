@@ -3,7 +3,7 @@ import { Container } from "../../components/container";
 import { HelpText, SmallTitle, Title } from "../../components/typography";
 import useGameRule from "../../hooks/usegamerule";
 import useGameState from "../../hooks/usegamestate";
-import { inBattle } from "../../logic/helpers";
+import { canFightNextChampion, inBattle } from "../../logic/helpers";
 import MessageHandler, {
   ChampionBattleMessage,
 } from "../../logic/messagehandler";
@@ -38,7 +38,9 @@ export const ChampionCard = ({ tournament }: ITrophySlotProps) => {
 
   let disabledReason = "";
 
-  if (!unlocked) disabledReason = "Not enough trophies won";
+  if (!canFightNextChampion(champion.id, gameState))
+    disabledReason = "Defeat previous champion first";
+  else if (!unlocked) disabledReason = "Not enough trophies won";
   else if (!fullDeck) disabledReason = "Deck not complete";
   else if (inBattle(gameState)) disabledReason = "Already in battle";
 

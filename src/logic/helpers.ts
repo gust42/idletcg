@@ -1,6 +1,7 @@
 import { format } from "../helpers/number";
 import { Entity, GameState, TeamMemberNames } from "../interfaces/logic";
 import { CostForUniqueCards } from "../interfaces/rules";
+import { Champions } from "../rules/champions";
 import { AllSkills, AllTournaments } from "../rules/ruleshandler";
 import { Tournaments } from "../rules/tournaments/tournament";
 import GameLoop from "./gameloop";
@@ -319,4 +320,12 @@ export function isPersonalAssistantAllowedToRun(
   const skillIndex = tournamentList.indexOf(id);
 
   return skillIndex >= index;
+}
+
+export function canFightNextChampion(id: Champions, state: GameState) {
+  if (id === "lsq") return true;
+
+  if (id === "ron-dinkel") return state.champions.lsq.defeated;
+
+  if (id === "mai-pudde") return state.champions["ron-dinkel"].defeated;
 }

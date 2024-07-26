@@ -14,7 +14,7 @@ function translateType(type: string, value: number) {
 
 export const CardTooltip = ({ card }: CardTooltipProps) => {
   return (
-    <div className="absolute bg-slate-300 left-0 top-0 w-[200px] p-2 text-left border-slate-500 border rounded-md flex flex-col gap-2">
+    <div className="absolute bg-slate-300 left-0 top-0 w-[200px] p-2 text-left border-slate-500 border rounded-md flex flex-col gap-2 z-10">
       <div className="flex flex-row gap-4">
         <DataContainer title="Buffed value">
           {Math.floor(card.totalWR)} WR

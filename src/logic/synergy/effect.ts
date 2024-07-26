@@ -101,7 +101,11 @@ export class InvertEffect extends Effect {
   get description() {
     if (this.synergy.base === undefined) return "";
     const meta = metaTypes[this.synergy.base % 3];
-    return `Increases WR of card types in your deck that is the weakness of ${meta} cards`;
+
+    const myWeakness = cardStrength.find(
+      (w) => w[1] === metaTypes[this.synergy.base! % 3]
+    )!;
+    return `Increases WR of ${myWeakness[0]} cards in your deck. (Weakness of ${meta})`;
   }
 
   constructor(synergy: Synergy) {
