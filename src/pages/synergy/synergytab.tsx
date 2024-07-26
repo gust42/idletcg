@@ -19,7 +19,8 @@ export const SynergyTab = () => {
         {gameState.synergy.map((synergy) => {
           const effect = calculateEffect(synergy);
           const hasBaseInDeck = Object.values(gameState.deck.cards).some(
-            (card) => synergy.base && card % 3 === synergy.base % 3
+            (card) =>
+              synergy.base !== undefined && card % 3 === synergy.base % 3
           );
           return (
             <Container key={synergy.id}>

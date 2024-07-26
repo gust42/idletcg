@@ -33,6 +33,10 @@ export const ActiveTournament = () => {
     return <TournamentResult tournament={tournament} log={log} />;
   }
 
+  const currentPoints = log.rounds
+    .slice(0, tournamentState.currentOpponent)
+    .reduce((acc, round) => acc + round.points, 0);
+
   return (
     <div className="flex flex-col gap-2 w-full md:w-[400px]">
       <div className="flex flex-row justify-between">
@@ -41,11 +45,7 @@ export const ActiveTournament = () => {
           {tournament.opponents.length}
         </div>
         <div>
-          My points:{" "}
-          {tournamentState.currentOpponent === 0
-            ? 0
-            : log.rounds[tournamentState.currentOpponent - 1]?.points}{" "}
-          / {3 * tournament.opponents.length}
+          My points: {currentPoints} / {3 * tournament.opponents.length}
         </div>
       </div>
       <TournamentPlay
