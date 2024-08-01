@@ -46,11 +46,13 @@ export const SkillInfo = ({
   const isMaxLevel =
     !!skill.rule.maxLevel && state.level >= skill.rule.maxLevel;
 
+  const tranformedTitle = skill.isTransformed(gameState) ? `* ${title}` : title;
+
   return (
     <Container>
       <div className={" flex justify-between gap-2 flex-col"}>
         <div className="text flex flex-row justify-between">
-          <SmallTitle>{title}</SmallTitle>
+          <SmallTitle>{tranformedTitle}</SmallTitle>
           {state.acquired && <SmallTitle>{state.level}</SmallTitle>}
         </div>
         <HelpText>{description}</HelpText>

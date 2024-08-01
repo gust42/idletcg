@@ -47,4 +47,8 @@ export class WorkSkill implements Skill {
   visible() {
     return true;
   }
+
+  isTransformed() {
+    return isTransformed(this.stateHandler.getState());
+  }
 }

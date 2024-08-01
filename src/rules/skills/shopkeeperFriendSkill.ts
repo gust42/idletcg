@@ -54,4 +54,8 @@ export class ShopkeeperFriendSkill implements Skill {
   visible() {
     return true;
   }
+
+  isTransformed() {
+    return isTransformed(this.stateHandler.getState());
+  }
 }

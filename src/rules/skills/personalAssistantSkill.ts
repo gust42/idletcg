@@ -37,4 +37,8 @@ export class PersonalAssistantSkill implements Skill {
   visible(gameState: GameState) {
     return gameState.routes.tournamentstab.acquired;
   }
+
+  isTransformed() {
+    return false;
+  }
 }

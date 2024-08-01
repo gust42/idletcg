@@ -30,6 +30,18 @@ export const isRowCompleted = (row: number, state: GameState) => {
   return ids.every((id) => state.binder.cards.includes(id));
 };
 
+export const handleUniqueCardTick = (state: GameState) => {
+  const completedSets = [0, 1, 2, 3].filter((set) =>
+    isRowCompleted(set, state)
+  );
+  completedSets.forEach((set) => {
+    const { complete } = calculatePackSupplySetBonus(set);
+    state.entities.money.amount += complete as number;
+  });
+
+  return state;
+};
+
 export const handleUniqueCardMessage = (m: Message, state: GameState) => {
   if (m.message === "tradecard") {
     const data = m.data as UniqueCardMessageData;
@@ -64,7 +76,11 @@ export const handleUniqueCardMessage = (m: Message, state: GameState) => {
       const { unlock, complete } = calculatePackSupplySetBonus(cardSet);
 
       if (!rowUnlocked && isRowUnlocked(cardSet, state)) {
-        state.entities.packsupply.amount += unlock;
+        if (cardSet < 5) {
+          state.entities.money.amount += unlock;
+        } else {
+          state.entities.packsupply.amount += unlock;
+        }
       }
 
       if (!rowCompleted && isRowCompleted(cardSet, state)) {

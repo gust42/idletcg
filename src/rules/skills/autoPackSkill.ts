@@ -50,4 +50,8 @@ export class AutoPackSkill implements Skill {
   visible() {
     return true;
   }
+
+  isTransformed() {
+    return isTransformed(this.stateHandler.getState());
+  }
 }

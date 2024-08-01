@@ -21,7 +21,7 @@ export const PackPoints = () => {
   const elsaCost = useGameRule("ElsaCost");
   return (
     <div>
-      <div className="flex flex-col gap-1 max-w-fit">
+      <div className="flex flex-col gap-2 max-w-fit">
         <HelpText>
           When you open a pack you earn 1 pack point. Spend them here!
         </HelpText>
@@ -50,6 +50,9 @@ export const PackPoints = () => {
         </Container>
         <Container>
           <SmallTitle>Card types</SmallTitle>
+          <HelpText>
+            Unlock new card types to earn more money and unlock new features
+          </HelpText>
           <PackUpgrade
             skill="good"
             text={`Unlock good cards`}
@@ -69,9 +72,12 @@ export const PackPoints = () => {
         </Container>
         <Container>
           <SmallTitle>Quality of Life</SmallTitle>
+          <HelpText>
+            Adds a button to buy / sell multiple packs or cards at once
+          </HelpText>
           <PackUpgrade
             skill="x10"
-            text={`Buy 10 packs at once`}
+            text={`Buy / sell 10`}
             cost={x10Cost.value}
             acquired={gameState.pack.x10.amount === 1}
             visible
@@ -79,7 +85,7 @@ export const PackPoints = () => {
           />
           <PackUpgrade
             skill="x100"
-            text={`Buy 100 packs at once`}
+            text={`Buy / sell 100`}
             cost={x100Cost.value}
             acquired={gameState.pack.x100.amount === 1}
             visible
@@ -87,7 +93,7 @@ export const PackPoints = () => {
           />
           <PackUpgrade
             skill="x1000"
-            text={`Buy 1000 packs at once`}
+            text={`Buy / sell 1000`}
             cost={x1000Cost.value}
             acquired={gameState.pack.x1000.amount === 1}
             visible
@@ -95,28 +101,34 @@ export const PackPoints = () => {
           />
         </Container>
         {gameState.pack.x1000.amount === 1 && (
-          <Container>
-            <SmallTitle>Other</SmallTitle>
-            <HelpText>
-              Buying All upgrade will transform some of your skills
-            </HelpText>
-            <PackUpgrade
-              skill="xAll"
-              text={`Buy as many packs as you can`}
-              cost={xAllCost.value}
-              acquired={gameState.pack.xAll.amount === 1}
-              visible
-              packPoints={gameState.entities.packbonuspoints.amount}
-            />
-            <PackUpgrade
-              skill="elsa"
-              text={`Unlock Elsa`}
-              cost={elsaCost.value}
-              acquired={gameState.pack.elsa.amount === 1}
-              visible
-              packPoints={gameState.entities.packbonuspoints.amount}
-            />
-          </Container>
+          <>
+            <Container>
+              <SmallTitle>Transform</SmallTitle>
+              <HelpText>
+                Buying this upgrade will transform some of your skills into
+                better versions
+              </HelpText>
+              <PackUpgrade
+                skill="xAll"
+                text={`Buy / sell ALL`}
+                cost={xAllCost.value}
+                acquired={gameState.pack.xAll.amount === 1}
+                visible
+                packPoints={gameState.entities.packbonuspoints.amount}
+              />
+            </Container>
+            <Container>
+              <SmallTitle>Teammate</SmallTitle>
+              <PackUpgrade
+                skill="elsa"
+                text={`Unlock Elsa`}
+                cost={elsaCost.value}
+                acquired={gameState.pack.elsa.amount === 1}
+                visible
+                packPoints={gameState.entities.packbonuspoints.amount}
+              />
+            </Container>
+          </>
         )}
       </div>
     </div>

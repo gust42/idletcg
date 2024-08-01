@@ -31,4 +31,8 @@ export class TeamPractice implements Skill {
   visible(gameState: GameState) {
     return gameState.team.length > 0;
   }
+
+  isTransformed() {
+    return false;
+  }
 }
