@@ -1,4 +1,5 @@
 import { GameState } from "../interfaces/logic";
+import { isRowUnlocked } from "../logic/uniquecardhandler";
 import RulesHandler from "./ruleshandler";
 
 export function handleActivePackRules(
@@ -50,8 +51,7 @@ export function handleActivePackRules(
 
   if (
     !state.entities.packsupply.acquired &&
-    (state.counters.uniquecards.amount > 0 ||
-      state.entities.packsupply.amount < 10000)
+    (isRowUnlocked(4, state) || state.entities.packsupply.amount < 10000)
   ) {
     state.entities.packsupply.acquired = true;
     state.routes.packstab.notify = true;

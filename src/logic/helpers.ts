@@ -190,7 +190,7 @@ export function calculatePackSupplyIncome(state: GameState) {
 export function calculatePackSupplySetBonus(set: number) {
   const supply = (set + 1) * 10;
   const unlockAmount = supply * 60 * 60 * (set + 1);
-  const unlock = {
+  let unlock = {
     unlock: unlockAmount,
     unlockFriendly: `+${format(unlockAmount)} pack supply`,
   };
@@ -201,6 +201,18 @@ export function calculatePackSupplySetBonus(set: number) {
     complete: supply,
     completeFriendly: `+${supply} pack supply / tick`,
   };
+
+  if (set < 5) {
+    const money = (set + 1) * 20;
+    unlock = {
+      unlock: money * 60 * 60,
+      unlockFriendly: `+${money * 60 * 60} money`,
+    };
+    complete = {
+      complete: money,
+      completeFriendly: `+${money} money / tick`,
+    };
+  }
   if (set === 4) {
     complete = {
       complete: "Daniel",

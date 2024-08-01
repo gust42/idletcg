@@ -30,4 +30,6 @@ export interface Skill {
   friendyEffect(level: number): string;
 
   visible(state: GameState): boolean;
+
+  isTransformed(state: GameState): boolean;
 }

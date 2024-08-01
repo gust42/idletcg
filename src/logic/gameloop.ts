@@ -28,7 +28,10 @@ import { PackData, PackManager, PackMessages } from "./packmanager";
 import { StatTracker } from "./stattracker";
 import { handleSynergyMessage } from "./synergy/synergy";
 import { TournamentManager, TournamentMessages } from "./tournamentmanager";
-import { handleUniqueCardMessage } from "./uniquecardhandler";
+import {
+  handleUniqueCardMessage,
+  handleUniqueCardTick,
+} from "./uniquecardhandler";
 
 export const offlineHandler = new OfflineHandler();
 export default class GameLoop {
@@ -84,6 +87,8 @@ export default class GameLoop {
     this.tournamentManager.handleTick();
 
     handleChampionBattleTick();
+
+    handleUniqueCardTick(this.stateHandler.getState());
 
     const state = this.stateHandler.getState();
     if (state.skills.workSkill.acquired) {
