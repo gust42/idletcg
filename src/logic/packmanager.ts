@@ -133,10 +133,9 @@ export class PackManager {
     }
 
     if (
-      state.entities.money.amount >= cost * amount &&
-      (amount <= state.entities.packsupply.amount ||
-        type === "express" ||
-        type === "free")
+      type === "free" ||
+      (state.entities.money.amount >= cost * amount &&
+        amount <= state.entities.packsupply.amount)
     ) {
       let badcards = 0,
         goodcards = 0,

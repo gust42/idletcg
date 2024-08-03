@@ -26,7 +26,7 @@ export const PackPoints = () => {
           When you open a pack you earn 1 pack point. Spend them here!
         </HelpText>
         <Container>
-          <SmallTitle>Repeateble upgrades</SmallTitle>
+          <SmallTitle>Repeatable upgrades</SmallTitle>
           <PackUpgrade
             skill="amount"
             text={`Cards in pack (${

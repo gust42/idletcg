@@ -18,10 +18,19 @@ export const Victory = ({ onClose }: { onClose: () => void }) => {
         Time to complete: {formatSeconds(timePlayed / 1000)}
       </SmallTitle>
       <div className="text-lg">
-        To help me build more games, please show your support by{" "}
-        <a href="https://buymeacoffee.com/gust42" target="_blank">
+        💵💵💵
+        <br />
+        To help me build more games and continue developing this one, please
+        show your support by{" "}
+        <a
+          className="underline"
+          href="https://buymeacoffee.com/gust42"
+          target="_blank"
+        >
           buying me a coffee
         </a>
+        <br />
+        💵💵💵
       </div>
       <div className="flex flex-row justify-between">
         <div
