@@ -87,7 +87,7 @@ export const TeamMemberComponent = ({ member }: ITeamMemberProps) => {
           }}
           action="BUY"
         >
-          1 thropy ({format(trophyCost)})
+          1 trophy ({format(trophyCost)})
         </Button>
         <Button
           disabled={
