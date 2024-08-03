@@ -40,6 +40,7 @@ function App() {
     !victoryModalOpen &&
     !gameState.stats.continuePlaying
   ) {
+    window.location.href += "#victory";
     setVictoryModalOpen(true);
   }
 
@@ -61,10 +62,15 @@ function App() {
         <aside className="p-1 bg-slate-300 border-r-2 w-[120px] md:min-w-[180px] fixed z-10 min-h-[calc(100dvh-40px)] md:min-h-[calc(100dvh-64px)] flex justify-between flex-col">
           <ResourceView />
           <div className="text-xs">
-            If you like this game,{" "}
-            <a href="https://buymeacoffee.com/gust42" target="_blank">
-              buy me a coffee
-            </a>
+            If you like this game, consider{" "}
+            <a
+              className="underline"
+              href="https://buymeacoffee.com/gust42"
+              target="_blank"
+            >
+              buying me a coffee
+            </a>{" "}
+            to support the development 💵
             {gameState.routes.skillstab.acquired && (
               <div
                 className="mt-4 underline cursor-pointer"
