@@ -15,11 +15,13 @@ export const Settings = () => {
       <div className="flex flex-col gap-4">
         <Button
           action="BACKUP"
-          onClick={() => {
+          onClick={async () => {
             const data = localStorage.getItem("idletcg.state");
             if (data) {
               try {
-                navigator.clipboard.writeText(btoa(data));
+                navigator.clipboard.writeText(btoa(data)).catch(() => {
+                  setShowExport(true);
+                });
               } catch (e) {
                 setShowExport(true);
               }
@@ -33,9 +35,11 @@ export const Settings = () => {
             <div className="mb-2">
               <b>Save to clipboard failed, copy data manually</b>
             </div>
-            <textarea className="w-full p-1">
-              {btoa(localStorage.getItem("idletcg.state") as string)}
-            </textarea>
+            <textarea
+              className="w-full p-1"
+              readOnly
+              value={btoa(localStorage.getItem("idletcg.state") as string)}
+            ></textarea>
           </div>
         )}
         <Button
