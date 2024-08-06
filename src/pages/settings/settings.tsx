@@ -8,6 +8,7 @@ import { openPack, openPacks } from "../../logic/pack";
 
 export const Settings = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [showExport, setShowExport] = useState(false);
   return (
     <div>
       <Title>Settings</Title>
@@ -17,18 +18,38 @@ export const Settings = () => {
           onClick={() => {
             const data = localStorage.getItem("idletcg.state");
             if (data) {
-              navigator.clipboard.writeText(btoa(data));
+              try {
+                navigator.clipboard.writeText(btoa(data));
+              } catch (e) {
+                setShowExport(true);
+              }
             }
           }}
         >
           Save data to clipboard
         </Button>
+        {showExport && (
+          <div className="text-md mt-2">
+            <div className="mb-2">
+              <b>Save to clipboard failed, copy data manually</b>
+            </div>
+            <textarea className="w-full p-1">
+              {btoa(localStorage.getItem("idletcg.state") as string)}
+            </textarea>
+          </div>
+        )}
         <Button
           action="RESTORE"
           onClick={async () => {
             const data = prompt("Paste data here");
             const parsedData = data ? atob(data) : null;
             if (parsedData) {
+              try {
+                JSON.parse(parsedData as string);
+              } catch (e) {
+                alert("Invalid data");
+                return;
+              }
               GameLoop.getInstance().stop();
               setTimeout(() => {
                 localStorage.setItem("idletcg.state", parsedData);

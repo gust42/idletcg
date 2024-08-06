@@ -131,7 +131,7 @@ export const TournamentInfo = ({
             {tournament.returnReward(tournament.opponents.length * 3 - 6)}{" "}
             {tournament.rewardFriendlyName[2]}
           </p>
-          <p className="font-bold mb-4">Trophys: {gameState.trophys[id]}</p>
+          <p className="font-bold mb-4">Trophies: {gameState.trophys[id]}</p>
         </>
       ) : (
         <p className="font-semibold mb-4">???</p>
