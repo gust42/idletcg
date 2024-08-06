@@ -8,7 +8,11 @@ import { state } from "./state";
 let loadedState = state;
 
 const savedState = localStorage.getItem("idletcg.state");
-if (savedState) loadedState = deepmerge(state, JSON.parse(savedState));
+try {
+  if (savedState) loadedState = deepmerge(state, JSON.parse(savedState));
+} catch (e) {
+  console.error("Error loading state from local storage", e);
+}
 
 const handler = new MigrationHandler();
 const migratedState = handler.migrate(loadedState as never);
