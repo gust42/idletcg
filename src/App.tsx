@@ -40,7 +40,9 @@ function App() {
     !victoryModalOpen &&
     !gameState.stats.continuePlaying
   ) {
-    window.location.href += "#victory";
+    if (!window.location.href.includes("#victory")) {
+      window.location.href += "#victory";
+    }
     setVictoryModalOpen(true);
   }
 
